@@ -1,5 +1,7 @@
 package bundle.input.eventhandler.guimousehandler;
 
+import java.util.List;
+
 import bundle.data.AbstractGameData;
 import bundle.data.gui.AbstractGUI;
 import bundle.input.event.MousePressedInputEvent;
@@ -20,17 +22,18 @@ public class GUIMousePressedInputEventHandler implements MousePressedInputEventH
 	}
 
 	boolean handleHelper(MousePressedInputEvent event, AbstractGUI gui) {
+		List<AbstractGUI> children = gui.getChildren();
+		for (int i = gui.getNumChildren() - 1; i >= 0; i--) {
+			if (handleHelper(event, children.get(i))) {
+				return true;
+			}
+		}
 		if (gui.isOn(event.getMouseX(), event.getMouseY())) {
 			if (!gui.isPressed()) {
-				data.getMainGUI().releaseAll();
+				data.getMainGUI().depressAll();
 				gui.onPress();
 			}
 			return true;
-		}
-		for (AbstractGUI child : gui.getChildren()) {
-			if (handleHelper(event, child)) {
-				return true;
-			}
 		}
 		return false;
 	}

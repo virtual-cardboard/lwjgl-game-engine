@@ -1,5 +1,7 @@
 package bundle.input.eventhandler.guimousehandler;
 
+import java.util.List;
+
 import bundle.data.AbstractGameData;
 import bundle.data.gui.AbstractGUI;
 import bundle.input.event.MouseMovedInputEvent;
@@ -20,19 +22,21 @@ public class GUIMouseMovedInputEventHandler implements MouseMovedInputEventHandl
 	}
 
 	boolean handleHelper(MouseMovedInputEvent event, AbstractGUI gui) {
+		List<AbstractGUI> children = gui.getChildren();
+		for (int i = gui.getNumChildren() - 1; i >= 0; i--) {
+			if (handleHelper(event, children.get(i))) {
+				return true;
+			}
+		}
 		if (gui.isOn(event.getMouseX(), event.getMouseY())) {
 			if (!gui.isHovered()) {
 				data.getMainGUI().dehoverAll();
 				gui.onHover();
 			}
 			return true;
-		}
-		for (AbstractGUI child : gui.getChildren()) {
-			if (handleHelper(event, child)) {
-				return true;
-			}
+		} else if (gui.isHovered()) {
+			gui.onDehover();
 		}
 		return false;
 	}
-
 }

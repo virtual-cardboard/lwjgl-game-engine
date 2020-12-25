@@ -1,5 +1,7 @@
 package bundle.input.eventhandler.guimousehandler;
 
+import java.util.List;
+
 import bundle.data.AbstractGameData;
 import bundle.data.gui.AbstractGUI;
 import bundle.input.event.MouseReleasedInputEvent;
@@ -16,21 +18,21 @@ public class GUIMouseReleasedInputEventHandler implements MouseReleasedInputEven
 
 	@Override
 	public boolean handle(MouseReleasedInputEvent event) {
-		return handleHelper(event, data.getMainGUI());
+		boolean consumed = handleHelper(event, data.getMainGUI());
+		data.getMainGUI().depressAll();
+		return consumed;
 	}
 
 	boolean handleHelper(MouseReleasedInputEvent event, AbstractGUI gui) {
-		if (gui.isOn(event.getMouseX(), event.getMouseY())) {
-			if (!gui.isPressed()) {
-				data.getMainGUI().depressAll();
-				gui.onRelease();
-			}
-			return true;
-		}
-		for (AbstractGUI child : gui.getChildren()) {
-			if (handleHelper(event, child)) {
+		List<AbstractGUI> children = gui.getChildren();
+		for (int i = gui.getNumChildren() - 1; i >= 0; i--) {
+			if (handleHelper(event, children.get(i))) {
 				return true;
 			}
+		}
+		if (gui.isOn(event.getMouseX(), event.getMouseY())) {
+			gui.onRelease();
+			return true;
 		}
 		return false;
 	}

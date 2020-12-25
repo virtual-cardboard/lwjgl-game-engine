@@ -22,9 +22,6 @@ import common.coordinates.PixelCoordinates;
  */
 public interface GameWindow {
 
-	public default void init() {
-	}
-
 	public abstract void startWindow();
 
 	public abstract GameBundleWrapper getBundleWrapper();

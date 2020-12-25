@@ -289,7 +289,7 @@ public abstract class AbstractGUI implements Displayable, Clickable, Hoverable, 
 		return onRelease;
 	}
 
-	protected void setOnRelease(Runnable onRelease) {
+	public void setOnRelease(Runnable onRelease) {
 		this.onRelease = onRelease;
 	}
 
