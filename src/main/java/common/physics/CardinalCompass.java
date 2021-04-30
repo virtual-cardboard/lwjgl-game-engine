@@ -1,6 +1,6 @@
 package common.physics;
 
-import common.coordinates.Vector2f;
+import common.coordinates.VectorCoordinates;
 
 public class CardinalCompass {
 
@@ -33,8 +33,8 @@ public class CardinalCompass {
 		}
 	}
 
-	public Vector2f getDirection() {
-		Vector2f vector = new Vector2f(x, y);
+	public VectorCoordinates getDirection() {
+		VectorCoordinates vector = new VectorCoordinates(x, y);
 		if (Math.abs(x) + Math.abs(y) == 2) {
 			vector.scale(SQRT_TWO_OVER_TWO);
 		}

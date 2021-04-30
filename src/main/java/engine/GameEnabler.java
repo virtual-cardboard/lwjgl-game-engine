@@ -1,41 +1,47 @@
 package engine;
 
-import bundle.GameBundleWrapper;
-import bundle.input.inputdecorator.GameInputDecorator;
-import bundle.logic.GameLogicTimer;
-import bundle.visuals.renderer.AbstractGameRenderer;
+import context.GameBundleWrapper;
+import context.input.inputdecorator.GameInputDecorator;
+import context.logic.GameLogicTimer;
+import context.visuals.renderer.GameRenderer;
 
 /**
- * A game kickstarter. Initializes everything required to start a game, and puts
- * everything in motion.
+ * The object that begins a game. Initializes everything required to start a
+ * game, and puts everything in motion.
  * 
  * The enable() function should be called to do this.
  * 
- * @author Jay
+ * @author Lunkle, Jay
  *
  */
 public class GameEnabler {
 
 	private GameWindow window;
-	private AbstractGameRenderer renderer;
+	private GameRenderer renderer;
 	private GameInputDecorator inputDecorator;
 	private GameBundleWrapper wrapper;
 
+	private boolean printProgress = false;
+
 	/**
-	 * The constructor takes in and saves a window, a renderer, an input buffer, and
-	 * a game wrapper.
+	 * The constructor takes in and saves a window, a renderer, an input decorator,
+	 * and a game wrapper.
 	 * 
 	 * @param window
 	 * @param renderer
 	 * @param inputDecorator
 	 * @param wrapper
 	 */
-	public GameEnabler(GameWindow window, AbstractGameRenderer renderer, GameInputDecorator inputDecorator, GameBundleWrapper wrapper, String windowTitle) {
+	public GameEnabler(GameWindow window, GameRenderer renderer, GameInputDecorator inputDecorator, GameBundleWrapper wrapper) {
 		this.window = window;
 		this.renderer = renderer;
 		this.inputDecorator = inputDecorator;
 		this.wrapper = wrapper;
-		window.setWindowTitle(windowTitle);
+	}
+
+	public GameEnabler(GameWindow window, GameRenderer renderer, GameInputDecorator inputDecorator, GameBundleWrapper wrapper, boolean printProgress) {
+		this(window, renderer, inputDecorator, wrapper);
+		this.printProgress = printProgress;
 	}
 
 	/**
@@ -43,18 +49,29 @@ public class GameEnabler {
 	 * motion.
 	 */
 	public void enable() {
-		// Attach the bundleWrapper to the engine.
-		// Don't change.
-		window.setBundleWrapper(wrapper);
-		window.startWindow();
-		wrapper.setRenderer(renderer);
-		inputDecorator.setGameInputBuffer(wrapper.getInputBuffer());
-		inputDecorator.setBundleWrapper(wrapper);
-		wrapper.getBundle().initBundleParts();
+		print("Creating game logic timer.");
 		GameLogicTimer timer = new GameLogicTimer(wrapper);
+		print("Binding bundle wrapper with renderer and input decorator.");
+		window.setBundleWrapper(wrapper);
+		wrapper.setRenderer(renderer);
+		inputDecorator.setBundleWrapper(wrapper);
+		inputDecorator.setGameInputBuffer(wrapper.getInputBuffer());
 		wrapper.setLogicTimer(timer);
+		print("Creating rendering and updating threads.");
+		Thread renderingThread = new Thread(window);
 		Thread gameLogicThread = new Thread(timer);
+		print("Initializing bundle parts");
+		wrapper.getBundle().initBundleParts();
+		print("Starting update thread.");
 		gameLogicThread.start();
+		print("Starting rendering thread.");
+		renderingThread.start();
+	}
+
+	private void print(String s) {
+		if (printProgress) {
+			System.out.println(s);
+		}
 	}
 
 }

@@ -1,6 +1,6 @@
 package common.physics;
 
-import common.coordinates.Vector2f;
+import common.coordinates.VectorCoordinates;
 
 /**
  * Something that has 8 directions it can point to and a speed.
@@ -13,12 +13,12 @@ public interface HasCardinalDirectionSpeedPositionDimensions extends HasDirectio
 	public CardinalCompass getCompass();
 
 	@Override
-	public default Vector2f getDirection() {
+	public default VectorCoordinates getDirection() {
 		return getCompass().getDirection();
 	}
 
 	@Override
-	public default void setDirection(Vector2f direction) {
+	public default void setDirection(VectorCoordinates direction) {
 		double theta = Math.atan2(direction.y, direction.x);
 		double remainder = Math.abs(theta % (Math.PI / 4));
 		if (remainder < Math.PI / 8) {

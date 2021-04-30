@@ -1,6 +1,6 @@
 package common.physics;
 
-import common.coordinates.Vector2f;
+import common.coordinates.VectorCoordinates;
 
 /**
  * Something that has a direction and speed.
@@ -16,11 +16,11 @@ public interface HasDirectionSpeed {
 	 * 
 	 * @return the direction
 	 */
-	public Vector2f getDirection();
+	public VectorCoordinates getDirection();
 
-	public void setDirection(Vector2f direction);
+	public void setDirection(VectorCoordinates direction);
 
-	public default Vector2f getVelocity() {
+	public default VectorCoordinates getVelocity() {
 		return getDirection().copy().scale(getSpeed());
 	}
 
