@@ -2,7 +2,7 @@ package context;
 
 import java.util.ArrayList;
 
-import context.data.AbstractGameData;
+import context.data.GameData;
 import context.input.AbstractGameInput;
 import context.logic.AbstractGameLogic;
 import context.visuals.AbstractGameVisuals;
@@ -21,11 +21,11 @@ import context.visuals.AbstractGameVisuals;
  * @author Jay
  *
  */
-public class GameBundle {
+public class GameContext {
 
-	protected GameBundleWrapper wrapper;
+	protected GameContextWrapper wrapper;
 
-	protected AbstractGameData data;
+	protected GameData data;
 	protected AbstractGameInput input;
 	protected AbstractGameLogic logic;
 	protected AbstractGameVisuals visuals;
@@ -39,7 +39,7 @@ public class GameBundle {
 	 * @param logic   GameLogic
 	 * @param visuals GameVisuals
 	 */
-	public GameBundle(AbstractGameData data, AbstractGameInput input, AbstractGameLogic logic, AbstractGameVisuals visuals) {
+	public GameContext(GameData data, AbstractGameInput input, AbstractGameLogic logic, AbstractGameVisuals visuals) {
 		this.data = data;
 		this.input = input;
 		this.logic = logic;
@@ -51,8 +51,8 @@ public class GameBundle {
 		this.visuals.setBundle(this);
 	}
 
-	public ArrayList<AbstractBundlePart> getBundleParts() {
-		ArrayList<AbstractBundlePart> parts = new ArrayList<>();
+	public ArrayList<ContextPart> getBundleParts() {
+		ArrayList<ContextPart> parts = new ArrayList<>();
 		parts.add(data);
 		parts.add(input);
 		parts.add(logic);
@@ -60,11 +60,11 @@ public class GameBundle {
 		return parts;
 	}
 
-	public AbstractGameData getData() {
+	public GameData getData() {
 		return data;
 	}
 
-	public void setData(AbstractGameData data) {
+	public void setData(GameData data) {
 		this.data = data;
 	}
 
@@ -99,7 +99,7 @@ public class GameBundle {
 		visuals.init();
 	}
 
-	public GameBundleWrapper getWrapper() {
+	public GameContextWrapper getWrapper() {
 		return wrapper;
 	}
 

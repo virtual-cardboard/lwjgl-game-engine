@@ -6,13 +6,12 @@ import java.util.List;
 
 import common.DoNothingRunnable;
 import common.coordinates.PixelCoordinates;
-import common.physics.HasPositionDimensions;
 import context.logic.Clickable;
 import context.logic.Hoverable;
 import context.visuals.displayer.Displayable;
 import context.visuals.displayer.GUIDisplayer;
 
-public abstract class GUI implements Displayable, Clickable, Hoverable, HasPositionDimensions, Iterable<GUI> {
+public abstract class GUI implements Displayable, Clickable, Hoverable {
 
 	private String text = "";
 	private float x;
@@ -348,17 +347,14 @@ public abstract class GUI implements Displayable, Clickable, Hoverable, HasPosit
 		return GUIDisplayer.class.getName();
 	}
 
-	@Override
 	public PixelCoordinates getPosition() {
 		return new PixelCoordinates(x, y);
 	}
 
-	@Override
 	public PixelCoordinates getDimensions() {
 		return new PixelCoordinates(width, height);
 	}
 
-	@Override
 	public void setPosition(PixelCoordinates coordinates) {
 		x = coordinates.x;
 		y = coordinates.y;

@@ -4,13 +4,13 @@ package context.visuals.displayer;
  * An interface for describing things that can be displayed.
  * <p>
  * If you want to add a {@link Displayable}, make sure you also add a
- * corresponding {@link AbstractDisplayer}. To do so, follow the steps outlined
+ * corresponding {@link Displayer}. To do so, follow the steps outlined
  * below:
  * <p>
  * 1. Create a class implementing the {@link Displayable} interface. Override
  * the getDisplayerName() method to return getDefaultDisplayerName().
  * <p>
- * 2. Create a class extending the {@link AbstractDisplayer} class and place it
+ * 2. Create a class extending the {@link Displayer} class and place it
  * in the same package as the {@link Displayable}. You must give the class the
  * same name as the Displayable with the suffix "Displayer".
  * <p>

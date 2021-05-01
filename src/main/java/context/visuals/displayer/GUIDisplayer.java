@@ -3,7 +3,7 @@ package context.visuals.displayer;
 import context.data.gui.GUI;
 import context.visuals.renderer.GameRenderer;
 
-public class GUIDisplayer extends AbstractDisplayer<GUI> {
+public class GUIDisplayer extends Displayer<GUI> {
 
 	public GUIDisplayer(GameRenderer renderer) {
 		super(renderer);

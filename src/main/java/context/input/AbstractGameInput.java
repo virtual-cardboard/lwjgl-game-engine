@@ -3,7 +3,7 @@ package context.input;
 import java.util.ArrayList;
 
 import common.coordinates.PixelCoordinates;
-import context.AbstractBundlePart;
+import context.ContextPart;
 import context.input.event.AbstractGameInputEvent;
 import context.input.eventhandler.AbstractGameInputEventHandler;
 import context.input.eventhandler.GameInputEventHandlerFactory;
@@ -23,7 +23,7 @@ import context.input.eventhandler.guimousehandler.GUIMouseReleasedInputEventHand
  * @author Jay
  *
  */
-public abstract class AbstractGameInput extends AbstractBundlePart {
+public abstract class AbstractGameInput extends ContextPart {
 
 	private GameInputBuffer inputBuffer;
 	private GameInputEventHandlerFactory inputEventHandlerFactory;

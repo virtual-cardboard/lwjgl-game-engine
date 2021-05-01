@@ -3,20 +3,20 @@ package context.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.coordinates.PixelCoordinates;
-import common.entity.User;
-import context.AbstractBundlePart;
+import common.coordinates.IntCoordinates;
+import context.ContextPart;
 import context.data.gui.GUI;
 import context.data.gui.InvisibleGUI;
 import context.visuals.displayer.Displayable;
+import state.entity.User;
 
 /**
- * A bundle part that stores data.
+ * A context part that stores data.
  * 
  * @author Jay
  *
  */
-public abstract class AbstractGameData extends AbstractBundlePart {
+public abstract class GameData extends ContextPart {
 
 	private User user = new User("Jay", 0);
 
@@ -30,7 +30,7 @@ public abstract class AbstractGameData extends AbstractBundlePart {
 	 */
 	private GUI mainGui = new InvisibleGUI("", 0, 0, 0, 0);
 
-	private PixelCoordinates cursorCoordinates;
+	private IntCoordinates cursorCoordinates;
 
 	public List<Displayable> getToBeDisplayed() {
 		return toBeDisplayed;
@@ -54,11 +54,11 @@ public abstract class AbstractGameData extends AbstractBundlePart {
 		return user;
 	}
 
-	public PixelCoordinates getCursorCoordinates() {
+	public IntCoordinates getCursorCoordinates() {
 		return cursorCoordinates;
 	}
 
-	public void setCursorCoordinates(PixelCoordinates cursorCoordinates) {
+	public void setCursorCoordinates(IntCoordinates cursorCoordinates) {
 		this.cursorCoordinates = cursorCoordinates;
 	}
 }

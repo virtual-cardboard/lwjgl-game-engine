@@ -1,4 +1,4 @@
-package common.entity;
+package state.entity;
 
 public abstract class AbstractEntity {
 

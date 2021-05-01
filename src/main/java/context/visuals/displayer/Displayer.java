@@ -4,7 +4,7 @@ import context.visuals.renderer.GameRenderer;
 
 /**
  * An abstract displayer that displays a given {@link Displayable}. Each
- * {@link AbstractDisplayer} will have a corresponding {@link Displayable}.
+ * {@link Displayer} will have a corresponding {@link Displayable}.
  * <p>
  * Example:
  * 
@@ -17,7 +17,7 @@ import context.visuals.renderer.GameRenderer;
  *
  * @param <D> generic {@link Displayable}
  */
-public abstract class AbstractDisplayer<D extends Displayable> {
+public abstract class Displayer<D extends Displayable> {
 
 	protected GameRenderer renderer;
 
@@ -26,7 +26,7 @@ public abstract class AbstractDisplayer<D extends Displayable> {
 	 * 
 	 * @param renderer the renderer
 	 */
-	public AbstractDisplayer(GameRenderer renderer) {
+	public Displayer(GameRenderer renderer) {
 		this.renderer = renderer;
 	}
 

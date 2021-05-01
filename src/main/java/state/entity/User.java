@@ -1,4 +1,4 @@
-package common.entity;
+package state.entity;
 
 import common.source.GameSource;
 

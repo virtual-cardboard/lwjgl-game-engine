@@ -1,9 +1,9 @@
 package context;
 
-import common.entity.User;
 import context.input.GameInputBuffer;
 import context.logic.GameLogicTimer;
 import context.visuals.renderer.GameRenderer;
+import state.entity.User;
 
 /**
  * A container for a game bundle to make switching bundles easier.
@@ -20,37 +20,37 @@ import context.visuals.renderer.GameRenderer;
  * @author Jay
  *
  */
-public class GameBundleWrapper {
+public class GameContextWrapper {
 
-	private GameBundle bundle;
+	private GameContext context;
 	private GameRenderer renderer;
 	private GameInputBuffer inputBuffer;
 	private GameLogicTimer logicTimer;
 	private User user;
 
 	/**
-	 * A constructor that takes in the initial bundle. Should not be null.
+	 * A constructor that takes in the initial context. Should not be null.
 	 * 
-	 * @param bundle not null
+	 * @param context not null
 	 */
-	public GameBundleWrapper(GameBundle bundle) {
-		this.bundle = bundle;
-		bundle.wrapper = this;
+	public GameContextWrapper(GameContext context) {
+		this.context = context;
+		context.wrapper = this;
 		inputBuffer = new GameInputBuffer();
 	}
 
 	/**
-	 * Swaps current bundle for the provided bundle. Should not be null.
+	 * Swaps current context for the provided context. Should not be null.
 	 * 
-	 * @param bundle not null
+	 * @param context not null
 	 */
-	public void transition(GameBundle bundle) {
-		this.bundle = bundle;
-		bundle.wrapper = this;
+	public void transition(GameContext context) {
+		this.context = context;
+		context.wrapper = this;
 	}
 
-	public GameBundle getBundle() {
-		return bundle;
+	public GameContext getContext() {
+		return context;
 	}
 
 	public GameRenderer getRenderer() {

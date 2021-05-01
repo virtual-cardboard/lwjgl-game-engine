@@ -1,10 +1,10 @@
 package context.logic;
 
-import context.GameBundleWrapper;
+import context.GameContextWrapper;
 
 public class GameLogicTimer implements Runnable {
 
-	private GameBundleWrapper bundleWrapper;
+	private GameContextWrapper bundleWrapper;
 
 	private boolean isDone = false;
 
@@ -15,7 +15,7 @@ public class GameLogicTimer implements Runnable {
 
 	private long currentTime;
 
-	public GameLogicTimer(GameBundleWrapper bundleWrapper) {
+	public GameLogicTimer(GameContextWrapper bundleWrapper) {
 		this.bundleWrapper = bundleWrapper;
 	}
 
@@ -40,7 +40,7 @@ public class GameLogicTimer implements Runnable {
 		}
 		currentTime = newTime;
 		accumulator += frameTime;
-		AbstractGameLogic gameLogic = bundleWrapper.getBundle().getLogic();
+		AbstractGameLogic gameLogic = bundleWrapper.getContext().getLogic();
 
 		// Updating as many times as needed to make up for any lag
 		while (accumulator >= targetFrameTime) {

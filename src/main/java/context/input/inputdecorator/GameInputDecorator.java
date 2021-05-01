@@ -1,6 +1,6 @@
 package context.input.inputdecorator;
 
-import context.GameBundleWrapper;
+import context.GameContextWrapper;
 import context.input.GameInputBuffer;
 import context.input.event.AbstractGameInputEvent;
 import context.input.event.KeyPressedInputEvent;
@@ -13,7 +13,7 @@ import context.input.event.MouseScrolledInputEvent;
 /**
  * An input decorator tries to decorate raw inputs from various sources into
  * input events that our game engine understands and sends it to the
- * {@link GameInputBuffer} of the {@link GameBundleWrapper}.
+ * {@link GameInputBuffer} of the {@link GameContextWrapper}.
  * 
  * @author Jay
  *
@@ -21,13 +21,13 @@ import context.input.event.MouseScrolledInputEvent;
 public class GameInputDecorator {
 
 	private GameInputBuffer inputBuffer;
-	private GameBundleWrapper wrapper;
+	private GameContextWrapper wrapper;
 
 	public void setGameInputBuffer(GameInputBuffer inputBuffer) {
 		this.inputBuffer = inputBuffer;
 	}
 
-	public void setBundleWrapper(GameBundleWrapper wrapper) {
+	public void setBundleWrapper(GameContextWrapper wrapper) {
 		this.wrapper = wrapper;
 	}
 

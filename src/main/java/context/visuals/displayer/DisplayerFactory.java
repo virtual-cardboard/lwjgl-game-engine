@@ -16,7 +16,7 @@ import context.visuals.renderer.GameRenderer;
  * 1. Make a class implementing the {@link Displayable} interface under the
  * package specifics.bundle.visuals.displayable or bundle.visuals.displayable.
  * <p>
- * 2. Make a class extending the {@link AbstractDisplayer} class under the package
+ * 2. Make a class extending the {@link Displayer} class under the package
  * specifics.bundle.visuals.displayer or bundle.visuals.displayer. You must give
  * the class the same name as the Displayable with the suffix "Displayer".
  * <p>
@@ -34,7 +34,7 @@ public class DisplayerFactory {
 
 	private GameRenderer renderer;
 	@SuppressWarnings("rawtypes")
-	Map<Class<? extends Displayable>, AbstractDisplayer> displayableToDisplayer = new HashMap<>();
+	Map<Class<? extends Displayable>, Displayer> displayableToDisplayer = new HashMap<>();
 
 	/**
 	 * Takes in a renderer and saves it.
@@ -53,10 +53,10 @@ public class DisplayerFactory {
 	 * @throws ClassNotFoundException corresponding displayer not found
 	 */
 	@SuppressWarnings("rawtypes")
-	public AbstractDisplayer getDisplayer(Displayable displayable) throws ClassNotFoundException {
+	public Displayer getDisplayer(Displayable displayable) throws ClassNotFoundException {
 		// Checking first to see if the corresponding displayer already exists in the
 		// hashmap
-		AbstractDisplayer displayer = displayableToDisplayer.get(displayable.getClass());
+		Displayer displayer = displayableToDisplayer.get(displayable.getClass());
 		if (displayer != null) {
 			return displayer;
 		}
@@ -64,8 +64,8 @@ public class DisplayerFactory {
 		String className = displayable.getDisplayerName();
 		try {
 			// Instantiate the displayer using the dark magic
-			Class<? extends AbstractDisplayer> displayerClass = Class.forName(className).asSubclass(AbstractDisplayer.class);
-			Constructor<? extends AbstractDisplayer> displayerConstructor = displayerClass.getConstructor(GameRenderer.class);
+			Class<? extends Displayer> displayerClass = Class.forName(className).asSubclass(Displayer.class);
+			Constructor<? extends Displayer> displayerConstructor = displayerClass.getConstructor(GameRenderer.class);
 			displayer = displayerConstructor.newInstance(renderer);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException | SecurityException e) {

@@ -1,19 +1,19 @@
 package context.visuals;
 
-import context.AbstractBundlePart;
-import context.data.AbstractGameData;
+import context.ContextPart;
+import context.data.GameData;
 import context.data.gui.GUI;
 import context.visuals.displayer.Displayable;
 import context.visuals.displayer.DisplayerFactory;
 
 /**
  * A bundle part that displays visuals based on data from
- * {@link AbstractGameData}.
+ * {@link GameData}.
  * 
  * @author Jay
  *
  */
-public abstract class AbstractGameVisuals extends AbstractBundlePart {
+public abstract class AbstractGameVisuals extends ContextPart {
 
 	private DisplayerFactory displayerFactory;
 

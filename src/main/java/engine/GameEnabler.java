@@ -1,6 +1,6 @@
 package engine;
 
-import context.GameBundleWrapper;
+import context.GameContextWrapper;
 import context.input.inputdecorator.GameInputDecorator;
 import context.logic.GameLogicTimer;
 import context.visuals.renderer.GameRenderer;
@@ -19,7 +19,7 @@ public class GameEnabler {
 	private GameWindow window;
 	private GameRenderer renderer;
 	private GameInputDecorator inputDecorator;
-	private GameBundleWrapper wrapper;
+	private GameContextWrapper wrapper;
 
 	private boolean printProgress = false;
 
@@ -32,14 +32,14 @@ public class GameEnabler {
 	 * @param inputDecorator
 	 * @param wrapper
 	 */
-	public GameEnabler(GameWindow window, GameRenderer renderer, GameInputDecorator inputDecorator, GameBundleWrapper wrapper) {
+	public GameEnabler(GameWindow window, GameRenderer renderer, GameInputDecorator inputDecorator, GameContextWrapper wrapper) {
 		this.window = window;
 		this.renderer = renderer;
 		this.inputDecorator = inputDecorator;
 		this.wrapper = wrapper;
 	}
 
-	public GameEnabler(GameWindow window, GameRenderer renderer, GameInputDecorator inputDecorator, GameBundleWrapper wrapper, boolean printProgress) {
+	public GameEnabler(GameWindow window, GameRenderer renderer, GameInputDecorator inputDecorator, GameContextWrapper wrapper, boolean printProgress) {
 		this(window, renderer, inputDecorator, wrapper);
 		this.printProgress = printProgress;
 	}
@@ -61,7 +61,7 @@ public class GameEnabler {
 		Thread renderingThread = new Thread(window);
 		Thread gameLogicThread = new Thread(timer);
 		print("Initializing bundle parts");
-		wrapper.getBundle().initBundleParts();
+		wrapper.getContext().initBundleParts();
 		print("Starting update thread.");
 		gameLogicThread.start();
 		print("Starting rendering thread.");

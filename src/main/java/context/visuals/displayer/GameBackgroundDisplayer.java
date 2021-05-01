@@ -3,7 +3,7 @@ package context.visuals.displayer;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.templates.GameBackground;
 
-public class GameBackgroundDisplayer extends AbstractDisplayer<GameBackground> {
+public class GameBackgroundDisplayer extends Displayer<GameBackground> {
 
 	public GameBackgroundDisplayer(GameRenderer renderer) {
 		super(renderer);

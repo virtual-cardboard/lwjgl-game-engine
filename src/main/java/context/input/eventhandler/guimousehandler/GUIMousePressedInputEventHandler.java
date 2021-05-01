@@ -2,16 +2,16 @@ package context.input.eventhandler.guimousehandler;
 
 import java.util.List;
 
-import context.data.AbstractGameData;
+import context.data.GameData;
 import context.data.gui.GUI;
 import context.input.event.MousePressedInputEvent;
 import context.input.eventhandler.MousePressedInputEventHandler;
 
 public class GUIMousePressedInputEventHandler implements MousePressedInputEventHandler {
 
-	private AbstractGameData data;
+	private GameData data;
 
-	public GUIMousePressedInputEventHandler(AbstractGameData data) {
+	public GUIMousePressedInputEventHandler(GameData data) {
 		super();
 		this.data = data;
 	}

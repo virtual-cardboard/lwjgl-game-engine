@@ -8,9 +8,9 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
-import common.coordinates.PixelCoordinates;
-import context.GameBundle;
-import context.GameBundleWrapper;
+import common.coordinates.IntCoordinates;
+import context.GameContext;
+import context.GameContextWrapper;
 
 /**
  * 
@@ -19,14 +19,14 @@ import context.GameBundleWrapper;
  */
 public class GameWindow implements Runnable {
 
-	private GameBundleWrapper wrapper;
+	private GameContextWrapper wrapper;
 
 	private long windowId;
 	private String windowTitle;
 
 	private final int DEFAULT_WINDOW_WIDTH = 1280;
 	private final int DEFAULT_WINDOW_HEIGHT = 720;
-	private PixelCoordinates windowDimensions = new PixelCoordinates(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+	private IntCoordinates windowDimensions = new IntCoordinates(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 
 	private final boolean FULLSCREEN = false;
 	private final boolean RESIZABLE = true;
@@ -39,7 +39,7 @@ public class GameWindow implements Runnable {
 	public void run() {
 		createDisplay();
 		while (!GLFW.glfwWindowShouldClose(windowId)) {
-			GameBundle bundle = wrapper.getBundle();
+			GameContext bundle = wrapper.getContext();
 			GLFW.glfwPollEvents();
 			bundle.getInput().handleAll();
 			bundle.getVisuals().render();
@@ -64,15 +64,15 @@ public class GameWindow implements Runnable {
 		GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor()); // Get the resolution of the primary monitor
 		if (FULLSCREEN)
 			windowDimensions.set(vidmode.width(), vidmode.height());
-		windowId = GLFW.glfwCreateWindow((int) windowDimensions.x, (int) windowDimensions.y, windowTitle, MemoryUtil.NULL, MemoryUtil.NULL); // Create the window
+		windowId = GLFW.glfwCreateWindow(windowDimensions.x, windowDimensions.y, windowTitle, MemoryUtil.NULL, MemoryUtil.NULL); // Create the window
 		if (windowId == MemoryUtil.NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
-		GLFW.glfwSetWindowPos(windowId, (int) (vidmode.width() - windowDimensions.x) / 2, (int) (vidmode.height() - windowDimensions.y) / 2); // Center our window
+		GLFW.glfwSetWindowPos(windowId, (vidmode.width() - windowDimensions.x) / 2, (vidmode.height() - windowDimensions.y) / 2); // Center our window
 		GLFW.glfwMakeContextCurrent(windowId); // Make the OpenGL context current
 		GL.createCapabilities();
 		GLFW.glfwSwapInterval(1); // Enable v-sync
 		GLFW.glfwShowWindow(windowId); // Make the window visible
-		GL11.glViewport(0, 0, (int) windowDimensions.x, (int) windowDimensions.y);
+		GL11.glViewport(0, 0, windowDimensions.x, windowDimensions.y);
 	}
 
 	public void cleanUp() {
@@ -86,15 +86,15 @@ public class GameWindow implements Runnable {
 		GLFW.glfwSetErrorCallback(null).free(); // Release the GLFWerrorfun
 	}
 
-	public void setBundleWrapper(GameBundleWrapper wrapper) {
+	public void setBundleWrapper(GameContextWrapper wrapper) {
 		this.wrapper = wrapper;
 	}
 
-	public PixelCoordinates getWindowDimensions() {
+	public IntCoordinates getWindowDimensions() {
 		return windowDimensions;
 	}
 
-	public void setWindowDimensions(PixelCoordinates windowDimensions) {
+	public void setWindowDimensions(IntCoordinates windowDimensions) {
 		this.windowDimensions = windowDimensions;
 	}
 
