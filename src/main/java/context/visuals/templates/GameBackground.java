@@ -40,8 +40,8 @@ public class GameBackground implements Displayable {
 	}
 
 	@Override
-	public String getDisplayerName() {
-		return getDefaultDisplayerName();
+	public String getDisplayerClass() {
+		return getDefaultDisplayerClass();
 	}
 
 }

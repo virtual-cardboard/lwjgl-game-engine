@@ -343,7 +343,7 @@ public abstract class GUI implements Displayable, Clickable, Hoverable {
 	}
 
 	@Override
-	public String getDisplayerName() {
+	public String getDisplayerClass() {
 		return GUIDisplayer.class.getName();
 	}
 
@@ -360,13 +360,11 @@ public abstract class GUI implements Displayable, Clickable, Hoverable {
 		y = coordinates.y;
 	}
 
-	@Override
 	public void setDimensions(PixelCoordinates dimensions) {
 		width = dimensions.x;
 		height = dimensions.y;
 	}
 
-	@Override
 	public Iterator<GUI> iterator() {
 		return new GUIPrefixIterator(this);
 	}

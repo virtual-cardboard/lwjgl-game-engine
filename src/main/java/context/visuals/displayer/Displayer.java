@@ -3,17 +3,11 @@ package context.visuals.displayer;
 import context.visuals.renderer.GameRenderer;
 
 /**
- * An abstract displayer that displays a given {@link Displayable}. Each
- * {@link Displayer} will have a corresponding {@link Displayable}.
+ * A displayer that displays a given {@link Displayable}. Each
+ * {@link Displayable} should have a corresponding {@link Displayer}.
  * <p>
- * Example:
  * 
- * <pre>
- * public class Rectangle implements Displayable
- * public class RectangleDisplayer extends Displayer
- * </pre>
- * 
- * @author Jay
+ * @author Jay, Lunkle
  *
  * @param <D> generic {@link Displayable}
  */

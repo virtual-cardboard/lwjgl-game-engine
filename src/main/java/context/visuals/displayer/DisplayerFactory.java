@@ -1,7 +1,5 @@
 package context.visuals.displayer;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,8 +31,7 @@ import context.visuals.renderer.GameRenderer;
 public class DisplayerFactory {
 
 	private GameRenderer renderer;
-	@SuppressWarnings("rawtypes")
-	Map<Class<? extends Displayable>, Displayer> displayableToDisplayer = new HashMap<>();
+	Map<Class<? extends Displayable>, Displayer<? extends Displayable>> displayableToDisplayer = new HashMap<>();
 
 	/**
 	 * Takes in a renderer and saves it.
@@ -53,27 +50,11 @@ public class DisplayerFactory {
 	 * @throws ClassNotFoundException corresponding displayer not found
 	 */
 	@SuppressWarnings("rawtypes")
-	public Displayer getDisplayer(Displayable displayable) throws ClassNotFoundException {
-		// Checking first to see if the corresponding displayer already exists in the
-		// hashmap
+	public Displayer getDisplayer(Displayable displayable) {
 		Displayer displayer = displayableToDisplayer.get(displayable.getClass());
 		if (displayer != null) {
-			return displayer;
+			throw new RuntimeException("Displayer not found for displayable " + displayable.getClass().getName());
 		}
-
-		String className = displayable.getDisplayerName();
-		try {
-			// Instantiate the displayer using the dark magic
-			Class<? extends Displayer> displayerClass = Class.forName(className).asSubclass(Displayer.class);
-			Constructor<? extends Displayer> displayerConstructor = displayerClass.getConstructor(GameRenderer.class);
-			displayer = displayerConstructor.newInstance(renderer);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-		}
-		// Saving it into the hashmap for future use
-		displayableToDisplayer.put(displayable.getClass(), displayer);
-
 		// Returning the displayer
 		return displayer;
 	}
