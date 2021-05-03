@@ -23,7 +23,7 @@ import context.input.eventhandler.guimousehandler.GUIMouseReleasedInputEventHand
  * @author Jay
  *
  */
-public abstract class AbstractGameInput extends ContextPart {
+public abstract class GameInput extends ContextPart {
 
 	private GameInputBuffer inputBuffer;
 	private GameInputEventHandlerFactory inputEventHandlerFactory;

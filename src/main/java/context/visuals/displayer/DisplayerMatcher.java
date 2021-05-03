@@ -8,7 +8,7 @@ import context.visuals.renderer.GameRenderer;
 /**
  * A factory that finds the corresponding displayer for a given displayable.
  * <p>
- * If you are to add functionality to the {@link DisplayerFactory}, follow the
+ * If you are to add functionality to the {@link DisplayerMatcher}, follow the
  * steps outlined below:
  * <p>
  * 1. Make a class implementing the {@link Displayable} interface under the
@@ -28,7 +28,7 @@ import context.visuals.renderer.GameRenderer;
  * @author Jay
  *
  */
-public class DisplayerFactory {
+public class DisplayerMatcher {
 
 	private GameRenderer renderer;
 	Map<Class<? extends Displayable>, Displayer<? extends Displayable>> displayableToDisplayer = new HashMap<>();
@@ -38,7 +38,7 @@ public class DisplayerFactory {
 	 * 
 	 * @param renderer the renderer
 	 */
-	public DisplayerFactory(GameRenderer renderer) {
+	public DisplayerMatcher(GameRenderer renderer) {
 		this.renderer = renderer;
 	}
 

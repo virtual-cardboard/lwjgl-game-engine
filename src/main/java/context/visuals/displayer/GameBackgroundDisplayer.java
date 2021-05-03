@@ -11,6 +11,7 @@ public class GameBackgroundDisplayer extends Displayer<GameBackground> {
 
 	@Override
 	public void display(GameBackground displayable) {
+		renderer.clearScreen(displayable.getColour());
 		renderer.drawRectangle(0, 0, renderer.getWidth(), renderer.getHeight(), displayable.getR(), displayable.getG(), displayable.getB());
 	}
 

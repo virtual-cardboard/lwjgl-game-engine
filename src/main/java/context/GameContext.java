@@ -1,11 +1,9 @@
 package context;
 
-import java.util.ArrayList;
-
 import context.data.GameData;
-import context.input.AbstractGameInput;
-import context.logic.AbstractGameLogic;
-import context.visuals.AbstractGameVisuals;
+import context.input.GameInput;
+import context.logic.GameLogic;
+import context.visuals.GameVisuals;
 
 /**
  * A collection of the four bundle parts needed in a game:
@@ -21,25 +19,25 @@ import context.visuals.AbstractGameVisuals;
  * @author Jay
  *
  */
-public class GameContext {
+public final class GameContext {
 
-	protected GameContextWrapper wrapper;
+	GameContextWrapper wrapper;
 
-	protected GameData data;
-	protected AbstractGameInput input;
-	protected AbstractGameLogic logic;
-	protected AbstractGameVisuals visuals;
+	private final GameData data;
+	private final GameInput input;
+	private final GameLogic logic;
+	private final GameVisuals visuals;
 
 	/**
-	 * A constructor that takes in a game data, input, logic, and visuals. Then, the
-	 * constructor sets the bundles of each of its bundle parts to itself.
+	 * Takes in a data, input, logic, and visuals. Then sets the context references
+	 * of each of its parts to itself.
 	 * 
 	 * @param data    GameData
 	 * @param input   GameInput
 	 * @param logic   GameLogic
 	 * @param visuals GameVisuals
 	 */
-	public GameContext(GameData data, AbstractGameInput input, AbstractGameLogic logic, AbstractGameVisuals visuals) {
+	public GameContext(GameData data, GameInput input, GameLogic logic, GameVisuals visuals) {
 		this.data = data;
 		this.input = input;
 		this.logic = logic;
@@ -51,48 +49,23 @@ public class GameContext {
 		this.visuals.setBundle(this);
 	}
 
-	public ArrayList<ContextPart> getBundleParts() {
-		ArrayList<ContextPart> parts = new ArrayList<>();
-		parts.add(data);
-		parts.add(input);
-		parts.add(logic);
-		parts.add(visuals);
-		return parts;
-	}
-
 	public GameData getData() {
 		return data;
 	}
 
-	public void setData(GameData data) {
-		this.data = data;
-	}
-
-	public AbstractGameInput getInput() {
+	public GameInput getInput() {
 		return input;
 	}
 
-	public void setInput(AbstractGameInput input) {
-		this.input = input;
-	}
-
-	public AbstractGameLogic getLogic() {
+	public GameLogic getLogic() {
 		return logic;
 	}
 
-	public void setLogic(AbstractGameLogic logic) {
-		this.logic = logic;
-	}
-
-	public AbstractGameVisuals getVisuals() {
+	public GameVisuals getVisuals() {
 		return visuals;
 	}
 
-	public void setVisuals(AbstractGameVisuals visuals) {
-		this.visuals = visuals;
-	}
-
-	public void initBundleParts() {
+	public void initParts() {
 		data.init();
 		input.init();
 		logic.init();

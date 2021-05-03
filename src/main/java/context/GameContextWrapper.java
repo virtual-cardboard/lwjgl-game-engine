@@ -1,84 +1,90 @@
 package context;
 
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import context.input.GameInputBuffer;
 import context.logic.GameLogicTimer;
 import context.visuals.renderer.GameRenderer;
-import state.entity.User;
 
 /**
- * A container for a game bundle to make switching bundles easier.
+ * A container for a game context to make switching game contexts thread-safe.
  * 
- * Bundle wrappers make swapping bundles easier, because without a wrapper,
- * everything would have to have a reference to the old bundle, making it so
- * that if you wanted to swap the bundle, you'd have to individually make the
- * swap at every instance of its references. Aside from being cumbersome,
- * synchronization errors can occur because swapping is not instantaneous.
+ * Without a wrapper, swapping contexts requires updating every reference to the
+ * context. Aside from being cumbersome, synchronization errors can occur
+ * because swapping is not instantaneous. With the context wrapper, swapping
+ * contexts becomes thread-safe. Every reference to the context is replaced with
+ * a reference to the wrapper, so swapping contexts is instantaneous with one
+ * reference update.
  * 
- * Wrappers allow instantaneous swappping to be achieved because everyone has a
- * reference to the same bundle wrapper.
- * 
- * @author Jay
+ * @author Jay, Lunkle
  *
  */
 public class GameContextWrapper {
 
+	/**
+	 * Context that is being wrapped.
+	 */
 	private GameContext context;
-	private GameRenderer renderer;
-	private GameInputBuffer inputBuffer;
-	private GameLogicTimer logicTimer;
-	private User user;
 
 	/**
-	 * A constructor that takes in the initial context. Should not be null.
-	 * 
-	 * @param context not null
+	 * This read-write lock is not a lock on the context itself. The read and write
+	 * lock is on the accessibility of the context reference.
 	 */
-	public GameContextWrapper(GameContext context) {
-		this.context = context;
-		context.wrapper = this;
-		inputBuffer = new GameInputBuffer();
+	private final ReadWriteLock contextLock = new ReentrantReadWriteLock();
+
+	private final GameRenderer renderer;
+	private final GameInputBuffer inputBuffer;
+	private final GameLogicTimer logicTimer;
+
+	/**
+	 * A constructor that takes in the renderer, input buffer, and logic timer.
+	 * 
+	 * @param renderer
+	 * @param inputBuffer
+	 * @param logicTimer
+	 */
+	public GameContextWrapper(GameRenderer renderer, GameInputBuffer inputBuffer, GameLogicTimer logicTimer) {
+		this.renderer = renderer;
+		this.inputBuffer = inputBuffer;
+		this.logicTimer = logicTimer;
 	}
 
 	/**
-	 * Swaps current context for the provided context. Should not be null.
+	 * Swaps current context for the provided context.
 	 * 
-	 * @param context not null
+	 * @param context
 	 */
 	public void transition(GameContext context) {
-		this.context = context;
-		context.wrapper = this;
+		synchronized (contextLock.writeLock()) {
+			this.context = context;
+			context.wrapper = this;
+		}
 	}
 
+	/**
+	 * The read lock is on the context reference, not the context itself. The
+	 * context is still mutable and the caller is allowed to mutate the context. The
+	 * read lock is to prevent
+	 * 
+	 * @return game context
+	 */
 	public GameContext getContext() {
-		return context;
+		synchronized (contextLock.readLock()) {
+			return context;
+		}
 	}
 
 	public GameRenderer getRenderer() {
 		return renderer;
 	}
 
-	public void setRenderer(GameRenderer renderer) {
-		this.renderer = renderer;
-	}
-
 	public GameInputBuffer getInputBuffer() {
 		return inputBuffer;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public GameLogicTimer getLogicTimer() {
 		return logicTimer;
-	}
-
-	public void setLogicTimer(GameLogicTimer logicTimer) {
-		this.logicTimer = logicTimer;
 	}
 
 }

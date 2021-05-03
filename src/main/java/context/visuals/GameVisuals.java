@@ -4,7 +4,7 @@ import context.ContextPart;
 import context.data.GameData;
 import context.data.gui.GUI;
 import context.visuals.displayer.Displayable;
-import context.visuals.displayer.DisplayerFactory;
+import context.visuals.displayer.DisplayerMatcher;
 
 /**
  * A bundle part that displays visuals based on data from
@@ -13,12 +13,12 @@ import context.visuals.displayer.DisplayerFactory;
  * @author Jay
  *
  */
-public abstract class AbstractGameVisuals extends ContextPart {
+public abstract class GameVisuals extends ContextPart {
 
-	private DisplayerFactory displayerFactory;
+	private DisplayerMatcher displayerFactory;
 
 	public void init() {
-		this.displayerFactory = new DisplayerFactory(getBundle().getWrapper().getRenderer());
+		this.displayerFactory = new DisplayerMatcher(getBundle().getWrapper().getRenderer());
 	}
 
 	public void render() {

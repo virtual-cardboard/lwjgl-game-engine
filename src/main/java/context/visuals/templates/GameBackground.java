@@ -44,4 +44,8 @@ public class GameBackground implements Displayable {
 		return getDefaultDisplayerClass();
 	}
 
+	public Object getColour() {
+		return null;
+	}
+
 }

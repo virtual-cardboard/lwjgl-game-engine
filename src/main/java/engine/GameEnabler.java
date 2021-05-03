@@ -61,7 +61,7 @@ public class GameEnabler {
 		Thread renderingThread = new Thread(window);
 		Thread gameLogicThread = new Thread(timer);
 		print("Initializing bundle parts");
-		wrapper.getContext().initBundleParts();
+		wrapper.getContext().initParts();
 		print("Starting update thread.");
 		gameLogicThread.start();
 		print("Starting rendering thread.");

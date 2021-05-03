@@ -18,8 +18,6 @@ import state.entity.User;
  */
 public abstract class GameData extends ContextPart {
 
-	private User user = new User("Jay", 0);
-
 	/**
 	 * A list of displayables.
 	 */
