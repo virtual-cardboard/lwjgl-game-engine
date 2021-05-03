@@ -51,7 +51,8 @@ public class GameContextWrapper {
 	}
 
 	/**
-	 * Swaps current context for the provided context.
+	 * Swaps current context for the provided context. Puts a write lock on the
+	 * reference.
 	 * 
 	 * @param context
 	 */

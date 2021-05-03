@@ -6,14 +6,10 @@ import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 
 /**
- * A collection of the four bundle parts needed in a game:
- * <p>
- * - Data
- * <p>
- * - Input
- * <p>
- * - Logic
- * <p>
+ * A grouping of the four context parts needed in a game: <br>
+ * - Data <br>
+ * - Input <br>
+ * - Logic <br>
  * - Visuals
  * 
  * @author Jay

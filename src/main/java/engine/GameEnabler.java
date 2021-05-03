@@ -46,7 +46,7 @@ public class GameEnabler {
 
 	/**
 	 * Initializes everything required to start a game, and puts everything in
-	 * motion.
+	 * motion. Returns the wrapper class that contains everything.
 	 */
 	public void enable() {
 		print("Creating game logic timer.");

@@ -45,9 +45,7 @@ public class GameWindow implements Runnable {
 			bundle.getVisuals().render();
 			GLFW.glfwSwapBuffers(windowId);
 		}
-
 		cleanUp();
-
 	}
 
 	private void createDisplay() {
