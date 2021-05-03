@@ -8,3 +8,6 @@
 *.rar
 bin/*
 target/*
+/bin/
+*.classpath
+*.project
