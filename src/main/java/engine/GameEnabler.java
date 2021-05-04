@@ -1,8 +1,8 @@
 package engine;
 
 import context.GameContextWrapper;
-import context.input.GameInputBuffer;
-import context.input.inputdecorator.GameInputDecorator;
+import context.input.GameInputEventBuffer;
+import context.input.decorator.GameInputDecorator;
 import context.logic.GameLogicTimer;
 import context.visuals.renderer.GameRenderer;
 
@@ -47,7 +47,7 @@ public class GameEnabler {
 		GameWindow window = new GameWindow(windowTitle);
 
 		print("Creating game input buffer.");
-		GameInputBuffer inputBuffer = new GameInputBuffer();
+		GameInputEventBuffer inputBuffer = new GameInputEventBuffer();
 		print("Creating game renderer.");
 		GameRenderer renderer = new GameRenderer();
 		print("Creating game logic timer.");
@@ -66,7 +66,7 @@ public class GameEnabler {
 		Thread gameLogicThread = new Thread(logicTimer);
 
 		print("Initializing bundle parts");
-		wrapper.getContext().initParts();
+		wrapper.getContext().init();
 
 		print("Starting rendering thread.");
 		renderingThread.start();

@@ -5,7 +5,7 @@ import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import common.event.GameEventTimeComparator;
-import context.input.event.AbstractGameInputEvent;
+import context.input.event.GameInputEvent;
 
 /**
  * A queue that temporarily stores input events of the last frame from the
@@ -15,20 +15,20 @@ import context.input.event.AbstractGameInputEvent;
  * @author Jay
  *
  */
-public class GameInputBuffer {
+public class GameInputEventBuffer {
 
-	private Queue<AbstractGameInputEvent> clientInputEventQueue;
+	private Queue<GameInputEvent> clientInputEventQueue;
 	@SuppressWarnings("unused")
-	private TreeSet<AbstractGameInputEvent> oldClientInputEvents;
+	private TreeSet<GameInputEvent> oldClientInputEvents;
 
-	public GameInputBuffer() {
+	public GameInputEventBuffer() {
 		clientInputEventQueue = new LinkedBlockingQueue<>();
-		oldClientInputEvents = new TreeSet<AbstractGameInputEvent>(new GameEventTimeComparator());
+		oldClientInputEvents = new TreeSet<GameInputEvent>(new GameEventTimeComparator());
 	}
 
-	public AbstractGameInputEvent getNext() {
+	public GameInputEvent getNext() {
 		// Poll from the event queue
-		AbstractGameInputEvent first = clientInputEventQueue.poll();
+		GameInputEvent first = clientInputEventQueue.poll();
 		// When we eventually add multiplayer, we will need the old events queue to
 		// reconcile state
 //		if(first != null) {
@@ -37,7 +37,7 @@ public class GameInputBuffer {
 		return first;
 	}
 
-	public void add(AbstractGameInputEvent inputEvent) {
+	public void add(GameInputEvent inputEvent) {
 		clientInputEventQueue.add(inputEvent);
 	}
 

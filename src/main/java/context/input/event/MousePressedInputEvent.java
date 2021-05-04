@@ -1,15 +1,23 @@
 package context.input.event;
 
 import common.source.GameSource;
+import state.user.LocalUser;
 
-public class MousePressedInputEvent extends AbstractGameInputEvent {
+public final class MousePressedInputEvent extends GameInputEvent {
 
-	private int mouseButton;
-	private int mouseX;
-	private int mouseY;
+	private final int mouseButton;
+	private final int mouseX;
+	private final int mouseY;
 
 	public MousePressedInputEvent(long time, GameSource source, int mouseButton, int mouseX, int mouseY) {
 		super(time, source);
+		this.mouseButton = mouseButton;
+		this.mouseX = mouseX;
+		this.mouseY = mouseY;
+	}
+
+	public MousePressedInputEvent(int mouseButton, int mouseX, int mouseY) {
+		super(LocalUser.LOCAL_USER);
 		this.mouseButton = mouseButton;
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;

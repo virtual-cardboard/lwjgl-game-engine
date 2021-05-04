@@ -3,13 +3,19 @@ package context.input.event;
 import java.awt.event.KeyEvent;
 
 import common.source.GameSource;
+import state.user.LocalUser;
 
-public class KeyPressedInputEvent extends AbstractGameInputEvent {
+public final class KeyPressedInputEvent extends GameInputEvent {
 
-	private int keyCode;
+	private final int keyCode;
 
 	public KeyPressedInputEvent(long time, GameSource source, int keyCode) {
 		super(time, source);
+		this.keyCode = keyCode;
+	}
+
+	public KeyPressedInputEvent(int keyCode) {
+		super(LocalUser.LOCAL_USER);
 		this.keyCode = keyCode;
 	}
 

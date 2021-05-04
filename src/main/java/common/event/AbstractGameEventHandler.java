@@ -1,6 +1,6 @@
 package common.event;
 
-public interface AbstractGameEventHandler<T extends AbstractGameEvent> {
+public interface AbstractGameEventHandler<T extends GameEvent> {
 
 	/**
 	 * Handles a game event. Returns true if it consumes the event, false if it

@@ -8,7 +8,7 @@ public abstract class ContextPart {
 		return context;
 	}
 
-	public void setBundle(GameContext bundle) {
+	public void setContext(GameContext bundle) {
 		this.context = bundle;
 	}
 

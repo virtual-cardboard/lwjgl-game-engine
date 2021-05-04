@@ -1,13 +1,19 @@
 package context.input.event;
 
 import common.source.GameSource;
+import state.user.LocalUser;
 
-public class MouseScrolledInputEvent extends AbstractGameInputEvent {
+public final class MouseScrolledInputEvent extends GameInputEvent {
 
-	private int amount;
+	private final int amount;
 
 	public MouseScrolledInputEvent(long time, GameSource source, int amount) {
 		super(time, source);
+		this.amount = amount;
+	}
+
+	public MouseScrolledInputEvent(int amount) {
+		super(LocalUser.LOCAL_USER);
 		this.amount = amount;
 	}
 

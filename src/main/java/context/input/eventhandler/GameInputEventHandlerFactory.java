@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import context.input.event.AbstractGameInputEvent;
+import context.input.event.GameInputEvent;
 import context.input.event.KeyPressedInputEvent;
 import context.input.event.KeyReleasedInputEvent;
 import context.input.event.MouseMovedInputEvent;
@@ -15,7 +15,7 @@ import context.input.event.MouseScrolledInputEvent;
 public class GameInputEventHandlerFactory {
 
 	@SuppressWarnings("rawtypes")
-	private Map<Class<? extends AbstractGameInputEvent>, ArrayList<? extends AbstractGameInputEventHandler>> eventClassToHandlers;
+	private Map<Class<? extends GameInputEvent>, ArrayList<? extends AbstractGameInputEventHandler>> eventClassToHandlers;
 
 	public GameInputEventHandlerFactory(ArrayList<KeyPressedInputEventHandler> keyPressedInputHandlers,
 			ArrayList<KeyReleasedInputEventHandler> keyReleasedInputHandlers,
@@ -34,7 +34,7 @@ public class GameInputEventHandlerFactory {
 
 	@SuppressWarnings("rawtypes")
 	public ArrayList<? extends AbstractGameInputEventHandler> getHandlers(
-			Class<? extends AbstractGameInputEvent> eventClass) {
+			Class<? extends GameInputEvent> eventClass) {
 		return eventClassToHandlers.get(eventClass);
 	}
 

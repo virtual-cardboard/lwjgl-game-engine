@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import common.coordinates.IntCoordinates;
 import context.ContextPart;
-import context.input.event.AbstractGameInputEvent;
+import context.input.event.GameInputEvent;
 import context.input.eventhandler.AbstractGameInputEventHandler;
 import context.input.eventhandler.GameInputEventHandlerFactory;
 import context.input.eventhandler.KeyPressedInputEventHandler;
@@ -16,6 +16,7 @@ import context.input.eventhandler.MouseScrolledInputEventHandler;
 import context.input.eventhandler.guimousehandler.GUIMouseMovedInputEventHandler;
 import context.input.eventhandler.guimousehandler.GUIMousePressedInputEventHandler;
 import context.input.eventhandler.guimousehandler.GUIMouseReleasedInputEventHandler;
+import context.input.mouse.GameMouse;
 
 /**
  * A bundle part that handles user input.
@@ -25,8 +26,9 @@ import context.input.eventhandler.guimousehandler.GUIMouseReleasedInputEventHand
  */
 public abstract class GameInput extends ContextPart {
 
-	private GameInputBuffer inputBuffer;
+	private GameInputEventBuffer inputBuffer;
 	private GameInputEventHandlerFactory inputEventHandlerFactory;
+	private GameMouse mouse;
 
 	public void handleAll() {
 		while (!inputBuffer.isEmpty()) {
@@ -35,7 +37,7 @@ public abstract class GameInput extends ContextPart {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void handleEvent(AbstractGameInputEvent inputEvent) {
+	private void handleEvent(GameInputEvent inputEvent) {
 		ArrayList<? extends AbstractGameInputEventHandler> handlers = inputEventHandlerFactory.getHandlers(inputEvent.getClass());
 		for (AbstractGameInputEventHandler handler : handlers) {
 			boolean handled = handler.handle(inputEvent);
@@ -82,7 +84,7 @@ public abstract class GameInput extends ContextPart {
 		}
 		mouseMovedInputEventHandlers.add(new GUIMouseMovedInputEventHandler(getContext().getData()));
 		mouseMovedInputEventHandlers.add((event) -> {
-			getContext().getData().setCursorCoordinates(new IntCoordinates(event.getMouseX(), event.getMouseY()));
+			mouse.setCursorCoordinates(new IntCoordinates(event.getMouseX(), event.getMouseY()));
 			return false;
 		});
 		return mouseMovedInputEventHandlers;

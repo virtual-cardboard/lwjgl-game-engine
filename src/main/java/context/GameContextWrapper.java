@@ -3,7 +3,7 @@ package context;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import context.input.GameInputBuffer;
+import context.input.GameInputEventBuffer;
 import context.logic.GameLogicTimer;
 import context.visuals.renderer.GameRenderer;
 
@@ -34,7 +34,7 @@ public class GameContextWrapper {
 	private final ReadWriteLock contextLock = new ReentrantReadWriteLock();
 
 	private final GameRenderer renderer;
-	private final GameInputBuffer inputBuffer;
+	private final GameInputEventBuffer inputBuffer;
 	private final GameLogicTimer logicTimer;
 
 	/**
@@ -44,7 +44,7 @@ public class GameContextWrapper {
 	 * @param inputBuffer
 	 * @param logicTimer
 	 */
-	public GameContextWrapper(GameRenderer renderer, GameInputBuffer inputBuffer, GameLogicTimer logicTimer) {
+	public GameContextWrapper(GameRenderer renderer, GameInputEventBuffer inputBuffer, GameLogicTimer logicTimer) {
 		this.renderer = renderer;
 		this.inputBuffer = inputBuffer;
 		this.logicTimer = logicTimer;
@@ -81,7 +81,7 @@ public class GameContextWrapper {
 		return renderer;
 	}
 
-	public GameInputBuffer getInputBuffer() {
+	public GameInputEventBuffer getInputBuffer() {
 		return inputBuffer;
 	}
 

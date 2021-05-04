@@ -2,14 +2,21 @@ package context.input.event;
 
 import common.coordinates.VectorCoordinates;
 import common.source.GameSource;
+import state.user.LocalUser;
 
-public class MouseMovedInputEvent extends AbstractGameInputEvent {
+public final class MouseMovedInputEvent extends GameInputEvent {
 
-	private int mouseX;
-	private int mouseY;
+	private final int mouseX;
+	private final int mouseY;
 
 	public MouseMovedInputEvent(long time, GameSource source, int mouseX, int mouseY) {
 		super(time, source);
+		this.mouseX = mouseX;
+		this.mouseY = mouseY;
+	}
+
+	public MouseMovedInputEvent(int mouseX, int mouseY) {
+		super(LocalUser.LOCAL_USER);
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
 	}

@@ -1,5 +1,8 @@
 package context;
 
+import java.util.PriorityQueue;
+
+import common.event.GameEvent;
 import context.data.GameData;
 import context.input.GameInput;
 import context.logic.GameLogic;
@@ -24,6 +27,8 @@ public final class GameContext {
 	private final GameLogic logic;
 	private final GameVisuals visuals;
 
+	private PriorityQueue<GameEvent> eventQueue = new PriorityQueue<>();
+
 	/**
 	 * Takes in a data, input, logic, and visuals. Then sets the context references
 	 * of each of its parts to itself.
@@ -39,10 +44,10 @@ public final class GameContext {
 		this.logic = logic;
 		this.visuals = visuals;
 
-		this.data.setBundle(this);
-		this.input.setBundle(this);
-		this.logic.setBundle(this);
-		this.visuals.setBundle(this);
+		this.data.setContext(this);
+		this.input.setContext(this);
+		this.logic.setContext(this);
+		this.visuals.setContext(this);
 	}
 
 	public GameData getData() {
@@ -61,7 +66,7 @@ public final class GameContext {
 		return visuals;
 	}
 
-	public void initParts() {
+	public void init() {
 		data.init();
 		input.init();
 		logic.init();
