@@ -48,6 +48,7 @@ public class GameContextWrapper {
 		this.renderer = renderer;
 		this.inputBuffer = inputBuffer;
 		this.logicTimer = logicTimer;
+		logicTimer.setContextWrapper(this);
 	}
 
 	/**

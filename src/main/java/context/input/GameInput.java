@@ -2,7 +2,7 @@ package context.input;
 
 import java.util.ArrayList;
 
-import common.coordinates.PixelCoordinates;
+import common.coordinates.IntCoordinates;
 import context.ContextPart;
 import context.input.event.AbstractGameInputEvent;
 import context.input.eventhandler.AbstractGameInputEventHandler;
@@ -80,9 +80,9 @@ public abstract class GameInput extends ContextPart {
 		if (setMouseMovedInputHandler != null) {
 			mouseMovedInputEventHandlers.addAll(setMouseMovedInputHandler);
 		}
-		mouseMovedInputEventHandlers.add(new GUIMouseMovedInputEventHandler(getBundle().getData()));
+		mouseMovedInputEventHandlers.add(new GUIMouseMovedInputEventHandler(getContext().getData()));
 		mouseMovedInputEventHandlers.add((event) -> {
-			getBundle().getData().setCursorCoordinates(new PixelCoordinates(event.getMouseX(), event.getMouseY()));
+			getContext().getData().setCursorCoordinates(new IntCoordinates(event.getMouseX(), event.getMouseY()));
 			return false;
 		});
 		return mouseMovedInputEventHandlers;
@@ -90,7 +90,7 @@ public abstract class GameInput extends ContextPart {
 
 	protected final ArrayList<MousePressedInputEventHandler> setAllMousePressedInputHandler() {
 		ArrayList<MousePressedInputEventHandler> mousePressedInputEventHandlers = new ArrayList<>();
-		mousePressedInputEventHandlers.add(new GUIMousePressedInputEventHandler(getBundle().getData()));
+		mousePressedInputEventHandlers.add(new GUIMousePressedInputEventHandler(getContext().getData()));
 		ArrayList<MousePressedInputEventHandler> setMousePressedInputHandler = setMousePressedInputHandlers();
 		if (setMousePressedInputHandler != null) {
 			mousePressedInputEventHandlers.addAll(setMousePressedInputHandler);
@@ -100,7 +100,7 @@ public abstract class GameInput extends ContextPart {
 
 	protected final ArrayList<MouseReleasedInputEventHandler> setAllMouseReleasedInputHandler() {
 		ArrayList<MouseReleasedInputEventHandler> mouseReleasedInputEventHandlers = new ArrayList<>();
-		mouseReleasedInputEventHandlers.add(new GUIMouseReleasedInputEventHandler(getBundle().getData()));
+		mouseReleasedInputEventHandlers.add(new GUIMouseReleasedInputEventHandler(getContext().getData()));
 		ArrayList<MouseReleasedInputEventHandler> setMouseReleasedInputHandler = setMouseReleasedInputHandlers();
 		if (setMouseReleasedInputHandler != null) {
 			mouseReleasedInputEventHandlers.addAll(setMouseReleasedInputHandler);
@@ -118,7 +118,7 @@ public abstract class GameInput extends ContextPart {
 	}
 
 	public void init() {
-		inputBuffer = getBundle().getWrapper().getInputBuffer();
+		inputBuffer = getContext().getWrapper().getInputBuffer();
 		ArrayList<KeyPressedInputEventHandler> kp = setAllKeyPressedInputHandler();
 		ArrayList<KeyReleasedInputEventHandler> kr = setAllKeyReleasedInputHandler();
 		ArrayList<MouseMovedInputEventHandler> mm = setAllMouseMovedInputHandler();

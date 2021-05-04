@@ -4,9 +4,10 @@ import common.source.GameSource;
 
 public abstract class AbstractGameEvent {
 
-	private long time;
+	private final long time;
+	private final GameSource source;
+
 	private int priority = 0;
-	private GameSource source;
 
 	public AbstractGameEvent(long time, GameSource source) {
 		this.time = time;

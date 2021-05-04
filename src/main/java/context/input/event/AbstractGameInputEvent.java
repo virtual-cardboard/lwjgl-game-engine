@@ -9,6 +9,4 @@ public abstract class AbstractGameInputEvent extends AbstractGameEvent {
 		super(time, source);
 	}
 
-	public abstract String getName();
-
 }

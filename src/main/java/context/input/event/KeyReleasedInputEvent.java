@@ -4,7 +4,7 @@ import common.source.GameSource;
 
 public class KeyReleasedInputEvent extends AbstractGameInputEvent {
 
-	private int keyCode;
+	private final int keyCode;
 
 	public KeyReleasedInputEvent(long time, GameSource source, int keyCode) {
 		super(time, source);
@@ -13,11 +13,6 @@ public class KeyReleasedInputEvent extends AbstractGameInputEvent {
 
 	public int getKeyCode() {
 		return keyCode;
-	}
-
-	@Override
-	public String getName() {
-		return this.getName();
 	}
 
 }

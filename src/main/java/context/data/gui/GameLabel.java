@@ -1,6 +1,6 @@
 package context.data.gui;
 
-public class GameLabel extends GUI {
+public class GameLabel extends Gui {
 
 	public GameLabel(String text, int x, int y, int w, int h) {
 		super(text, x, y, w, h);

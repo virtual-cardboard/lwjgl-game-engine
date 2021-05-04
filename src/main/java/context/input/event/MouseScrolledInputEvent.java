@@ -15,9 +15,4 @@ public class MouseScrolledInputEvent extends AbstractGameInputEvent {
 		return amount;
 	}
 
-	@Override
-	public String getName() {
-		return this.getName();
-	}
-
 }

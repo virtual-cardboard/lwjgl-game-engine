@@ -5,13 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import common.DoNothingRunnable;
-import common.coordinates.PixelCoordinates;
+import common.coordinates.FloatCoordinates;
 import context.logic.Clickable;
 import context.logic.Hoverable;
 import context.visuals.displayer.Displayable;
-import context.visuals.displayer.GUIDisplayer;
 
-public abstract class GUI implements Displayable, Clickable, Hoverable {
+public abstract class Gui implements Displayable, Clickable, Hoverable {
 
 	private String text = "";
 	private float x;
@@ -38,12 +37,12 @@ public abstract class GUI implements Displayable, Clickable, Hoverable {
 	private Runnable onHover;
 	private Runnable onDehover;
 
-	private GUI parentGUI;
-	private List<GUI> children;
+	private Gui parentGUI;
+	private List<Gui> children;
 
 	private boolean enabled;
 
-	public GUI(String text, int X, int Y, int width, int height) {
+	public Gui(String text, int X, int Y, int width, int height) {
 		super();
 		this.text = text;
 		this.x = X;
@@ -190,7 +189,7 @@ public abstract class GUI implements Displayable, Clickable, Hoverable {
 
 	public void disable() {
 		this.enabled = false;
-		for (GUI child : children) {
+		for (Gui child : children) {
 			child.disable();
 		}
 	}
@@ -211,28 +210,28 @@ public abstract class GUI implements Displayable, Clickable, Hoverable {
 		this.pressed = pressed;
 	}
 
-	public GUI getParent() {
+	public Gui getParent() {
 		return parentGUI;
 	}
 
-	public void setParent(GUI parent) {
+	public void setParent(Gui parent) {
 		this.parentGUI = parent;
 	}
 
-	public List<GUI> getChildren() {
+	public List<Gui> getChildren() {
 		return new ArrayList<>(children);
 	}
 
-	protected List<GUI> getChildrenArray() {
+	protected List<Gui> getChildrenArray() {
 		return children;
 	}
 
-	public void addChild(GUI child) {
+	public void addChild(Gui child) {
 		children.add(child);
 		child.setParent(this);
 	}
 
-	public void removeChild(GUI child) {
+	public void removeChild(Gui child) {
 		children.remove(child);
 	}
 
@@ -262,7 +261,7 @@ public abstract class GUI implements Displayable, Clickable, Hoverable {
 
 	public void depressAll() {
 		pressed = false;
-		for (GUI gui : children) {
+		for (Gui gui : children) {
 			gui.depressAll();
 		}
 	}
@@ -278,7 +277,7 @@ public abstract class GUI implements Displayable, Clickable, Hoverable {
 
 	public void releaseAll() {
 		onRelease();
-		for (GUI gui : children) {
+		for (Gui gui : children) {
 			gui.releaseAll();
 		}
 	}
@@ -328,7 +327,7 @@ public abstract class GUI implements Displayable, Clickable, Hoverable {
 
 	public void dehoverAll() {
 		onDehover();
-		for (GUI gui : children) {
+		for (Gui gui : children) {
 			gui.dehoverAll();
 		}
 	}
@@ -342,30 +341,25 @@ public abstract class GUI implements Displayable, Clickable, Hoverable {
 		this.onDehover = onDehover;
 	}
 
-	@Override
-	public String getDisplayerClass() {
-		return GUIDisplayer.class.getName();
+	public FloatCoordinates getPosition() {
+		return new FloatCoordinates(x, y);
 	}
 
-	public PixelCoordinates getPosition() {
-		return new PixelCoordinates(x, y);
+	public FloatCoordinates getDimensions() {
+		return new FloatCoordinates(width, height);
 	}
 
-	public PixelCoordinates getDimensions() {
-		return new PixelCoordinates(width, height);
-	}
-
-	public void setPosition(PixelCoordinates coordinates) {
+	public void setPosition(FloatCoordinates coordinates) {
 		x = coordinates.x;
 		y = coordinates.y;
 	}
 
-	public void setDimensions(PixelCoordinates dimensions) {
+	public void setDimensions(FloatCoordinates dimensions) {
 		width = dimensions.x;
 		height = dimensions.y;
 	}
 
-	public Iterator<GUI> iterator() {
+	public Iterator<Gui> iterator() {
 		return new GUIPrefixIterator(this);
 	}
 

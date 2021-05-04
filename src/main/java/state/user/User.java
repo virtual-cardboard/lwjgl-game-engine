@@ -1,10 +1,11 @@
-package state.entity;
+package state.user;
 
 import common.source.GameSource;
+import state.entity.AbstractEntity;
 
 public class User extends AbstractEntity implements GameSource {
 
-	String username;
+	private String username;
 
 	/**
 	 * A user of the game with a username and id.
@@ -12,7 +13,7 @@ public class User extends AbstractEntity implements GameSource {
 	 * @param username the username
 	 * @param id       the id
 	 */
-	public User(String username, int id) {
+	public User(int id, String username) {
 		super(id);
 		this.username = username;
 	}

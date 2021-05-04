@@ -8,9 +8,4 @@ public class FrameEvent extends AbstractGameInputEvent {
 		super(time, source);
 	}
 
-	@Override
-	public String getName() {
-		return null;
-	}
-
 }

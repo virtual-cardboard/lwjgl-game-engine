@@ -26,9 +26,4 @@ public class MouseMovedInputEvent extends AbstractGameInputEvent {
 		return new VectorCoordinates(mouseX, mouseY);
 	}
 
-	@Override
-	public String getName() {
-		return this.getName();
-	}
-
 }

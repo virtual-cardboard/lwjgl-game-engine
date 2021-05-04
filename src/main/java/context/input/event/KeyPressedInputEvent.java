@@ -30,9 +30,4 @@ public class KeyPressedInputEvent extends AbstractGameInputEvent {
 		return keyCode;
 	}
 
-	@Override
-	public String getName() {
-		return this.getName();
-	}
-
 }

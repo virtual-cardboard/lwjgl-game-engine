@@ -3,12 +3,12 @@ package context.data.gui;
 import java.util.Iterator;
 import java.util.Stack;
 
-public class GUIPrefixIterator implements Iterator<GUI> {
+public class GUIPrefixIterator implements Iterator<Gui> {
 
-	private Stack<GUI> guis = new Stack<>();
+	private Stack<Gui> guis = new Stack<>();
 	private Stack<Integer> counters = new Stack<>();
 
-	public GUIPrefixIterator(GUI gui) {
+	public GUIPrefixIterator(Gui gui) {
 		guis.add(gui);
 		counters.add(-1);
 	}
@@ -22,10 +22,10 @@ public class GUIPrefixIterator implements Iterator<GUI> {
 	 * Returns the current data and updates the pointer
 	 */
 	@Override
-	public GUI next() {
-		GUI gui = guis.peek();
+	public Gui next() {
+		Gui gui = guis.peek();
 		Integer counter = counters.peek();
-		GUI returnGui = counter == -1 ? gui : gui.getChildrenArray().get(counter);
+		Gui returnGui = counter == -1 ? gui : gui.getChildrenArray().get(counter);
 		if (counter + 1 == gui.getNumChildren()) {
 			guis.pop();
 			counters.pop();

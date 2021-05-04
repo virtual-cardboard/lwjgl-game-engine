@@ -27,9 +27,4 @@ public class MouseReleasedInputEvent extends AbstractGameInputEvent {
 		return mouseY;
 	}
 
-	@Override
-	public String getName() {
-		return this.getName();
-	}
-
 }

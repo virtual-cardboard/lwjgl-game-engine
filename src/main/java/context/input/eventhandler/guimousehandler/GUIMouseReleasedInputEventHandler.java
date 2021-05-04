@@ -3,7 +3,7 @@ package context.input.eventhandler.guimousehandler;
 import java.util.List;
 
 import context.data.GameData;
-import context.data.gui.GUI;
+import context.data.gui.Gui;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.eventhandler.MouseReleasedInputEventHandler;
 
@@ -23,8 +23,8 @@ public class GUIMouseReleasedInputEventHandler implements MouseReleasedInputEven
 		return consumed;
 	}
 
-	boolean handleHelper(MouseReleasedInputEvent event, GUI gui) {
-		List<GUI> children = gui.getChildren();
+	boolean handleHelper(MouseReleasedInputEvent event, Gui gui) {
+		List<Gui> children = gui.getChildren();
 		for (int i = gui.getNumChildren() - 1; i >= 0; i--) {
 			if (handleHelper(event, children.get(i))) {
 				return true;

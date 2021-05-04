@@ -1,6 +1,7 @@
 package engine;
 
 import context.GameContextWrapper;
+import context.input.GameInputBuffer;
 import context.input.inputdecorator.GameInputDecorator;
 import context.logic.GameLogicTimer;
 import context.visuals.renderer.GameRenderer;
@@ -16,12 +17,8 @@ import context.visuals.renderer.GameRenderer;
  */
 public class GameEnabler {
 
-	private GameWindow window;
-	private GameRenderer renderer;
-	private GameInputDecorator inputDecorator;
-	private GameContextWrapper wrapper;
-
-	private boolean printProgress = false;
+	private String windowTitle;
+	private boolean printProgress = true;
 
 	/**
 	 * The constructor takes in and saves a window, a renderer, an input decorator,
@@ -32,40 +29,49 @@ public class GameEnabler {
 	 * @param inputDecorator
 	 * @param wrapper
 	 */
-	public GameEnabler(GameWindow window, GameRenderer renderer, GameInputDecorator inputDecorator, GameContextWrapper wrapper) {
-		this.window = window;
-		this.renderer = renderer;
-		this.inputDecorator = inputDecorator;
-		this.wrapper = wrapper;
+	public GameEnabler(String windowTitle) {
+		this.windowTitle = windowTitle;
 	}
 
-	public GameEnabler(GameWindow window, GameRenderer renderer, GameInputDecorator inputDecorator, GameContextWrapper wrapper, boolean printProgress) {
-		this(window, renderer, inputDecorator, wrapper);
+	public GameEnabler(String windowTitle, boolean printProgress) {
+		this(windowTitle);
 		this.printProgress = printProgress;
 	}
 
 	/**
 	 * Initializes everything required to start a game, and puts everything in
-	 * motion. Returns the wrapper class that contains everything.
+	 * motion.
 	 */
 	public void enable() {
+		print("Creating game window.");
+		GameWindow window = new GameWindow(windowTitle);
+
+		print("Creating game input buffer.");
+		GameInputBuffer inputBuffer = new GameInputBuffer();
+		print("Creating game renderer.");
+		GameRenderer renderer = new GameRenderer();
 		print("Creating game logic timer.");
-		GameLogicTimer timer = new GameLogicTimer(wrapper);
-		print("Binding bundle wrapper with renderer and input decorator.");
-		window.setBundleWrapper(wrapper);
-		wrapper.setRenderer(renderer);
-		inputDecorator.setBundleWrapper(wrapper);
-		inputDecorator.setGameInputBuffer(wrapper.getInputBuffer());
-		wrapper.setLogicTimer(timer);
+		GameLogicTimer logicTimer = new GameLogicTimer();
+
+		print("Binding dependencies in game context wrapper.");
+		GameContextWrapper wrapper = new GameContextWrapper(renderer, inputBuffer, logicTimer);
+
+		GameInputDecorator inputDecorator = new GameInputDecorator();
+
+		window.setContextWrapper(wrapper);
+		inputDecorator.setGameInputBuffer(inputBuffer);
+
 		print("Creating rendering and updating threads.");
 		Thread renderingThread = new Thread(window);
-		Thread gameLogicThread = new Thread(timer);
+		Thread gameLogicThread = new Thread(logicTimer);
+
 		print("Initializing bundle parts");
 		wrapper.getContext().initParts();
-		print("Starting update thread.");
-		gameLogicThread.start();
+
 		print("Starting rendering thread.");
 		renderingThread.start();
+		print("Starting update thread.");
+		gameLogicThread.start();
 	}
 
 	private void print(String s) {

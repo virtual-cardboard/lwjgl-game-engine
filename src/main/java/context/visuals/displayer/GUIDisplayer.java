@@ -1,16 +1,16 @@
 package context.visuals.displayer;
 
-import context.data.gui.GUI;
+import context.data.gui.Gui;
 import context.visuals.renderer.GameRenderer;
 
-public class GUIDisplayer extends Displayer<GUI> {
+public class GuiDisplayer extends Displayer<Gui> {
 
-	public GUIDisplayer(GameRenderer renderer) {
+	public GuiDisplayer(GameRenderer renderer) {
 		super(renderer);
 	}
 
 	@Override
-	public void display(GUI displayable) {
+	public void display(Gui displayable) {
 		if (!displayable.isEnabled())
 			return;
 		renderer.outlineColour(displayable.getOutlineR(), displayable.getOutlineG(), displayable.getBackgroundB());
@@ -20,7 +20,7 @@ public class GUIDisplayer extends Displayer<GUI> {
 		renderer.textSize(displayable.getTextSize());
 		renderer.text(displayable.getText(), displayable.getX() + displayable.getWidth() / 2,
 				displayable.getY() + displayable.getHeight() / 2);
-		for (GUI child : displayable.getChildren()) {
+		for (Gui child : displayable.getChildren()) {
 			display(child);
 		}
 	}

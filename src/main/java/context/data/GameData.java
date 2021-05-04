@@ -3,12 +3,10 @@ package context.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.coordinates.IntCoordinates;
 import context.ContextPart;
-import context.data.gui.GUI;
+import context.data.gui.Gui;
 import context.data.gui.InvisibleGUI;
 import context.visuals.displayer.Displayable;
-import state.entity.User;
 
 /**
  * A context part that stores data.
@@ -19,44 +17,30 @@ import state.entity.User;
 public abstract class GameData extends ContextPart {
 
 	/**
-	 * A list of displayables.
+	 * A list of {@link Displayable}s.
 	 */
 	private List<Displayable> toBeDisplayed = new ArrayList<>();
 
 	/**
-	 * The main GUI to which all guis will be descendants of.
+	 * The root GUI to which all guis will be descendants of.
 	 */
-	private GUI mainGui = new InvisibleGUI("", 0, 0, 0, 0);
+	private Gui rootGui = new InvisibleGUI(0, 0, 0, 0);
 
-	private IntCoordinates cursorCoordinates;
+	public abstract void init();
 
 	public List<Displayable> getToBeDisplayed() {
 		return toBeDisplayed;
 	}
 
-	public void addGUI(GUI gui) {
-		mainGui.addChild(gui);
+	public void addGUI(Gui gui) {
+		rootGui.addChild(gui);
 	}
 
 	public void addDisplayable(Displayable displayable) {
 		toBeDisplayed.add(displayable);
 	}
 
-	public GUI getMainGUI() {
-		return mainGui;
-	}
-
-	public abstract void init();
-
-	public User getUser() {
-		return user;
-	}
-
-	public IntCoordinates getCursorCoordinates() {
-		return cursorCoordinates;
-	}
-
-	public void setCursorCoordinates(IntCoordinates cursorCoordinates) {
-		this.cursorCoordinates = cursorCoordinates;
+	public Gui getMainGUI() {
+		return rootGui;
 	}
 }

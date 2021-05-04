@@ -8,4 +8,9 @@ public class IntCoordinates extends Coordinates<Integer> {
 		super(x, y);
 	}
 
+	public void set(IntCoordinates coordinates) {
+		this.x = coordinates.x;
+		this.y = coordinates.y;
+	}
+
 }

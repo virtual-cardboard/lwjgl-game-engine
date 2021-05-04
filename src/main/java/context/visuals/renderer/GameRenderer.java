@@ -5,7 +5,7 @@ public class GameRenderer {
 	public GameRenderer() {
 	}
 
-	public void drawRectangle(float x, float y, float width, float height, float r, float g, float b) {
+	public void drawRectangle(float x, float y, float width, float height, int colour) {
 
 	}
 
@@ -20,6 +20,10 @@ public class GameRenderer {
 	public float getHeight() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void clearScreen(int colour) {
+
 	}
 
 }
