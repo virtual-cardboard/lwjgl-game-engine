@@ -1,4 +1,4 @@
-package context.visuals.vao;
+package context.visuals.lwjgl;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;

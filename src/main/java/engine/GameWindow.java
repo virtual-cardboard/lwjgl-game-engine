@@ -1,12 +1,37 @@
 package engine;
 
-import org.lwjgl.glfw.Callbacks;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
+import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
+import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
+import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
+import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
+import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
+import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
+import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
+import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
+import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
+import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
+import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
+import static org.lwjgl.glfw.GLFW.glfwInit;
+import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
+import static org.lwjgl.glfw.GLFW.glfwShowWindow;
+import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
+import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
+import static org.lwjgl.glfw.GLFW.glfwTerminate;
+import static org.lwjgl.glfw.GLFW.glfwWindowHint;
+import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
+import static org.lwjgl.glfw.GLFWErrorCallback.createPrint;
+import static org.lwjgl.opengl.GL.createCapabilities;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.system.MemoryUtil.NULL;
+
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.system.MemoryUtil;
 
 import common.coordinates.IntCoordinates;
 import context.GameContext;
@@ -38,53 +63,49 @@ public class GameWindow implements Runnable {
 	@Override
 	public void run() {
 		createDisplay();
-		while (!GLFW.glfwWindowShouldClose(windowId)) {
-			GameContext bundle = wrapper.getContext();
-			GLFW.glfwPollEvents();
-			bundle.getInput().handleAll();
-			bundle.getVisuals().render();
-			GLFW.glfwSwapBuffers(windowId);
+		while (!glfwWindowShouldClose(windowId)) {
+			GameContext context = wrapper.getContext();
+			glfwPollEvents();
+			context.getInput().handleAll();
+			context.getVisuals().render();
+			glfwSwapBuffers(windowId);
 		}
 		cleanUp();
 	}
 
 	private void createDisplay() {
-		GLFWErrorCallback.createPrint(System.err).set();
-		if (!GLFW.glfwInit())
+		createPrint(System.err).set();
+		if (!glfwInit())
 			throw new IllegalStateException("Unable to initialize GLFW");
-		GLFW.glfwDefaultWindowHints(); // optional, the current window hints are already the default
-		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GL11.GL_FALSE); // the window will stay hidden after creation
-		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, RESIZABLE ? GL11.GL_TRUE : GL11.GL_FALSE); // the window will be resizable
-		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 3);
-		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 2);
-		GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
-		GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GL11.GL_TRUE);
-		GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor()); // Get the resolution of the primary monitor
+		glfwDefaultWindowHints(); // optional, the current window hints are already the default
+		glfwWindowHint(GLFW_VISIBLE, GL_FALSE); // the window will stay hidden after creation
+		glfwWindowHint(GLFW_RESIZABLE, RESIZABLE ? GL_TRUE : GL_FALSE); // the window will be resizable
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor()); // Get the resolution of the primary monitor
 		if (FULLSCREEN)
 			windowDimensions.set(vidmode.width(), vidmode.height());
-		windowId = GLFW.glfwCreateWindow(windowDimensions.x, windowDimensions.y, windowTitle, MemoryUtil.NULL, MemoryUtil.NULL); // Create the window
-		if (windowId == MemoryUtil.NULL)
+		windowId = glfwCreateWindow(windowDimensions.x, windowDimensions.y, windowTitle, NULL, NULL); // Create the window
+		if (windowId == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
-		GLFW.glfwSetWindowPos(windowId, (vidmode.width() - windowDimensions.x) / 2, (vidmode.height() - windowDimensions.y) / 2); // Center our window
-		GLFW.glfwMakeContextCurrent(windowId); // Make the OpenGL context current
-		GL.createCapabilities();
-		GLFW.glfwSwapInterval(1); // Enable v-sync
-		GLFW.glfwShowWindow(windowId); // Make the window visible
-		GL11.glViewport(0, 0, windowDimensions.x, windowDimensions.y);
+		glfwSetWindowPos(windowId, (vidmode.width() - windowDimensions.x) / 2, (vidmode.height() - windowDimensions.y) / 2); // Center the window
+		glfwMakeContextCurrent(windowId); // Make the OpenGL context current
+		createCapabilities();
+		glfwSwapInterval(1); // Enable v-sync
+		glfwShowWindow(windowId); // Make the window visible
+		glViewport(0, 0, windowDimensions.x, windowDimensions.y);
 	}
 
 	public void cleanUp() {
-//		VAO.cleanUp();
-//		EBO.cleanUp();
-//		VBO.cleanUp();
-//		Texture.cleanUp();
-		Callbacks.glfwFreeCallbacks(windowId); // Release window callbacks
-		GLFW.glfwDestroyWindow(windowId); // Release window
-		GLFW.glfwTerminate(); // Terminate GLFW
-		GLFW.glfwSetErrorCallback(null).free(); // Release the GLFWerrorfun
+		glfwFreeCallbacks(windowId); // Release window callbacks
+		glfwDestroyWindow(windowId); // Release window
+		glfwTerminate(); // Terminate GLFW
+		glfwSetErrorCallback(null).free(); // Release the GLFWerrorfun
 	}
 
-	public void setBundleWrapper(GameContextWrapper wrapper) {
+	public void setContextWrapper(GameContextWrapper wrapper) {
 		this.wrapper = wrapper;
 	}
 
@@ -93,7 +114,7 @@ public class GameWindow implements Runnable {
 	}
 
 	public void setWindowDimensions(IntCoordinates windowDimensions) {
-		this.windowDimensions = windowDimensions;
+		this.windowDimensions.set(windowDimensions);
 	}
 
 }

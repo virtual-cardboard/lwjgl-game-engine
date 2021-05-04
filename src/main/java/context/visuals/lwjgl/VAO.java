@@ -1,11 +1,14 @@
-package context.visuals.vao;
+package context.visuals.lwjgl;
+
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 /**
  * An attribute object stores all the information for each vertex of a mesh. It
@@ -18,8 +21,8 @@ public class VAO {
 
 	private static List<Integer> vaos = new ArrayList<>();
 
-	protected int vaoID;
-	protected int vertexCount;
+	private int vaoId;
+	private int vertexCount;
 
 	/**
 	 * Must bind and unbind VAO before attaching VBO/EBOs. The VAO is already
@@ -34,11 +37,11 @@ public class VAO {
 		ebo.loadData(data);
 	}
 
-	protected void attachVBO(int attributeIndex, int dimensions, float[] data) {
+	private void attachVBO(int attributeIndex, int dimensions, float[] data) {
 		VBO vbo = new VBO();
 		vbo.bindVBO();
 		vbo.loadData(data);
-		GL20.glVertexAttribPointer(attributeIndex, dimensions, GL11.GL_FLOAT, false, 0, 0);
+		glVertexAttribPointer(attributeIndex, dimensions, GL11.GL_FLOAT, false, 0, 0);
 		vbo.unbindVBO();
 	}
 
@@ -46,18 +49,18 @@ public class VAO {
 	 * Binding the attribute object so opengl knows to write to it.
 	 */
 	public void bindVAO() {
-		GL30.glBindVertexArray(vaoID);
+		glBindVertexArray(vaoId);
 	}
 
 	/**
 	 * Remeber to unbind after finished attaching VBOS.
 	 */
 	public void unbindVAO() {
-		GL30.glBindVertexArray(0);
+		glBindVertexArray(0);
 	}
 
 	public int getVaoId() {
-		return vaoID;
+		return vaoId;
 	}
 
 	public int getVertexCount() {
@@ -70,13 +73,13 @@ public class VAO {
 	 */
 	public static void cleanUp() {
 		for (int vao : vaos) {
-			GL30.glDeleteVertexArrays(vao);
+			glDeleteVertexArrays(vao);
 		}
 	}
 
 	public void interpret(RectangleMeshData data) {
-		vaoID = GL30.glGenVertexArrays();
-		vaos.add(vaoID);
+		vaoId = glGenVertexArrays();
+		vaos.add(vaoId);
 		bindVAO();
 		attachVBO(0, 2, data.getQuadVertices());
 		vertexCount = 6;
