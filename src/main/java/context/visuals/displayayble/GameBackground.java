@@ -1,10 +1,8 @@
-package context.visuals.templates;
+package context.visuals.displayayble;
 
 import static context.visuals.colour.Colour.colour;
 
-import context.visuals.displayer.Displayable;
-
-public class GameBackground implements Displayable {
+public class GameBackground {
 
 	private int colour;
 

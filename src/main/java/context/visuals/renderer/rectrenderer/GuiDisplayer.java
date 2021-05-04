@@ -12,42 +12,48 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 
-import context.data.gui.Gui;
+import context.visuals.gui.Gui;
 import context.visuals.lwjgl.RectangleMeshData;
 import context.visuals.lwjgl.VAO;
 
-public class GuiRenderer {
+public class GuiDisplayer {
 
 	private static final int QUAD_VERTEX_COUNT = 4;
 
 	private GuiShader shader;
 	private VAO guiVAO;
 
-	public GuiRenderer() {
+	public GuiDisplayer() {
 		this.shader = new GuiShader();
 		guiVAO = new VAO();
 		guiVAO.interpret(new RectangleMeshData());
 	}
 
-	public void render(float x, float y, float width, float height, float r, float g, float b) {
+	public void render(Gui root) {
 		shader.start();
 		glDisable(GL_DEPTH_TEST);
 		guiVAO.bindVAO();
 		glEnableVertexAttribArray(0);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		for (Gui gui : guis) {
-			gui.activateTextures();
-			shader.loadModelMatrix(gui.getTransformationMatrix());
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, QUAD_VERTEX_COUNT);
-		}
+		recursiveRender(root);
 		glDisable(GL_BLEND);
 		glDisableVertexAttribArray(0);
 		guiVAO.unbindVAO();
 		shader.stop();
 	}
 
+	private void recursiveRender(Gui gui) {
+//		gui.activateTextures();
+//		shader.loadModelMatrix(gui.getTransformationMatrix());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, QUAD_VERTEX_COUNT);
+		for (Gui child : gui.getChildren()) {
+			recursiveRender(child);
+		}
+	}
+
 	public void cleanUp() {
 		shader.cleanUp();
 	}
+
 }

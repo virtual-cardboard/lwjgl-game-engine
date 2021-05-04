@@ -5,20 +5,27 @@ import state.user.LocalUser;
 
 public final class MouseScrolledInputEvent extends GameInputEvent {
 
-	private final int amount;
+	private final float xAmount;
+	private final float yAmount;
 
-	public MouseScrolledInputEvent(long time, GameSource source, int amount) {
+	public MouseScrolledInputEvent(long time, GameSource source, float xAmount, float yAmount) {
 		super(time, source);
-		this.amount = amount;
+		this.xAmount = xAmount;
+		this.yAmount = yAmount;
 	}
 
-	public MouseScrolledInputEvent(int amount) {
+	public MouseScrolledInputEvent(float xAmount, float yAmount) {
 		super(LocalUser.LOCAL_USER);
-		this.amount = amount;
+		this.xAmount = xAmount;
+		this.yAmount = yAmount;
 	}
 
-	public int getAmount() {
-		return amount;
+	public float getxAmount() {
+		return xAmount;
+	}
+
+	public float getyAmount() {
+		return yAmount;
 	}
 
 }

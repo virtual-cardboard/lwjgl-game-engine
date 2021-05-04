@@ -2,8 +2,8 @@ package context.visuals;
 
 import context.ContextPart;
 import context.data.GameData;
-import context.visuals.displayer.Displayable;
-import context.visuals.displayer.DisplayerMatcher;
+import context.visuals.gui.Gui;
+import context.visuals.gui.InvisibleGUI;
 
 /**
  * A bundle part that displays visuals based on data from {@link GameData}.
@@ -13,17 +13,23 @@ import context.visuals.displayer.DisplayerMatcher;
  */
 public abstract class GameVisuals extends ContextPart {
 
-	private DisplayerMatcher displayerMatcher;
+	/**
+	 * The root GUI to which all guis will be descendants of.
+	 */
+	private Gui rootGui = new InvisibleGUI(0, 0, 0, 0);
+
+	public void addGui(Gui gui) {
+		rootGui.addChild(gui);
+	}
+
+	public Gui getRootGui() {
+		return rootGui;
+	}
 
 	public void init() {
-		this.displayerMatcher = new DisplayerMatcher(getContext().getWrapper().getRenderer());
 	}
 
 	public void render() {
-		GameData data = getContext().getData();
-		for (Displayable d : data.getToBeDisplayed()) {
-			displayerMatcher.getDisplayer(d).display(d);
-		}
 	}
 
 }

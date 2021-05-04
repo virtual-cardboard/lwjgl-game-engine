@@ -3,9 +3,9 @@ package context.input.eventhandler.guimousehandler;
 import java.util.List;
 
 import context.data.GameData;
-import context.data.gui.Gui;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.eventhandler.MouseReleasedInputEventHandler;
+import context.visuals.gui.Gui;
 
 public class GUIMouseReleasedInputEventHandler implements MouseReleasedInputEventHandler {
 

@@ -1,8 +1,10 @@
 package engine;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 import context.GameContextWrapper;
-import context.input.GameInputEventBuffer;
-import context.input.decorator.GameInputDecorator;
+import context.input.event.GameInputEvent;
 import context.logic.GameLogicTimer;
 import context.visuals.renderer.GameRenderer;
 
@@ -43,11 +45,12 @@ public class GameEnabler {
 	 * motion.
 	 */
 	public void enable() {
-		print("Creating game window.");
-		GameWindow window = new GameWindow(windowTitle);
-
 		print("Creating game input buffer.");
-		GameInputEventBuffer inputBuffer = new GameInputEventBuffer();
+		Queue<GameInputEvent> inputBuffer = new PriorityQueue<>();
+
+		print("Creating game window.");
+		GameWindow window = new GameWindow(windowTitle, inputBuffer);
+
 		print("Creating game renderer.");
 		GameRenderer renderer = new GameRenderer();
 		print("Creating game logic timer.");
@@ -56,17 +59,14 @@ public class GameEnabler {
 		print("Binding dependencies in game context wrapper.");
 		GameContextWrapper wrapper = new GameContextWrapper(renderer, inputBuffer, logicTimer);
 
-		GameInputDecorator inputDecorator = new GameInputDecorator();
-
 		window.setContextWrapper(wrapper);
-		inputDecorator.setGameInputBuffer(inputBuffer);
 
 		print("Creating rendering and updating threads.");
 		Thread renderingThread = new Thread(window);
 		Thread gameLogicThread = new Thread(logicTimer);
 
 		print("Initializing bundle parts");
-		wrapper.getContext().init();
+		wrapper.getContext().init(inputBuffer);
 
 		print("Starting rendering thread.");
 		renderingThread.start();

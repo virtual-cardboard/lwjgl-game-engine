@@ -1,8 +1,11 @@
 package context.input;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import common.coordinates.IntCoordinates;
+import common.event.GameEvent;
 import context.ContextPart;
 import context.input.event.GameInputEvent;
 import context.input.eventhandler.AbstractGameInputEventHandler;
@@ -19,20 +22,33 @@ import context.input.eventhandler.guimousehandler.GUIMouseReleasedInputEventHand
 import context.input.mouse.GameMouse;
 
 /**
- * A bundle part that handles user input.
+ * A context part that handles user input. It transforms raw
+ * {@link GameInputEvent}s into other {@link GameEvent}s.
  * 
  * @author Jay
  *
  */
 public abstract class GameInput extends ContextPart {
 
-	private GameInputEventBuffer inputBuffer;
+	/**
+	 * The input buffer is populated by the context upon initialization. The
+	 * {@link GameInputDecorator} writes to this input buffer. This class reads from
+	 * the input buffer and transforms them into other {@link GameEvent}s.
+	 */
+	private Queue<GameInputEvent> inputEventBuffer;
+
+	private PriorityQueue<GameEvent> eventQueue;
+
 	private GameInputEventHandlerFactory inputEventHandlerFactory;
+
+	/**
+	 * The mouse is automatically updated by the {@link GameInput}.
+	 */
 	private GameMouse mouse;
 
 	public void handleAll() {
-		while (!inputBuffer.isEmpty()) {
-			handleEvent(inputBuffer.getNext());
+		while (!inputEventBuffer.isEmpty()) {
+			handleEvent(inputEventBuffer.poll());
 		}
 	}
 
@@ -119,8 +135,13 @@ public abstract class GameInput extends ContextPart {
 		return mouseScrolledInputEventHandlers;
 	}
 
-	public void init() {
-		inputBuffer = getContext().getWrapper().getInputBuffer();
+	public final void init(Queue<GameInputEvent> inputEventBuffer, PriorityQueue<GameEvent> eventQueue) {
+		this.inputEventBuffer = inputEventBuffer;
+		this.eventQueue = eventQueue;
+		doInit();
+	}
+
+	protected void doInit() {
 		ArrayList<KeyPressedInputEventHandler> kp = setAllKeyPressedInputHandler();
 		ArrayList<KeyReleasedInputEventHandler> kr = setAllKeyReleasedInputHandler();
 		ArrayList<MouseMovedInputEventHandler> mm = setAllMouseMovedInputHandler();

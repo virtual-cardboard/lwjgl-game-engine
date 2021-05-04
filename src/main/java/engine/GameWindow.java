@@ -31,11 +31,14 @@ import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.util.Queue;
+
 import org.lwjgl.glfw.GLFWVidMode;
 
 import common.coordinates.IntCoordinates;
 import context.GameContext;
 import context.GameContextWrapper;
+import context.input.event.GameInputEvent;
 
 /**
  * 
@@ -44,19 +47,17 @@ import context.GameContextWrapper;
  */
 public class GameWindow implements Runnable {
 
+	private static final int DEFAULT_WINDOW_WIDTH = 1280;
+	private static final int DEFAULT_WINDOW_HEIGHT = 720;
+	private static final boolean FULLSCREEN = false;
+	private static final boolean RESIZABLE = true;
+
 	private GameContextWrapper wrapper;
 
 	private long windowId;
 	private String windowTitle;
 
-	private final int DEFAULT_WINDOW_WIDTH = 1280;
-	private final int DEFAULT_WINDOW_HEIGHT = 720;
-	private IntCoordinates windowDimensions = new IntCoordinates(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
-
-	private final boolean FULLSCREEN = false;
-	private final boolean RESIZABLE = true;
-
-	public GameWindow(String windowTitle) {
+	public GameWindow(String windowTitle, Queue<GameInputEvent> inputBuffer) {
 		this.windowTitle = windowTitle;
 	}
 
@@ -74,6 +75,7 @@ public class GameWindow implements Runnable {
 	}
 
 	private void createDisplay() {
+		IntCoordinates windowDimensions = new IntCoordinates(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 		createPrint(System.err).set();
 		if (!glfwInit())
 			throw new IllegalStateException("Unable to initialize GLFW");
@@ -99,22 +101,14 @@ public class GameWindow implements Runnable {
 	}
 
 	public void cleanUp() {
-		glfwFreeCallbacks(windowId); // Release window callbacks
+		glfwFreeCallbacks(windowId); // Release callbacks
 		glfwDestroyWindow(windowId); // Release window
 		glfwTerminate(); // Terminate GLFW
-		glfwSetErrorCallback(null).free(); // Release the GLFWerrorfun
+		glfwSetErrorCallback(null).free(); // Release the error callback
 	}
 
 	public void setContextWrapper(GameContextWrapper wrapper) {
 		this.wrapper = wrapper;
-	}
-
-	public IntCoordinates getWindowDimensions() {
-		return windowDimensions;
-	}
-
-	public void setWindowDimensions(IntCoordinates windowDimensions) {
-		this.windowDimensions.set(windowDimensions);
 	}
 
 }

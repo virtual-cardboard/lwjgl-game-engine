@@ -1,10 +1,12 @@
 package context;
 
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 import common.event.GameEvent;
 import context.data.GameData;
 import context.input.GameInput;
+import context.input.event.GameInputEvent;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 
@@ -66,10 +68,10 @@ public final class GameContext {
 		return visuals;
 	}
 
-	public void init() {
+	public void init(Queue<GameInputEvent> inputEventBuffer) {
 		data.init();
-		input.init();
-		logic.init();
+		input.init(inputEventBuffer, eventQueue);
+		logic.init(eventQueue);
 		visuals.init();
 	}
 

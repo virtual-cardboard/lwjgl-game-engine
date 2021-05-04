@@ -1,4 +1,4 @@
-package context.data.gui;
+package context.visuals.gui;
 
 public class GameButton extends Gui {
 

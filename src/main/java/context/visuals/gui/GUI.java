@@ -1,16 +1,14 @@
-package context.data.gui;
+package context.visuals.gui;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import common.DoNothingRunnable;
 import common.coordinates.FloatCoordinates;
 import context.logic.Clickable;
 import context.logic.Hoverable;
-import context.visuals.displayer.Displayable;
 
-public abstract class Gui implements Displayable, Clickable, Hoverable {
+public abstract class Gui implements Clickable, Hoverable {
 
 	private String text = "";
 	private float x;
@@ -357,10 +355,6 @@ public abstract class Gui implements Displayable, Clickable, Hoverable {
 	public void setDimensions(FloatCoordinates dimensions) {
 		width = dimensions.x;
 		height = dimensions.y;
-	}
-
-	public Iterator<Gui> iterator() {
-		return new GUIPrefixIterator(this);
 	}
 
 	public int getNumChildren() {
