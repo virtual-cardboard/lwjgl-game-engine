@@ -31,4 +31,8 @@ public class TimeAccumulator {
 		return accumulation / frameTime;
 	}
 
+	public void clear() {
+		accumulation = 0;
+	}
+
 }

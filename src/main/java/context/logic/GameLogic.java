@@ -1,6 +1,5 @@
 package context.logic;
 
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 import common.event.GameEvent;
@@ -29,7 +28,7 @@ public abstract class GameLogic extends ContextPart {
 	}
 
 	protected final Queue<GameEvent> getEventQueue() {
-		return  eventQueue;
+		return eventQueue;
 	}
 
 	public abstract void update();

@@ -64,7 +64,7 @@ public final class GameEnabler {
 
 		print("Creating rendering and updating threads.");
 		print("Creating frame updater.");
-		WindowFrameUpdater frameUpdater = new WindowFrameUpdater(window, wrapper);
+		WindowFrameUpdateTimer frameUpdater = new WindowFrameUpdateTimer(window, wrapper);
 		Thread renderingThread = new Thread(frameUpdater);
 		print("Creating logic timer.");
 		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
