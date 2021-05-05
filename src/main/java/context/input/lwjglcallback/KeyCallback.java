@@ -27,10 +27,10 @@ import context.input.event.KeyRepeatInputEvent;
  */
 public class KeyCallback extends GLFWKeyCallback {
 
-	private final Queue<GameInputEvent> inputBuffer;
+	private final Queue<GameInputEvent> inputEventBuffer;
 
-	public KeyCallback(Queue<GameInputEvent> inputBuffer) {
-		this.inputBuffer = inputBuffer;
+	public KeyCallback(Queue<GameInputEvent> inputEventBuffer) {
+		this.inputEventBuffer = inputEventBuffer;
 	}
 
 	/**
@@ -42,13 +42,13 @@ public class KeyCallback extends GLFWKeyCallback {
 		if (key != GLFW_KEY_UNKNOWN) {
 			switch (action) {
 				case GLFW_PRESS:
-					inputBuffer.add(new KeyPressedInputEvent(key));
+					inputEventBuffer.add(new KeyPressedInputEvent(key));
 					break;
 				case GLFW_RELEASE:
-					inputBuffer.add(new KeyReleasedInputEvent(key));
+					inputEventBuffer.add(new KeyReleasedInputEvent(key));
 					break;
 				case GLFW_REPEAT:
-					inputBuffer.add(new KeyRepeatInputEvent(key));
+					inputEventBuffer.add(new KeyRepeatInputEvent(key));
 					break;
 				default:
 					break;

@@ -19,10 +19,10 @@ import context.input.event.GameInputEvent;
  */
 public class WindowResizeCallback extends GLFWFramebufferSizeCallback {
 
-	private final Queue<GameInputEvent> inputBuffer;
+	private final Queue<GameInputEvent> inputEventBuffer;
 
-	public WindowResizeCallback(Queue<GameInputEvent> inputBuffer) {
-		this.inputBuffer = inputBuffer;
+	public WindowResizeCallback(Queue<GameInputEvent> inputEventBuffer) {
+		this.inputEventBuffer = inputEventBuffer;
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class WindowResizeCallback extends GLFWFramebufferSizeCallback {
 	@Override
 	public void invoke(long windowId, int width, int height) {
 		glViewport(0, 0, width, height);
-		inputBuffer.add(new FrameResizedInputEvent(width, height));
+		inputEventBuffer.add(new FrameResizedInputEvent(width, height));
 	}
 
 }

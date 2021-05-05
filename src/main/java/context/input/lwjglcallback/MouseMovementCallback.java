@@ -16,10 +16,10 @@ import context.input.event.MouseMovedInputEvent;
  */
 public class MouseMovementCallback extends GLFWCursorPosCallback {
 
-	private final Queue<GameInputEvent> inputBuffer;
+	private final Queue<GameInputEvent> inputEventBuffer;
 
-	public MouseMovementCallback(Queue<GameInputEvent> inputBuffer) {
-		this.inputBuffer = inputBuffer;
+	public MouseMovementCallback(Queue<GameInputEvent> inputEventBuffer) {
+		this.inputEventBuffer = inputEventBuffer;
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class MouseMovementCallback extends GLFWCursorPosCallback {
 	 */
 	@Override
 	public void invoke(long window, double xPos, double yPos) {
-		inputBuffer.add(new MouseMovedInputEvent((int) xPos, (int) yPos));
+		inputEventBuffer.add(new MouseMovedInputEvent((int) xPos, (int) yPos));
 	}
 
 }

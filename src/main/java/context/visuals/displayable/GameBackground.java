@@ -1,4 +1,4 @@
-package context.visuals.displayayble;
+package context.visuals.displayable;
 
 import static context.visuals.colour.Colour.colour;
 

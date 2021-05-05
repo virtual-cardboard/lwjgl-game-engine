@@ -1,11 +1,8 @@
 package context.input.eventhandler.guimousehandler;
 
-import java.util.List;
-
 import context.data.GameData;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.eventhandler.MouseReleasedInputEventHandler;
-import context.visuals.gui.Gui;
 
 public class GUIMouseReleasedInputEventHandler implements MouseReleasedInputEventHandler {
 
@@ -18,22 +15,23 @@ public class GUIMouseReleasedInputEventHandler implements MouseReleasedInputEven
 
 	@Override
 	public boolean handle(MouseReleasedInputEvent event) {
-		boolean consumed = handleHelper(event, data.getMainGUI());
-		data.getMainGUI().depressAll();
-		return consumed;
+//		boolean consumed = handleHelper(event, data.getMainGUI());
+//		data.getMainGUI().depressAll();
+//		return consumed;
+		return true;
 	}
 
-	boolean handleHelper(MouseReleasedInputEvent event, Gui gui) {
-		List<Gui> children = gui.getChildren();
-		for (int i = gui.getNumChildren() - 1; i >= 0; i--) {
-			if (handleHelper(event, children.get(i))) {
-				return true;
-			}
-		}
-		if (gui.isOn(event.getMouseX(), event.getMouseY())) {
-			gui.onRelease();
-			return true;
-		}
-		return false;
-	}
+//	boolean handleHelper(MouseReleasedInputEvent event, Gui gui) {
+//		List<Gui> children = gui.getChildren();
+//		for (int i = gui.getNumChildren() - 1; i >= 0; i--) {
+//			if (handleHelper(event, children.get(i))) {
+//				return true;
+//			}
+//		}
+//		if (gui.isOn(event.getMouseX(), event.getMouseY())) {
+//			gui.onRelease();
+//			return true;
+//		}
+//		return false;
+//	}
 }

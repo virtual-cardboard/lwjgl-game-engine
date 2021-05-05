@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import context.input.event.GameInputEvent;
-import context.logic.GameLogicTimer;
+import context.logic.TimeAccumulator;
 import context.visuals.renderer.GameRenderer;
 
 /**
@@ -36,7 +36,7 @@ public class GameContextWrapper {
 
 	private final GameRenderer renderer;
 	private final Queue<GameInputEvent> inputBuffer;
-	private final GameLogicTimer logicTimer;
+	private final TimeAccumulator accumulator;
 
 	/**
 	 * A constructor that takes in the renderer, input buffer, and logic timer.
@@ -45,11 +45,11 @@ public class GameContextWrapper {
 	 * @param inputBuffer
 	 * @param logicTimer
 	 */
-	public GameContextWrapper(GameRenderer renderer, Queue<GameInputEvent> inputBuffer, GameLogicTimer logicTimer) {
+	public GameContextWrapper(GameRenderer renderer, Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, GameContext context) {
 		this.renderer = renderer;
 		this.inputBuffer = inputBuffer;
-		this.logicTimer = logicTimer;
-		logicTimer.setContextWrapper(this);
+		this.accumulator = accumulator;
+		this.context = context;
 	}
 
 	/**
@@ -86,8 +86,8 @@ public class GameContextWrapper {
 		return inputBuffer;
 	}
 
-	public GameLogicTimer getLogicTimer() {
-		return logicTimer;
+	public TimeAccumulator getAccumulator() {
+		return accumulator;
 	}
 
 }

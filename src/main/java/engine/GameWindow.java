@@ -15,15 +15,12 @@ import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
-import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.glfw.GLFWErrorCallback.createPrint;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
@@ -33,48 +30,39 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.util.Queue;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 
 import common.coordinates.IntCoordinates;
-import context.GameContext;
-import context.GameContextWrapper;
 import context.input.event.GameInputEvent;
+import context.input.lwjglcallback.KeyCallback;
+import context.input.lwjglcallback.MouseButtonCallback;
+import context.input.lwjglcallback.MouseMovementCallback;
+import context.input.lwjglcallback.MouseScrollCallback;
+import context.input.lwjglcallback.WindowResizeCallback;
 
 /**
  * 
  * @author Lunkle
  *
  */
-public class GameWindow implements Runnable {
+public class GameWindow {
 
 	private static final int DEFAULT_WINDOW_WIDTH = 1280;
 	private static final int DEFAULT_WINDOW_HEIGHT = 720;
 	private static final boolean FULLSCREEN = false;
 	private static final boolean RESIZABLE = true;
 
-	private GameContextWrapper wrapper;
-
 	private long windowId;
 	private String windowTitle;
+	private Queue<GameInputEvent> inputEventBuffer;
 
-	public GameWindow(String windowTitle, Queue<GameInputEvent> inputBuffer) {
+	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer) {
 		this.windowTitle = windowTitle;
+		this.inputEventBuffer = inputEventBuffer;
 	}
 
-	@Override
-	public void run() {
-		createDisplay();
-		while (!glfwWindowShouldClose(windowId)) {
-			GameContext context = wrapper.getContext();
-			glfwPollEvents();
-			context.getInput().handleAll();
-			context.getVisuals().render();
-			glfwSwapBuffers(windowId);
-		}
-		cleanUp();
-	}
-
-	private void createDisplay() {
+	public void createDisplay() {
 		IntCoordinates windowDimensions = new IntCoordinates(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 		createPrint(System.err).set();
 		if (!glfwInit())
@@ -100,15 +88,23 @@ public class GameWindow implements Runnable {
 		glViewport(0, 0, windowDimensions.x, windowDimensions.y);
 	}
 
-	public void cleanUp() {
+	public void attachCallbacks() {
+		GLFW.glfwSetKeyCallback(windowId, new KeyCallback(inputEventBuffer));
+		GLFW.glfwSetMouseButtonCallback(windowId, new MouseButtonCallback(inputEventBuffer));
+		GLFW.glfwSetScrollCallback(windowId, new MouseScrollCallback(inputEventBuffer));
+		GLFW.glfwSetCursorPosCallback(windowId, new MouseMovementCallback(inputEventBuffer));
+		GLFW.glfwSetFramebufferSizeCallback(windowId, new WindowResizeCallback(inputEventBuffer));
+	}
+
+	public void destroy() {
 		glfwFreeCallbacks(windowId); // Release callbacks
 		glfwDestroyWindow(windowId); // Release window
 		glfwTerminate(); // Terminate GLFW
 		glfwSetErrorCallback(null).free(); // Release the error callback
 	}
 
-	public void setContextWrapper(GameContextWrapper wrapper) {
-		this.wrapper = wrapper;
+	public long getWindowId() {
+		return windowId;
 	}
 
 }

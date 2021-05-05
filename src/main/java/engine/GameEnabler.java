@@ -3,9 +3,11 @@ package engine;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import context.GameContext;
 import context.GameContextWrapper;
 import context.input.event.GameInputEvent;
 import context.logic.GameLogicTimer;
+import context.logic.TimeAccumulator;
 import context.visuals.renderer.GameRenderer;
 
 /**
@@ -17,9 +19,11 @@ import context.visuals.renderer.GameRenderer;
  * @author Lunkle, Jay
  *
  */
-public class GameEnabler {
+public final class GameEnabler {
 
-	private String windowTitle;
+	private final String windowTitle;
+	private final GameContext context;
+
 	private boolean printProgress = true;
 
 	/**
@@ -31,12 +35,13 @@ public class GameEnabler {
 	 * @param inputDecorator
 	 * @param wrapper
 	 */
-	public GameEnabler(String windowTitle) {
+	public GameEnabler(String windowTitle, GameContext context) {
 		this.windowTitle = windowTitle;
+		this.context = context;
 	}
 
-	public GameEnabler(String windowTitle, boolean printProgress) {
-		this(windowTitle);
+	public GameEnabler(String windowTitle, GameContext context, boolean printProgress) {
+		this(windowTitle, context);
 		this.printProgress = printProgress;
 	}
 
@@ -45,27 +50,27 @@ public class GameEnabler {
 	 * motion.
 	 */
 	public void enable() {
-		print("Creating game input buffer.");
+		print("Creating renderer.");
+		GameRenderer renderer = new GameRenderer();
+		print("Creating input buffer.");
 		Queue<GameInputEvent> inputBuffer = new PriorityQueue<>();
+		print("Creating time accumulator.");
+		TimeAccumulator accumulator = new TimeAccumulator();
+		print("Binding dependencies in context wrapper.");
+		GameContextWrapper wrapper = new GameContextWrapper(renderer, inputBuffer, accumulator, context);
 
-		print("Creating game window.");
+		print("Creating window.");
 		GameWindow window = new GameWindow(windowTitle, inputBuffer);
 
-		print("Creating game renderer.");
-		GameRenderer renderer = new GameRenderer();
-		print("Creating game logic timer.");
-		GameLogicTimer logicTimer = new GameLogicTimer();
-
-		print("Binding dependencies in game context wrapper.");
-		GameContextWrapper wrapper = new GameContextWrapper(renderer, inputBuffer, logicTimer);
-
-		window.setContextWrapper(wrapper);
-
 		print("Creating rendering and updating threads.");
-		Thread renderingThread = new Thread(window);
+		print("Creating frame updater.");
+		WindowFrameUpdater frameUpdater = new WindowFrameUpdater(window, wrapper);
+		Thread renderingThread = new Thread(frameUpdater);
+		print("Creating logic timer.");
+		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
 		Thread gameLogicThread = new Thread(logicTimer);
 
-		print("Initializing bundle parts");
+		print("Initializing context parts");
 		wrapper.getContext().init(inputBuffer);
 
 		print("Starting rendering thread.");

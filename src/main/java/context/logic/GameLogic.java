@@ -1,6 +1,7 @@
 package context.logic;
 
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 import common.event.GameEvent;
 import context.ContextPart;
@@ -17,14 +18,18 @@ import context.input.GameInput;
  */
 public abstract class GameLogic extends ContextPart {
 
-	private PriorityQueue<GameEvent> eventQueue;
+	private Queue<GameEvent> eventQueue;
 
-	public final void init(PriorityQueue<GameEvent> eventQueue) {
+	public final void init(Queue<GameEvent> eventQueue) {
 		this.eventQueue = eventQueue;
 		doInit();
 	}
 
 	public void doInit() {
+	}
+
+	protected final Queue<GameEvent> getEventQueue() {
+		return  eventQueue;
 	}
 
 	public abstract void update();

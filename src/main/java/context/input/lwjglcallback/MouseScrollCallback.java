@@ -16,10 +16,10 @@ import context.input.event.MouseScrolledInputEvent;
  */
 public class MouseScrollCallback extends GLFWScrollCallback {
 
-	private final Queue<GameInputEvent> inputBuffer;
+	private final Queue<GameInputEvent> inputEventBuffer;
 
-	public MouseScrollCallback(Queue<GameInputEvent> inputBuffer) {
-		this.inputBuffer = inputBuffer;
+	public MouseScrollCallback(Queue<GameInputEvent> inputEventBuffer) {
+		this.inputEventBuffer = inputEventBuffer;
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class MouseScrollCallback extends GLFWScrollCallback {
 	 */
 	@Override
 	public void invoke(long window, double xOffset, double yOffset) {
-		inputBuffer.add(new MouseScrolledInputEvent((float) xOffset, (float) yOffset));
+		inputEventBuffer.add(new MouseScrolledInputEvent((float) xOffset, (float) yOffset));
 	}
 
 }

@@ -23,10 +23,10 @@ import context.input.event.MouseReleasedInputEvent;
  */
 public class MouseButtonCallback extends GLFWMouseButtonCallback {
 
-	private final Queue<GameInputEvent> inputBuffer;
+	private final Queue<GameInputEvent> inputEventBuffer;
 
-	public MouseButtonCallback(Queue<GameInputEvent> inputBuffer) {
-		this.inputBuffer = inputBuffer;
+	public MouseButtonCallback(Queue<GameInputEvent> inputEventBuffer) {
+		this.inputEventBuffer = inputEventBuffer;
 	}
 
 	/**
@@ -35,12 +35,13 @@ public class MouseButtonCallback extends GLFWMouseButtonCallback {
 	 */
 	@Override
 	public void invoke(long window, int button, int action, int mods) {
+		System.out.println("Mouse clicked");
 		switch (action) {
 			case GLFW_PRESS:
-				inputBuffer.add(new MousePressedInputEvent(button));
+				inputEventBuffer.add(new MousePressedInputEvent(button));
 				break;
 			case GLFW_RELEASE:
-				inputBuffer.add(new MouseReleasedInputEvent(button));
+				inputEventBuffer.add(new MouseReleasedInputEvent(button));
 				break;
 			case GLFW_REPEAT:
 			default:
