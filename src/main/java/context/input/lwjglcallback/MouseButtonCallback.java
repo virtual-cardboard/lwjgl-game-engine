@@ -35,17 +35,16 @@ public class MouseButtonCallback extends GLFWMouseButtonCallback {
 	 */
 	@Override
 	public void invoke(long window, int button, int action, int mods) {
-		System.out.println("Mouse clicked");
 		switch (action) {
-			case GLFW_PRESS:
-				inputEventBuffer.add(new MousePressedInputEvent(button));
-				break;
-			case GLFW_RELEASE:
-				inputEventBuffer.add(new MouseReleasedInputEvent(button));
-				break;
-			case GLFW_REPEAT:
-			default:
-				break;
+		case GLFW_PRESS:
+			inputEventBuffer.add(new MousePressedInputEvent(button));
+			break;
+		case GLFW_RELEASE:
+			inputEventBuffer.add(new MouseReleasedInputEvent(button));
+			break;
+		case GLFW_REPEAT:
+		default:
+			break;
 		}
 	}
 

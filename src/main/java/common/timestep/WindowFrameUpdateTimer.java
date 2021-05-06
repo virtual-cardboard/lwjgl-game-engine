@@ -1,12 +1,12 @@
-package engine;
+package common.timestep;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
-import common.timestep.TimestepTimer;
 import context.GameContext;
 import context.GameContextWrapper;
+import engine.GameWindow;
 
 public class WindowFrameUpdateTimer extends TimestepTimer {
 

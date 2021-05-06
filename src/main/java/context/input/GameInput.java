@@ -1,5 +1,6 @@
 package context.input;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -25,6 +26,7 @@ import context.input.mouse.GameMouse;
  * @author Jay
  *
  */
+@SuppressWarnings("rawtypes")
 public abstract class GameInput extends ContextPart {
 
 	/**
@@ -36,15 +38,14 @@ public abstract class GameInput extends ContextPart {
 
 	private Queue<GameEvent> eventQueue;
 
-	private List<ConditionalFunction<KeyPressedInputEvent, GameEvent>> keyPressedFunctions;
-	private List<ConditionalFunction<KeyReleasedInputEvent, GameEvent>> keyReleasedFunctions;
-	private List<ConditionalFunction<MousePressedInputEvent, GameEvent>> mousePressedFunctions;
-	private List<ConditionalFunction<MouseReleasedInputEvent, GameEvent>> mouseReleasedFunctions;
-	private List<ConditionalFunction<MouseMovedInputEvent, GameEvent>> mouseMovedFunctions;
-	private List<ConditionalFunction<MouseScrolledInputEvent, GameEvent>> mouseScrolledFunctions;
-	private List<ConditionalFunction<FrameResizedInputEvent, GameEvent>> frameResizedFunctions;
-	private List<ConditionalFunction<KeyRepeatedInputEvent, GameEvent>> keyRepeatFunctions;
-	private List<ConditionalFunction<GameInputEvent, GameEvent>> generalFunctions;
+	private List<ConditionalFunction> keyPressedFunctions = new ArrayList<>();
+	private List<ConditionalFunction> keyReleasedFunctions = new ArrayList<>();
+	private List<ConditionalFunction> mousePressedFunctions = new ArrayList<>();
+	private List<ConditionalFunction> mouseReleasedFunctions = new ArrayList<>();
+	private List<ConditionalFunction> mouseMovedFunctions = new ArrayList<>();
+	private List<ConditionalFunction> mouseScrolledFunctions = new ArrayList<>();
+	private List<ConditionalFunction> frameResizedFunctions = new ArrayList<>();
+	private List<ConditionalFunction> keyRepeatedFunctions = new ArrayList<>();
 
 	/**
 	 * The mouse is automatically updated by the {@link GameInput}.
@@ -57,9 +58,36 @@ public abstract class GameInput extends ContextPart {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void handleEvent(GameInputEvent inputEvent) {
+	@SuppressWarnings("unchecked")
+	private void handleEvent(List<ConditionalFunction> functions, GameInputEvent inputEvent) {
+		for (ConditionalFunction function : functions) {
+			if (function.isSatisfiedBy(inputEvent)) {
+				eventQueue.add((GameEvent) function.apply(inputEvent));
+				if (function.doesConsume()) {
+					break;
+				}
+			}
+		}
+	}
 
+	private void handleEvent(GameInputEvent inputEvent) {
+		if (inputEvent instanceof KeyPressedInputEvent) {
+			handleEvent(keyPressedFunctions, inputEvent);
+		} else if (inputEvent instanceof KeyReleasedInputEvent) {
+			handleEvent(keyReleasedFunctions, inputEvent);
+		} else if (inputEvent instanceof KeyRepeatedInputEvent) {
+			handleEvent(keyRepeatedFunctions, inputEvent);
+		} else if (inputEvent instanceof MousePressedInputEvent) {
+			handleEvent(mousePressedFunctions, inputEvent);
+		} else if (inputEvent instanceof MouseReleasedInputEvent) {
+			handleEvent(mouseReleasedFunctions, inputEvent);
+		} else if (inputEvent instanceof MouseMovedInputEvent) {
+			handleEvent(mouseMovedFunctions, inputEvent);
+		} else if (inputEvent instanceof MouseScrolledInputEvent) {
+			handleEvent(mouseScrolledFunctions, inputEvent);
+		} else if (inputEvent instanceof FrameResizedInputEvent) {
+			handleEvent(frameResizedFunctions, inputEvent);
+		}
 	}
 
 	protected void addKeyPressedFunction(ConditionalFunction<KeyPressedInputEvent, GameEvent> function) {
@@ -91,19 +119,8 @@ public abstract class GameInput extends ContextPart {
 	}
 
 	protected void addKeyRepeatedFunction(ConditionalFunction<KeyRepeatedInputEvent, GameEvent> function) {
-		keyRepeatFunctions.add(function);
+		keyRepeatedFunctions.add(function);
 	}
-
-	protected void addGeneralFunction(ConditionalFunction<GameInputEvent, GameEvent> function) {
-		generalFunctions.add(function);
-	}
-
-//	mouseMovedInputEventHandlers.add(new GUIMouseMovedInputEventHandler(getContext().getData()));mouseMovedInputEventHandlers.add((event)->
-//
-//	{
-//			mouse.setCursorCoordinates(new IntCoordinates(event.getMouseX(), event.getMouseY()));
-//			return false;
-//		});
 
 	public final void init(Queue<GameInputEvent> inputEventBuffer, PriorityQueue<GameEvent> eventQueue) {
 		this.inputEventBuffer = inputEventBuffer;

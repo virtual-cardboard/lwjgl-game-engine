@@ -3,6 +3,8 @@ package engine;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import common.timestep.GameLogicTimer;
+import common.timestep.WindowFrameUpdateTimer;
 import context.GameContext;
 import context.GameContextWrapper;
 import context.input.event.GameInputEvent;
