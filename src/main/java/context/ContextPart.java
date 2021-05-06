@@ -8,8 +8,11 @@ public abstract class ContextPart {
 		return context;
 	}
 
-	public void setContext(GameContext bundle) {
-		this.context = bundle;
+	public void setContext(GameContext context) {
+		this.context = context;
+	}
+
+	protected void doInit() {
 	}
 
 }

@@ -14,6 +14,4 @@ public abstract class GameData extends ContextPart {
 		doInit();
 	}
 
-	protected void doInit() {
-	}
 }

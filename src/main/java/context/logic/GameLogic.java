@@ -24,9 +24,6 @@ public abstract class GameLogic extends ContextPart {
 		doInit();
 	}
 
-	public void doInit() {
-	}
-
 	protected final Queue<GameEvent> getEventQueue() {
 		return eventQueue;
 	}

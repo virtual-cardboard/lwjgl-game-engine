@@ -128,7 +128,4 @@ public abstract class GameInput extends ContextPart {
 		doInit();
 	}
 
-	protected void doInit() {
-	}
-
 }
