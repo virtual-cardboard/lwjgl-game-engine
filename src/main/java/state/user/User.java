@@ -1,7 +1,7 @@
 package state.user;
 
-import common.source.GameSource;
 import state.entity.AbstractEntity;
+import state.source.GameSource;
 
 public class User extends AbstractEntity implements GameSource {
 

@@ -6,7 +6,6 @@ import java.util.Queue;
 import context.GameContext;
 import context.GameContextWrapper;
 import context.input.event.GameInputEvent;
-import context.logic.GameLogicTimer;
 import context.logic.TimeAccumulator;
 import context.visuals.renderer.GameRenderer;
 

@@ -1,6 +1,6 @@
 package common.event;
 
-import common.source.GameSource;
+import state.source.GameSource;
 
 public abstract class GameEvent implements Comparable<GameEvent> {
 

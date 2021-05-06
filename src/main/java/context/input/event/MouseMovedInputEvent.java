@@ -1,7 +1,7 @@
 package context.input.event;
 
 import common.coordinates.VectorCoordinates;
-import common.source.GameSource;
+import state.source.GameSource;
 import state.user.LocalUser;
 
 public final class MouseMovedInputEvent extends GameInputEvent {

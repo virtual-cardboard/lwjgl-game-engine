@@ -1,4 +1,4 @@
-package common.source;
+package state.source;
 
 public interface GameSource {
 

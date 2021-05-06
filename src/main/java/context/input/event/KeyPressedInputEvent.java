@@ -2,7 +2,7 @@ package context.input.event;
 
 import java.awt.event.KeyEvent;
 
-import common.source.GameSource;
+import state.source.GameSource;
 import state.user.LocalUser;
 
 public final class KeyPressedInputEvent extends GameInputEvent {

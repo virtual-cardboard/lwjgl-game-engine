@@ -1,7 +1,7 @@
 package context.input.event;
 
 import common.event.GameEvent;
-import common.source.GameSource;
+import state.source.GameSource;
 
 public abstract class GameInputEvent extends GameEvent {
 

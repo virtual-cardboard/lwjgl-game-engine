@@ -1,6 +1,6 @@
 package context.input.event;
 
-import common.source.GameSource;
+import state.source.GameSource;
 import state.user.LocalUser;
 
 public final class MouseScrolledInputEvent extends GameInputEvent {

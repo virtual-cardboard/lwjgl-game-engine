@@ -1,7 +1,9 @@
-package context.logic;
+package engine;
 
 import common.timestep.TimestepTimer;
 import context.GameContextWrapper;
+import context.logic.GameLogic;
+import context.logic.TimeAccumulator;
 
 public class GameLogicTimer extends TimestepTimer {
 

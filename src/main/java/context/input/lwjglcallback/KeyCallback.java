@@ -12,14 +12,14 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import context.input.event.GameInputEvent;
 import context.input.event.KeyPressedInputEvent;
 import context.input.event.KeyReleasedInputEvent;
-import context.input.event.KeyRepeatInputEvent;
+import context.input.event.KeyRepeatedInputEvent;
 
 /**
  * Decorates a key pressed event into an {@link KeyPressedInputEvent} and adds
  * it into the input buffer. <br>
  * Decorates a key released event into an {@link KeyReleasedInputEvent} and adds
  * it into the input buffer. <br>
- * Decorates a key repeated event into an {@link KeyRepeatInputEvent} and adds
+ * Decorates a key repeated event into an {@link KeyRepeatedInputEvent} and adds
  * it into the input buffer.
  * 
  * @author Lunkle
@@ -48,7 +48,7 @@ public class KeyCallback extends GLFWKeyCallback {
 					inputEventBuffer.add(new KeyReleasedInputEvent(key));
 					break;
 				case GLFW_REPEAT:
-					inputEventBuffer.add(new KeyRepeatInputEvent(key));
+					inputEventBuffer.add(new KeyRepeatedInputEvent(key));
 					break;
 				default:
 					break;
