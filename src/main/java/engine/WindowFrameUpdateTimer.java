@@ -18,7 +18,6 @@ public class WindowFrameUpdateTimer extends TimestepTimer {
 	public WindowFrameUpdateTimer(GameWindow window, GameContextWrapper wrapper) {
 		super(30);
 		this.window = window;
-		this.windowId = window.getWindowId();
 		this.wrapper = wrapper;
 	}
 
@@ -40,6 +39,7 @@ public class WindowFrameUpdateTimer extends TimestepTimer {
 	protected void startActions() {
 		window.createDisplay();
 		window.attachCallbacks();
+		this.windowId = window.getWindowId();
 	}
 
 	@Override
