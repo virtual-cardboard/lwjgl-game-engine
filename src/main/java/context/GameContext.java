@@ -32,7 +32,7 @@ public final class GameContext {
 	private PriorityQueue<GameEvent> eventQueue = new PriorityQueue<>();
 
 	/**
-	 * Takes in a data, input, logic, and visuals. Then sets the context references
+	 * Takes in a data, input, logic, and visuals, then sets the context references
 	 * of each of its parts to itself.
 	 * 
 	 * @param data    GameData
