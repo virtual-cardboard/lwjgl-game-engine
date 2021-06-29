@@ -5,8 +5,14 @@ import context.visuals.renderer.ShaderProgram;
 
 public class GuiShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = "src/main/java/graphics/gui/guiVertexShader.txt";
-	private static final String FRAGMENT_FILE = "src/main/java/graphics/gui/guiFragmentShader.txt";
+	private static final String VERTEX_FILE;
+	private static final String FRAGMENT_FILE;
+
+	static {
+		String guiShaderPath = GuiShader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		VERTEX_FILE = guiShaderPath + "shaders/guiVertexShader.txt";
+		FRAGMENT_FILE = guiShaderPath + "shaders/guiFragmentShader.txt";
+	}
 
 	private int location_modelMatrix;
 

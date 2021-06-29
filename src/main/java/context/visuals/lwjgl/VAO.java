@@ -26,7 +26,7 @@ public class VAO {
 
 	/**
 	 * Must bind and unbind VAO before attaching VBO/EBOs. The VAO is already
-	 * deafult bound upon creation so do not create any other. VAOs until finished
+	 * default bound upon creation so do not create any other. VAOs until finished
 	 * attaching VBO and EBOs for the most recently created vao.
 	 * 
 	 * @param data

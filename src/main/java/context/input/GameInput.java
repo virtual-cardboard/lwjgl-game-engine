@@ -18,6 +18,8 @@ import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.event.MouseScrolledInputEvent;
 import context.input.mouse.GameMouse;
+import context.visuals.gui.Gui;
+import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 
 /**
  * A context part that handles user input. It transforms raw
@@ -62,12 +64,30 @@ public abstract class GameInput extends ContextPart {
 	private void handleEvent(List<ConditionalFunction> functions, GameInputEvent inputEvent) {
 		for (ConditionalFunction function : functions) {
 			if (function.isSatisfiedBy(inputEvent)) {
-				eventQueue.add((GameEvent) function.apply(inputEvent));
+				GameEvent event = (GameEvent) function.apply(inputEvent);
+				if (event != null) {
+					eventQueue.add(event);
+				}
 				if (function.doesConsume()) {
 					break;
 				}
 			}
 		}
+	}
+
+	public final void init(Queue<GameInputEvent> inputEventBuffer, PriorityQueue<GameEvent> eventQueue) {
+		this.inputEventBuffer = inputEventBuffer;
+		this.eventQueue = eventQueue;
+		ConditionalFunction<FrameResizedInputEvent, GameEvent> updateVisualsRootGui = new ConditionalFunction<>(e -> true, e -> {
+			Gui rootGui = getContext().getVisuals().getRootGui();
+			PixelDimensionConstraint width = (PixelDimensionConstraint) rootGui.getWidthConstraint();
+			PixelDimensionConstraint height = (PixelDimensionConstraint) rootGui.getHeightConstraint();
+			width.setPixels(e.getWidth());
+			height.setPixels(e.getHeight());
+			return null;
+		});
+		frameResizedFunctions.add(updateVisualsRootGui);
+		doInit();
 	}
 
 	private void handleEvent(GameInputEvent inputEvent) {
@@ -120,12 +140,6 @@ public abstract class GameInput extends ContextPart {
 
 	protected void addKeyRepeatedFunction(ConditionalFunction<KeyRepeatedInputEvent, GameEvent> function) {
 		keyRepeatedFunctions.add(function);
-	}
-
-	public final void init(Queue<GameInputEvent> inputEventBuffer, PriorityQueue<GameEvent> eventQueue) {
-		this.inputEventBuffer = inputEventBuffer;
-		this.eventQueue = eventQueue;
-		doInit();
 	}
 
 }

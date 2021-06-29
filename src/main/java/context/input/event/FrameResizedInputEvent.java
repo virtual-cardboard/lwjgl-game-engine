@@ -5,26 +5,26 @@ import state.user.LocalUser;
 
 public final class FrameResizedInputEvent extends GameInputEvent {
 
-	private final float width;
-	private final float height;
+	private final int width;
+	private final int height;
 
-	public FrameResizedInputEvent(long time, GameSource source, float width, float height) {
+	public FrameResizedInputEvent(long time, GameSource source, int width, int height) {
 		super(time, source);
 		this.width = width;
 		this.height = height;
 	}
 
-	public FrameResizedInputEvent(float width, float height) {
+	public FrameResizedInputEvent(int width, int height) {
 		super(LocalUser.LOCAL_USER);
 		this.width = width;
 		this.height = height;
 	}
 
-	public float getWidth() {
+	public int getWidth() {
 		return width;
 	}
 
-	public float getHeight() {
+	public int getHeight() {
 		return height;
 	}
 

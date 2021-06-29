@@ -9,7 +9,6 @@ import context.GameContext;
 import context.GameContextWrapper;
 import context.input.event.GameInputEvent;
 import context.logic.TimeAccumulator;
-import context.visuals.renderer.GameRenderer;
 
 /**
  * The object that begins a game. Initializes everything required to start a
@@ -51,14 +50,12 @@ public final class GameEnabler {
 	 * motion.
 	 */
 	public void enable() {
-		print("Creating renderer.");
-		GameRenderer renderer = new GameRenderer();
 		print("Creating input buffer.");
 		Queue<GameInputEvent> inputBuffer = new PriorityQueue<>();
 		print("Creating time accumulator.");
 		TimeAccumulator accumulator = new TimeAccumulator();
 		print("Binding dependencies in context wrapper.");
-		GameContextWrapper wrapper = new GameContextWrapper(renderer, inputBuffer, accumulator, context);
+		GameContextWrapper wrapper = new GameContextWrapper(inputBuffer, accumulator, context);
 
 		print("Creating window.");
 		GameWindow window = new GameWindow(windowTitle, inputBuffer);
@@ -67,17 +64,21 @@ public final class GameEnabler {
 		print("Creating frame updater.");
 		WindowFrameUpdateTimer frameUpdater = new WindowFrameUpdateTimer(window, wrapper);
 		Thread renderingThread = new Thread(frameUpdater);
+		renderingThread.setName("renderingThread");
 		print("Creating logic timer.");
 		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
 		Thread gameLogicThread = new Thread(logicTimer);
-
-		print("Initializing context parts");
-		wrapper.getContext().init(inputBuffer);
+		gameLogicThread.setDaemon(true);
+		gameLogicThread.setName("gameLogicThread");
 
 		print("Starting rendering thread.");
 		renderingThread.start();
 		print("Starting update thread.");
 		gameLogicThread.start();
+
+		print("Initializing context parts");
+		wrapper.getContext().init(inputBuffer);
+
 	}
 
 	private void print(String s) {
