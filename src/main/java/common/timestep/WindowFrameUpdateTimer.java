@@ -4,9 +4,10 @@ import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
+import java.util.concurrent.CountDownLatch;
+
 import context.GameContext;
 import context.GameContextWrapper;
-import context.visuals.renderer.GameRenderer;
 import engine.GameWindow;
 
 public class WindowFrameUpdateTimer extends TimestepTimer {
@@ -15,12 +16,14 @@ public class WindowFrameUpdateTimer extends TimestepTimer {
 
 	private GameWindow window;
 	private long windowId;
-	GameRenderer gameRenderer;
 
-	public WindowFrameUpdateTimer(GameWindow window, GameContextWrapper wrapper) {
+	private CountDownLatch windowCountDownLatch;
+
+	public WindowFrameUpdateTimer(GameWindow window, GameContextWrapper wrapper, CountDownLatch windowCountDownLatch) {
 		super(30);
 		this.window = window;
 		this.wrapper = wrapper;
+		this.windowCountDownLatch = windowCountDownLatch;
 	}
 
 	@Override
@@ -28,7 +31,7 @@ public class WindowFrameUpdateTimer extends TimestepTimer {
 		GameContext context = wrapper.getContext();
 		glfwPollEvents();
 		context.getInput().handleAll();
-		context.getVisuals().render(gameRenderer);
+		context.getVisuals().render();
 		glfwSwapBuffers(windowId);
 	}
 
@@ -41,7 +44,8 @@ public class WindowFrameUpdateTimer extends TimestepTimer {
 	protected void startActions() {
 		window.createDisplay();
 		window.attachCallbacks();
-		gameRenderer = new GameRenderer();
+		windowCountDownLatch.countDown();
+		System.out.println("Created display++++!+!+!+!++");
 		this.windowId = window.getWindowId();
 	}
 

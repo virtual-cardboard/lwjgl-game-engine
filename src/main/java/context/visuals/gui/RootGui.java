@@ -3,13 +3,10 @@ package context.visuals.gui;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
-import context.visuals.gui.constraint.position.PixelPositionConstraint;
 
 public class RootGui extends InvisibleGui {
 
 	public RootGui(int width, int height) {
-		setPosXConstraint(new PixelPositionConstraint(0));
-		setPosYConstraint(new PixelPositionConstraint(0));
 		setWidthConstraint(new PixelDimensionConstraint(width));
 		setHeightConstraint(new PixelDimensionConstraint(height));
 	}

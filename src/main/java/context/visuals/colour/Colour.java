@@ -1,5 +1,7 @@
 package context.visuals.colour;
 
+import common.math.Vector4f;
+
 /**
  * In the real world, a colour can be represented using RGBA. Each of these 4
  * values is a number between 0 and 255. In computer world, we can represent a
@@ -89,6 +91,30 @@ public class Colour {
 	 */
 	public static int a(int colour) {
 		return 255 & (colour);
+	}
+
+	public static float normalizedR(int colour) {
+		return r(colour) / 255f;
+	}
+
+	public static float normalizedG(int colour) {
+		return g(colour) / 255f;
+	}
+
+	public static float normalizedB(int colour) {
+		return b(colour) / 255f;
+	}
+
+	public static float normalizedA(int colour) {
+		return a(colour) / 255f;
+	}
+
+	public static Vector4f toVector(int colour) {
+		return new Vector4f(r(colour), g(colour), b(colour), a(colour));
+	}
+
+	public static Vector4f toNormalizedVector(int colour) {
+		return new Vector4f(normalizedR(colour), normalizedG(colour), normalizedB(colour), normalizedA(colour));
 	}
 
 }

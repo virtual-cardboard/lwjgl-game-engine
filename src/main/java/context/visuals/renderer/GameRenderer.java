@@ -1,13 +1,14 @@
 package context.visuals.renderer;
 
-import context.visuals.renderer.rectrenderer.GuiDisplayer;
+import context.visuals.GameVisuals;
 
-public class GameRenderer {
-
-	private GuiDisplayer guiDisplayer = new GuiDisplayer();
-
-	public GuiDisplayer getGuiDisplayer() {
-		return guiDisplayer;
-	}
+/**
+ * Renders the game. Crate implementation(s) of this, and use them in
+ * {@link GameVisuals}'s {@link GameVisuals#render() render()} function.
+ * 
+ * @author Jay
+ *
+ */
+public abstract class GameRenderer {
 
 }

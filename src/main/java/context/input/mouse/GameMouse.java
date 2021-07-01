@@ -6,6 +6,10 @@ public class GameMouse {
 
 	private IntCoordinates cursorCoordinates;
 
+	public GameMouse() {
+		cursorCoordinates = new IntCoordinates(0, 0);
+	}
+
 	public IntCoordinates getCursorCoordinates() {
 		return cursorCoordinates;
 	}

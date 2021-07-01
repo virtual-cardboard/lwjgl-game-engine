@@ -2,6 +2,7 @@ package engine;
 
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.CountDownLatch;
 
 import common.timestep.GameLogicTimer;
 import common.timestep.WindowFrameUpdateTimer;
@@ -27,11 +28,10 @@ public final class GameEnabler {
 	private boolean printProgress = true;
 
 	/**
-	 * The constructor takes in and saves a window, a renderer, an input decorator,
-	 * and a game wrapper.
+	 * The constructor takes in and saves a window, an input decorator, and a game
+	 * wrapper.
 	 * 
 	 * @param window
-	 * @param renderer
 	 * @param inputDecorator
 	 * @param wrapper
 	 */
@@ -60,22 +60,32 @@ public final class GameEnabler {
 		print("Creating window.");
 		GameWindow window = new GameWindow(windowTitle, inputBuffer);
 
+		print("Creating frame updater and window count down latch.");
+		CountDownLatch windowCountDownLatch = new CountDownLatch(1);
+		WindowFrameUpdateTimer frameUpdater = new WindowFrameUpdateTimer(window, wrapper, windowCountDownLatch);
+
 		print("Creating rendering and updating threads.");
-		print("Creating frame updater.");
-		WindowFrameUpdateTimer frameUpdater = new WindowFrameUpdateTimer(window, wrapper);
 		Thread renderingThread = new Thread(frameUpdater);
 		renderingThread.setName("renderingThread");
+
 		print("Creating logic timer.");
 		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
 		Thread gameLogicThread = new Thread(logicTimer);
-		gameLogicThread.setDaemon(true);
 		gameLogicThread.setName("gameLogicThread");
+		gameLogicThread.setDaemon(true);
 
 		print("Starting rendering thread.");
 		renderingThread.start();
 		print("Starting update thread.");
 		gameLogicThread.start();
 
+		try {
+			System.out.println("Waiting for window initialization");
+			windowCountDownLatch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Window initialization finished");
 		print("Initializing context parts");
 		wrapper.getContext().init(inputBuffer);
 

@@ -8,18 +8,9 @@ import java.util.Queue;
 import common.ConditionalFunction;
 import common.event.GameEvent;
 import context.ContextPart;
-import context.input.event.FrameResizedInputEvent;
-import context.input.event.GameInputEvent;
-import context.input.event.KeyPressedInputEvent;
-import context.input.event.KeyReleasedInputEvent;
-import context.input.event.KeyRepeatedInputEvent;
-import context.input.event.MouseMovedInputEvent;
-import context.input.event.MousePressedInputEvent;
-import context.input.event.MouseReleasedInputEvent;
-import context.input.event.MouseScrolledInputEvent;
+import context.input.event.*;
 import context.input.mouse.GameMouse;
-import context.visuals.gui.Gui;
-import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
+import context.visuals.gui.RootGui;
 
 /**
  * A context part that handles user input. It transforms raw
@@ -52,7 +43,7 @@ public abstract class GameInput extends ContextPart {
 	/**
 	 * The mouse is automatically updated by the {@link GameInput}.
 	 */
-	private GameMouse mouse;
+	private GameMouse mouse = new GameMouse();
 
 	public void handleAll() {
 		while (!inputEventBuffer.isEmpty()) {
@@ -79,14 +70,16 @@ public abstract class GameInput extends ContextPart {
 		this.inputEventBuffer = inputEventBuffer;
 		this.eventQueue = eventQueue;
 		ConditionalFunction<FrameResizedInputEvent, GameEvent> updateVisualsRootGui = new ConditionalFunction<>(e -> true, e -> {
-			Gui rootGui = getContext().getVisuals().getRootGui();
-			PixelDimensionConstraint width = (PixelDimensionConstraint) rootGui.getWidthConstraint();
-			PixelDimensionConstraint height = (PixelDimensionConstraint) rootGui.getHeightConstraint();
-			width.setPixels(e.getWidth());
-			height.setPixels(e.getHeight());
+			RootGui rootGui = getContext().getVisuals().getRootGui();
+			rootGui.setDimensions(e.getWidth(), e.getHeight());
 			return null;
 		});
 		frameResizedFunctions.add(updateVisualsRootGui);
+		ConditionalFunction<MouseMovedInputEvent, GameEvent> udpateGameMouse = new ConditionalFunction<>(e -> true, e -> {
+			mouse.setCursorCoordinates(e.getMouseX(), e.getMouseY());
+			return null;
+		});
+		mouseMovedFunctions.add(udpateGameMouse);
 		doInit();
 	}
 
@@ -140,6 +133,10 @@ public abstract class GameInput extends ContextPart {
 
 	protected void addKeyRepeatedFunction(ConditionalFunction<KeyRepeatedInputEvent, GameEvent> function) {
 		keyRepeatedFunctions.add(function);
+	}
+
+	public GameMouse getMouse() {
+		return mouse;
 	}
 
 }
