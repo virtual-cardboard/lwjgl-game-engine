@@ -1,11 +1,12 @@
 package common.timestep;
 
-import java.util.concurrent.TimeUnit;
-
 import context.logic.TimeAccumulator;
 
 public abstract class TimestepTimer implements Runnable {
 
+	/**
+	 * The target number of frames per second.
+	 */
 	private float targetFrameRate;
 	private float targetFrameTime;
 
@@ -14,11 +15,24 @@ public abstract class TimestepTimer implements Runnable {
 	private long framesElapsed = 1;
 	private long currentTime;
 
+	/**
+	 * Instantiates a <code>TimestepTimer</code> with the given
+	 * <code>frameRate</code> and {@link TimeAccumulator}.
+	 * 
+	 * @param frameRate   the target number of frames per second
+	 * @param accumulator the <code>TimeAccumulator</code>
+	 */
 	public TimestepTimer(float frameRate, TimeAccumulator accumulator) {
 		this.accumulator = accumulator;
 		setFrameRate(frameRate);
 	}
 
+	/**
+	 * Instantiates a <code>TimestepTimer</code> with the given
+	 * <code>frameRate</code> and the default {@link TimeAccumulator}.
+	 * 
+	 * @param frameRate the target number of frames per second
+	 */
 	public TimestepTimer(float frameRate) {
 		this(frameRate, new TimeAccumulator());
 	}
@@ -36,6 +50,10 @@ public abstract class TimestepTimer implements Runnable {
 		endActions();
 	}
 
+	/**
+	 * Calls {@link #doUpdate() doUpdate()} enough times to match the
+	 * {@link #targetFrameRate targetFrameRate}.
+	 */
 	private void update() {
 		long newTime = System.currentTimeMillis();
 		long frameTime = newTime - currentTime;
@@ -48,20 +66,42 @@ public abstract class TimestepTimer implements Runnable {
 		accumulator.add(frameTime);
 
 		// Updating as many times as needed to make up for any lag
-		while (accumulator.getAccumulation() >= targetFrameTime) {
-			doUpdate();
+		while (shouldUpdate()) {
 			accumulator.sub(targetFrameTime);
+			doUpdate();
 			framesElapsed++;
 		}
 	}
 
+	/**
+	 * Whether or not {@link #doUpdate() doUpdate()} should be called.
+	 * 
+	 * @return if <code>doUpdate()</code> should be called
+	 */
+	protected boolean shouldUpdate() {
+		return accumulator.getAccumulation() >= targetFrameTime;
+	}
+
+	/**
+	 * Updates the game. This function is called every tick in {@link #update()
+	 * update()}.
+	 */
 	protected abstract void doUpdate();
 
+	/**
+	 * @return if the {@link TimestepTimer} should end.
+	 */
 	protected abstract boolean endCondition();
 
+	/**
+	 * Actions performed before the {@link TimestepTimer} starts updating.
+	 */
 	protected void startActions() {
 	}
 
+	/**
+	 * Actions performed after the {@link TimestepTimer} stops updating.
+	 */
 	protected void endActions() {
 	}
 
@@ -71,7 +111,7 @@ public abstract class TimestepTimer implements Runnable {
 
 	public void setFrameRate(float frameRate) {
 		this.targetFrameRate = frameRate;
-		targetFrameTime = TimeUnit.SECONDS.toMillis(1) / frameRate;
+		targetFrameTime = 1000 / frameRate;
 		accumulator.clear();
 		accumulator.setFrameTime(targetFrameTime);
 	}
@@ -79,4 +119,5 @@ public abstract class TimestepTimer implements Runnable {
 	public long getFramesElapsed() {
 		return framesElapsed;
 	}
+
 }
