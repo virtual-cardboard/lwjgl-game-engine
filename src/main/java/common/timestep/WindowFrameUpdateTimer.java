@@ -59,7 +59,6 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 		window.createDisplay();
 		window.attachCallbacks();
 		windowCountDownLatch.countDown();
-		System.out.println("Created display++++!+!+!+!++");
 		this.windowId = window.getWindowId();
 	}
 
