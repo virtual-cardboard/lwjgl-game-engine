@@ -74,18 +74,10 @@ public final class GameEnabler {
 		gameLogicThread.setName("gameLogicThread");
 		gameLogicThread.setDaemon(true);
 
-//		print("Creating loader");
-//		Loader loader = new Loader();
-//		Thread loaderThread = new Thread(loader);
-//		loaderThread.setName("loaderThread");
-//		loaderThread.setDaemon(true);
-
 		print("Starting rendering thread.");
 		renderingThread.start();
 		print("Starting update thread.");
 		gameLogicThread.start();
-//		print("Starting loader thread");
-//		loaderThread.start();
 
 		try {
 			System.out.println("Waiting for window initialization");

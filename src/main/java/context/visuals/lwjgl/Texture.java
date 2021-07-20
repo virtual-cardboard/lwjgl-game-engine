@@ -76,6 +76,10 @@ public class Texture {
 		glDeleteTextures(id);
 	}
 
+	public int getTextureUnit() {
+		return textureUnit;
+	}
+
 	public int getWidth() {
 		return width;
 	}

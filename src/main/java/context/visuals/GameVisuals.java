@@ -33,7 +33,8 @@ public abstract class GameVisuals extends ContextPart {
 	 */
 	public abstract void render();
 
-	public void init() {
+	public final void init() {
+		doInit();
 	}
 
 }

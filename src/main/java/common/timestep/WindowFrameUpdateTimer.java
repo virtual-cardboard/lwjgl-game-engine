@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
+import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 
@@ -31,6 +32,7 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 		this.window = window;
 		this.wrapper = wrapper;
 		this.windowCountDownLatch = windowCountDownLatch;
+		linkTasks = new ArrayDeque<>();
 	}
 
 	@Override
@@ -48,6 +50,10 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 		return glfwWindowShouldClose(windowId);
 	}
 
+	/**
+	 * Creates window, attaches window callbacks, and notifies the
+	 * <code>windowCountDownLatch</code>.
+	 */
 	@Override
 	protected void startActions() {
 		window.createDisplay();
@@ -57,6 +63,9 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 		this.windowId = window.getWindowId();
 	}
 
+	/**
+	 * Destroys the window.
+	 */
 	@Override
 	protected void endActions() {
 		window.destroy();
@@ -83,6 +92,10 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 				linkTask.run();
 			}
 		}
+	}
+
+	public Queue<LinkTask> getLinkTasks() {
+		return linkTasks;
 	}
 
 }
