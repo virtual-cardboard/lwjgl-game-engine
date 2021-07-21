@@ -24,7 +24,6 @@ public class Texture {
 
 	public Texture(int textureUnit) {
 		this.textureUnit = textureUnit;
-		id = glGenTextures();
 	}
 
 	public Texture(int textureUnit, String imagePath) {
@@ -74,6 +73,10 @@ public class Texture {
 	 */
 	public void delete() {
 		glDeleteTextures(id);
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getTextureUnit() {

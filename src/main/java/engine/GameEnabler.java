@@ -4,6 +4,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 
+import common.loader.Loader;
 import common.timestep.GameLogicTimer;
 import common.timestep.WindowFrameUpdateTimer;
 import context.GameContext;
@@ -54,15 +55,22 @@ public final class GameEnabler {
 		Queue<GameInputEvent> inputBuffer = new PriorityQueue<>();
 		print("Creating time accumulator.");
 		TimeAccumulator accumulator = new TimeAccumulator();
-		print("Binding dependencies in context wrapper.");
-		GameContextWrapper wrapper = new GameContextWrapper(inputBuffer, accumulator, context);
 
 		print("Creating window.");
 		GameWindow window = new GameWindow(windowTitle, inputBuffer);
 
 		print("Creating frame updater and window count down latch.");
 		CountDownLatch windowCountDownLatch = new CountDownLatch(1);
-		WindowFrameUpdateTimer frameUpdater = new WindowFrameUpdateTimer(window, wrapper, windowCountDownLatch);
+		print("Binding dependencies in context wrapper.");
+		WindowFrameUpdateTimer frameUpdater = new WindowFrameUpdateTimer(window, windowCountDownLatch);
+
+		print("Creating loader");
+		Loader loader = new Loader();
+		Thread loaderThread = new Thread(loader);
+		loaderThread.setName("loaderThread");
+		loaderThread.setDaemon(true);
+
+		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, accumulator, frameUpdater, loader);
 
 		print("Creating rendering and updating threads.");
 		Thread renderingThread = new Thread(frameUpdater);
@@ -70,14 +78,16 @@ public final class GameEnabler {
 
 		print("Creating logic timer.");
 		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
-		Thread gameLogicThread = new Thread(logicTimer);
-		gameLogicThread.setName("gameLogicThread");
-		gameLogicThread.setDaemon(true);
+		Thread logicThread = new Thread(logicTimer);
+		logicThread.setName("gameLogicThread");
+		logicThread.setDaemon(true);
 
+		print("Starting loader thread,");
+		loaderThread.start();
 		print("Starting rendering thread.");
 		renderingThread.start();
-		print("Starting update thread.");
-		gameLogicThread.start();
+		print("Starting logic thread.");
+		logicThread.start();
 
 		try {
 			System.out.println("Waiting for window initialization");

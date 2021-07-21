@@ -27,10 +27,9 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 	 */
 	private Queue<LinkTask> linkTasks;
 
-	public WindowFrameUpdateTimer(GameWindow window, GameContextWrapper wrapper, CountDownLatch windowCountDownLatch) {
+	public WindowFrameUpdateTimer(GameWindow window, CountDownLatch windowCountDownLatch) {
 		super(30);
 		this.window = window;
-		this.wrapper = wrapper;
 		this.windowCountDownLatch = windowCountDownLatch;
 		linkTasks = new ArrayDeque<>();
 	}
@@ -95,6 +94,10 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 
 	public Queue<LinkTask> getLinkTasks() {
 		return linkTasks;
+	}
+
+	public void setWrapper(GameContextWrapper wrapper) {
+		this.wrapper = wrapper;
 	}
 
 }

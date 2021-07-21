@@ -4,6 +4,8 @@ import java.util.Queue;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import common.loader.Loader;
+import common.timestep.WindowFrameUpdateTimer;
 import context.input.event.GameInputEvent;
 import context.logic.TimeAccumulator;
 
@@ -35,24 +37,34 @@ public class GameContextWrapper {
 
 	private final Queue<GameInputEvent> inputBuffer;
 	private final TimeAccumulator accumulator;
+	private final WindowFrameUpdateTimer windowFrameUpdateTimer;
+	private final Loader loader;
 
 	/**
-	 * A constructor that takes in the renderer, input buffer, and logic timer.
+	 * A constructor that takes in the context, input buffer, logic timer,
+	 * windowFrameUpdateTimer, and loader.
 	 * 
-	 * @param inputBuffer
-	 * @param logicTimer
+	 * @param context                the starting {@link GameContext}
+	 * @param inputBuffer            {@link Queue} of {@link GameInputEvent}s
+	 * @param accumulator            the logic timer
+	 * @param windowFrameUpdateTimer the {@link WindowFrameUpdateTimer}
+	 * @param loader                 the {@link Loader}
 	 */
-	public GameContextWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, GameContext context) {
+	public GameContextWrapper(GameContext context, Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator,
+			WindowFrameUpdateTimer windowFrameUpdateTimer, Loader loader) {
+		this.context = context;
 		this.inputBuffer = inputBuffer;
 		this.accumulator = accumulator;
-		this.context = context;
+		this.windowFrameUpdateTimer = windowFrameUpdateTimer;
+		windowFrameUpdateTimer.setWrapper(this);
+		this.loader = loader;
 	}
 
 	/**
 	 * Swaps current context for the provided context. Puts a write lock on the
 	 * reference.
 	 * 
-	 * @param context
+	 * @param context the context to transition to
 	 */
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
@@ -80,6 +92,14 @@ public class GameContextWrapper {
 
 	public TimeAccumulator getAccumulator() {
 		return accumulator;
+	}
+
+	public WindowFrameUpdateTimer getWindowFrameUpdateTimer() {
+		return windowFrameUpdateTimer;
+	}
+
+	public Loader getLoader() {
+		return loader;
 	}
 
 }
