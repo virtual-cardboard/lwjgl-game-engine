@@ -11,7 +11,7 @@ public abstract class LinkTask implements Runnable {
 	private boolean done = false;
 
 	@Override
-	public final void run() {
+	public void run() {
 		doRun();
 		done = true;
 	}

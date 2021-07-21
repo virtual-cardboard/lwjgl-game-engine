@@ -8,24 +8,18 @@ import common.math.Vector3f;
 import context.visuals.colour.Colour;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
-import context.visuals.lwjgl.RectangleMeshData;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.renderer.GameRenderer;
-import context.visuals.renderer.shader.FragmentShader;
 import context.visuals.renderer.shader.ShaderProgram;
-import context.visuals.renderer.shader.VertexShader;
 
 public class GuiRenderer extends GameRenderer {
 
 	private ShaderProgram shaderProgram;
-	private VertexArrayObject guiVAO;
+	private VertexArrayObject guiVao;
 
-	public GuiRenderer() {
-		this.shaderProgram = new ShaderProgram();
-		shaderProgram.attachShader(new VertexShader("/shaders/guiVertexShader.vs"));
-		shaderProgram.attachShader(new FragmentShader("/shaders/guiFragmentShader.fs"));
-		shaderProgram.link();
-		guiVAO = RectangleMeshData.generateRectangle();
+	public GuiRenderer(ShaderProgram shaderProgram, VertexArrayObject guiVao) {
+		this.shaderProgram = shaderProgram;
+		this.guiVao = guiVao;
 	}
 
 	public void render(RootGui root) {
@@ -58,7 +52,7 @@ public class GuiRenderer extends GameRenderer {
 
 		shaderProgram.setMat4("modelMatrix", matrix4f);
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
-		guiVAO.display();
+		guiVao.display();
 		for (Gui child : gui.getChildren()) {
 			doRecursiveRender(child, root, x, y, w, h);
 		}

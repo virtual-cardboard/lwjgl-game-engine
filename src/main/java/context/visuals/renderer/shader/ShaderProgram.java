@@ -18,10 +18,6 @@ public class ShaderProgram {
 	private int id;
 	private List<Shader> shaders = new ArrayList<>();
 
-	public ShaderProgram() {
-		id = glCreateProgram();
-	}
-
 	/**
 	 * Attach a shader to the shader program. Also tracks it to be deleted when the
 	 * shader program is deleted.
@@ -112,6 +108,10 @@ public class ShaderProgram {
 		mat4.store(buffer);
 		buffer.flip();
 		glUniformMatrix4fv(glGetUniformLocation(id, uniform), false, buffer);
+	}
+
+	public void generateId() {
+		id = glCreateProgram();
 	}
 
 }

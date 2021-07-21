@@ -3,6 +3,8 @@ package common.loader;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import common.loader.loadtask.LoadTask;
+
 public class Loader implements Runnable {
 
 	private boolean isDone = false;
@@ -33,15 +35,14 @@ public class Loader implements Runnable {
 		if (!loadQueue.isEmpty() && !isBlockLoad) {
 			currentTask = loadQueue.poll();
 			if (currentTask != null) {
-				currentTask.loadable.load();
-				currentTask.isLoaded = true;
+				currentTask.run();
 			}
 		}
 	}
 
 	private void sleepForAWhile() {
 		try {
-			Thread.sleep(500);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -57,6 +58,10 @@ public class Loader implements Runnable {
 
 	public void flagIsDone() {
 		isDone = true;
+	}
+
+	public Queue<LoadTask> getLoadQueue() {
+		return loadQueue;
 	}
 
 	public int getNumberOfTasks() {
