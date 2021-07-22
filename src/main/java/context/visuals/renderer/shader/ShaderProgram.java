@@ -3,8 +3,10 @@ package context.visuals.renderer.shader;
 import static org.lwjgl.opengl.GL20.*;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import org.lwjgl.BufferUtils;
 
@@ -16,7 +18,8 @@ import common.math.Vector4f;
 public class ShaderProgram {
 
 	private int id;
-	private List<Shader> shaders = new ArrayList<>();
+	private Queue<Shader> toAttach = new ArrayDeque<>();
+	private List<Shader> toDelete = new ArrayList<>();
 
 	/**
 	 * Attach a shader to the shader program. Also tracks it to be deleted when the
@@ -42,9 +45,9 @@ public class ShaderProgram {
 	 *                 deletion of the shader program.
 	 */
 	public void attachShader(Shader shader, boolean doDelete) {
-		glAttachShader(id, shader.getId());
+		toAttach.add(shader);
 		if (doDelete) {
-			shaders.add(shader);
+			toDelete.add(shader);
 		}
 	}
 
@@ -52,6 +55,9 @@ public class ShaderProgram {
 	 * Links the shader program to OpenGL. Should only be called once.
 	 */
 	public void link() {
+		for (int i = 0; i < toAttach.size(); i++) {
+			glAttachShader(id, toAttach.poll().getId());
+		}
 		glLinkProgram(id);
 	}
 
@@ -72,7 +78,7 @@ public class ShaderProgram {
 
 	public void delete() {
 		unbind();
-		for (Shader shader : shaders) {
+		for (Shader shader : toDelete) {
 			glDetachShader(id, shader.getId());
 			shader.delete();
 		}

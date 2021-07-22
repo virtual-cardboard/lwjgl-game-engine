@@ -16,8 +16,8 @@ public abstract class CountDownLinkTask extends LinkTask {
 
 	@Override
 	public void run() {
-		super.run();
 		countDownLatch.countDown();
+		super.run();
 	}
 
 	public CountDownLatch getCountDownLatch() {

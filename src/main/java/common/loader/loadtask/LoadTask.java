@@ -1,5 +1,16 @@
 package common.loader.loadtask;
 
+import common.loader.Loader;
+import common.loader.linktask.LinkTask;
+
+/**
+ * Use a LoadTask for I/O operations.
+ * 
+ * @author Jay
+ * @see LinkTask
+ * @see Loader
+ *
+ */
 public abstract class LoadTask implements Runnable {
 
 	private boolean done = false;
