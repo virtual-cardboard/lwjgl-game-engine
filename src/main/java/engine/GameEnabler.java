@@ -82,6 +82,9 @@ public final class GameEnabler {
 		logicThread.setName("gameLogicThread");
 		logicThread.setDaemon(true);
 
+		print("Initializing context parts");
+		wrapper.getContext().init(inputBuffer);
+
 		print("Starting loader thread,");
 		loaderThread.start();
 		print("Starting rendering thread.");
@@ -96,9 +99,6 @@ public final class GameEnabler {
 			e.printStackTrace();
 		}
 		System.out.println("Window initialization finished");
-		print("Initializing context parts");
-		wrapper.getContext().init(inputBuffer);
-
 	}
 
 	private void print(String s) {

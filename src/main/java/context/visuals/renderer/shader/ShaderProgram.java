@@ -18,6 +18,7 @@ import common.math.Vector4f;
 public class ShaderProgram {
 
 	private int id;
+	private boolean linked;
 	private Queue<Shader> toAttach = new ArrayDeque<>();
 	private List<Shader> toDelete = new ArrayList<>();
 
@@ -55,10 +56,12 @@ public class ShaderProgram {
 	 * Links the shader program to OpenGL. Should only be called once.
 	 */
 	public void link() {
-		for (int i = 0; i < toAttach.size(); i++) {
+		int numShaders = toAttach.size();
+		for (int i = 0; i < numShaders; i++) {
 			glAttachShader(id, toAttach.poll().getId());
 		}
 		glLinkProgram(id);
+		linked = true;
 	}
 
 	/**
@@ -118,6 +121,10 @@ public class ShaderProgram {
 
 	public void generateId() {
 		id = glCreateProgram();
+	}
+
+	public boolean isLinked() {
+		return linked;
 	}
 
 }

@@ -7,8 +7,8 @@ import context.visuals.gui.constraint.position.GuiPositionConstraint;
 public class RootGui extends InvisibleGui {
 
 	public RootGui(int width, int height) {
-		setWidthConstraint(new PixelDimensionConstraint(width));
-		setHeightConstraint(new PixelDimensionConstraint(height));
+		super.setWidthConstraint(new PixelDimensionConstraint(width));
+		super.setHeightConstraint(new PixelDimensionConstraint(height));
 	}
 
 	@Override

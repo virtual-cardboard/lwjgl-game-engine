@@ -53,6 +53,7 @@ public class GameContextWrapper {
 	public GameContextWrapper(GameContext context, Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator,
 			WindowFrameUpdateTimer windowFrameUpdateTimer, Loader loader) {
 		this.context = context;
+		context.setWrapper(this);
 		this.inputBuffer = inputBuffer;
 		this.accumulator = accumulator;
 		this.windowFrameUpdateTimer = windowFrameUpdateTimer;
@@ -69,7 +70,7 @@ public class GameContextWrapper {
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
 			this.context = context;
-			context.wrapper = this;
+			context.setWrapper(this);
 		}
 	}
 

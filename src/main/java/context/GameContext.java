@@ -22,7 +22,7 @@ import context.visuals.GameVisuals;
  */
 public final class GameContext {
 
-	GameContextWrapper wrapper;
+	private GameContextWrapper wrapper;
 
 	private final GameData data;
 	private final GameInput input;
@@ -77,6 +77,10 @@ public final class GameContext {
 
 	public GameContextWrapper getWrapper() {
 		return wrapper;
+	}
+
+	void setWrapper(GameContextWrapper wrapper) {
+		this.wrapper = wrapper;
 	}
 
 }

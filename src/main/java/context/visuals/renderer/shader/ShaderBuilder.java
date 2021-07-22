@@ -12,7 +12,6 @@ public final class ShaderBuilder {
 	private final Queue<LoadTask> loadTasks;
 	private final Queue<LinkTask> linkTasks;
 	private volatile ShaderProgram shaderProgram;
-	private volatile boolean built;
 
 	public ShaderBuilder(Queue<LoadTask> loadTasks, Queue<LinkTask> linkTasks) {
 		this.loadTasks = loadTasks;
@@ -20,7 +19,6 @@ public final class ShaderBuilder {
 	}
 
 	public void create(String vertexShaderFileLocation, String fragmentShaderFileLocation) {
-		built = false;
 		CountDownLatch countDownLatch = new CountDownLatch(2);
 		shaderProgram = new ShaderProgram();
 		LoadShaderFileTask loadVertex = new LoadShaderFileTask(linkTasks, countDownLatch, shaderProgram,
@@ -32,11 +30,13 @@ public final class ShaderBuilder {
 	}
 
 	public ShaderProgram getShaderProgram() {
-		return built ? shaderProgram : null;
+		ShaderProgram shaderProgramCopy = shaderProgram;
+		shaderProgram = null;
+		return shaderProgramCopy;
 	}
 
 	public boolean isBuilt() {
-		return built;
+		return shaderProgram != null && shaderProgram.isLinked();
 	}
 
 }

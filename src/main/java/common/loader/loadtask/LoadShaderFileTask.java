@@ -53,7 +53,8 @@ public class LoadShaderFileTask extends CountDownLoadTask {
 			throw new RuntimeException(e);
 		}
 		source = code.toString();
-		linkTasks.add(new CreateShaderLinkTask(createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, shaderPath));
+		linkTasks.add(new CreateShaderLinkTask(createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, source));
+//		System.out.println("Finished loading shader with file location " + sourceLocation + ", code is \n" + source);
 	}
 
 	public String getSource() {
