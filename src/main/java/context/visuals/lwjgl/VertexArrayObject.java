@@ -14,19 +14,29 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An object that contains data about a group of vertices in OpenGL. Learn more
+ * about them here: <a href=
+ * "https://stackoverflow.com/questions/11821336/what-are-vertex-array-objects">
+ * https://stackoverflow.com/questions/11821336/what-are-vertex-array-objects</a>
+ * 
+ * @see VertexBufferObject
+ * @see ElementBufferObject
+ * 
+ * @author Jay
+ *
+ */
 public class VertexArrayObject {
 
 	private static VertexArrayObject currentlyBound;
 
 	private int id;
-
+	private boolean linked;
 	private int nextAttribIndex = 0;
-
 	private List<VertexBufferObject> vbos;
 	private ElementBufferObject ebo;
 
 	public VertexArrayObject() {
-		id = glGenVertexArrays();
 		vbos = new ArrayList<>();
 	}
 
@@ -59,17 +69,23 @@ public class VertexArrayObject {
 	}
 
 	public void attachVBO(VertexBufferObject vbo) {
-		bind();
 		vbos.add(vbo);
 	}
 
-	public int getId() {
-		return id;
+	public void generateId() {
+		if (linked) {
+			throw new IllegalStateException("Tried to generate VAO ID when already generated.");
+		}
+		this.id = glGenVertexArrays();
+		linked = true;
 	}
 
 	public void setEbo(ElementBufferObject ebo) {
-		bind();
 		this.ebo = ebo;
+	}
+
+	public boolean isLinked() {
+		return linked;
 	}
 
 }
