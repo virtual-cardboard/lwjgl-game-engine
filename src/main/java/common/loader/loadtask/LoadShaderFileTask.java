@@ -12,7 +12,7 @@ import common.loader.linktask.LinkTask;
 import context.visuals.renderer.shader.Shader;
 import context.visuals.renderer.shader.ShaderProgram;
 
-public class LoadShaderFileTask extends CountDownLoadTask {
+public class LoadShaderFileTask extends LoadTask {
 
 	private CountDownLatch createShaderLinkTaskCountDownLatch;
 	private Queue<LinkTask> linkTasks;

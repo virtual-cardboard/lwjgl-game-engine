@@ -6,7 +6,7 @@ import java.util.concurrent.CountDownLatch;
 import context.visuals.renderer.shader.Shader;
 import context.visuals.renderer.shader.ShaderProgram;
 
-public class CreateShaderLinkTask extends CountDownLinkTask {
+public class CreateShaderLinkTask extends LinkTask {
 
 	private Queue<LinkTask> linkTasks;
 	private ShaderProgram shaderProgram;
@@ -30,7 +30,7 @@ public class CreateShaderLinkTask extends CountDownLinkTask {
 		shader.generateId();
 		shader.compile(source);
 		shaderProgram.attachShader(shader);
-		if (atZero()) {
+		if (isDone()) {
 			linkTasks.add(new CreateShaderProgramLinkTask(shaderProgram));
 		}
 	}

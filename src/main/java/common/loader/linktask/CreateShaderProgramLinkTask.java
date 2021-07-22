@@ -2,7 +2,7 @@ package common.loader.linktask;
 
 import context.visuals.renderer.shader.ShaderProgram;
 
-public class CreateShaderProgramLinkTask extends CountDownLinkTask {
+public class CreateShaderProgramLinkTask extends LinkTask {
 
 	private ShaderProgram shaderProgram;
 

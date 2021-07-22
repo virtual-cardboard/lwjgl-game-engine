@@ -1,5 +1,7 @@
 package common.loader.loadtask;
 
+import java.util.concurrent.CountDownLatch;
+
 import common.loader.Loader;
 import common.loader.linktask.LinkTask;
 
@@ -13,18 +15,34 @@ import common.loader.linktask.LinkTask;
  */
 public abstract class LoadTask implements Runnable {
 
-	private boolean done = false;
+	private CountDownLatch countDownLatch;
+
+	public LoadTask() {
+		this(new CountDownLatch(1));
+	}
+
+	public LoadTask(CountDownLatch countDownLatch) {
+		this.countDownLatch = countDownLatch;
+	}
 
 	@Override
-	public void run() {
+	public final void run() {
+		countDownLatch.countDown();
 		doRun();
-		done = true;
 	}
 
 	public abstract void doRun();
 
+	public final long getCount() {
+		return countDownLatch.getCount();
+	}
+
 	public final boolean isDone() {
-		return done;
+		return countDownLatch.getCount() == 0;
+	}
+
+	public final CountDownLatch getCountDownLatch() {
+		return countDownLatch;
 	}
 
 }
