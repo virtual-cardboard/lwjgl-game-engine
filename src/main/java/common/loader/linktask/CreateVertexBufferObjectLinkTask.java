@@ -2,11 +2,11 @@ package common.loader.linktask;
 
 import context.visuals.lwjgl.VertexBufferObject;
 
-public class CreateVboLinkTask extends LinkTask {
+public class CreateVertexBufferObjectLinkTask extends LinkTask {
 
 	private VertexBufferObject vbo;
 
-	public CreateVboLinkTask(VertexBufferObject vbo) {
+	public CreateVertexBufferObjectLinkTask(VertexBufferObject vbo) {
 		this.vbo = vbo;
 	}
 

@@ -4,8 +4,8 @@ import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 
 import common.loader.linktask.LinkTask;
-import common.loader.loadtask.LoadShaderFileTask;
 import common.loader.loadtask.LoadTask;
+import common.loader.loadtask.ShaderFileLoadTask;
 
 public final class ShaderBuilder {
 
@@ -21,9 +21,9 @@ public final class ShaderBuilder {
 	public void create(String vertexShaderFileLocation, String fragmentShaderFileLocation) {
 		CountDownLatch countDownLatch = new CountDownLatch(2);
 		shaderProgram = new ShaderProgram();
-		LoadShaderFileTask loadVertex = new LoadShaderFileTask(linkTasks, countDownLatch, shaderProgram,
+		ShaderFileLoadTask loadVertex = new ShaderFileLoadTask(linkTasks, countDownLatch, shaderProgram,
 				new Shader(ShaderType.VERTEX), vertexShaderFileLocation);
-		LoadShaderFileTask loadFragment = new LoadShaderFileTask(linkTasks, countDownLatch, shaderProgram,
+		ShaderFileLoadTask loadFragment = new ShaderFileLoadTask(linkTasks, countDownLatch, shaderProgram,
 				new Shader(ShaderType.FRAGMENT), fragmentShaderFileLocation);
 		loadTasks.add(loadVertex);
 		loadTasks.add(loadFragment);

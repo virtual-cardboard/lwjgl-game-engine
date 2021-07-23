@@ -16,7 +16,7 @@ public class Shader {
 		glShaderSource(id, source);
 		glCompileShader(id);
 		if (glGetShaderi(id, GL_COMPILE_STATUS) == GL_FALSE) {
-			System.out.println(glGetShaderInfoLog(id, 500));
+			System.err.println(glGetShaderInfoLog(id, 500));
 			throw new RuntimeException("Could not compile shader source:\n" + source);
 		}
 	}

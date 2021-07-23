@@ -71,6 +71,7 @@ public class GameContextWrapper {
 		synchronized (contextLock.writeLock()) {
 			this.context = context;
 			context.setWrapper(this);
+			context.init(inputBuffer);
 		}
 	}
 

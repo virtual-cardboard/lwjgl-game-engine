@@ -12,7 +12,7 @@ import common.loader.linktask.LinkTask;
 import context.visuals.renderer.shader.Shader;
 import context.visuals.renderer.shader.ShaderProgram;
 
-public class LoadShaderFileTask extends LoadTask {
+public class ShaderFileLoadTask extends LoadTask {
 
 	private CountDownLatch createShaderLinkTaskCountDownLatch;
 	private Queue<LinkTask> linkTasks;
@@ -21,12 +21,12 @@ public class LoadShaderFileTask extends LoadTask {
 	private String sourceLocation;
 	private String source;
 
-	public LoadShaderFileTask(Queue<LinkTask> linkTasks, CountDownLatch createShaderLinkTaskCountDownLatch,
+	public ShaderFileLoadTask(Queue<LinkTask> linkTasks, CountDownLatch createShaderLinkTaskCountDownLatch,
 			ShaderProgram shaderProgram, Shader shader, String sourceLocation) {
 		this(new CountDownLatch(1), createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, sourceLocation);
 	}
 
-	public LoadShaderFileTask(CountDownLatch countDownLatch, CountDownLatch createShaderLinkTaskCountDownLatch,
+	public ShaderFileLoadTask(CountDownLatch countDownLatch, CountDownLatch createShaderLinkTaskCountDownLatch,
 			Queue<LinkTask> linkTasks, ShaderProgram shaderProgram, Shader shader, String sourceLocation) {
 		super(countDownLatch);
 		this.createShaderLinkTaskCountDownLatch = createShaderLinkTaskCountDownLatch;
@@ -50,11 +50,12 @@ public class LoadShaderFileTask extends LoadTask {
 				code.append(line + "\n");
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 		source = code.toString();
-		linkTasks.add(new CreateShaderLinkTask(createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, source));
-//		System.out.println("Finished loading shader with file location " + sourceLocation + ", code is \n" + source);
+		CreateShaderLinkTask createShaderLinkTask = new CreateShaderLinkTask(createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, source);
+		linkTasks.add(createShaderLinkTask);
 	}
 
 	public String getSource() {

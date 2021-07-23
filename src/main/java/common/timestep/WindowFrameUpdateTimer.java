@@ -4,9 +4,9 @@ import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
-import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import common.loader.linktask.LinkTask;
 import context.GameContext;
@@ -31,7 +31,7 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 		super(30);
 		this.window = window;
 		this.windowCountDownLatch = windowCountDownLatch;
-		linkTasks = new ArrayDeque<>();
+		linkTasks = new LinkedBlockingQueue<>();
 	}
 
 	@Override

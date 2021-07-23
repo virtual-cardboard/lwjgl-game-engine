@@ -1,9 +1,9 @@
 package common.loader;
 
-import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 
 import common.loader.loadtask.LoadTask;
@@ -19,8 +19,8 @@ public class Loader implements Runnable {
 	private ExecutorService fixedThreadPool;
 
 	public Loader() {
-		loadTasks = new LinkedList<>();
-		fixedThreadPool = Executors.newFixedThreadPool(4,
+		loadTasks = new LinkedBlockingQueue<>();
+		fixedThreadPool = Executors.newFixedThreadPool(NUM_THREADS,
 				new ThreadFactory() {
 					@Override
 					public Thread newThread(Runnable r) {

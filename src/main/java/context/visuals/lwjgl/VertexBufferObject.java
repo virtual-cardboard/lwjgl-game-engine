@@ -21,9 +21,19 @@ public class VertexBufferObject {
 	private int id;
 	private float[] data;
 	private boolean linked;
+	private int vertexDataSize;
 
-	public VertexBufferObject(final float[] data) {
+	/**
+	 * Creates a {@link VertexBufferObject} with the data. The data is treated as
+	 * having <code>x</code> rows and <code>vertexDataSize</code> columns, where
+	 * <code>x = data.length / vertexDataSize</code>.
+	 * 
+	 * @param data           float array of values
+	 * @param vertexDataSize the number of columns in the data
+	 */
+	public VertexBufferObject(final float[] data, int vertexDataSize) {
 		this.data = data;
+		this.vertexDataSize = vertexDataSize;
 	}
 
 	public void loadData() {
@@ -31,7 +41,7 @@ public class VertexBufferObject {
 		glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
 	}
 
-	private void bind() {
+	void bind() {
 		if (currentlyBound == this) {
 			return;
 		}
@@ -49,6 +59,10 @@ public class VertexBufferObject {
 
 	public boolean isLinked() {
 		return linked;
+	}
+
+	public int getVertexDataSize() {
+		return vertexDataSize;
 	}
 
 }

@@ -32,7 +32,6 @@ public class VertexArrayObject {
 
 	private int id;
 	private boolean linked;
-	private int nextAttribIndex = 0;
 	private List<VertexBufferObject> vbos;
 	private ElementBufferObject ebo;
 
@@ -54,10 +53,22 @@ public class VertexArrayObject {
 		glDeleteVertexArrays(id);
 	}
 
-	public void setVertexAttributePointer(int size, int stride, int offset) {
+	/**
+	 * Tells OpenGL to enable the attached VBOs. Should only be called once after
+	 * attaching all necessary VBOs.
+	 * 
+	 * @see VertexBufferObject
+	 */
+	public void enableVertexAttribPointers() {
 		bind();
-		glVertexAttribPointer(nextAttribIndex, size, GL_FLOAT, false, stride * Float.BYTES, offset * Float.BYTES);
-		glEnableVertexAttribArray(nextAttribIndex++);
+		for (int i = 0; i < vbos.size(); i++) {
+			VertexBufferObject vbo = vbos.get(i);
+			vbo.bind();
+			int vertexDataSize = vbo.getVertexDataSize();
+			glVertexAttribPointer(i, vertexDataSize, GL_FLOAT, false, vertexDataSize * Float.BYTES, 0);
+			glEnableVertexAttribArray(i);
+		}
+		linked = true;
 	}
 
 	private void bind() {
@@ -73,11 +84,7 @@ public class VertexArrayObject {
 	}
 
 	public void generateId() {
-		if (linked) {
-			throw new IllegalStateException("Tried to generate VAO ID when already generated.");
-		}
 		this.id = glGenVertexArrays();
-		linked = true;
 	}
 
 	public void setEbo(ElementBufferObject ebo) {

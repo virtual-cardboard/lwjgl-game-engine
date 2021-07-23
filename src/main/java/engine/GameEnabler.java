@@ -93,12 +93,12 @@ public final class GameEnabler {
 		logicThread.start();
 
 		try {
-			System.out.println("Waiting for window initialization");
+			print("Waiting for window initialization");
 			windowCountDownLatch.await();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Window initialization finished");
+		print("Window initialization finished");
 	}
 
 	private void print(String s) {
