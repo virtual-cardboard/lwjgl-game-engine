@@ -9,7 +9,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.util.Queue;
 
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 
 import common.coordinates.IntCoordinates;
@@ -35,14 +34,19 @@ public class GameWindow {
 	private long windowId;
 	private String windowTitle;
 	private Queue<GameInputEvent> inputEventBuffer;
+	private IntCoordinates windowDimensions;
 
 	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer) {
+		this(windowTitle, inputEventBuffer, new IntCoordinates(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
+	}
+
+	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer, IntCoordinates windowDimensions) {
 		this.windowTitle = windowTitle;
 		this.inputEventBuffer = inputEventBuffer;
+		this.windowDimensions = windowDimensions;
 	}
 
 	public void createDisplay() {
-		IntCoordinates windowDimensions = new IntCoordinates(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 		createPrint(System.err).set();
 		if (!glfwInit())
 			throw new IllegalStateException("Unable to initialize GLFW");
@@ -50,7 +54,7 @@ public class GameWindow {
 		glfwWindowHint(GLFW_VISIBLE, GL_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, RESIZABLE ? GL_TRUE : GL_FALSE); // the window will be resizable
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // Use GLFW version 3.3
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor()); // Get the resolution of the primary monitor
@@ -62,21 +66,19 @@ public class GameWindow {
 		glfwSetWindowPos(windowId, (vidmode.width() - windowDimensions.x) / 2, (vidmode.height() - windowDimensions.y) / 2); // Center the window
 		glfwMakeContextCurrent(windowId); // Make the OpenGL context current
 		createCapabilities();
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glEnable(GL_BLEND);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glfwSwapInterval(1); // Enable v-sync
 		glfwShowWindow(windowId); // Make the window visible
 		glViewport(0, 0, windowDimensions.x, windowDimensions.y);
 	}
 
 	public void attachCallbacks() {
-		GLFW.glfwSetKeyCallback(windowId, new KeyCallback(inputEventBuffer));
-		GLFW.glfwSetMouseButtonCallback(windowId, new MouseButtonCallback(inputEventBuffer));
-		GLFW.glfwSetScrollCallback(windowId, new MouseScrollCallback(inputEventBuffer));
-		GLFW.glfwSetCursorPosCallback(windowId, new MouseMovementCallback(inputEventBuffer));
-		GLFW.glfwSetFramebufferSizeCallback(windowId, new WindowResizeCallback(inputEventBuffer));
+		glfwSetKeyCallback(windowId, new KeyCallback(inputEventBuffer));
+		glfwSetMouseButtonCallback(windowId, new MouseButtonCallback(inputEventBuffer));
+		glfwSetScrollCallback(windowId, new MouseScrollCallback(inputEventBuffer));
+		glfwSetCursorPosCallback(windowId, new MouseMovementCallback(inputEventBuffer));
+		glfwSetFramebufferSizeCallback(windowId, new WindowResizeCallback(inputEventBuffer));
 	}
 
 	public void destroy() {

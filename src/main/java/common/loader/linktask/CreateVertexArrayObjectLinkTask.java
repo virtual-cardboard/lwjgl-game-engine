@@ -12,11 +12,11 @@ public class CreateVertexArrayObjectLinkTask extends LinkTask {
 	private ElementBufferObject ebo;
 	private VertexBufferObject[] vbos;
 
-	public CreateVertexArrayObjectLinkTask(VertexArrayObject vao, ElementBufferObject ebo, VertexBufferObject[] vbos) {
+	public CreateVertexArrayObjectLinkTask(VertexArrayObject vao, ElementBufferObject ebo, VertexBufferObject... vbos) {
 		this(new CountDownLatch(1), vao, ebo, vbos);
 	}
 
-	public CreateVertexArrayObjectLinkTask(CountDownLatch countDownLatch, VertexArrayObject vao, ElementBufferObject ebo, VertexBufferObject[] vbos) {
+	public CreateVertexArrayObjectLinkTask(CountDownLatch countDownLatch, VertexArrayObject vao, ElementBufferObject ebo, VertexBufferObject... vbos) {
 		super(countDownLatch);
 		this.vao = vao;
 		this.ebo = ebo;
@@ -27,6 +27,7 @@ public class CreateVertexArrayObjectLinkTask extends LinkTask {
 	public void doRun() {
 		vao.generateId();
 		ebo.generateId();
+		ebo.loadData();
 		vao.setEbo(ebo);
 		for (int i = 0; i < vbos.length; i++) {
 			VertexBufferObject vbo = vbos[i];

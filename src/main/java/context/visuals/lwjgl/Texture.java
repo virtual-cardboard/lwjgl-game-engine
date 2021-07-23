@@ -1,55 +1,29 @@
 package context.visuals.lwjgl;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDeleteTextures;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL30.glGenerateMipmap;
-import static org.lwjgl.stb.STBImage.stbi_failure_reason;
-import static org.lwjgl.stb.STBImage.stbi_image_free;
-import static org.lwjgl.stb.STBImage.stbi_load;
-import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
-
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-
-import org.lwjgl.system.MemoryStack;
 
 public class Texture {
 
 	private int id;
-
 	private int width, height;
-
 	private int textureUnit;
-
-	public Texture(int textureUnit) {
-		this.textureUnit = textureUnit;
-	}
+	private String imagePath;
+	private boolean linked;
 
 	public Texture(int textureUnit, String imagePath) {
-		this(textureUnit);
-		loadImage(imagePath);
+		if (textureUnit < 0 || textureUnit > 31) {
+			throw new IllegalArgumentException("Invalid texture unit: " + textureUnit);
+		}
+		this.textureUnit = textureUnit;
+		this.imagePath = imagePath;
 	}
 
-	public void loadImage(String imagePath) {
-		ByteBuffer data;
-		try (MemoryStack stack = MemoryStack.stackPush()) {
-			IntBuffer w = stack.mallocInt(1);
-			IntBuffer h = stack.mallocInt(1);
-			IntBuffer comp = stack.mallocInt(1);
-			stbi_set_flip_vertically_on_load(true);
-			data = stbi_load(imagePath, w, h, comp, 4);
-			if (data == null) {
-				System.err.println("Failed to load texture at " + imagePath);
-				throw new RuntimeException(stbi_failure_reason());
-			}
-			width = w.get();
-			height = h.get();
-		}
-		bind();
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		stbi_image_free(data);
+	public void link() {
+		linked = true;
 	}
 
 	/**
@@ -71,16 +45,32 @@ public class Texture {
 		this.id = id;
 	}
 
-	public int getTextureUnit() {
-		return textureUnit;
-	}
-
 	public int getWidth() {
 		return width;
 	}
 
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
 	public int getHeight() {
 		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getTextureUnit() {
+		return textureUnit;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public boolean isLinked() {
+		return linked;
 	}
 
 }
