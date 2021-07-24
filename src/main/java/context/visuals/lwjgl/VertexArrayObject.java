@@ -69,9 +69,21 @@ public class VertexArrayObject {
 			glEnableVertexAttribArray(i);
 		}
 		linked = true;
+
+//		VBO vbo = new VBO();
+//		vbo.bindVBO();
+//		vbo.loadData(data);
+//		GL20.glVertexAttribPointer(attributeIndex, dimensions, GL11.GL_FLOAT, false, 0, 0);
+//		GL20.glEnableVertexAttribArray(attributeIndex);
+
+//		public void setVertexAttributePointer(int size, int stride, int offset) {
+//			bind();
+//			glVertexAttribPointer(nextAttribIndex, size, GL_FLOAT, false, stride * Float.BYTES, offset * Float.BYTES);
+//			glEnableVertexAttribArray(nextAttribIndex++);
+//		}
 	}
 
-	private void bind() {
+	public void bind() {
 		if (currentlyBound == this) {
 			return;
 		}

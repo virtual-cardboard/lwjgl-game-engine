@@ -17,13 +17,14 @@ public class CreateTextureLinkTask extends LinkTask {
 
 	private Texture texture;
 	private ByteBuffer textureData;
+	private CountDownLatch countDownLatch;
 
 	public CreateTextureLinkTask(Texture texture, ByteBuffer textureData) {
 		this(new CountDownLatch(1), texture, textureData);
 	}
 
 	public CreateTextureLinkTask(CountDownLatch countDownLatch, Texture texture, ByteBuffer textureData) {
-		super(countDownLatch);
+		this.countDownLatch = countDownLatch;
 		this.texture = texture;
 		this.textureData = textureData;
 	}
@@ -40,6 +41,7 @@ public class CreateTextureLinkTask extends LinkTask {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		stbi_image_free(textureData);
 		texture.link();
+		countDownLatch.countDown();
 	}
 
 	public Texture getTexture() {

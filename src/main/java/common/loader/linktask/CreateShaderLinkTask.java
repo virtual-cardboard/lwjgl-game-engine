@@ -12,13 +12,14 @@ public class CreateShaderLinkTask extends LinkTask {
 	private ShaderProgram shaderProgram;
 	private Shader shader;
 	private String source;
+	private CountDownLatch countDownLatch;
 
 	public CreateShaderLinkTask(Queue<LinkTask> linkTasks, ShaderProgram shaderProgram, Shader shader, String source) {
 		this(new CountDownLatch(1), linkTasks, shaderProgram, shader, source);
 	}
 
 	public CreateShaderLinkTask(CountDownLatch countDownLatch, Queue<LinkTask> linkTasks, ShaderProgram shaderProgram, Shader shader, String source) {
-		super(countDownLatch);
+		this.countDownLatch = countDownLatch;
 		this.linkTasks = linkTasks;
 		this.shaderProgram = shaderProgram;
 		this.shader = shader;
@@ -30,7 +31,8 @@ public class CreateShaderLinkTask extends LinkTask {
 		shader.generateId();
 		shader.compile(source);
 		shaderProgram.attachShader(shader);
-		if (isDone()) {
+		countDownLatch.countDown();
+		if (countDownLatch.getCount() == 0) {
 			linkTasks.add(new CreateShaderProgramLinkTask(shaderProgram));
 		}
 	}
