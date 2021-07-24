@@ -67,6 +67,7 @@ public class GameWindow {
 		glfwMakeContextCurrent(windowId); // Make the OpenGL context current
 		createCapabilities();
 		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glfwSwapInterval(1); // Enable v-sync
 		glfwShowWindow(windowId); // Make the window visible
