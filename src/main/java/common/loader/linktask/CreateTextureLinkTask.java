@@ -5,11 +5,7 @@ import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import context.visuals.lwjgl.Texture;
 
@@ -46,21 +42,6 @@ public class CreateTextureLinkTask extends LinkTask {
 
 	public Texture getTexture() {
 		return texture;
-	}
-
-	public Future<Texture> getFutureTexture() {
-		ExecutorService executorService = Executors.newSingleThreadExecutor();
-		Future<Texture> futureTexture = executorService.submit(new Callable<Texture>() {
-			@Override
-			public Texture call() throws Exception {
-				while (!texture.isLinked()) {
-					Thread.sleep(20);
-				}
-				return texture;
-			}
-		});
-		executorService.shutdown();
-		return futureTexture;
 	}
 
 }

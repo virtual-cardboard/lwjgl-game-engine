@@ -20,6 +20,7 @@ public class ShaderFileLoadTask extends LoadTask {
 	private Shader shader;
 	private String sourceLocation;
 	private String source;
+	private CountDownLatch countDownLatch;
 
 	public ShaderFileLoadTask(Queue<LinkTask> linkTasks, CountDownLatch createShaderLinkTaskCountDownLatch,
 			ShaderProgram shaderProgram, Shader shader, String sourceLocation) {
@@ -28,7 +29,7 @@ public class ShaderFileLoadTask extends LoadTask {
 
 	public ShaderFileLoadTask(CountDownLatch countDownLatch, CountDownLatch createShaderLinkTaskCountDownLatch,
 			Queue<LinkTask> linkTasks, ShaderProgram shaderProgram, Shader shader, String sourceLocation) {
-		super(countDownLatch);
+		this.countDownLatch = countDownLatch;
 		this.createShaderLinkTaskCountDownLatch = createShaderLinkTaskCountDownLatch;
 		this.linkTasks = linkTasks;
 		this.shaderProgram = shaderProgram;
@@ -56,6 +57,7 @@ public class ShaderFileLoadTask extends LoadTask {
 		source = code.toString();
 		CreateShaderLinkTask createShaderLinkTask = new CreateShaderLinkTask(createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, source);
 		linkTasks.add(createShaderLinkTask);
+		countDownLatch.countDown();
 	}
 
 	public String getSource() {
