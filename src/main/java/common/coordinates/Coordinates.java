@@ -2,7 +2,7 @@ package common.coordinates;
 
 import java.io.Serializable;
 
-public class Coordinates<T extends Number> implements Serializable {
+public abstract class Coordinates<T extends Number> implements Serializable {
 
 	private static final long serialVersionUID = -3775082492525975448L;
 
@@ -23,5 +23,7 @@ public class Coordinates<T extends Number> implements Serializable {
 	public String toString() {
 		return "(" + x + ", " + y + ")";
 	}
+
+	public abstract Coordinates<T> copy();
 
 }

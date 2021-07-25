@@ -48,6 +48,7 @@ public class VectorCoordinates extends FloatCoordinates implements Serializable 
 		return scale(1 / getLength());
 	}
 
+	@Override
 	public VectorCoordinates copy() {
 		return new VectorCoordinates(x, y);
 	}

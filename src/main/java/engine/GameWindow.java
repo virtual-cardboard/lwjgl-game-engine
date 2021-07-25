@@ -34,6 +34,9 @@ public class GameWindow {
 	private long windowId;
 	private String windowTitle;
 	private Queue<GameInputEvent> inputEventBuffer;
+	/**
+	 * Dimensions of the window.
+	 */
 	private IntCoordinates windowDimensions;
 
 	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer) {
@@ -79,7 +82,7 @@ public class GameWindow {
 		glfwSetMouseButtonCallback(windowId, new MouseButtonCallback(inputEventBuffer));
 		glfwSetScrollCallback(windowId, new MouseScrollCallback(inputEventBuffer));
 		glfwSetCursorPosCallback(windowId, new MouseMovementCallback(inputEventBuffer));
-		glfwSetFramebufferSizeCallback(windowId, new WindowResizeCallback(inputEventBuffer));
+		glfwSetFramebufferSizeCallback(windowId, new WindowResizeCallback(inputEventBuffer, windowDimensions));
 	}
 
 	public void destroy() {
@@ -91,6 +94,18 @@ public class GameWindow {
 
 	public long getWindowId() {
 		return windowId;
+	}
+
+	/**
+	 * Get a copy of the window dimensions. Returning a copy instead of the actual
+	 * original copy prevents the programmer from directly changing the window
+	 * dimensions, which would not affect the window's actual size and mess up later
+	 * get methods.
+	 * 
+	 * @return a copy of {@link #windowDimensions windowDimensions}
+	 */
+	public IntCoordinates getWindowDimensionsCopy() {
+		return windowDimensions.copy();
 	}
 
 }

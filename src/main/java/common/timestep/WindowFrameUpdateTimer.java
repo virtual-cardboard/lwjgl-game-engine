@@ -16,7 +16,6 @@ import engine.GameWindow;
 public final class WindowFrameUpdateTimer extends TimestepTimer {
 
 	private GameContextWrapper wrapper;
-
 	private GameWindow window;
 	private long windowId;
 

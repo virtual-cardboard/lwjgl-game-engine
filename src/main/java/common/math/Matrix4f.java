@@ -19,9 +19,8 @@ import java.nio.FloatBuffer;
 /**
  * Holds a 4x4 float matrix.
  *
- * @author foo
  */
-public class Matrix4f extends Matrix implements Serializable {
+public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 
 	public float m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33;
@@ -843,4 +842,15 @@ public class Matrix4f extends Matrix implements Serializable {
 
 		return dest;
 	}
+
+	@Override
+	public Matrix4f clone() {
+		try {
+			return (Matrix4f) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

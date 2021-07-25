@@ -13,4 +13,9 @@ public class IntCoordinates extends Coordinates<Integer> {
 		this.y = coordinates.y;
 	}
 
+	@Override
+	public IntCoordinates copy() {
+		return new IntCoordinates(x, y);
+	}
+
 }

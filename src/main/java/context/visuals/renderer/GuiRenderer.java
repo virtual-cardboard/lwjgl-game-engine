@@ -1,4 +1,4 @@
-package context.visuals.renderer.gui;
+package context.visuals.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -9,7 +9,6 @@ import context.visuals.colour.Colour;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.shader.ShaderProgram;
 
 public class GuiRenderer extends GameRenderer {

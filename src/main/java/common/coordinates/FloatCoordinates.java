@@ -8,4 +8,9 @@ public class FloatCoordinates extends Coordinates<Float> {
 		super(x, y);
 	}
 
+	@Override
+	public FloatCoordinates copy() {
+		return new FloatCoordinates(x, y);
+	}
+
 }
