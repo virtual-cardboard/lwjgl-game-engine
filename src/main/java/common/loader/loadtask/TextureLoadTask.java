@@ -2,7 +2,6 @@ package common.loader.loadtask;
 
 import static org.lwjgl.stb.STBImage.stbi_failure_reason;
 import static org.lwjgl.stb.STBImage.stbi_load;
-import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -45,7 +44,6 @@ public class TextureLoadTask extends LoadTask {
 			IntBuffer w = stack.mallocInt(1);
 			IntBuffer h = stack.mallocInt(1);
 			IntBuffer comp = stack.mallocInt(1);
-			stbi_set_flip_vertically_on_load(true);
 			data = stbi_load(texture.getImagePath(), w, h, comp, 4);
 			if (data == null) {
 				System.err.println("Failed to load texture at " + texture.getImagePath());
