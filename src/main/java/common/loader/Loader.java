@@ -20,15 +20,14 @@ public class Loader implements Runnable {
 
 	public Loader() {
 		loadTasks = new LinkedBlockingQueue<>();
-		fixedThreadPool = Executors.newFixedThreadPool(NUM_THREADS,
-				new ThreadFactory() {
-					@Override
-					public Thread newThread(Runnable r) {
-						Thread t = Executors.defaultThreadFactory().newThread(r);
-						t.setDaemon(true);
-						return t;
-					}
-				});
+		fixedThreadPool = Executors.newFixedThreadPool(NUM_THREADS, new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = Executors.defaultThreadFactory().newThread(r);
+				t.setDaemon(true);
+				return t;
+			}
+		});
 	}
 
 	public void addLoadTask(LoadTask task) {

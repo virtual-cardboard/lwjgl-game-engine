@@ -27,7 +27,7 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 	private Queue<LinkTask> linkTasks;
 
 	public WindowFrameUpdateTimer(GameWindow window, CountDownLatch windowCountDownLatch) {
-		super(30);
+		super(60);
 		this.window = window;
 		this.windowCountDownLatch = windowCountDownLatch;
 		linkTasks = new LinkedBlockingQueue<>();
