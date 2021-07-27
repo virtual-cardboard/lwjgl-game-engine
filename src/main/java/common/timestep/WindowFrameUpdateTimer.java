@@ -1,5 +1,6 @@
 package common.timestep;
 
+import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
@@ -37,6 +38,11 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 	protected void doUpdate() {
 		GameContext context = wrapper.getContext();
 		glfwPollEvents();
+		// Update the root GUI
+		int[] width = new int[1];
+		int[] height = new int[1];
+		glfwGetWindowSize(windowId, width, height);
+		context.getVisuals().getRootGui().setDimensions(width[0], height[0]);
 		doLinkTasks();
 		context.getInput().handleAll();
 		context.getVisuals().render();

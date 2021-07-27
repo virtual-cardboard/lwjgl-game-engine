@@ -29,20 +29,20 @@ public final class GameEnabler {
 	private boolean printProgress = true;
 
 	/**
-	 * The constructor takes in and saves a window, an input decorator, and a game
-	 * wrapper.
+	 * Creates a {@link GameEnabler} with a window title and a context.
 	 * 
-	 * @param window
-	 * @param inputDecorator
-	 * @param wrapper
+	 * @param windowTitle the title of the window
+	 * @param context     the initial context to be used
+	 * 
+	 * @see GameContext
 	 */
 	public GameEnabler(String windowTitle, GameContext context) {
-		this.windowTitle = windowTitle;
-		this.context = context;
+		this(windowTitle, context, true);
 	}
 
 	public GameEnabler(String windowTitle, GameContext context, boolean printProgress) {
-		this(windowTitle, context);
+		this.windowTitle = windowTitle;
+		this.context = context;
 		this.printProgress = printProgress;
 	}
 

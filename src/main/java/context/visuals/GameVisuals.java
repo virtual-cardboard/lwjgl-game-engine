@@ -17,7 +17,7 @@ public abstract class GameVisuals extends ContextPart {
 	/**
 	 * The {@link RootGui} to which all GUIs will be children of.
 	 */
-	private RootGui rootGui = new RootGui(1280, 720);
+	private RootGui rootGui = new RootGui(0, 0);
 
 	public void addGui(Gui gui) {
 		rootGui.addChild(gui);
