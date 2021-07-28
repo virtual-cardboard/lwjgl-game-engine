@@ -21,7 +21,7 @@ public class ConditionalFunction<T, R> {
 	}
 
 	public boolean isSatisfiedBy(T arg) {
-		return predicate.test(arg);
+		return predicate == null || predicate.test(arg);
 	}
 
 	public R apply(T arg) {

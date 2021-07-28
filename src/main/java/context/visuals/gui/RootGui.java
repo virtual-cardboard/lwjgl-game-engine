@@ -26,12 +26,12 @@ public class RootGui extends InvisibleGui {
 
 	public int getWidth() {
 		PixelDimensionConstraint width = (PixelDimensionConstraint) super.getWidthConstraint();
-		return width.getPixels();
+		return (int) width.getPixels();
 	}
 
 	public int getHeight() {
 		PixelDimensionConstraint height = (PixelDimensionConstraint) super.getHeightConstraint();
-		return height.getPixels();
+		return (int) height.getPixels();
 	}
 
 	public void setDimensions(int width, int height) {

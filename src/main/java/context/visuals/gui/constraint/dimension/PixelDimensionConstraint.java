@@ -2,17 +2,17 @@ package context.visuals.gui.constraint.dimension;
 
 public class PixelDimensionConstraint extends GuiDimensionConstraint {
 
-	private int pixels;
+	private float pixels;
 
-	public PixelDimensionConstraint(int pixels) {
+	public PixelDimensionConstraint(float pixels) {
 		this.pixels = pixels;
 	}
 
-	public int getPixels() {
+	public float getPixels() {
 		return pixels;
 	}
 
-	public void setPixels(int pixels) {
+	public void setPixels(float pixels) {
 		this.pixels = pixels;
 	}
 

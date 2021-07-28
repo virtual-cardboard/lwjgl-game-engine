@@ -3,37 +3,31 @@ package context.visuals.gui.constraint.position;
 import java.util.Objects;
 
 import context.visuals.gui.Anchor;
-import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 
 public class PixelPositionConstraint extends GuiPositionConstraint {
 
-	private int pixels;
+	private float pixels;
 	private Anchor anchor;
-	private GuiDimensionConstraint dimensionConstraint;
 
-	public PixelPositionConstraint(int pixels) {
-		this(pixels, Anchor.LEADING, null);
+	public PixelPositionConstraint(float pixels) {
+		this(pixels, Anchor.LEADING);
 	}
 
-	public PixelPositionConstraint(int pixels, Anchor anchor, GuiDimensionConstraint dimensionConstraint) {
+	public PixelPositionConstraint(float pixels, Anchor anchor) {
 		this.pixels = pixels;
 		this.anchor = Objects.requireNonNull(anchor);
-		this.dimensionConstraint = dimensionConstraint;
 	}
 
 	@Override
 	public float calculateValue(float start, float end) {
-		if (anchor == Anchor.LEADING) {
-			return start + pixels;
-		}
-		return end - pixels - dimensionConstraint.calculateValue(start, end);
+		return anchor == Anchor.LEADING ? start + pixels : end - pixels;
 	}
 
-	public int getPixels() {
+	public float getPixels() {
 		return pixels;
 	}
 
-	public void setPixels(int pixels) {
+	public void setPixels(float pixels) {
 		this.pixels = pixels;
 	}
 
@@ -45,10 +39,7 @@ public class PixelPositionConstraint extends GuiPositionConstraint {
 		this.anchor = Anchor.LEADING;
 	}
 
-	public void setAnchorTrailing(GuiDimensionConstraint dimensionConstraint) {
-		if (dimensionConstraint != null) {
-			this.dimensionConstraint = dimensionConstraint;
-		}
+	public void setAnchorTrailing() {
 		this.anchor = Anchor.TRAILING;
 	}
 

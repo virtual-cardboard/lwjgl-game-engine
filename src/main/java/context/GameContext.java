@@ -68,6 +68,13 @@ public final class GameContext {
 		return visuals;
 	}
 
+	/**
+	 * Initializes the context parts with the given input event buffer.
+	 * {@link GameContextWrapper} calls <code>init()</code> after transitioning to
+	 * this context.
+	 * 
+	 * @param inputEventBuffer the input buffer
+	 */
 	public void init(Queue<GameInputEvent> inputEventBuffer) {
 		data.init();
 		input.init(inputEventBuffer, eventQueue);

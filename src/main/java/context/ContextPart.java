@@ -12,6 +12,10 @@ public abstract class ContextPart {
 		this.context = context;
 	}
 
+	/**
+	 * Initializes the context part. This is called by
+	 * {@link GameContext#init(java.util.Queue) GameContext#init()}.
+	 */
 	protected void doInit() {
 	}
 

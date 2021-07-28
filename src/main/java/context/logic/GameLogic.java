@@ -3,14 +3,17 @@ package context.logic;
 import java.util.Queue;
 
 import common.event.GameEvent;
+import common.timestep.GameLogicTimer;
 import context.ContextPart;
 import context.data.GameData;
 import context.input.GameInput;
 
 /**
- * A bundle part that updates data and handles user input.
+ * A context part that updates data and handles {@link GameEvent}s.
  * 
- * See {@link GameData} and {@link GameInput}.
+ * @see ContextPart
+ * @see GameData
+ * @see GameInput
  * 
  * @author Jay
  *
@@ -24,10 +27,13 @@ public abstract class GameLogic extends ContextPart {
 		doInit();
 	}
 
+	/**
+	 * Updates the game. This is called every tick in {@link GameLogicTimer}.
+	 */
+	public abstract void update();
+
 	protected final Queue<GameEvent> getEventQueue() {
 		return eventQueue;
 	}
-
-	public abstract void update();
 
 }

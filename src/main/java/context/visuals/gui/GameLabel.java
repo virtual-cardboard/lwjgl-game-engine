@@ -5,6 +5,10 @@ public class GameLabel extends Gui {
 	private int textColour;
 	private String text;
 
+	public GameLabel() {
+		this(255, "");
+	}
+
 	public GameLabel(int textColour, String text) {
 		this.textColour = textColour;
 		this.text = text;

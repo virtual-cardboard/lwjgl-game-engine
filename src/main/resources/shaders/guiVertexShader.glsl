@@ -1,14 +1,8 @@
 #version 330 core
+layout (location = 0) in vec3 vertexPosition;
 
-layout (location = 0) in vec2 vertexPosition;
+uniform mat4 transform;
 
-out vec2 fragmentTextureCoordinates;
-
-uniform mat4 modelMatrix;
-
-void main(){
-
-	fragmentTextureCoordinates = vec2(vertexPosition.x, - vertexPosition.y);
-	gl_Position = modelMatrix * vec4(vertexPosition, 0.0, 1.0);
-
+void main() {
+	gl_Position = transform * vec4(vertexPosition, 1.0);
 }
