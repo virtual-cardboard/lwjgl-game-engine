@@ -88,7 +88,7 @@ public class ShaderProgram {
 		glDeleteProgram(id);
 	}
 
-	protected void setBoolean(String uniform, boolean value) {
+	public void setBoolean(String uniform, boolean value) {
 		glUniform1f(glGetUniformLocation(id, uniform), value ? 1 : 0);
 	}
 
@@ -96,15 +96,15 @@ public class ShaderProgram {
 		glUniform1i(glGetUniformLocation(id, uniform), i);
 	}
 
-	protected void setFloat(String uniform, float value) {
+	public void setFloat(String uniform, float value) {
 		glUniform1f(glGetUniformLocation(id, uniform), value);
 	}
 
-	protected void setVec2(String uniform, Vector2f vector) {
+	public void setVec2(String uniform, Vector2f vector) {
 		glUniform2f(glGetUniformLocation(id, uniform), vector.x, vector.y);
 	}
 
-	protected void setVec3(String uniform, Vector3f vector) {
+	public void setVec3(String uniform, Vector3f vector) {
 		glUniform3f(glGetUniformLocation(id, uniform), vector.x, vector.y, vector.z);
 	}
 
