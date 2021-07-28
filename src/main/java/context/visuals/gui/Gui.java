@@ -8,7 +8,7 @@ import common.math.Vector2f;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
 
-public abstract class Gui {
+public class Gui {
 
 	private GuiPositionConstraint posXConstraint;
 	private GuiPositionConstraint posYConstraint;
