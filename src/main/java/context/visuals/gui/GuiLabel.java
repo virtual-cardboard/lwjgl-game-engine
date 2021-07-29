@@ -1,11 +1,15 @@
 package context.visuals.gui;
 
-public class GameButton extends Gui {
+public class GuiLabel extends Gui {
 
 	private int textColour;
 	private String text;
 
-	public GameButton(int textColour, String text) {
+	public GuiLabel() {
+		this(255, "");
+	}
+
+	public GuiLabel(int textColour, String text) {
 		this.textColour = textColour;
 		this.text = text;
 	}

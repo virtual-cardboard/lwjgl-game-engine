@@ -1,9 +1,18 @@
 package context.visuals.gui;
 
+import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
 
+/**
+ * The main <code>Gui</code> that all other <code>Guis</code> are children of.
+ * The {@link GameVisuals} always has one <code>RootGui</code>. Users generally
+ * shouldn't ever create another <code>RootGui</code>.
+ * 
+ * @author Jay
+ *
+ */
 public class RootGui extends InvisibleGui {
 
 	public RootGui(int width, int height) {

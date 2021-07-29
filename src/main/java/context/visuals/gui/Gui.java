@@ -5,9 +5,30 @@ import java.util.List;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
+import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
+import context.visuals.renderer.GuiRenderer;
 
+/**
+ * A rectangular Graphical User Interface (GUI) with position constraints and
+ * dimension constraints.
+ * <p>
+ * A <code>Gui</code> can have any number of children <code>Guis</code>.
+ * </p>
+ * <p>
+ * <code>Guis</code> are recursively displayed by {@link GuiRenderer}, starting
+ * with the root Gui.
+ * </p>
+ * 
+ * @author Jay
+ * 
+ * @see GuiPositionConstraint
+ * @see GuiDimensionConstraint
+ * @see GameVisuals
+ * @see RootGui
+ *
+ */
 public class Gui {
 
 	private GuiPositionConstraint posXConstraint;
