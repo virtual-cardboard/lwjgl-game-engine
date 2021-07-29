@@ -417,6 +417,18 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * @param right The right vector
 	 * @return the result
 	 */
+	public static Vector2f transform(Matrix4f left, Vector2f right) {
+		Vector4f transformed = transform(left, new Vector4f(right.x, right.y, 0, 1));
+		return new Vector2f(transformed.x, transformed.y);
+	}
+
+	/**
+	 * Transform a Vector by a matrix and return the result.
+	 * 
+	 * @param left  The left matrix
+	 * @param right The right vector
+	 * @return the result
+	 */
 	public static Vector4f transform(Matrix4f left, Vector4f right) {
 		Vector4f result = new Vector4f();
 
@@ -461,6 +473,14 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 */
 	public Matrix4f translate(Vector3f vec) {
 		return translate(vec, this);
+	}
+
+	public Matrix4f scale(Vector2f vector2f) {
+		return scale(new Vector3f(vector2f.x, vector2f.y, 1));
+	}
+
+	public Matrix4f divide(Vector2f vector2f) {
+		return scale(Vector2f.ONE_ONE.copy().divide(vector2f));
 	}
 
 	/**

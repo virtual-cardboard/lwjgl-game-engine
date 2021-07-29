@@ -1,5 +1,6 @@
 package context.visuals.gui;
 
+import common.math.Vector2f;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
@@ -41,6 +42,10 @@ public class RootGui extends InvisibleGui {
 	public int getHeight() {
 		PixelDimensionConstraint height = (PixelDimensionConstraint) super.getHeightConstraint();
 		return (int) height.getPixels();
+	}
+
+	public Vector2f getDimensions() {
+		return new Vector2f(getWidth(), getHeight());
 	}
 
 	public void setDimensions(int width, int height) {

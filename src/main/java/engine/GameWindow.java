@@ -27,7 +27,7 @@ import context.input.lwjglcallback.WindowResizeCallback;
 public class GameWindow {
 
 	private static final int DEFAULT_WINDOW_WIDTH = 1920;
-	private static final int DEFAULT_WINDOW_HEIGHT = 1017;
+	private static final int DEFAULT_WINDOW_HEIGHT = 1012;
 	private static final boolean FULLSCREEN = false;
 	private static final boolean RESIZABLE = true;
 

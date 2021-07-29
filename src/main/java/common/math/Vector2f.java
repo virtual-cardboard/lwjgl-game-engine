@@ -28,6 +28,8 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 
 	private static final long serialVersionUID = 1L;
 
+	public static final Vector2f ONE_ONE = new Vector2f(1, 1);
+
 	public float x, y;
 
 	/**
@@ -101,7 +103,7 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 	 * @return this
 	 */
 	@Override
-	public Vector negate() {
+	public Vector2f negate() {
 		x = -x;
 		y = -y;
 		return this;
@@ -166,6 +168,18 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 		return (float) Math.acos(dls);
 	}
 
+	public Vector2f add(Vector2f v) {
+		x = v.x + x;
+		y = v.y + y;
+		return this;
+	}
+
+	public Vector2f add(float x, float y) {
+		this.x += x;
+		this.y += y;
+		return this;
+	}
+
 	/**
 	 * Add a vector to another vector and place the result in a destination vector.
 	 * 
@@ -192,6 +206,12 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 	 */
 	public static Vector2f add(Vector2f left, Vector2f right) {
 		return new Vector2f(left.x + right.x, left.y + right.y);
+	}
+
+	public Vector2f sub(Vector2f v) {
+		x = x - v.x;
+		y = y - v.y;
+		return this;
 	}
 
 	/**
@@ -230,7 +250,7 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 	 * @return this
 	 */
 	@Override
-	public Vector store(FloatBuffer buf) {
+	public Vector2f store(FloatBuffer buf) {
 		buf.put(x);
 		buf.put(y);
 		return this;
@@ -243,7 +263,7 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 	 * @return this
 	 */
 	@Override
-	public Vector load(FloatBuffer buf) {
+	public Vector2f load(FloatBuffer buf) {
 		x = buf.get();
 		y = buf.get();
 		return this;
@@ -255,11 +275,21 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 	 * @see org.lwjgl.vector.Vector#scale(float)
 	 */
 	@Override
-	public Vector scale(float scale) {
-
+	public Vector2f scale(float scale) {
 		x *= scale;
 		y *= scale;
+		return this;
+	}
 
+	public Vector2f scale(Vector2f vector2f) {
+		x *= vector2f.x;
+		y *= vector2f.y;
+		return this;
+	}
+
+	public Vector2f divide(Vector2f vector2f) {
+		x /= vector2f.x;
+		y /= vector2f.y;
 		return this;
 	}
 
@@ -314,6 +344,17 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 	@Override
 	public final void setY(float y) {
 		this.y = y;
+	}
+
+	public Vector2f round(int decimalPoints) {
+		x = (float) (Math.round((float) (x * Math.pow(10, decimalPoints))) / Math.pow(10, decimalPoints));
+		y = (float) (Math.round((float) (y * Math.pow(10, decimalPoints))) / Math.pow(10, decimalPoints));
+		return this;
+	}
+
+	public Vector2f copy() {
+		Vector2f v = new Vector2f(x, y);
+		return v;
 	}
 
 	@Override
