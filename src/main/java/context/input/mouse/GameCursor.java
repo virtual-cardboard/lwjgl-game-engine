@@ -2,11 +2,11 @@ package context.input.mouse;
 
 import common.coordinates.IntCoordinates;
 
-public class GameMouse {
+public class GameCursor {
 
 	private IntCoordinates cursorCoordinates;
 
-	public GameMouse() {
+	public GameCursor() {
 		cursorCoordinates = new IntCoordinates(0, 0);
 	}
 
