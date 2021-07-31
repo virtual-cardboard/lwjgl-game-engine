@@ -749,7 +749,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * @return this if successful, null otherwise
 	 */
 	@Override
-	public Matrix invert() {
+	public Matrix4f invert() {
 		return invert(this);
 	}
 

@@ -28,9 +28,14 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 
 	private static final long serialVersionUID = 1L;
 
+	public static final Vector2f ORIGIN = new Vector2f(0, 0);
 	public static final Vector2f ONE_ONE = new Vector2f(1, 1);
 
 	public float x, y;
+
+	public static Vector2f fromAngleLength(float angle, float length) {
+		return new Vector2f((float) (length * Math.cos(angle)), (float) (length * Math.sin(angle)));
+	}
 
 	/**
 	 * Constructor for Vector2f.
