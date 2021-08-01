@@ -19,15 +19,7 @@ public class EllipseRenderer extends GameRenderer {
 		this.vao = rectangleVao;
 	}
 
-	public void render(RootGui rootGui, float x, float y, float width, float height, int innerColour) {
-		render(rootGui, x, y, width, height, innerColour, 0);
-	}
-
-	public void render(RootGui rootGui, float x, float y, float width, float height, int innerColour, float outerWidth) {
-		render(rootGui, x, y, width, height, innerColour, 255, outerWidth);
-	}
-
-	public void render(RootGui rootGui, float x, float y, float width, float height, int innerColour, int outerColour, float outerWidth) {
+	public void render(RootGui rootGui, float x, float y, float width, float height, int colour) {
 		Vector2f center = new Vector2f(x, y);
 		Vector2f dimensions = new Vector2f(width, height);
 		shaderProgram.bind();
@@ -39,13 +31,12 @@ public class EllipseRenderer extends GameRenderer {
 		transform.scale(dimensions);
 		shaderProgram.setMat4("transform", transform);
 		Vector2f transformedCenter = Matrix4f.transform(transform, new Vector2f(0.5f, 0.5f)); // [563.2188, -105.778656]
-		shaderProgram.setVec2("centerPos", transformedCenter);
+		shaderProgram.setFloat("x", transformedCenter.x);
+		shaderProgram.setFloat("y", transformedCenter.y);
 		Vector2f transformedDimensions = dimensions.copy().divide(rootGuiDimensions).scale(2);
-		shaderProgram.setVec2("dimensions", transformedDimensions);
-		shaderProgram.setVec4("innerColour", Colour.toNormalizedVector(innerColour));
-		shaderProgram.setVec4("outerColour", Colour.toNormalizedVector(outerColour));
-		shaderProgram.setFloat("outerWidthX", 2 * outerWidth / rootGuiDimensions.x);
-		shaderProgram.setFloat("outerWidthY", 2 * outerWidth / rootGuiDimensions.y);
+		shaderProgram.setFloat("width", transformedDimensions.x);
+		shaderProgram.setFloat("height", transformedDimensions.y);
+		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
 		vao.display();
 	}
 
