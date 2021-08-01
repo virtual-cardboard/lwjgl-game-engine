@@ -410,38 +410,19 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 		return result;
 	}
 
-	/**
-	 * Transform a Vector by a matrix and return the result.
-	 * 
-	 * @param left  The left matrix
-	 * @param right The right vector
-	 * @return the result
-	 */
-	public static Vector2f transform(Matrix4f left, Vector2f right) {
-		Vector4f transformed = transform(left, new Vector4f(right.x, right.y, 0, 1));
-		return new Vector2f(transformed.x, transformed.y);
+	public Vector2f transform(float x, float y) {
+		Vector2f result = new Vector2f();
+		result.x = m00 * x + m10 * y + m30;
+		result.y = m01 * x + m11 * y + m31;
+		return result;
 	}
 
-	/**
-	 * Transform a Vector by a matrix and return the result.
-	 * 
-	 * @param left  The left matrix
-	 * @param right The right vector
-	 * @return the result
-	 */
-	public static Vector4f transform(Matrix4f left, Vector4f right) {
+	public Vector4f transform(float x, float y, float z, float w) {
 		Vector4f result = new Vector4f();
-
-		float x = left.m00 * right.x + left.m10 * right.y + left.m20 * right.z + left.m30 * right.w;
-		float y = left.m01 * right.x + left.m11 * right.y + left.m21 * right.z + left.m31 * right.w;
-		float z = left.m02 * right.x + left.m12 * right.y + left.m22 * right.z + left.m32 * right.w;
-		float w = left.m03 * right.x + left.m13 * right.y + left.m23 * right.z + left.m33 * right.w;
-
-		result.x = x;
-		result.y = y;
-		result.z = z;
-		result.w = w;
-
+		result.x = m00 * x + m10 * y + m20 * z + m30 * w;
+		result.y = m01 * x + m11 * y + m21 * z + m31 * w;
+		result.z = m02 * x + m12 * y + m22 * z + m32 * w;
+		result.w = m03 * x + m13 * y + m23 * z + m33 * w;
 		return result;
 	}
 
@@ -462,7 +443,15 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * @return this
 	 */
 	public Matrix4f translate(Vector2f vec) {
-		return translate(vec, this);
+		return translate(vec.x, vec.y);
+	}
+
+	public Matrix4f translate(float x, float y) {
+		m30 += m00 * x + m10 * y;
+		m31 += m01 * x + m11 * y;
+		m32 += m02 * x + m12 * y;
+		m33 += m03 * x + m13 * y;
+		return this;
 	}
 
 	/**
@@ -476,11 +465,19 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	}
 
 	public Matrix4f scale(Vector2f vector2f) {
-		return scale(new Vector3f(vector2f.x, vector2f.y, 1));
+		return scale(vector2f.x, vector2f.y);
 	}
 
-	public Matrix4f divide(Vector2f vector2f) {
-		return scale(Vector2f.ONE_ONE.copy().divide(vector2f));
+	public Matrix4f scale(float x, float y) {
+		m00 = m00 * x;
+		m01 = m01 * x;
+		m02 = m02 * x;
+		m03 = m03 * x;
+		m10 = m10 * y;
+		m11 = m11 * y;
+		m12 = m12 * y;
+		m13 = m13 * y;
+		return this;
 	}
 
 	/**

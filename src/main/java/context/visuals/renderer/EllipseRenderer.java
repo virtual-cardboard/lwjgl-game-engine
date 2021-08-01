@@ -9,8 +9,6 @@ import context.visuals.renderer.shader.ShaderProgram;
 
 public class EllipseRenderer extends GameRenderer {
 
-	private static final Vector2f NEG_ONE_ONE = new Vector2f(-1f, 1f);
-	private static final Vector2f TWO_NEG_TWO = new Vector2f(2, -2);
 	private ShaderProgram shaderProgram;
 	private VertexArrayObject vao;
 
@@ -19,32 +17,32 @@ public class EllipseRenderer extends GameRenderer {
 		this.vao = rectangleVao;
 	}
 
-	public void renderPixelCoords(RootGui rootGui, float x, float y, float width, float height, int colour) {
+	public void renderPixelCoords(final RootGui rootGui, float x, float y, float width, float height, final int colour) {
 		Vector2f center = new Vector2f(x, y);
 		Vector2f dimensions = new Vector2f(width, height);
 		shaderProgram.bind();
 		Vector2f rootGuiDimensions = rootGui.getDimensions();
 		Matrix4f transform = new Matrix4f();
-		transform.translate(NEG_ONE_ONE);
-		transform.scale(TWO_NEG_TWO.copy().divide(rootGuiDimensions));
+		transform.translate(-1, 1);
+		transform.scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
 		transform.translate(center.copy().sub(dimensions.copy().scale(0.5f)));
 		transform.scale(dimensions);
-		shaderProgram.setMat4("transform", transform);
-		Vector2f transformedCenter = Matrix4f.transform(transform, new Vector2f(0.5f, 0.5f)); // [563.2188, -105.778656]
-		shaderProgram.setFloat("x", transformedCenter.x);
-		shaderProgram.setFloat("y", transformedCenter.y);
-		Vector2f transformedDimensions = dimensions.copy().divide(rootGuiDimensions).scale(2);
-		shaderProgram.setFloat("width", transformedDimensions.x);
-		shaderProgram.setFloat("height", transformedDimensions.y);
-		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
-		vao.display();
+		renderWithMatrixOnly(transform, colour);
 	}
 
-	public void renderWithMatrixOnly(Matrix4f matrix4f, int colour) {
-//		float x = matrix4f.transform(matrix4f, NEG_ONE_ONE);
+	public void renderWithMatrixOnly(final Matrix4f matrix4f, final int colour) {
+		Vector2f transformedCenter = matrix4f.transform(0.5f, 0.5f);
+		Vector2f v00 = matrix4f.transform(0, 0);
+		Vector2f v01 = matrix4f.transform(0, 1);
+		Vector2f v10 = matrix4f.transform(1, 0);
+		float x = transformedCenter.x;
+		float y = transformedCenter.y;
+		float width = v10.x - v00.x;
+		float height = v01.y - v00.y;
+		renderNDC(matrix4f, x, y, width, height, colour);
 	}
 
-	public void renderNDC(Matrix4f matrix4f, float x, float y, float width, float height, int colour) {
+	public void renderNDC(final Matrix4f matrix4f, float x, float y, float width, float height, int colour) {
 		shaderProgram.bind();
 		shaderProgram.setMat4("transform", matrix4f);
 		shaderProgram.setFloat("x", x);
