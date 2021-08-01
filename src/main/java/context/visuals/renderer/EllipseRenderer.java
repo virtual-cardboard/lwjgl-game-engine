@@ -19,7 +19,7 @@ public class EllipseRenderer extends GameRenderer {
 		this.vao = rectangleVao;
 	}
 
-	public void render(RootGui rootGui, float x, float y, float width, float height, int colour) {
+	public void renderPixelCoords(RootGui rootGui, float x, float y, float width, float height, int colour) {
 		Vector2f center = new Vector2f(x, y);
 		Vector2f dimensions = new Vector2f(width, height);
 		shaderProgram.bind();
@@ -36,6 +36,21 @@ public class EllipseRenderer extends GameRenderer {
 		Vector2f transformedDimensions = dimensions.copy().divide(rootGuiDimensions).scale(2);
 		shaderProgram.setFloat("width", transformedDimensions.x);
 		shaderProgram.setFloat("height", transformedDimensions.y);
+		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
+		vao.display();
+	}
+
+	public void renderWithMatrixOnly(Matrix4f matrix4f, int colour) {
+//		float x = matrix4f.transform(matrix4f, NEG_ONE_ONE);
+	}
+
+	public void renderNDC(Matrix4f matrix4f, float x, float y, float width, float height, int colour) {
+		shaderProgram.bind();
+		shaderProgram.setMat4("transform", matrix4f);
+		shaderProgram.setFloat("x", x);
+		shaderProgram.setFloat("y", y);
+		shaderProgram.setFloat("width", width);
+		shaderProgram.setFloat("height", height);
 		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
 		vao.display();
 	}
