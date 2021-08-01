@@ -2,6 +2,7 @@ package context.visuals.renderer.shader;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL32C.GL_GEOMETRY_SHADER;
 
 public class Shader {
 
@@ -28,6 +29,9 @@ public class Shader {
 				break;
 			case FRAGMENT:
 				setId(glCreateShader(GL_FRAGMENT_SHADER));
+				break;
+			case GEOMETRY:
+				setId(glCreateShader(GL_GEOMETRY_SHADER));
 				break;
 			default:
 				throw new IllegalStateException("Could not generate shader ID because of unknown shaderType");

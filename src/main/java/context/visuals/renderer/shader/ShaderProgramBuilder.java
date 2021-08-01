@@ -54,8 +54,8 @@ public final class ShaderProgramBuilder {
 	}
 
 	/**
-	 * Adds the appropriate load tasks and link tasks to start creating the shader
-	 * program into the queues.
+	 * Adds the appropriate load tasks and link tasks to start creating the vertex
+	 * and fragment shaders into the queues.
 	 * 
 	 * @param vertexShaderFileLocation   the file path to the vertex shader's
 	 *                                   location
@@ -71,6 +71,31 @@ public final class ShaderProgramBuilder {
 				new Shader(ShaderType.FRAGMENT), fragmentShaderFileLocation);
 		loadTasks.add(loadVertex);
 		loadTasks.add(loadFragment);
+	}
+
+	/**
+	 * Adds the appropriate load tasks and link tasks to start creating the vertex,
+	 * fragment, and geometry shaders into the queues.
+	 * 
+	 * @param vertexShaderFileLocation   the file path to the vertex shader's
+	 *                                   location
+	 * @param fragmentShaderFileLocation the file path to the fragment shader's
+	 *                                   location
+	 * @param geometryShaderFileLocation the file path to the geometry shader's
+	 *                                   location
+	 */
+	public void create(String vertexShaderFileLocation, String fragmentShaderFileLocation, String geometryShaderFileLocation) {
+		CountDownLatch countDownLatch = new CountDownLatch(3);
+		shaderProgram = new ShaderProgram();
+		ShaderFileLoadTask loadVertex = new ShaderFileLoadTask(linkTasks, countDownLatch, shaderProgram,
+				new Shader(ShaderType.VERTEX), vertexShaderFileLocation);
+		ShaderFileLoadTask loadFragment = new ShaderFileLoadTask(linkTasks, countDownLatch, shaderProgram,
+				new Shader(ShaderType.FRAGMENT), fragmentShaderFileLocation);
+		ShaderFileLoadTask loadGeometry = new ShaderFileLoadTask(linkTasks, countDownLatch, shaderProgram,
+				new Shader(ShaderType.GEOMETRY), geometryShaderFileLocation);
+		loadTasks.add(loadVertex);
+		loadTasks.add(loadFragment);
+		loadTasks.add(loadGeometry);
 	}
 
 	/**
