@@ -53,6 +53,10 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 		set(x, y);
 	}
 
+	public static Vector2f fromAngleLength(float angle, float length) {
+		return new Vector2f((float) (length * Math.cos(angle)), (float) (length * Math.sin(angle)));
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
