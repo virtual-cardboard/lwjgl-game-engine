@@ -281,18 +281,6 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 		return this;
 	}
 
-	public Vector2f scale(Vector2f vector2f) {
-		x *= vector2f.x;
-		y *= vector2f.y;
-		return this;
-	}
-
-	public Vector2f divide(Vector2f vector2f) {
-		x /= vector2f.x;
-		y /= vector2f.y;
-		return this;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
