@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Queue;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryUtil;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
@@ -117,6 +118,7 @@ public class ShaderProgram {
 		mat4.store(buffer);
 		buffer.flip();
 		glUniformMatrix4fv(glGetUniformLocation(id, uniform), false, buffer);
+		MemoryUtil.memFree(buffer);
 	}
 
 	public void generateId() {
