@@ -6,7 +6,7 @@ import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.renderer.shader.Shader;
-import context.visuals.renderer.shader.ShaderBuilder;
+import context.visuals.renderer.shader.ShaderProgramBuilder;
 import context.visuals.renderer.shader.ShaderProgram;
 
 /**
@@ -31,7 +31,7 @@ public class EllipseRenderer extends GameRenderer {
 	 *                             needed to render ellipses
 	 * 
 	 * @see ShaderProgram
-	 * @see ShaderBuilder
+	 * @see ShaderProgramBuilder
 	 * @see Shader
 	 */
 	public EllipseRenderer(ShaderProgram ellipseShaderProgram, VertexArrayObject rectangleVao) {
