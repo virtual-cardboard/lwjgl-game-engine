@@ -10,6 +10,7 @@ import context.visuals.renderer.shader.ShaderProgram;
 public class EllipseRenderer extends GameRenderer {
 
 	private static final Vector2f NEG_ONE_ONE = new Vector2f(-1f, 1f);
+	private static final Vector2f ONE_NEG_ONE = new Vector2f(1f, -1f);
 	private static final Vector2f TWO_NEG_TWO = new Vector2f(2, -2);
 	private ShaderProgram shaderProgram;
 	private VertexArrayObject vao;
@@ -19,18 +20,17 @@ public class EllipseRenderer extends GameRenderer {
 		this.vao = rectangleVao;
 	}
 
-	public void render(RootGui rootGui, Vector2f center, float width, float height, int innerColour) {
-		render(rootGui, center, width, height, innerColour, 0);
+	public void render(RootGui rootGui, Vector2f center, Vector2f dimensions, int innerColour) {
+		render(rootGui, center, dimensions, innerColour, 0);
 	}
 
-	public void render(RootGui rootGui, Vector2f center, float width, float height, int innerColour, float outerWidth) {
-		render(rootGui, center, width, height, innerColour, 255, outerWidth);
+	public void render(RootGui rootGui, Vector2f center, Vector2f dimensions, int innerColour, float outerWidth) {
+		render(rootGui, center, dimensions, innerColour, 255, outerWidth);
 	}
 
-	public void render(RootGui rootGui, Vector2f center, float width, float height, int innerColour, int outerColour, float outerWidth) {
+	public void render(RootGui rootGui, Vector2f center, Vector2f dimensions, int innerColour, int outerColour, float outerWidth) {
 		shaderProgram.bind();
 		Vector2f rootGuiDimensions = rootGui.getDimensions();
-		Vector2f dimensions = new Vector2f(width, height);
 		Matrix4f transform = new Matrix4f();
 		transform.translate(NEG_ONE_ONE);
 		transform.scale(TWO_NEG_TWO.copy().divide(rootGuiDimensions));
