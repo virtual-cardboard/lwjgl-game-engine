@@ -28,9 +28,11 @@ public class CreateVertexArrayObjectLinkTask extends LinkTask {
 	public void doRun() {
 		vao.generateId();
 		vao.bind();
-		ebo.generateId();
-		ebo.loadData();
-		vao.setEbo(ebo);
+		if (ebo != null) {
+			ebo.generateId();
+			ebo.loadData();
+			vao.setEbo(ebo);
+		}
 		for (int i = 0; i < vbos.length; i++) {
 			VertexBufferObject vbo = vbos[i];
 			vbo.generateId();

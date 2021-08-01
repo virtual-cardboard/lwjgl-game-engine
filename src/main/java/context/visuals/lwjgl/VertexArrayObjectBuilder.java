@@ -1,5 +1,9 @@
 package context.visuals.lwjgl;
 
+import static context.visuals.lwjgl.RectangleMeshData.INDICES;
+import static context.visuals.lwjgl.RectangleMeshData.POSITIONS;
+import static context.visuals.lwjgl.RectangleMeshData.TEXTURE_COORDINATES;
+
 import java.util.Queue;
 
 import common.loader.linktask.CreateVertexArrayObjectLinkTask;
@@ -8,28 +12,24 @@ import common.loader.linktask.LinkTask;
 public class VertexArrayObjectBuilder {
 
 	private final Queue<LinkTask> linkTasks;
-	private volatile VertexArrayObject vao;
+	private VertexArrayObject vao;
 
 	public VertexArrayObjectBuilder(Queue<LinkTask> linkTasks) {
 		this.linkTasks = linkTasks;
 	}
 
-	public CreateVertexArrayObjectLinkTask createRectangleVertexArrayObject() {
-		return createVertexArrayObject(new VertexArrayObject(), new ElementBufferObject(RectangleMeshData.INDICES),
-				new VertexBufferObject(RectangleMeshData.POSITIONS, 3), new VertexBufferObject(RectangleMeshData.TEXTURE_COORDINATES, 2));
+	public void createRectangleVertexArrayObject() {
+		createVertexArrayObject(new ElementBufferObject(INDICES), new VertexBufferObject(POSITIONS, 3), new VertexBufferObject(TEXTURE_COORDINATES, 2));
 	}
 
-	public CreateVertexArrayObjectLinkTask createVertexArrayObject(VertexArrayObject vao, ElementBufferObject ebo, VertexBufferObject... vbos) {
-		this.vao = vao;
+	public void createVertexArrayObject(ElementBufferObject ebo, VertexBufferObject... vbos) {
+		this.vao = new VertexArrayObject();
 		CreateVertexArrayObjectLinkTask createVaoLinkTask = new CreateVertexArrayObjectLinkTask(vao, ebo, vbos);
 		linkTasks.add(createVaoLinkTask);
-		return createVaoLinkTask;
 	}
 
 	public VertexArrayObject getVertexArrayObject() {
-		VertexArrayObject copy = vao;
-		vao = null;
-		return copy != null && copy.isLinked() ? copy : null;
+		return vao;
 	}
 
 	public boolean isBuilt() {
