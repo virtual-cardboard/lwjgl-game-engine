@@ -1,5 +1,5 @@
 #version 330 core
-in vec4 fragmentPos;
+in vec2 fragmentPos;
 out vec4 fragmentColor;
 
 uniform float x;
@@ -13,10 +13,8 @@ void main() {
 	float yDiff = fragmentPos.y - y;
 	float halfWidth = width * 0.5f;
 	float halfHeight = height * 0.5f;
-    if (xDiff * xDiff / (halfWidth * halfWidth) +
-    	yDiff * yDiff / (halfHeight * halfHeight) <= 1) {
-    	fragmentColor = colour;
-    } else {
-	    discard;
-    }
+	float dist = xDiff * xDiff / (halfWidth * halfWidth) + yDiff * yDiff / (halfHeight * halfHeight);
+	float delta = fwidth(dist);
+	fragmentColor = colour;
+	fragmentColor.a *= 1 - smoothstep(1 - delta, 1, dist);
 }
