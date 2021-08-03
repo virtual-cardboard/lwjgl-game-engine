@@ -252,6 +252,26 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 		return this;
 	}
 
+	public Matrix4f store(float[] floatBuffer) {
+		floatBuffer[0] = m00;
+		floatBuffer[1] = m01;
+		floatBuffer[2] = m02;
+		floatBuffer[3] = m03;
+		floatBuffer[4] = m10;
+		floatBuffer[5] = m11;
+		floatBuffer[6] = m12;
+		floatBuffer[7] = m13;
+		floatBuffer[8] = m20;
+		floatBuffer[9] = m21;
+		floatBuffer[10] = m22;
+		floatBuffer[11] = m23;
+		floatBuffer[12] = m30;
+		floatBuffer[13] = m31;
+		floatBuffer[14] = m32;
+		floatBuffer[15] = m33;
+		return this;
+	}
+
 	/**
 	 * Store this matrix in a float buffer. The matrix is stored in row major
 	 * (maths) order.

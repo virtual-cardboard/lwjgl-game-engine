@@ -2,14 +2,10 @@ package context.visuals.renderer.shader;
 
 import static org.lwjgl.opengl.GL20.*;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.system.MemoryUtil;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
@@ -113,12 +109,11 @@ public class ShaderProgram {
 		glUniform4f(glGetUniformLocation(id, uniform), vec4.x, vec4.y, vec4.z, vec4.w);
 	}
 
+	private static final float[] FLOAT_BUFFER = new float[16];
+
 	public void setMat4(String uniform, Matrix4f mat4) {
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
-		mat4.store(buffer);
-		buffer.flip();
-		glUniformMatrix4fv(glGetUniformLocation(id, uniform), false, buffer);
-		MemoryUtil.memFree(buffer);
+		mat4.store(FLOAT_BUFFER);
+		glUniformMatrix4fv(glGetUniformLocation(id, uniform), false, FLOAT_BUFFER);
 	}
 
 	public void generateId() {
