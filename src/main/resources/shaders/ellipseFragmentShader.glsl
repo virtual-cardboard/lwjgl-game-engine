@@ -17,6 +17,6 @@ void main() {
     	yDiff * yDiff / (halfHeight * halfHeight) <= 1) {
     	fragmentColor = colour;
     } else {
-	    fragmentColor = vec4(0, 0, 0, 0);
+	    discard;
     }
 }
