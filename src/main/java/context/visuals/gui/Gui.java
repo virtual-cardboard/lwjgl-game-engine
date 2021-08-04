@@ -37,7 +37,7 @@ public class Gui {
 	private GuiDimensionConstraint heightConstraint;
 
 	private int backgroundColour;
-	private boolean enabled;
+	private boolean enabled = true;
 
 	private Gui parent;
 	private List<Gui> children;
