@@ -2,6 +2,7 @@
 in vec2 fragmentPos;
 out vec4 fragmentColor;
 
+// The following floats are in NORMALIZED DEVICE COORDINATES
 uniform float x;
 uniform float y;
 uniform float width;
