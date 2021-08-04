@@ -36,5 +36,4 @@ void main() {
 	fragmentColor = colour;
 	float delta = fwidth(dist);
 	fragmentColor.a *= 1 - smoothstep(halfWidth - delta, halfWidth + delta, dist);
-	//fragmentColor.a *= 1;
 }
