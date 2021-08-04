@@ -172,6 +172,22 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 		return (float) Math.acos(dls);
 	}
 
+	/**
+	 * Rotates the vector around the origin, counterclockwise.
+	 * 
+	 * @param radians the angle to rotate the vector by, in radians.
+	 * @return the vector itself
+	 */
+	public Vector2f rotate(float radians) {
+		double sin = Math.sin(radians);
+		double cos = Math.cos(radians);
+		double newX = x * cos - y * sin;
+		double newY = x * sin + y * cos;
+		x = (float) (newX);
+		y = (float) (newY);
+		return this;
+	}
+
 	public Vector2f add(Vector2f v) {
 		x = v.x + x;
 		y = v.y + y;
