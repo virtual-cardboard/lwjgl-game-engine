@@ -37,6 +37,7 @@ public class Gui {
 	private GuiDimensionConstraint heightConstraint;
 
 	private int backgroundColour;
+	private boolean enabled;
 
 	private Gui parent;
 	private List<Gui> children;
@@ -106,6 +107,14 @@ public class Gui {
 
 	public List<Gui> getChildren() {
 		return children;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 }

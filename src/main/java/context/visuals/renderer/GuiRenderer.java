@@ -48,7 +48,9 @@ public class GuiRenderer extends GameRenderer {
 		guiVao.display();
 
 		for (Gui child : gui.getChildren()) {
-			doRecursiveRender(child, root, x, y, w, h);
+			if (child.isEnabled()) {
+				doRecursiveRender(child, root, x, y, w, h);
+			}
 		}
 	}
 

@@ -87,4 +87,14 @@ public class RootGui extends InvisibleGui {
 		return 0;
 	}
 
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		System.err.println("Cannot enable or disable rootGui");
+	}
+
 }
