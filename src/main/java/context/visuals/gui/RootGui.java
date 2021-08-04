@@ -78,16 +78,6 @@ public class RootGui extends InvisibleGui {
 	}
 
 	@Override
-	public void setBackgroundColour(int backgroundColour) {
-		throw new RuntimeException("Cannot set background colour of rootGui");
-	}
-
-	@Override
-	public int getBackgroundColour() {
-		return 0;
-	}
-
-	@Override
 	public boolean isEnabled() {
 		return true;
 	}

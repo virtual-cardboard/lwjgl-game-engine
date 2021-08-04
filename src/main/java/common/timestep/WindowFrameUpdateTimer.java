@@ -101,6 +101,10 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 		return linkTasks;
 	}
 
+	public void addLinkTask(LinkTask linkTask) {
+		linkTasks.add(linkTask);
+	}
+
 	public void setWrapper(GameContextWrapper wrapper) {
 		this.wrapper = wrapper;
 	}
