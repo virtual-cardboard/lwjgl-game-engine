@@ -26,7 +26,7 @@ import common.loader.loadtask.ShaderFileLoadTask;
  * <br>
  * ...<br>
  * <br>
- * ShaderProgram shaderProgram;
+ * ShaderProgram shaderProgram;<br>
  * if (builder.isBuilt()) {<br>
  * &emsp;shaderProgram = builder.getShaderProgram();<br>
  * }<br>
