@@ -69,9 +69,9 @@ public class GameContextWrapper {
 	 */
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
-			this.context = context;
 			context.setWrapper(this);
 			context.init(inputBuffer);
+			this.context = context;
 		}
 	}
 

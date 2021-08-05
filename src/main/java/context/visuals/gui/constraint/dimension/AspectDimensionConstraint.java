@@ -6,11 +6,8 @@ public class AspectDimensionConstraint extends GuiDimensionConstraint {
 	private float factor;
 
 	public AspectDimensionConstraint(float factor, GuiDimensionConstraint dimensionConstraint) {
-		if (dimensionConstraint instanceof AspectDimensionConstraint) {
-			throw new RuntimeException("Cannot have two aspect dimension constraints on a GUI.");
-		}
+		setDimensionConstraint(dimensionConstraint);
 		this.factor = factor;
-		this.dimensionConstraint = dimensionConstraint;
 	}
 
 	public GuiDimensionConstraint getDimensionConstraint() {

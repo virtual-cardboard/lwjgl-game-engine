@@ -3,8 +3,6 @@ package context.visuals.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
@@ -51,10 +49,7 @@ public class Gui {
 		this.children.add(child);
 	}
 
-	public Matrix4f getTranformationMatrix() {
-		Matrix4f matrix4f = new Matrix4f();
-		matrix4f.translate(new Vector2f(-1, 1));
-		return matrix4f;
+	public void additionalRenderActions() {
 	}
 
 	public GuiPositionConstraint getPosXConstraint() {
