@@ -53,6 +53,10 @@ public class Gui {
 	public void additionalRenderActions(Matrix4f matrix4f) {
 	}
 
+	public void remove() {
+		parent.getChildren().remove(this);
+	}
+
 	public GuiPositionConstraint getPosXConstraint() {
 		return posXConstraint;
 	}

@@ -87,4 +87,9 @@ public class RootGui extends InvisibleGui {
 		System.err.println("Cannot enable or disable rootGui");
 	}
 
+	@Override
+	public void remove() {
+		System.err.println("Cannot remove rootGui");
+	}
+
 }
