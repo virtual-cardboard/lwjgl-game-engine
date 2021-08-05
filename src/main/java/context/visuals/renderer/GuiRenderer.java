@@ -43,6 +43,7 @@ public class GuiRenderer extends GameRenderer {
 		matrix4f.scale(new Vector3f(2 * w / rootWidth, -2 * h / rootHeight, 1));
 		matrix4f.translate(new Vector2f(x / w, y / h));
 
+		shaderProgram.bind();
 		shaderProgram.setMat4("transform", matrix4f);
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
 		guiVao.display();

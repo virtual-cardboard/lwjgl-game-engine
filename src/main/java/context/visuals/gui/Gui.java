@@ -113,4 +113,8 @@ public class Gui {
 		this.enabled = enabled;
 	}
 
+	public void clearChildren() {
+		children.clear();
+	}
+
 }
