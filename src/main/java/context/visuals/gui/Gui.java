@@ -3,6 +3,7 @@ package context.visuals.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.math.Matrix4f;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
@@ -49,7 +50,7 @@ public class Gui {
 		this.children.add(child);
 	}
 
-	public void additionalRenderActions() {
+	public void additionalRenderActions(Matrix4f matrix4f) {
 	}
 
 	public GuiPositionConstraint getPosXConstraint() {

@@ -46,6 +46,7 @@ public class GuiRenderer extends GameRenderer {
 		shaderProgram.setMat4("transform", matrix4f);
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
 		guiVao.display();
+		gui.additionalRenderActions(matrix4f);
 
 		for (Gui child : gui.getChildren()) {
 			if (child.isEnabled()) {
