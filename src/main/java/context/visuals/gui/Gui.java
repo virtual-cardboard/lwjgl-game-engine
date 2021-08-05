@@ -61,7 +61,7 @@ public class Gui {
 		return posXConstraint;
 	}
 
-	public void setPosXConstraint(GuiPositionConstraint posXConstraint) {
+	public void setPosX(GuiPositionConstraint posXConstraint) {
 		this.posXConstraint = posXConstraint;
 	}
 
@@ -69,7 +69,7 @@ public class Gui {
 		return posYConstraint;
 	}
 
-	public void setPosYConstraint(GuiPositionConstraint posYConstraint) {
+	public void setPosY(GuiPositionConstraint posYConstraint) {
 		this.posYConstraint = posYConstraint;
 	}
 
@@ -77,7 +77,7 @@ public class Gui {
 		return widthConstraint;
 	}
 
-	public void setWidthConstraint(GuiDimensionConstraint widthConstraint) {
+	public void setWidth(GuiDimensionConstraint widthConstraint) {
 		this.widthConstraint = widthConstraint;
 	}
 
@@ -85,7 +85,7 @@ public class Gui {
 		return heightConstraint;
 	}
 
-	public void setHeightConstraint(GuiDimensionConstraint heightConstraint) {
+	public void setHeight(GuiDimensionConstraint heightConstraint) {
 		this.heightConstraint = heightConstraint;
 	}
 

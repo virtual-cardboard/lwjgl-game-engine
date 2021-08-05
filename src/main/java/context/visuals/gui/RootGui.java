@@ -17,8 +17,8 @@ import context.visuals.gui.constraint.position.GuiPositionConstraint;
 public class RootGui extends InvisibleGui {
 
 	public RootGui(int width, int height) {
-		super.setWidthConstraint(new PixelDimensionConstraint(width));
-		super.setHeightConstraint(new PixelDimensionConstraint(height));
+		super.setWidth(new PixelDimensionConstraint(width));
+		super.setHeight(new PixelDimensionConstraint(height));
 	}
 
 	@Override
@@ -56,25 +56,25 @@ public class RootGui extends InvisibleGui {
 	}
 
 	@Override
-	public void setPosXConstraint(GuiPositionConstraint posXConstraint) {
+	public void setPosX(GuiPositionConstraint posXConstraint) {
 		throw new RuntimeException("Cannot set posX of rootGui");
 	}
 
 	@Override
-	public void setPosYConstraint(GuiPositionConstraint posYConstraint) {
+	public void setPosY(GuiPositionConstraint posYConstraint) {
 		throw new RuntimeException("Cannot set posY of rootGui");
 	}
 
 	@Override
-	public void setWidthConstraint(GuiDimensionConstraint widthConstraint) {
+	public void setWidth(GuiDimensionConstraint widthConstraint) {
 		System.err.println("Use setDimensions(int, int) on the rootGui instead.");
-		super.setWidthConstraint(widthConstraint);
+		super.setWidth(widthConstraint);
 	}
 
 	@Override
-	public void setHeightConstraint(GuiDimensionConstraint heightConstraint) {
+	public void setHeight(GuiDimensionConstraint heightConstraint) {
 		System.err.println("Use setDimensions(int, int) on the rootGui instead.");
-		super.setHeightConstraint(heightConstraint);
+		super.setHeight(heightConstraint);
 	}
 
 	@Override
