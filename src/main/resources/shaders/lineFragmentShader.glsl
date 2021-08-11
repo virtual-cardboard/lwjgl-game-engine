@@ -35,5 +35,5 @@ void main() {
 	float dist = getDist(gl_FragCoord.xy, x1, y1, x2, y2);
 	fragmentColor = colour;
 	float delta = fwidth(dist);
-	fragmentColor.a *= 1 - smoothstep(halfWidth - delta, halfWidth + delta, dist);
+	fragmentColor.a *= 1 - smoothstep(halfWidth - 2 * delta, halfWidth, dist);
 }
