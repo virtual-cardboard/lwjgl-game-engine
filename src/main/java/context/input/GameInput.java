@@ -60,8 +60,10 @@ public abstract class GameInput extends ContextPart {
 	public final void init(Queue<GameInputEvent> inputEventBuffer, PriorityQueue<GameEvent> eventQueue) {
 		this.inputEventBuffer = inputEventBuffer;
 		this.eventQueue = eventQueue;
-		frameResizedInputEventHandlers.add(new GameInputEventHandler<>(new RoootGuiUpdaterFunction(getContext())));
-		mouseMovedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorUpdaterFunction(cursor)));
+		frameResizedInputEventHandlers.add(new GameInputEventHandler<>(new RootGuiUpdaterFunction(getContext())));
+		mouseMovedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorMovedUpdaterFunction(cursor)));
+		mousePressedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorPressedUpdaterFunction(cursor)));
+		mouseReleasedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorReleasedUpdaterFunction(cursor)));
 		doInit();
 	}
 

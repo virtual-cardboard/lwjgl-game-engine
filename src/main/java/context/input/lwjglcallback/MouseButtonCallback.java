@@ -30,21 +30,21 @@ public class MouseButtonCallback extends GLFWMouseButtonCallback {
 	}
 
 	/**
-	 * This is the function that is called internally by GLFW called when a key is
-	 * pressed, released, or repeated.
+	 * This is the function that is called internally by GLFW called when a mouse
+	 * button is pressed, released, or repeated.
 	 */
 	@Override
 	public void invoke(long window, int button, int action, int mods) {
 		switch (action) {
-		case GLFW_PRESS:
-			inputEventBuffer.add(new MousePressedInputEvent(button));
-			break;
-		case GLFW_RELEASE:
-			inputEventBuffer.add(new MouseReleasedInputEvent(button));
-			break;
-		case GLFW_REPEAT:
-		default:
-			break;
+			case GLFW_PRESS:
+				inputEventBuffer.add(new MousePressedInputEvent(button));
+				break;
+			case GLFW_RELEASE:
+				inputEventBuffer.add(new MouseReleasedInputEvent(button));
+				break;
+			case GLFW_REPEAT:
+			default:
+				break;
 		}
 	}
 
