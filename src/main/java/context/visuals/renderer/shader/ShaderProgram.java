@@ -78,7 +78,8 @@ public class ShaderProgram {
 
 	public void delete() {
 		unbind();
-		for (Shader shader : toDelete) {
+		for (int i = 0; i < toDelete.size(); i++) {
+			Shader shader = toDelete.get(i);
 			glDetachShader(id, shader.getId());
 			shader.delete();
 		}

@@ -112,7 +112,8 @@ public abstract class GameInput extends ContextPart {
 	 * @param inputEvent    the {@link GameInputEvent} to handle
 	 */
 	private <T extends GameInputEvent> void handleEvent(List<GameInputEventHandler<T>> eventHandlers, T inputEvent) {
-		for (GameInputEventHandler<T> eventHandler : eventHandlers) {
+		for (int i = 0; i < eventHandlers.size(); i++) {
+			GameInputEventHandler<T> eventHandler = eventHandlers.get(i);
 			if (eventHandler.isSatisfiedBy(inputEvent)) {
 				GameEvent event = eventHandler.apply(inputEvent);
 				if (event != null) {
