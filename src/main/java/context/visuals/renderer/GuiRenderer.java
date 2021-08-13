@@ -1,5 +1,7 @@
 package context.visuals.renderer;
 
+import java.util.List;
+
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
@@ -25,7 +27,9 @@ public class GuiRenderer extends GameRenderer {
 	}
 
 	private void recursiveRender(RootGui root) {
-		for (Gui child : root.getChildren()) {
+		List<Gui> children = root.getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			Gui child = children.get(i);
 			doRecursiveRender(child, root, 0, 0, root.getWidth(), root.getHeight());
 		}
 	}
@@ -49,7 +53,9 @@ public class GuiRenderer extends GameRenderer {
 		guiVao.display();
 		gui.additionalRenderActions(matrix4f);
 
-		for (Gui child : gui.getChildren()) {
+		List<Gui> children = gui.getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			Gui child = children.get(i);
 			if (child.isEnabled()) {
 				doRecursiveRender(child, root, x, y, w, h);
 			}
