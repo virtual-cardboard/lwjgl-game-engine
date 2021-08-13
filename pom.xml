@@ -2,8 +2,8 @@
 <!DOCTYPE xml>
 <project>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>shardnon</groupId>
-	<artifactId>shardnon-lwjgl-game-engine</artifactId>
+	<groupId>virtual-cardboard</groupId>
+	<artifactId>virtual-cardboard-lwjgl-game-engine</artifactId>
 	<version>1</version>
 
 	<properties>
