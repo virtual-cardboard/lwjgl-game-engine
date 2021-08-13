@@ -1,26 +1,23 @@
 package context.visuals.gui;
 
-import common.math.Matrix4f;
+import context.visuals.gui.renderer.GuiRenderer;
 import context.visuals.lwjgl.Texture;
-import context.visuals.renderer.TextureRenderer;
 
 public class TexturedGui extends Gui {
 
 	private Texture texture;
-	private TextureRenderer textureRenderer;
 
-	public TexturedGui(Texture texture, TextureRenderer textureRenderer) {
+	public TexturedGui(GuiRenderer<TexturedGui> guiRenderer, Texture texture) {
+		super(guiRenderer);
 		this.texture = texture;
-		this.textureRenderer = textureRenderer;
-	}
-
-	@Override
-	public void additionalRenderActions(Matrix4f matrix4f) {
-		textureRenderer.render(texture, matrix4f);
 	}
 
 	public Texture getTexture() {
 		return texture;
+	}
+
+	public void setTexture(Texture texture) {
+		this.texture = texture;
 	}
 
 }

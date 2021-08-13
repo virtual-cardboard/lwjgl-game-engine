@@ -3,15 +3,17 @@ package context.visuals.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.math.Matrix4f;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
-import context.visuals.renderer.GuiRenderer;
+import context.visuals.gui.renderer.DefaultGuiRenderer;
+import context.visuals.gui.renderer.GuiRenderer;
+import context.visuals.lwjgl.VertexArrayObject;
+import context.visuals.renderer.shader.ShaderProgram;
 
 /**
- * A rectangular Graphical User Interface (GUI) with position constraints and
- * dimension constraints.
+ * A Graphical User Interface (GUI) with position constraints and dimension
+ * constraints.
  * <p>
  * A <code>Gui</code> can have any number of children <code>Guis</code>.
  * </p>
@@ -39,10 +41,17 @@ public class Gui {
 	private boolean enabled = true;
 
 	private Gui parent;
-	private List<Gui> children;
+	private List<Gui> children = new ArrayList<>();
 
-	public Gui() {
-		children = new ArrayList<>();
+	@SuppressWarnings("rawtypes")
+	private GuiRenderer guiRenderer;
+
+	public Gui(ShaderProgram guiShaderProgram, VertexArrayObject rectangleVao) {
+		this(new DefaultGuiRenderer(guiShaderProgram, rectangleVao));
+	}
+
+	public <T extends Gui> Gui(GuiRenderer<T> guiRenderer) {
+		this.guiRenderer = guiRenderer;
 	}
 
 	public void addChild(Gui child) {
@@ -50,12 +59,15 @@ public class Gui {
 		this.children.add(child);
 	}
 
-	public void additionalRenderActions(Matrix4f matrix4f) {
-	}
-
 	public void remove() {
 		parent.getChildren().remove(this);
 	}
+
+	public void clearChildren() {
+		children.clear();
+	}
+
+	// Getters and setters
 
 	public GuiPositionConstraint getPosXConstraint() {
 		return posXConstraint;
@@ -117,8 +129,9 @@ public class Gui {
 		this.enabled = enabled;
 	}
 
-	public void clearChildren() {
-		children.clear();
+	@SuppressWarnings("rawtypes")
+	public GuiRenderer getGuiRenderer() {
+		return guiRenderer;
 	}
 
 }

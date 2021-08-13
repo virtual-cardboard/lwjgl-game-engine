@@ -1,15 +1,18 @@
 package context.visuals.gui;
 
-public class GuiLabel extends Gui {
+import context.visuals.gui.renderer.GuiRenderer;
+
+public class LabelGui extends Gui {
 
 	private int textColour;
 	private String text;
 
-	public GuiLabel() {
-		this(255, "");
+	public LabelGui(GuiRenderer<LabelGui> guiRenderer) {
+		this(guiRenderer, 255, "");
 	}
 
-	public GuiLabel(int textColour, String text) {
+	public LabelGui(GuiRenderer<LabelGui> guiRenderer, int textColour, String text) {
+		super(guiRenderer);
 		this.textColour = textColour;
 		this.text = text;
 	}
