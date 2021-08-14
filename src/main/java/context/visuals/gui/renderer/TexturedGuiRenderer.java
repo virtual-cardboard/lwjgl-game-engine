@@ -31,7 +31,9 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
 		vao.display();
-		textureRenderer.render(gui.getTexture(), matrix4f);
+		if (gui.getTexture() != null) {
+			textureRenderer.render(gui.getTexture(), matrix4f);
+		}
 	}
 
 }
