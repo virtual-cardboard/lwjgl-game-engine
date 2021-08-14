@@ -18,7 +18,7 @@ public final class RootGuiRenderer extends GuiRenderer<RootGui> {
 	public void render(RootGui root) {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(new Vector2f(-1, 1));
-		matrix4f.scale(new Vector3f(2 / root.getWidth(), -2 / root.getHeight(), 1));
+		matrix4f.scale(new Vector3f(2f / root.getWidth(), -2f / root.getHeight(), 1));
 
 		List<Gui> children = root.getChildren();
 		for (int i = 0; i < children.size(); i++) {

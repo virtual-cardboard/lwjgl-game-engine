@@ -74,7 +74,7 @@ public class LineRenderer extends GameRenderer {
 
 		// Set uniforms
 		shaderProgram.bind();
-		shaderProgram.setMat4("transform", matrix4f);
+		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setFloat("x1", x1);
 		shaderProgram.setFloat("y1", y1);
 		shaderProgram.setFloat("x2", x2);

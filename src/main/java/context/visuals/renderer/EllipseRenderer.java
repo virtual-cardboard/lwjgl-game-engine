@@ -108,7 +108,7 @@ public class EllipseRenderer extends GameRenderer {
 	 */
 	public void renderNDC(final Matrix4f matrix4f, float x, float y, float width, float height, int colour) {
 		shaderProgram.bind();
-		shaderProgram.setMat4("transform", matrix4f);
+		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setFloat("x", x);
 		shaderProgram.setFloat("y", y);
 		shaderProgram.setFloat("width", width);

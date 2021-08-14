@@ -25,9 +25,10 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 		float y = gui.getPosYConstraint().calculateValue(parentY, parentY + parentHeight);
 		float width = gui.getWidthConstraint().calculateValue(parentX, parentX + parentWidth);
 		float height = gui.getHeightConstraint().calculateValue(parentY, parentY + parentHeight);
+		matrix4f = matrix4f.clone().translate(x, y).scale(width, height);
 
 		shaderProgram.bind();
-		shaderProgram.setMat4("matrix4f", matrix4f.clone().translate(x, y).scale(width, height));
+		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
 		vao.display();
 		textureRenderer.render(gui.getTexture(), matrix4f);
