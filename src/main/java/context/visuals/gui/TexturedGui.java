@@ -7,7 +7,7 @@ public class TexturedGui extends Gui {
 
 	private Texture texture;
 
-	public TexturedGui(GuiRenderer<TexturedGui> guiRenderer, Texture texture) {
+	public <T extends Gui> TexturedGui(GuiRenderer<T> guiRenderer, Texture texture) {
 		super(guiRenderer);
 		this.texture = texture;
 	}
