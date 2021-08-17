@@ -387,4 +387,8 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 		return false;
 	}
 
+	public float getAngle() {
+		return (float) ((Math.atan2(y, x) + 2 * Math.PI) % (2 * Math.PI));
+	}
+
 }
