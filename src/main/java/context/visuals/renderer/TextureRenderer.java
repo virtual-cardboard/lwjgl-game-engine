@@ -3,9 +3,9 @@ package context.visuals.renderer;
 import java.util.Objects;
 
 import common.math.Matrix4f;
+import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.renderer.shader.ShaderProgram;
 
 /**
  * A {@link GameRenderer} that renders textures.

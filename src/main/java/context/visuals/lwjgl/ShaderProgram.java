@@ -1,4 +1,4 @@
-package context.visuals.renderer.shader;
+package context.visuals.lwjgl;
 
 import static org.lwjgl.opengl.GL20.*;
 

@@ -8,8 +8,8 @@ import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
 import context.visuals.gui.renderer.DefaultGuiRenderer;
 import context.visuals.gui.renderer.GuiRenderer;
+import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.renderer.shader.ShaderProgram;
 
 /**
  * A Graphical User Interface (GUI) with position constraints and dimension

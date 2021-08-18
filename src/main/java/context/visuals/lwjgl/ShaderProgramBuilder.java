@@ -1,4 +1,4 @@
-package context.visuals.renderer.shader;
+package context.visuals.lwjgl;
 
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;

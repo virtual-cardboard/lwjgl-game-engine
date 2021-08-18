@@ -1,6 +1,6 @@
 package common.loader.linktask;
 
-import context.visuals.renderer.shader.ShaderProgram;
+import context.visuals.lwjgl.ShaderProgram;
 
 public class CreateShaderProgramLinkTask extends LinkTask {
 

@@ -3,8 +3,8 @@ package common.loader.linktask;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 
-import context.visuals.renderer.shader.Shader;
-import context.visuals.renderer.shader.ShaderProgram;
+import context.visuals.lwjgl.Shader;
+import context.visuals.lwjgl.ShaderProgram;
 
 public class CreateShaderLinkTask extends LinkTask {
 

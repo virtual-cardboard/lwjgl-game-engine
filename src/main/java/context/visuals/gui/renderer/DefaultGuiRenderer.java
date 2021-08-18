@@ -3,8 +3,8 @@ package context.visuals.gui.renderer;
 import common.math.Matrix4f;
 import context.visuals.colour.Colour;
 import context.visuals.gui.Gui;
+import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.renderer.shader.ShaderProgram;
 
 public class DefaultGuiRenderer extends GuiRenderer<Gui> {
 

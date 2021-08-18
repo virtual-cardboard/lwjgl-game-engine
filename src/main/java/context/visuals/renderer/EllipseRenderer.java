@@ -4,10 +4,10 @@ import common.math.Matrix4f;
 import common.math.Vector2f;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
+import context.visuals.lwjgl.Shader;
+import context.visuals.lwjgl.ShaderProgram;
+import context.visuals.lwjgl.ShaderProgramBuilder;
 import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.renderer.shader.Shader;
-import context.visuals.renderer.shader.ShaderProgram;
-import context.visuals.renderer.shader.ShaderProgramBuilder;
 
 /**
  * A {@link GameRenderer} that renders ellipses.

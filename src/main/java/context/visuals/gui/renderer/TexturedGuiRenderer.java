@@ -3,9 +3,9 @@ package context.visuals.gui.renderer;
 import common.math.Matrix4f;
 import context.visuals.colour.Colour;
 import context.visuals.gui.TexturedGui;
+import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.renderer.TextureRenderer;
-import context.visuals.renderer.shader.ShaderProgram;
 
 public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 
