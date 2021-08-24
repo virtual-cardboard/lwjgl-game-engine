@@ -2,21 +2,18 @@ package context.visuals.text;
 
 public class CharacterData implements Comparable<CharacterData> {
 
-	private int asciiCode;
-	private int x;
-	private int y;
-	private int width;
-	private int height;
-	private int xOffset;
-	private int yOffset;
-	private int xAdvance;
-	private int page;
+	private char character;
+	private short x;
+	private short y;
+	private short width;
+	private short height;
+	private short xOffset;
+	private short yOffset;
+	private short xAdvance;
+	private short page;
 
-	public CharacterData(int asciiCode, int x, int y, int width, int height, int xOffset, int yOffset, int xAdvance, int page) {
-		if (asciiCode > 255) {
-			throw new IllegalArgumentException("Invalid ascii character: " + asciiCode);
-		}
-		this.asciiCode = asciiCode;
+	public CharacterData(char character, short x, short y, short width, short height, short xOffset, short yOffset, short xAdvance, short page) {
+		this.character = character;
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -27,45 +24,45 @@ public class CharacterData implements Comparable<CharacterData> {
 		this.page = page;
 	}
 
-	public int getAsciiCode() {
-		return asciiCode;
+	public char getCharacter() {
+		return character;
 	}
 
-	public int getX() {
+	public short getX() {
 		return x;
 	}
 
-	public int getY() {
+	public short getY() {
 		return y;
 	}
 
-	public int getWidth() {
+	public short getWidth() {
 		return width;
 	}
 
-	public int getHeight() {
+	public short getHeight() {
 		return height;
 	}
 
-	public int getxOffset() {
+	public short getxOffset() {
 		return xOffset;
 	}
 
-	public int getyOffset() {
+	public short getyOffset() {
 		return yOffset;
 	}
 
-	public int getxAdvance() {
+	public short getxAdvance() {
 		return xAdvance;
 	}
 
-	public int getPage() {
+	public short getPage() {
 		return page;
 	}
 
 	@Override
 	public int compareTo(CharacterData o) {
-		return Integer.compare(asciiCode, o.asciiCode);
+		return Integer.compare(character, o.character);
 	}
 
 }

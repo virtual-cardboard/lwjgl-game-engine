@@ -2,25 +2,25 @@ package context.visuals.text;
 
 public class KerningData implements Comparable<KerningData> {
 
-	private int one;
-	private int two;
-	private int amount;
+	private char one;
+	private char two;
+	private short amount;
 
-	public KerningData(int one, int two, int amount) {
+	public KerningData(char one, char two, short amount) {
 		this.one = one;
 		this.two = two;
 		this.amount = amount;
 	}
 
-	public int getOne() {
+	public char getOne() {
 		return one;
 	}
 
-	public int getTwo() {
+	public char getTwo() {
 		return two;
 	}
 
-	public int getAmount() {
+	public short getAmount() {
 		return amount;
 	}
 
