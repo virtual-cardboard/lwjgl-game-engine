@@ -1,7 +1,10 @@
 package engine;
 
+import java.io.IOException;
+import java.net.DatagramSocket;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 
 import common.loader.Loader;
@@ -11,6 +14,10 @@ import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
 import context.input.event.GameInputEvent;
+import context.input.networking.SocketFinder;
+import context.input.networking.UDPReceiver;
+import context.input.networking.UDPSender;
+import context.input.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
 
 /**
@@ -122,11 +129,26 @@ public final class GameEngine {
 			loaderThread.start();
 		}
 
+		UDPReceiver receiver = null;
+		UDPSender sender = null;
+		Queue<PacketModel> networkQueue = null;
 		if (networking) {
-			// TODO
+			try {
+				print("Locating free network socket");
+				DatagramSocket socket = SocketFinder.findSocket();
+				networkQueue = new ConcurrentLinkedQueue<>();
+				receiver = new UDPReceiver(socket, inputBuffer);
+				sender = new UDPSender(socket, networkQueue);
+				Thread receiverThread = new Thread(receiver);
+				Thread senderThread = new Thread(sender);
+				receiverThread.start();
+				senderThread.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
-		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, accumulator, frameUpdater, loader);
+		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkQueue, accumulator, frameUpdater, loader);
 		print("Initializing context parts");
 		wrapper.getContext().init(inputBuffer);
 

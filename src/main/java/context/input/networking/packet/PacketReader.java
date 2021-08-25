@@ -1,12 +1,17 @@
 package context.input.networking.packet;
 
-import static context.input.networking.packet.destination.SelfDestinationPoint.SELF_DEST;
+import static context.input.networking.packet.address.PacketAddress.match;
+import static context.input.networking.packet.address.STUNAddress.STUN_ADDRESS;
+import static context.input.networking.packet.address.SelfAddress.SELF_DEST;
+import static context.input.networking.packet.address.ServerAddress.SERVER_ADDRESS;
 
 import java.net.DatagramPacket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
+import context.input.networking.packet.address.PacketAddress;
+import context.input.networking.packet.address.PeerAddress;
 import context.input.networking.packet.block.PacketBlock;
 
 public class PacketReader {
@@ -17,7 +22,7 @@ public class PacketReader {
 		this.packet = packet;
 	}
 
-	public PacketModel blocks() throws DataFormatException {
+	public PacketModel model() throws DataFormatException {
 		int index = 0;
 		int length = packet.getLength();
 		byte[] buffer = packet.getData();
@@ -32,6 +37,15 @@ public class PacketReader {
 			index = index + 2 + size;
 		}
 		return new PacketModel(SELF_DEST, blocks);
+	}
+
+	public PacketAddress address() {
+		if (match(packet, SERVER_ADDRESS)) {
+			return SERVER_ADDRESS;
+		} else if (match(packet, STUN_ADDRESS)) {
+			return STUN_ADDRESS;
+		}
+		return new PeerAddress(packet.getAddress(), packet.getPort());
 	}
 
 }

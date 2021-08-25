@@ -1,11 +1,11 @@
-package context.input.networking.packet.destination;
+package context.input.networking.packet.address;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class ServerDestinationPoint extends PacketDestination {
+public class ServerAddress extends PacketAddress {
 
-	public static final ServerDestinationPoint SERVER_DEST = new ServerDestinationPoint();
+	public static final ServerAddress SERVER_ADDRESS = new ServerAddress();
 
 	private static final InetAddress SERVER_IP;
 	private static final int SERVER_PORT = 45000;

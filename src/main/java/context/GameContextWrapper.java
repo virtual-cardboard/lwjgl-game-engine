@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import common.loader.Loader;
 import common.timestep.WindowFrameUpdateTimer;
 import context.input.event.GameInputEvent;
+import context.input.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
 
 /**
@@ -40,6 +41,7 @@ public class GameContextWrapper {
 	private final TimeAccumulator accumulator;
 	private final WindowFrameUpdateTimer windowFrameUpdateTimer;
 	private final Loader loader;
+	private final Queue<PacketModel> networkQueue;
 
 	/**
 	 * A constructor that takes in the context, input buffer, logic timer,
@@ -47,15 +49,17 @@ public class GameContextWrapper {
 	 * 
 	 * @param context                the starting {@link GameContext}
 	 * @param inputBuffer            {@link Queue} of {@link GameInputEvent}s
+	 * @param networkQueue
 	 * @param accumulator            the logic timer
 	 * @param windowFrameUpdateTimer the {@link WindowFrameUpdateTimer}
 	 * @param loader                 the {@link Loader}
 	 */
-	public GameContextWrapper(GameContext context, Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator,
+	public GameContextWrapper(GameContext context, Queue<GameInputEvent> inputBuffer, Queue<PacketModel> networkQueue, TimeAccumulator accumulator,
 			WindowFrameUpdateTimer windowFrameUpdateTimer, Loader loader) {
 		this.context = context;
 		context.setWrapper(this);
 		this.inputBuffer = inputBuffer;
+		this.networkQueue = networkQueue;
 		this.accumulator = accumulator;
 		this.windowFrameUpdateTimer = windowFrameUpdateTimer;
 		windowFrameUpdateTimer.setWrapper(this);
@@ -91,6 +95,10 @@ public class GameContextWrapper {
 
 	public Queue<GameInputEvent> getInputBuffer() {
 		return inputBuffer;
+	}
+
+	public void sendPacket(PacketModel packet) {
+		networkQueue.add(packet);
 	}
 
 	public TimeAccumulator getAccumulator() {

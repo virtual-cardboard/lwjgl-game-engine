@@ -4,8 +4,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.List;
 
+import context.input.networking.packet.address.PacketAddress;
 import context.input.networking.packet.block.PacketBlock;
-import context.input.networking.packet.destination.PacketDestination;
 
 public class PacketBuilder {
 
@@ -28,7 +28,7 @@ public class PacketBuilder {
 	 * @return
 	 */
 	public DatagramPacket packet() {
-		PacketDestination dest = model.dest();
+		PacketAddress dest = model.dest();
 		List<PacketBlock> blocks = model.blocks();
 		if (buffer == null) {
 			int totalSize = 0;

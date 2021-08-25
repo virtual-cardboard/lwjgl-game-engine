@@ -1,11 +1,11 @@
-package context.input.networking.packet.destination;
+package context.input.networking.packet.address;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class STUNDestinationPoint extends PacketDestination {
+public class STUNAddress extends PacketAddress {
 
-	public static final STUNDestinationPoint STUN_DEST = new STUNDestinationPoint();
+	public static final STUNAddress STUN_ADDRESS = new STUNAddress();
 
 	private static final InetAddress STUN_IP;
 	private static final int STUN_PORT = 45002;

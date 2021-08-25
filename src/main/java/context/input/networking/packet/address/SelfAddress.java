@@ -1,10 +1,10 @@
-package context.input.networking.packet.destination;
+package context.input.networking.packet.address;
 
 import java.net.InetAddress;
 
-public class SelfDestinationPoint extends PacketDestination {
+public class SelfAddress extends PacketAddress {
 
-	public static final SelfDestinationPoint SELF_DEST = new SelfDestinationPoint();
+	public static final SelfAddress SELF_DEST = new SelfAddress();
 
 	private static InetAddress ip;
 	private static int port;
