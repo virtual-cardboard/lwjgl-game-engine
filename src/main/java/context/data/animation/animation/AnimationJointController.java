@@ -18,7 +18,15 @@ public class AnimationJointController extends JointController {
 
 	@Override
 	public void doUpdateJoints(List<Joint> joints) {
+		// TODO
+	}
 
+	public Animation getAnimation() {
+		return animation;
+	}
+
+	public Skeleton getSkeleton() {
+		return skeleton;
 	}
 
 }
