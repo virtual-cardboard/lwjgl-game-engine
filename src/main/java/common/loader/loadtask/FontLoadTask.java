@@ -21,7 +21,4 @@ public class FontLoadTask extends LoadTask {
 		}
 	}
 
-//	public static void main(String[] args) {
-//	}
-
 }

@@ -1,5 +1,8 @@
 package context.visuals.text;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CharacterData implements Comparable<CharacterData> {
 
 	private char character;
@@ -11,6 +14,7 @@ public class CharacterData implements Comparable<CharacterData> {
 	private short yOffset;
 	private short xAdvance;
 	private short page;
+	private Map<Character, Integer> charToKernings;
 
 	public CharacterData(char character, short x, short y, short width, short height, short xOffset, short yOffset, short xAdvance, short page) {
 		this.character = character;
@@ -22,6 +26,7 @@ public class CharacterData implements Comparable<CharacterData> {
 		this.yOffset = yOffset;
 		this.xAdvance = xAdvance;
 		this.page = page;
+		charToKernings = new HashMap<>();
 	}
 
 	public char getCharacter() {
@@ -58,6 +63,10 @@ public class CharacterData implements Comparable<CharacterData> {
 
 	public short getPage() {
 		return page;
+	}
+
+	public Map<Character, Integer> getCharToKernings() {
+		return charToKernings;
 	}
 
 	@Override

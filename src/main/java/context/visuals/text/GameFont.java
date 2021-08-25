@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import context.visuals.lwjgl.Texture;
+
 public class GameFont {
 
 	private String name;
@@ -11,15 +13,18 @@ public class GameFont {
 	private int numPages;
 	private List<CharacterData> characterDatas;
 	private List<KerningData> kerningDatas;
+	private List<Texture> pageTextures;
 
 	public GameFont() {
 		characterDatas = new ArrayList<>();
 		kerningDatas = new ArrayList<>();
+		pageTextures = new ArrayList<>();
 	}
 
 	void makeImmutable() {
 		this.characterDatas = Collections.unmodifiableList(characterDatas);
 		this.kerningDatas = Collections.unmodifiableList(kerningDatas);
+		this.pageTextures = Collections.unmodifiableList(pageTextures);
 	}
 
 	public String getName() {
@@ -52,6 +57,10 @@ public class GameFont {
 
 	public List<KerningData> getKerningDatas() {
 		return kerningDatas;
+	}
+
+	public List<Texture> getPageTextures() {
+		return pageTextures;
 	}
 
 }
