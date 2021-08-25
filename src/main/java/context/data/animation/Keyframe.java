@@ -1,4 +1,4 @@
-package context.data.animation.animation;
+package context.data.animation;
 
 public class Keyframe implements Comparable<Keyframe> {
 

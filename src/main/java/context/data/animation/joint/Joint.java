@@ -1,4 +1,4 @@
-package context.data.animation;
+package context.data.animation.joint;
 
 import common.math.Vector2f;
 

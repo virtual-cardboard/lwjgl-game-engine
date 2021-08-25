@@ -1,4 +1,4 @@
-package context.data.animation.animation;
+package context.data.animation;
 
 import java.util.ArrayList;
 import java.util.List;
