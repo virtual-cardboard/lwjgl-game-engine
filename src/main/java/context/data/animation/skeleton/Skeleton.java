@@ -1,4 +1,4 @@
-package context.data.joint.skeleton;
+package context.data.animation.skeleton;
 
 public class Skeleton {
 
