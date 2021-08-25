@@ -4,10 +4,12 @@ public class Keyframe implements Comparable<Keyframe> {
 
 	private int time;
 	private SkeletonState skeletonState;
+	private InterpolationType interpolationType;
 
 	public Keyframe(int time, SkeletonState skeletonState) {
 		this.time = time;
 		this.skeletonState = skeletonState;
+		interpolationType = InterpolationType.LINEAR;
 	}
 
 	public int getTime() {
@@ -20,6 +22,14 @@ public class Keyframe implements Comparable<Keyframe> {
 
 	public SkeletonState getSkeletonState() {
 		return skeletonState;
+	}
+
+	public InterpolationType getInterpolationType() {
+		return interpolationType;
+	}
+
+	public void setInterpolationType(InterpolationType interpolationType) {
+		this.interpolationType = interpolationType;
 	}
 
 	@Override

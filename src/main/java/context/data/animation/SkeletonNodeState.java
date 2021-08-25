@@ -5,6 +5,14 @@ public class SkeletonNodeState {
 	private float distance;
 	private float rotation;
 
+	public SkeletonNodeState() {
+	}
+
+	public SkeletonNodeState(float distance, float rotation) {
+		this.distance = distance;
+		this.rotation = rotation;
+	}
+
 	public float getDistance() {
 		return distance;
 	}
