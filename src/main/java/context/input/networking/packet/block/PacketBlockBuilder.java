@@ -16,10 +16,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Queue;
-
-import com.sun.corba.se.impl.io.TypeMismatchException;
 
 import context.input.networking.packet.cryption.EncryptionAlgorithmType;
 
@@ -38,7 +37,7 @@ public class PacketBlockBuilder {
 	private void typeValidate(PacketPrimitive actual) {
 		PacketPrimitive expected = primitives.poll();
 		if (expected != actual) {
-			throw new TypeMismatchException("Packet block creation failed: expected " + expected + ", actual " + actual);
+			throw new InputMismatchException("Packet block creation failed: expected " + expected + ", actual " + actual);
 		}
 	}
 

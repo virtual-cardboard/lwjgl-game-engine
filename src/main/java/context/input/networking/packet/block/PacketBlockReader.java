@@ -14,9 +14,8 @@ import static context.input.networking.packet.block.PacketPrimitive.STRING;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.net.DatagramPacket;
+import java.util.InputMismatchException;
 import java.util.Queue;
-
-import com.sun.corba.se.impl.io.TypeMismatchException;
 
 public class PacketBlockReader {
 
@@ -34,7 +33,7 @@ public class PacketBlockReader {
 	private void typeValidate(PacketPrimitive actual) {
 		PacketPrimitive expected = primitives.poll();
 		if (expected != actual) {
-			throw new TypeMismatchException("Packet block creation failed: expected " + expected + ", actual " + actual);
+			throw new InputMismatchException("Packet block creation failed: expected " + expected + ", actual " + actual);
 		}
 	}
 
