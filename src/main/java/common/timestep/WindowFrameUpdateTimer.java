@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import common.loader.linktask.LinkTask;
 import context.GameContext;
 import context.GameContextWrapper;
-import engine.GameWindow;
+import context.GameWindow;
 
 public final class WindowFrameUpdateTimer extends TimestepTimer {
 

@@ -14,10 +14,11 @@ import context.logic.TimeAccumulator;
  * 
  * Without a wrapper, swapping contexts requires updating every reference to the
  * context. Aside from being cumbersome, synchronization errors can occur
- * because swapping is not instantaneous. With the context wrapper, swapping
- * contexts becomes thread-safe. Every reference to the context is replaced with
- * a reference to the wrapper, so swapping contexts is instantaneous with one
- * reference update.
+ * because swapping is not instantaneous.
+ * 
+ * With the context wrapper, swapping contexts becomes thread-safe. Every
+ * reference to the context is replaced with a reference to the wrapper, so
+ * swapping contexts is instantaneous with one reference update.
  * 
  * @author Jay, Lunkle
  *

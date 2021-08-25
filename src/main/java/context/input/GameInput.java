@@ -8,10 +8,10 @@ import java.util.Queue;
 import common.GameInputEventHandler;
 import common.event.GameEvent;
 import context.ContextPart;
+import context.GameWindow;
 import context.input.event.*;
 import context.input.mouse.GameCursor;
 import context.logic.GameLogic;
-import engine.GameWindow;
 
 /**
  * A context part that handles user input. It transforms raw
