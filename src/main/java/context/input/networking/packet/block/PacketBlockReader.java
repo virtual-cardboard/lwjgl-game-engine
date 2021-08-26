@@ -40,7 +40,7 @@ public class PacketBlockReader {
 		typeValidate(LONG);
 		long val = ((long) bytes[index] << 56) | ((long) (bytes[index + 1] & 0xFF) << 48) |
 				((long) (bytes[index + 2] & 0xFF) << 40) | ((long) (bytes[index + 3] & 0xFF) << 32) |
-				((bytes[index + 4] & 0xFF) << 24) | ((bytes[index + 5] & 0xFF) << 16) |
+				((long) (bytes[index + 4] & 0xFF) << 24) | ((bytes[index + 5] & 0xFF) << 16) |
 				((bytes[index + 6] & 0xFF) << 8) | (bytes[index + 7] & 0xFF);
 		index += 8;
 		return val;
