@@ -18,4 +18,8 @@ public abstract class PacketAddress {
 		return packet.getAddress().equals(address.ip()) && packet.getPort() == address.port();
 	}
 
+	public short shortPort() {
+		return (short) port();
+	}
+
 }

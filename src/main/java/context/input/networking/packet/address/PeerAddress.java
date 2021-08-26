@@ -9,7 +9,7 @@ public class PeerAddress extends PacketAddress {
 
 	public PeerAddress(InetAddress ip, int port) {
 		this.ip = ip;
-		this.port = port;
+		this.port = port & 0xFFFF;
 	}
 
 	@Override
