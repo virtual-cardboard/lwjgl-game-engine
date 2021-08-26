@@ -1,4 +1,4 @@
-package context.data.animation;
+package context.data.animation.interpolation;
 
 import java.util.function.Function;
 

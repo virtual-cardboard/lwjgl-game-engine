@@ -1,7 +1,9 @@
 package context.data.animation;
 
+import java.util.Collections;
 import java.util.List;
 
+import common.math.Vector2f;
 import context.data.animation.interpolation.KeyframeInterpolator;
 import context.data.animation.joint.Joint;
 import context.data.animation.joint.JointController;
@@ -23,15 +25,41 @@ public class JointAnimationController extends JointController {
 
 	@Override
 	public void doUpdateJoints(List<Joint> joints) {
-//		animation.getKeyframes()
-//		Keyframe k1;
-//		Keyframe k2;
-//		KEYFRAME_INTERPOLATOR.interpolateKeyframe(k1, k2, currentTime);
+		List<Keyframe> keyframes = animation.getKeyframes();
+		int index = Collections.binarySearch(keyframes, new Keyframe(currentTime, null));
+		SkeletonState skeletonState = null;
+		if (index >= 0) {
+			skeletonState = keyframes.get(index).getSkeletonState();
+		} else {
+			Keyframe k1 = keyframes.get(-index - 2);
+			Keyframe k2 = keyframes.get(-index - 1);
+			skeletonState = KEYFRAME_INTERPOLATOR.interpolateKeyframe(k1, k2, currentTime);
+		}
+		updateJointsUsingSkeletonState(joints, skeletonState);
 	}
 
-	private void doDoUpateJoint(Joint joint, SkeletonNode node) {
-
+	private void updateJointsUsingSkeletonState(List<Joint> joints, SkeletonState skeletonState) {
+		Joint parent = joints.get(0);
+		for (int i = 0; i < skeleton.getRootNode().getChildren().size(); i++) {
+			doUpdateJointsUsingSkeletonState(skeleton.getRootNode(), joints, skeletonState.getSkeletonNodeStates(), i + 1, parent, parent.getRotation());
+		}
 	}
+
+	private void doUpdateJointsUsingSkeletonState(SkeletonNode node, List<Joint> joints, List<SkeletonNodeState> nodeStates, int index,
+			Joint parent, float parentAbsoluteRotation) {
+		Joint joint = joints.get(index);
+		SkeletonNodeState nodeState = nodeStates.get(index);
+		float rotation = nodeState.getRotation();
+		float distance = nodeState.getDistance();
+		Vector2f relativeOffset = Vector2f.fromAngleLength(parentAbsoluteRotation + rotation, distance);
+		joint.setRotation(rotation);
+		joint.getPosition().set(parent.getPosition().add(relativeOffset));
+		for (SkeletonNode child : node.getChildren()) {
+			doUpdateJointsUsingSkeletonState(child, joints, nodeStates, ++index, joint, parentAbsoluteRotation + rotation);
+		}
+	}
+
+	// Getters and setters
 
 	public Animation getAnimation() {
 		return animation;
@@ -39,6 +67,14 @@ public class JointAnimationController extends JointController {
 
 	public Skeleton getSkeleton() {
 		return skeleton;
+	}
+
+	public int getCurrentTime() {
+		return currentTime;
+	}
+
+	public void setCurrentTime(int currentTime) {
+		this.currentTime = currentTime;
 	}
 
 }

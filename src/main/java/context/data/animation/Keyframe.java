@@ -1,5 +1,7 @@
 package context.data.animation;
 
+import context.data.animation.interpolation.InterpolationType;
+
 public class Keyframe implements Comparable<Keyframe> {
 
 	private int time;

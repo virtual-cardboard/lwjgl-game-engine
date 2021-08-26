@@ -12,6 +12,10 @@ public class Animation {
 		keyframes = new ArrayList<>();
 	}
 
+	public Animation(List<Keyframe> keyframes) {
+		this.keyframes = keyframes;
+	}
+
 	public void addKeyframe(Keyframe keyframe) {
 		int index = Collections.binarySearch(keyframes, keyframe);
 		if (index >= 0) {
