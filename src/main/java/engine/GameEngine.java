@@ -171,13 +171,16 @@ public final class GameEngine {
 		print("Starting logic thread.");
 		logicThread.start();
 
-		try {
-			print("Waiting for window initialization");
-			windowCountDownLatch.await();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (rendering) {
+			try {
+				print("Waiting for window initialization");
+				windowCountDownLatch.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			print("Window initialization finished");
 		}
-		print("Window initialization finished");
+		print("Game engine now running");
 	}
 
 	private void print(String s) {

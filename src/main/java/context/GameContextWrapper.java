@@ -65,7 +65,9 @@ public class GameContextWrapper {
 		this.networkSendBuffer = networkSendBuffer;
 		this.accumulator = accumulator;
 		this.windowFrameUpdateTimer = windowFrameUpdateTimer;
-		windowFrameUpdateTimer.setWrapper(this);
+		if (windowFrameUpdateTimer != null) {
+			windowFrameUpdateTimer.setWrapper(this);
+		}
 		this.loader = loader;
 	}
 
