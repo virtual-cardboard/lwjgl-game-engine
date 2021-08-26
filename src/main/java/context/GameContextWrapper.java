@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import common.loader.Loader;
 import common.timestep.WindowFrameUpdateTimer;
 import context.input.event.GameInputEvent;
+import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
 
@@ -38,10 +39,11 @@ public class GameContextWrapper {
 	private final ReadWriteLock contextLock = new ReentrantReadWriteLock();
 
 	private final Queue<GameInputEvent> inputBuffer;
+	private Queue<PacketReceivedInputEvent> networkReceiveBuffer;
 	private final TimeAccumulator accumulator;
 	private final WindowFrameUpdateTimer windowFrameUpdateTimer;
 	private final Loader loader;
-	private final Queue<PacketModel> networkQueue;
+	private final Queue<PacketModel> networkSendBuffer;
 
 	/**
 	 * A constructor that takes in the context, input buffer, logic timer,
@@ -49,17 +51,18 @@ public class GameContextWrapper {
 	 * 
 	 * @param context                the starting {@link GameContext}
 	 * @param inputBuffer            {@link Queue} of {@link GameInputEvent}s
-	 * @param networkQueue
+	 * @param networkSendBuffer
 	 * @param accumulator            the logic timer
 	 * @param windowFrameUpdateTimer the {@link WindowFrameUpdateTimer}
 	 * @param loader                 the {@link Loader}
 	 */
-	public GameContextWrapper(GameContext context, Queue<GameInputEvent> inputBuffer, Queue<PacketModel> networkQueue, TimeAccumulator accumulator,
+	public GameContextWrapper(GameContext context, Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer, TimeAccumulator accumulator,
 			WindowFrameUpdateTimer windowFrameUpdateTimer, Loader loader) {
 		this.context = context;
 		context.setWrapper(this);
 		this.inputBuffer = inputBuffer;
-		this.networkQueue = networkQueue;
+		this.networkReceiveBuffer = networkReceiveBuffer;
+		this.networkSendBuffer = networkSendBuffer;
 		this.accumulator = accumulator;
 		this.windowFrameUpdateTimer = windowFrameUpdateTimer;
 		windowFrameUpdateTimer.setWrapper(this);
@@ -75,7 +78,7 @@ public class GameContextWrapper {
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
 			context.setWrapper(this);
-			context.init(inputBuffer);
+			context.init(inputBuffer, networkReceiveBuffer);
 			this.context = context;
 		}
 	}
@@ -98,7 +101,7 @@ public class GameContextWrapper {
 	}
 
 	public void sendPacket(PacketModel packet) {
-		networkQueue.add(packet);
+		networkSendBuffer.add(packet);
 	}
 
 	public TimeAccumulator getAccumulator() {
