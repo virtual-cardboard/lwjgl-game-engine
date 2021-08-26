@@ -40,6 +40,7 @@ public final class GameEngine {
 	private boolean rendering = true;
 	private boolean networking = true;
 	private boolean loading = true;
+	private Integer port;
 
 	/**
 	 * Creates a {@link GameEngine} with a window title and a context.
@@ -89,7 +90,8 @@ public final class GameEngine {
 		return this;
 	}
 
-	public GameEngine enableNetworking() {
+	public GameEngine enableNetworking(int port) {
+		this.port = port;
 		networking = true;
 		return this;
 	}
@@ -138,7 +140,7 @@ public final class GameEngine {
 		if (networking) {
 			try {
 				print("Locating free network socket");
-				DatagramSocket socket = SocketFinder.findSocket();
+				DatagramSocket socket = SocketFinder.findSocket(port);
 				networkSendBuffer = new ConcurrentLinkedQueue<>();
 				receiver = new UDPReceiver(socket, networkReceiveBuffer);
 				sender = new UDPSender(socket, networkSendBuffer);

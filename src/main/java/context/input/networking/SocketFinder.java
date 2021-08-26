@@ -6,22 +6,29 @@ import java.net.SocketException;
 
 public class SocketFinder {
 
-	public static DatagramSocket findSocket() throws IOException {
+	public static DatagramSocket findSocket(Integer targetPort) throws IOException {
 		DatagramSocket socket = null;
-		int port = 44999;
-		while (socket == null) {
-			if (port < 8080) {
-				throw new IOException("All ports in range 8081-44999 in use");
+		if (targetPort == null) {
+			targetPort = 44999;
+			while (socket == null) {
+				if (targetPort < 8080) {
+					throw new IOException("All ports in range 8081-44999 in use");
+				}
+				try {
+					socket = new DatagramSocket(targetPort);
+				} catch (SocketException e) {
+				}
+				targetPort--;
 			}
+		} else {
 			try {
-				socket = new DatagramSocket(port);
-				socket.setSoTimeout(10000);
+				socket = new DatagramSocket(targetPort);
 			} catch (SocketException e) {
-				e.printStackTrace();
+				throw new IOException("Port " + targetPort + " in use");
 			}
-			port--;
 		}
-		System.out.println("Started UDP socket on port " + port);
+		socket.setSoTimeout(10000);
+		System.out.println("Started UDP socket on port " + targetPort);
 		return socket;
 	}
 
