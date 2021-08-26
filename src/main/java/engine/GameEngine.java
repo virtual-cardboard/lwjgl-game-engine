@@ -2,6 +2,7 @@ package engine;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -14,6 +15,7 @@ import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
 import context.input.event.GameInputEvent;
+import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.SocketFinder;
 import context.input.networking.UDPReceiver;
 import context.input.networking.UDPSender;
@@ -131,14 +133,15 @@ public final class GameEngine {
 
 		UDPReceiver receiver = null;
 		UDPSender sender = null;
-		Queue<PacketModel> networkQueue = null;
+		Queue<PacketModel> networkSendBuffer = null;
+		Queue<PacketReceivedInputEvent> networkReceiveBuffer = new LinkedList<>();
 		if (networking) {
 			try {
 				print("Locating free network socket");
 				DatagramSocket socket = SocketFinder.findSocket();
-				networkQueue = new ConcurrentLinkedQueue<>();
-				receiver = new UDPReceiver(socket, inputBuffer);
-				sender = new UDPSender(socket, networkQueue);
+				networkSendBuffer = new ConcurrentLinkedQueue<>();
+				receiver = new UDPReceiver(socket, networkReceiveBuffer);
+				sender = new UDPSender(socket, networkSendBuffer);
 				Thread receiverThread = new Thread(receiver);
 				Thread senderThread = new Thread(sender);
 				receiverThread.start();
@@ -147,10 +150,9 @@ public final class GameEngine {
 				e.printStackTrace();
 			}
 		}
-
-		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkQueue, accumulator, frameUpdater, loader);
+		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader);
 		print("Initializing context parts");
-		wrapper.getContext().init(inputBuffer);
+		wrapper.getContext().init(inputBuffer, networkReceiveBuffer);
 
 		if (rendering) {
 			print("Creating rendering thread.");
@@ -165,17 +167,19 @@ public final class GameEngine {
 		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
 		Thread logicThread = new Thread(logicTimer);
 		logicThread.setName("gameLogicThread");
-		logicThread.setDaemon(true);
 		print("Starting logic thread.");
 		logicThread.start();
 
-		try {
-			print("Waiting for window initialization");
-			windowCountDownLatch.await();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (rendering) {
+			try {
+				print("Waiting for window initialization");
+				windowCountDownLatch.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			print("Window initialization finished");
 		}
-		print("Window initialization finished");
+		print("Game engine now running");
 	}
 
 	private void print(String s) {

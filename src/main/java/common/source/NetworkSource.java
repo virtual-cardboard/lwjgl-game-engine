@@ -4,15 +4,19 @@ import context.input.networking.packet.address.PacketAddress;
 
 public class NetworkSource implements GameSource {
 
-	private PacketAddress source;
+	private PacketAddress address;
 
-	public NetworkSource(PacketAddress source) {
-		this.source = source;
+	public NetworkSource(PacketAddress address) {
+		this.address = address;
+	}
+
+	public PacketAddress getAddress() {
+		return address;
 	}
 
 	@Override
 	public String getDescription() {
-		return "packet from " + source.toString();
+		return "packet from " + address.toString();
 	}
 
 }

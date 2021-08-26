@@ -7,6 +7,8 @@ import common.event.GameEvent;
 import context.data.GameData;
 import context.input.GameInput;
 import context.input.event.GameInputEvent;
+import context.input.event.PacketReceivedInputEvent;
+import context.input.networking.packet.PacketModel;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 
@@ -75,9 +77,9 @@ public final class GameContext {
 	 * 
 	 * @param inputEventBuffer the input buffer
 	 */
-	public void init(Queue<GameInputEvent> inputEventBuffer) {
+	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer) {
 		data.init();
-		input.init(inputEventBuffer, eventQueue);
+		input.init(inputEventBuffer, networkReceiveBuffer, eventQueue);
 		logic.init(eventQueue);
 		visuals.init();
 	}
@@ -88,6 +90,10 @@ public final class GameContext {
 
 	void setWrapper(GameContextWrapper wrapper) {
 		this.wrapper = wrapper;
+	}
+
+	public void sendPacket(PacketModel packet) {
+		wrapper.sendPacket(packet);
 	}
 
 }

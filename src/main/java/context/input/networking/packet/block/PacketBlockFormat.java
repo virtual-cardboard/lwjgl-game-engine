@@ -1,6 +1,5 @@
 package context.input.networking.packet.block;
 
-import java.net.DatagramPacket;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -29,8 +28,8 @@ public class PacketBlockFormat {
 		return new PacketBlockBuilder(this);
 	}
 
-	public PacketBlockReader reader(DatagramPacket packet) {
-		return new PacketBlockReader(this, packet);
+	public PacketBlockReader reader(PacketBlock block) {
+		return new PacketBlockReader(this, block);
 	}
 
 	public Queue<PacketPrimitive> primitives() {
