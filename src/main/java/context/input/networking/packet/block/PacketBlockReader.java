@@ -13,7 +13,6 @@ import static context.input.networking.packet.block.PacketPrimitive.SHORT_ARRAY;
 import static context.input.networking.packet.block.PacketPrimitive.STRING;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import java.net.DatagramPacket;
 import java.util.InputMismatchException;
 import java.util.Queue;
 
@@ -23,11 +22,11 @@ public class PacketBlockReader {
 	private Queue<PacketPrimitive> primitives;
 	private int index = 0;
 
-	public PacketBlockReader(PacketBlockFormat format, DatagramPacket packet) {
+	public PacketBlockReader(PacketBlockFormat format, PacketBlock block) {
 		this.primitives = format.primitives();
 		// TODO
 		// apply encryption inverses
-		this.bytes = packet.getData();
+		this.bytes = block.bytes();
 	}
 
 	private void typeValidate(PacketPrimitive actual) {

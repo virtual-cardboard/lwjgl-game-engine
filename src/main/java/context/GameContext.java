@@ -8,6 +8,7 @@ import context.data.GameData;
 import context.input.GameInput;
 import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
+import context.input.networking.packet.PacketModel;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 
@@ -89,6 +90,10 @@ public final class GameContext {
 
 	void setWrapper(GameContextWrapper wrapper) {
 		this.wrapper = wrapper;
+	}
+
+	public void sendPacket(PacketModel packet) {
+		wrapper.sendPacket(packet);
 	}
 
 }
