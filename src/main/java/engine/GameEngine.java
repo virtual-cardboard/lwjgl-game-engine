@@ -90,6 +90,11 @@ public final class GameEngine {
 		return this;
 	}
 
+	public GameEngine enableNetworking() {
+		networking = true;
+		return this;
+	}
+
 	public GameEngine enableNetworking(int port) {
 		this.port = port;
 		networking = true;
