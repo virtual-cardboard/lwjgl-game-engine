@@ -14,6 +14,7 @@ import common.timestep.WindowFrameUpdateTimer;
 import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
+import context.input.GameInputHandlerRunnable;
 import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.SocketFinder;
@@ -167,6 +168,14 @@ public final class GameEngine {
 			renderingThread.setName("renderingThread");
 			print("Starting rendering thread.");
 			renderingThread.start();
+		} else {
+			print("Creating input handling thread.");
+			GameInputHandlerRunnable gameInputHandler = new GameInputHandlerRunnable(wrapper);
+			Thread inputHandlingThread = new Thread(gameInputHandler);
+			inputHandlingThread.setName("inputHandlingThread");
+			inputHandlingThread.setDaemon(true);
+			print("Starting input handling thread.");
+			inputHandlingThread.start();
 		}
 
 		print("Creating updating thread.");
