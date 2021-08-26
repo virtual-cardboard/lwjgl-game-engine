@@ -167,7 +167,6 @@ public final class GameEngine {
 		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
 		Thread logicThread = new Thread(logicTimer);
 		logicThread.setName("gameLogicThread");
-		logicThread.setDaemon(true);
 		print("Starting logic thread.");
 		logicThread.start();
 
