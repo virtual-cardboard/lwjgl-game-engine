@@ -28,7 +28,7 @@ public class SocketFinder {
 			}
 		}
 		socket.setSoTimeout(10000);
-		System.out.println("Started UDP socket on port " + targetPort);
+		System.out.println("Started UDP socket at " + socket.getLocalSocketAddress());
 		return socket;
 	}
 
