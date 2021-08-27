@@ -1,9 +1,6 @@
 package context.input.networking.packet;
 
-import static context.input.networking.packet.address.PacketAddress.match;
-import static context.input.networking.packet.address.STUNAddress.STUN_ADDRESS;
 import static context.input.networking.packet.address.SelfAddress.SELF_DEST;
-import static context.input.networking.packet.address.ServerAddress.SERVER_ADDRESS;
 
 import java.net.DatagramPacket;
 import java.util.ArrayList;
@@ -46,11 +43,6 @@ public class PacketReader {
 	}
 
 	public PacketAddress address() {
-		if (match(packet, SERVER_ADDRESS)) {
-			return SERVER_ADDRESS;
-		} else if (match(packet, STUN_ADDRESS)) {
-			return STUN_ADDRESS;
-		}
 		return new PeerAddress(packet.getAddress(), packet.getPort());
 	}
 

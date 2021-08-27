@@ -1,6 +1,5 @@
 package context.input.networking.packet.address;
 
-import java.net.DatagramPacket;
 import java.net.InetAddress;
 
 public abstract class PacketAddress {
@@ -14,12 +13,25 @@ public abstract class PacketAddress {
 		return ip().toString() + ":" + port();
 	}
 
-	public static boolean match(DatagramPacket packet, PacketAddress address) {
-		return packet.getAddress().equals(address.ip()) && packet.getPort() == address.port();
+	public static boolean match(PacketAddress a1, PacketAddress a2) {
+		return a1.port() == a2.port() && a1.ip().equals(a2.ip());
 	}
 
 	public short shortPort() {
 		return (short) port();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (obj instanceof PacketAddress) {
+			PacketAddress other = (PacketAddress) obj;
+			return port() == other.port() && ip().equals(other.ip());
+		}
+		return false;
 	}
 
 }
