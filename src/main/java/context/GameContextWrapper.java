@@ -44,6 +44,7 @@ public class GameContextWrapper {
 	private final WindowFrameUpdateTimer windowFrameUpdateTimer;
 	private final Loader loader;
 	private final Queue<PacketModel> networkSendBuffer;
+	private short socketPort;
 
 	/**
 	 * A constructor that takes in the context, input buffer, logic timer,
@@ -57,8 +58,9 @@ public class GameContextWrapper {
 	 * @param loader                 the {@link Loader}
 	 */
 	public GameContextWrapper(GameContext context, Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer, TimeAccumulator accumulator,
-			WindowFrameUpdateTimer windowFrameUpdateTimer, Loader loader) {
+			WindowFrameUpdateTimer windowFrameUpdateTimer, Loader loader, int socketPort) {
 		this.context = context;
+		this.socketPort = (short) socketPort;
 		context.setWrapper(this);
 		this.inputBuffer = inputBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
@@ -116,6 +118,10 @@ public class GameContextWrapper {
 
 	public Loader getLoader() {
 		return loader;
+	}
+
+	public short getSocketPort() {
+		return socketPort;
 	}
 
 }

@@ -141,12 +141,13 @@ public final class GameEngine {
 
 		UDPReceiver receiver = null;
 		UDPSender sender = null;
+		DatagramSocket socket = null;
 		Queue<PacketModel> networkSendBuffer = null;
 		Queue<PacketReceivedInputEvent> networkReceiveBuffer = new LinkedList<>();
 		if (networking) {
 			try {
 				print("Locating free network socket");
-				DatagramSocket socket = SocketFinder.findSocket(port);
+				socket = SocketFinder.findSocket(port);
 				networkSendBuffer = new ConcurrentLinkedQueue<>();
 				receiver = new UDPReceiver(socket, networkReceiveBuffer);
 				sender = new UDPSender(socket, networkSendBuffer);
@@ -158,7 +159,7 @@ public final class GameEngine {
 				e.printStackTrace();
 			}
 		}
-		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader);
+		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader, socket.getLocalPort());
 		print("Initializing context parts");
 		wrapper.getContext().init(inputBuffer, networkReceiveBuffer);
 

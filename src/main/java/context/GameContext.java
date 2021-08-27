@@ -96,4 +96,8 @@ public final class GameContext {
 		wrapper.sendPacket(packet);
 	}
 
+	public short getSocketPort() {
+		return wrapper.getSocketPort();
+	}
+
 }

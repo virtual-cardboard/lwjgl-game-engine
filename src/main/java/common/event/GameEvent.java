@@ -1,5 +1,7 @@
 package common.event;
 
+import static java.lang.System.currentTimeMillis;
+
 import common.source.GameSource;
 
 public abstract class GameEvent implements Comparable<GameEvent> {
@@ -10,6 +12,10 @@ public abstract class GameEvent implements Comparable<GameEvent> {
 	public GameEvent(long time, GameSource source) {
 		this.time = time;
 		this.source = source;
+	}
+
+	public GameEvent(GameSource source) {
+		this(currentTimeMillis(), source);
 	}
 
 	public long getTime() {
