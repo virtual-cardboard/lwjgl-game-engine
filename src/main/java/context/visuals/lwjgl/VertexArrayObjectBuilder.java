@@ -6,13 +6,13 @@ import static context.visuals.lwjgl.RectangleMeshData.TEXTURE_COORDINATES;
 
 import java.util.Queue;
 
+import common.loader.AbstractBuilder;
 import common.loader.linktask.CreateVertexArrayObjectLinkTask;
 import common.loader.linktask.LinkTask;
 
-public class VertexArrayObjectBuilder {
+public class VertexArrayObjectBuilder extends AbstractBuilder<VertexArrayObject> {
 
 	private final Queue<LinkTask> linkTasks;
-	private VertexArrayObject vao;
 
 	public VertexArrayObjectBuilder(Queue<LinkTask> linkTasks) {
 		this.linkTasks = linkTasks;
@@ -23,16 +23,15 @@ public class VertexArrayObjectBuilder {
 	}
 
 	public void createVertexArrayObject(ElementBufferObject ebo, VertexBufferObject... vbos) {
-		this.vao = new VertexArrayObject();
+		VertexArrayObject vao = new VertexArrayObject();
 		CreateVertexArrayObjectLinkTask createVaoLinkTask = new CreateVertexArrayObjectLinkTask(vao, ebo, vbos);
 		linkTasks.add(createVaoLinkTask);
+		set(vao);
 	}
 
-	public VertexArrayObject getVertexArrayObject() {
-		return vao;
-	}
-
+	@Override
 	public boolean isBuilt() {
+		VertexArrayObject vao = get();
 		return vao != null && vao.isLinked();
 	}
 

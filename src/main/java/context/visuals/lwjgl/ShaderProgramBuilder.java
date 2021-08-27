@@ -3,6 +3,7 @@ package context.visuals.lwjgl;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 
+import common.loader.AbstractBuilder;
 import common.loader.linktask.LinkTask;
 import common.loader.loadtask.LoadTask;
 import common.loader.loadtask.ShaderFileLoadTask;
@@ -35,11 +36,10 @@ import common.loader.loadtask.ShaderFileLoadTask;
  * @author Jay
  *
  */
-public final class ShaderProgramBuilder {
+public final class ShaderProgramBuilder extends AbstractBuilder<ShaderProgram> {
 
 	private final Queue<LoadTask> loadTasks;
 	private final Queue<LinkTask> linkTasks;
-	private ShaderProgram shaderProgram;
 
 	/**
 	 * Creates a {@link ShaderProgramBuilder} with the given {@link LoadTask} queue
@@ -64,13 +64,14 @@ public final class ShaderProgramBuilder {
 	 */
 	public void create(String vertexShaderFileLocation, String fragmentShaderFileLocation) {
 		CountDownLatch countDownLatch = new CountDownLatch(2);
-		shaderProgram = new ShaderProgram();
+		ShaderProgram shaderProgram = new ShaderProgram();
 		ShaderFileLoadTask loadVertex = new ShaderFileLoadTask(linkTasks, countDownLatch, shaderProgram,
 				new Shader(ShaderType.VERTEX), vertexShaderFileLocation);
 		ShaderFileLoadTask loadFragment = new ShaderFileLoadTask(linkTasks, countDownLatch, shaderProgram,
 				new Shader(ShaderType.FRAGMENT), fragmentShaderFileLocation);
 		loadTasks.add(loadVertex);
 		loadTasks.add(loadFragment);
+		set(shaderProgram);
 	}
 
 	/**
@@ -86,7 +87,7 @@ public final class ShaderProgramBuilder {
 	 */
 	public void create(String vertexShaderFileLocation, String fragmentShaderFileLocation, String geometryShaderFileLocation) {
 		CountDownLatch countDownLatch = new CountDownLatch(3);
-		shaderProgram = new ShaderProgram();
+		ShaderProgram shaderProgram = new ShaderProgram();
 		ShaderFileLoadTask loadVertex = new ShaderFileLoadTask(linkTasks, countDownLatch, shaderProgram,
 				new Shader(ShaderType.VERTEX), vertexShaderFileLocation);
 		ShaderFileLoadTask loadFragment = new ShaderFileLoadTask(linkTasks, countDownLatch, shaderProgram,
@@ -96,6 +97,7 @@ public final class ShaderProgramBuilder {
 		loadTasks.add(loadVertex);
 		loadTasks.add(loadFragment);
 		loadTasks.add(loadGeometry);
+		set(shaderProgram);
 	}
 
 	/**
@@ -109,15 +111,17 @@ public final class ShaderProgramBuilder {
 	 *         shader program builder or {@link ShaderProgram#isLinked()} on the
 	 *         shader program.
 	 */
-	public ShaderProgram getShaderProgram() {
-		return shaderProgram;
-	}
+//	public ShaderProgram getShaderProgram() {
+//		return shaderProgram;
+//	}
 
 	/**
 	 * @return if the shader program is done being built and is ready for pickup via
 	 *         {@link #getShaderProgram()}.
 	 */
+	@Override
 	public boolean isBuilt() {
+		ShaderProgram shaderProgram = get();
 		return shaderProgram != null && shaderProgram.isLinked();
 	}
 
