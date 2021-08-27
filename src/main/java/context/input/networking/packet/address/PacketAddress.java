@@ -25,8 +25,6 @@ public abstract class PacketAddress {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
 		if (obj instanceof PacketAddress) {
 			PacketAddress other = (PacketAddress) obj;
 			return port() == other.port() && ip().equals(other.ip());
