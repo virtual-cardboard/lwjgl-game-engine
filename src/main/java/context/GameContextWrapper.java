@@ -1,5 +1,6 @@
 package context;
 
+import java.net.DatagramSocket;
 import java.util.Queue;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -44,7 +45,7 @@ public class GameContextWrapper {
 	private final WindowFrameUpdateTimer windowFrameUpdateTimer;
 	private final Loader loader;
 	private final Queue<PacketModel> networkSendBuffer;
-	private short socketPort;
+	private DatagramSocket socket;
 
 	/**
 	 * A constructor that takes in the context, input buffer, logic timer,
@@ -57,10 +58,11 @@ public class GameContextWrapper {
 	 * @param windowFrameUpdateTimer the {@link WindowFrameUpdateTimer}
 	 * @param loader                 the {@link Loader}
 	 */
-	public GameContextWrapper(GameContext context, Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer, TimeAccumulator accumulator,
-			WindowFrameUpdateTimer windowFrameUpdateTimer, Loader loader, int socketPort) {
+	public GameContextWrapper(GameContext context, Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer,
+			Queue<PacketModel> networkSendBuffer, TimeAccumulator accumulator,
+			WindowFrameUpdateTimer windowFrameUpdateTimer, Loader loader, DatagramSocket socket) {
 		this.context = context;
-		this.socketPort = (short) socketPort;
+		this.socket = socket;
 		context.setWrapper(this);
 		this.inputBuffer = inputBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
@@ -121,7 +123,10 @@ public class GameContextWrapper {
 	}
 
 	public short getSocketPort() {
-		return socketPort;
+		if (socket == null) {
+			return 0;
+		}
+		return (short) socket.getLocalPort();
 	}
 
 }

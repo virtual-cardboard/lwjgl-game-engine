@@ -159,7 +159,7 @@ public final class GameEngine {
 				e.printStackTrace();
 			}
 		}
-		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader, socket.getLocalPort());
+		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader, socket);
 		print("Initializing context parts");
 		wrapper.getContext().init(inputBuffer, networkReceiveBuffer);
 
