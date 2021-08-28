@@ -5,10 +5,18 @@ import java.util.List;
 
 public abstract class JointController {
 
-	private List<Joint> joints;
+	protected List<Joint> joints;
 
 	public JointController() {
-		joints = new ArrayList<>();
+		this(new ArrayList<>());
+	}
+
+	public JointController(List<Joint> joints) {
+		this.joints = joints;
+	}
+
+	public List<Joint> getJoints() {
+		return joints;
 	}
 
 	public final void updateJoints() {

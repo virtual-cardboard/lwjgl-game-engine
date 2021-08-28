@@ -1,5 +1,6 @@
 package context.data.animation;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,8 +10,9 @@ import context.data.animation.joint.Joint;
 import context.data.animation.joint.JointController;
 import context.data.animation.skeleton.Skeleton;
 import context.data.animation.skeleton.SkeletonNode;
+import context.data.animation.texture.TextureJointController;
 
-public class JointAnimationController extends JointController {
+public class AnimationJointController extends JointController {
 
 	private static final KeyframeInterpolator KEYFRAME_INTERPOLATOR = new KeyframeInterpolator();
 
@@ -18,9 +20,17 @@ public class JointAnimationController extends JointController {
 	private Skeleton skeleton;
 	private int currentTime;
 
-	public JointAnimationController(Animation animation, Skeleton skeleton) {
+	private TextureJointController jointTextureController;
+
+	public AnimationJointController(Animation animation, Skeleton skeleton) {
+		this(new ArrayList<>(), animation, skeleton);
+	}
+
+	public AnimationJointController(List<Joint> joints, Animation animation, Skeleton skeleton) {
+		super(joints);
 		this.animation = animation;
 		this.skeleton = skeleton;
+		this.jointTextureController = new TextureJointController(joints);
 	}
 
 	@Override
@@ -36,6 +46,7 @@ public class JointAnimationController extends JointController {
 			skeletonState = KEYFRAME_INTERPOLATOR.interpolateKeyframe(k1, k2, currentTime);
 		}
 		updateJointsUsingSkeletonState(joints, skeletonState);
+		jointTextureController.updateJoints();
 	}
 
 	private void updateJointsUsingSkeletonState(List<Joint> joints, SkeletonState skeletonState) {
