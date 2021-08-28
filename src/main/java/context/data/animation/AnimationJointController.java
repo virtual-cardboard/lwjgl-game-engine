@@ -50,21 +50,22 @@ public class AnimationJointController extends JointController {
 	private void updateJointsUsingSkeletonState(List<Joint> joints, SkeletonState skeletonState) {
 		Joint parent = joints.get(0);
 		for (int i = 0; i < skeleton.getRootNode().getChildren().size(); i++) {
-			doUpdateJointsUsingSkeletonState(skeleton.getRootNode(), joints, skeletonState.getSkeletonNodeStates(), i + 1, parent, parent.getRotation());
+			doUpdateJointsUsingSkeletonState(skeleton.getRootNode(), joints, skeletonState.getRotations(), skeletonState.getDistances(), i + 1, parent,
+					parent.getRotation());
 		}
 	}
 
-	private void doUpdateJointsUsingSkeletonState(SkeletonNode node, List<Joint> joints, List<SkeletonNodeState> nodeStates, int index,
+	private void doUpdateJointsUsingSkeletonState(SkeletonNode node, List<Joint> joints, List<Float> rotations, List<Float> distances, int index,
 			Joint parent, float parentAbsoluteRotation) {
 		Joint joint = joints.get(index);
-		SkeletonNodeState nodeState = nodeStates.get(index);
-		float rotation = nodeState.getRotation();
-		float distance = nodeState.getDistance();
+		float rotation = rotations.get(index);
+		float distance = distances.get(index);
 		Vector2f relativeOffset = Vector2f.fromAngleLength(parentAbsoluteRotation + rotation, distance);
 		joint.setRotation(rotation);
 		joint.getPosition().set(parent.getPosition().add(relativeOffset));
 		for (SkeletonNode child : node.getChildren()) {
-			doUpdateJointsUsingSkeletonState(child, joints, nodeStates, ++index, joint, parentAbsoluteRotation + rotation);
+			index++;
+			doUpdateJointsUsingSkeletonState(child, joints, rotations, distances, index, joint, parentAbsoluteRotation + rotation);
 		}
 	}
 
