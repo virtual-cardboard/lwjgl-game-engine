@@ -59,12 +59,12 @@ public class EllipseRenderer extends GameRenderer {
 		Vector2f dimensions = new Vector2f(width, height);
 		shaderProgram.bind();
 		Vector2f rootGuiDimensions = rootGui.getDimensions();
-		Matrix4f transform = new Matrix4f();
-		transform.translate(-1, 1);
-		transform.scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
-		transform.translate(center.copy().sub(dimensions.copy().scale(0.5f)));
-		transform.scale(dimensions);
-		renderWithMatrixOnly(transform, colour);
+		Matrix4f matrix4f = new Matrix4f();
+		matrix4f.translate(-1, 1);
+		matrix4f.scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
+		matrix4f.translate(center.copy().sub(dimensions.copy().scale(0.5f)));
+		matrix4f.scale(dimensions);
+		renderWithMatrixOnly(matrix4f, colour);
 	}
 
 	/**

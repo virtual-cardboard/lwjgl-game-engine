@@ -41,11 +41,11 @@ public class TextureRenderer extends GameRenderer {
 	 * Renders a texture using a transformation matrix.
 	 * 
 	 * @param texture  the texture to render
-	 * @param tranform the transformation matrix
+	 * @param matrix4f the transformation matrix
 	 */
-	public void render(Texture texture, Matrix4f tranform) {
+	public void render(Texture texture, Matrix4f matrix4f) {
 		shaderProgram.bind();
-		shaderProgram.setMat4("matrix4f", tranform);
+		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
 		texture.bind();
 		vao.display();
