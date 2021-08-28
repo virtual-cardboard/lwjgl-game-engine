@@ -1,52 +1,50 @@
 package context.data.animation;
 
-import java.util.ArrayList;
+import static context.data.animation.interpolation.KeyframeInterpolator.interpolateKeyframe;
+
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import common.math.Vector2f;
-import context.data.animation.interpolation.KeyframeInterpolator;
 import context.data.animation.joint.Joint;
 import context.data.animation.joint.JointController;
 import context.data.animation.skeleton.Skeleton;
 import context.data.animation.skeleton.SkeletonNode;
-import context.data.animation.texture.TextureJointController;
 
 public class AnimationJointController extends JointController {
-
-	private static final KeyframeInterpolator KEYFRAME_INTERPOLATOR = new KeyframeInterpolator();
 
 	private Animation animation;
 	private Skeleton skeleton;
 	private int currentTime;
 
-	private TextureJointController jointTextureController;
-
-	public AnimationJointController(Animation animation, Skeleton skeleton) {
-		this(new ArrayList<>(), animation, skeleton);
-	}
-
-	public AnimationJointController(List<Joint> joints, Animation animation, Skeleton skeleton) {
+	public AnimationJointController(Animation animation, Skeleton skeleton, List<Joint> joints) {
 		super(joints);
 		this.animation = animation;
 		this.skeleton = skeleton;
-		this.jointTextureController = new TextureJointController(joints);
+	}
+
+	public AnimationJointController(Animation animation, Skeleton skeleton, Joint... joints) {
+		super(Arrays.asList(joints));
+		this.animation = animation;
+		this.skeleton = skeleton;
 	}
 
 	@Override
-	public void doUpdateJoints(List<Joint> joints) {
+	public void updateJoints() {
 		List<Keyframe> keyframes = animation.getKeyframes();
 		int index = Collections.binarySearch(keyframes, new Keyframe(currentTime, null));
+
 		SkeletonState skeletonState = null;
 		if (index >= 0) {
 			skeletonState = keyframes.get(index).getSkeletonState();
 		} else {
 			Keyframe k1 = keyframes.get(-index - 2);
 			Keyframe k2 = keyframes.get(-index - 1);
-			skeletonState = KEYFRAME_INTERPOLATOR.interpolateKeyframe(k1, k2, currentTime);
+			skeletonState = interpolateKeyframe(k1, k2, currentTime);
 		}
-		updateJointsUsingSkeletonState(joints, skeletonState);
-		jointTextureController.updateJoints();
+
+		updateJointsUsingSkeletonState(getJoints(), skeletonState);
 	}
 
 	private void updateJointsUsingSkeletonState(List<Joint> joints, SkeletonState skeletonState) {

@@ -5,7 +5,7 @@ import java.util.List;
 
 public abstract class JointController {
 
-	protected List<Joint> joints;
+	private List<Joint> joints;
 
 	public JointController() {
 		this(new ArrayList<>());
@@ -15,14 +15,10 @@ public abstract class JointController {
 		this.joints = joints;
 	}
 
-	public List<Joint> getJoints() {
+	protected List<Joint> getJoints() {
 		return joints;
 	}
 
-	public final void updateJoints() {
-		doUpdateJoints(joints);
-	}
-
-	public abstract void doUpdateJoints(List<Joint> joints);
+	public abstract void updateJoints();
 
 }
