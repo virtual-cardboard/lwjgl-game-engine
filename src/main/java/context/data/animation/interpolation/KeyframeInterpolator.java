@@ -4,7 +4,6 @@ import java.util.List;
 
 import common.math.Vector2f;
 import context.data.animation.Keyframe;
-import context.data.animation.SkeletonNodeState;
 import context.data.animation.SkeletonState;
 
 public class KeyframeInterpolator {
@@ -23,16 +22,21 @@ public class KeyframeInterpolator {
 
 	private static SkeletonState interpolateState(SkeletonState s1, SkeletonState s2, float factor) {
 		SkeletonState interpolated = new SkeletonState();
-		List<SkeletonNodeState> interpolatedNodeStates = interpolated.getSkeletonNodeStates();
-		List<SkeletonNodeState> nodeStates1 = s1.getSkeletonNodeStates();
-		List<SkeletonNodeState> nodeStates2 = s2.getSkeletonNodeStates();
+		List<Float> interpolatedRotations = interpolated.getRotations();
+		List<Float> interpolatedDistances = interpolated.getDistances();
+		List<Float> rotations1 = s1.getRotations();
+		List<Float> distances1 = s1.getDistances();
+		List<Float> rotations2 = s2.getRotations();
+		List<Float> distances2 = s2.getDistances();
 
-		// Interpolate node states
-		for (int i = 0; i < nodeStates1.size(); i++) {
-			SkeletonNodeState nodeState1 = nodeStates1.get(i);
-			SkeletonNodeState nodeState2 = nodeStates2.get(i);
-			SkeletonNodeState interpolatedState = interpolateNodeState(nodeState1, nodeState2, factor);
-			interpolatedNodeStates.add(interpolatedState);
+		// Interpolate rotations and distances
+		for (int i = 0; i < rotations1.size(); i++) {
+			float r1 = rotations1.get(i);
+			float d1 = distances1.get(i);
+			float r2 = rotations2.get(i);
+			float d2 = distances2.get(i);
+			interpolatedRotations.add(interpolateRotation(r1, r2, factor));
+			interpolatedDistances.add(interpolateDistance(d1, d2, factor));
 		}
 
 		// Interpolate root position
@@ -42,17 +46,13 @@ public class KeyframeInterpolator {
 		return interpolated;
 	}
 
-	private static SkeletonNodeState interpolateNodeState(SkeletonNodeState n1, SkeletonNodeState n2, float factor) {
-		float distance1 = n1.getDistance();
-		float rotation1 = n1.getRotation();
-		float distance2 = n2.getDistance();
-		float rotation2 = n2.getRotation();
+	private static float interpolateRotation(float r1, float r2, float factor) {
+		float angleDiff = Angles.angleDifference(r1, r2);
+		return r1 + angleDiff * factor;
+	}
 
-		float angleDiff = Angles.angleDifference(rotation1, rotation2);
-		float interpolatedDistance = distance1 + (distance2 - distance1) * factor;
-		float interpolatedRotation = rotation1 + angleDiff * factor;
-		SkeletonNodeState interpolatedState = new SkeletonNodeState(interpolatedDistance, interpolatedRotation);
-		return interpolatedState;
+	private static float interpolateDistance(float d1, float d2, float factor) {
+		return d1 + (d2 - d1) * factor;
 	}
 
 }
