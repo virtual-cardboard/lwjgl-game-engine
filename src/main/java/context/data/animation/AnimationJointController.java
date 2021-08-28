@@ -38,6 +38,8 @@ public class AnimationJointController extends JointController {
 		SkeletonState skeletonState = null;
 		if (index >= 0) {
 			skeletonState = keyframes.get(index).getSkeletonState();
+		} else if (-index - 1 > keyframes.size()) {
+			skeletonState = keyframes.get(keyframes.size() - 1).getSkeletonState();
 		} else {
 			Keyframe k1 = keyframes.get(-index - 2);
 			Keyframe k2 = keyframes.get(-index - 1);
