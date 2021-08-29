@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.math.Vector2f;
+import context.data.animation.skeleton.Skeleton;
 
 public class SkeletonState {
 
@@ -15,6 +16,15 @@ public class SkeletonState {
 		this.rotations = new ArrayList<>();
 		this.distances = new ArrayList<>();
 		rootPosition = new Vector2f();
+	}
+
+	public SkeletonState(Skeleton skeleton) {
+		this();
+		int totalNumNodes = skeleton.totalNumNodes();
+		for (int i = 0; i < totalNumNodes; i++) {
+			rotations.add(0f);
+			distances.add(50f);
+		}
 	}
 
 	public List<Float> getRotations() {
