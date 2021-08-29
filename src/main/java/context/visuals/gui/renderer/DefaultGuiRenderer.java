@@ -18,10 +18,10 @@ public class DefaultGuiRenderer extends GuiRenderer<Gui> {
 
 	@Override
 	public void render(Gui gui, Matrix4f matrix4f, float parentX, float parentY, float parentWidth, float parentHeight) {
-		float x = gui.getPosXConstraint().calculateValue(parentX, parentX + parentWidth);
-		float y = gui.getPosYConstraint().calculateValue(parentY, parentY + parentHeight);
-		float width = gui.getWidthConstraint().calculateValue(parentX, parentX + parentWidth);
-		float height = gui.getHeightConstraint().calculateValue(parentY, parentY + parentHeight);
+		float x = gui.getPosX().calculateValue(parentX, parentX + parentWidth);
+		float y = gui.getPosY().calculateValue(parentY, parentY + parentHeight);
+		float width = gui.getWidth().calculateValue(parentX, parentX + parentWidth);
+		float height = gui.getHeight().calculateValue(parentY, parentY + parentHeight);
 
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f.clone().translate(x, y).scale(width, height));

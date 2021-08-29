@@ -34,24 +34,24 @@ public class RootGui extends InvisibleGui {
 		return 0;
 	}
 
-	public int getWidth() {
-		PixelDimensionConstraint width = (PixelDimensionConstraint) super.getWidthConstraint();
+	public int width() {
+		PixelDimensionConstraint width = (PixelDimensionConstraint) super.getWidth();
 		return (int) width.getPixels();
 	}
 
-	public int getHeight() {
-		PixelDimensionConstraint height = (PixelDimensionConstraint) super.getHeightConstraint();
+	public int height() {
+		PixelDimensionConstraint height = (PixelDimensionConstraint) super.getHeight();
 		return (int) height.getPixels();
 	}
 
 	public Vector2f getDimensions() {
-		return new Vector2f(getWidth(), getHeight());
+		return new Vector2f(width(), height());
 	}
 
 	public void setDimensions(int width, int height) {
-		PixelDimensionConstraint widthConstraint = (PixelDimensionConstraint) getWidthConstraint();
+		PixelDimensionConstraint widthConstraint = (PixelDimensionConstraint) getWidth();
 		widthConstraint.setPixels(width);
-		PixelDimensionConstraint heightConstraint = (PixelDimensionConstraint) getHeightConstraint();
+		PixelDimensionConstraint heightConstraint = (PixelDimensionConstraint) getHeight();
 		heightConstraint.setPixels(height);
 	}
 
