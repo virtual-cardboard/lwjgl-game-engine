@@ -2,6 +2,7 @@ package context.data.animation;
 
 import static context.data.animation.interpolation.KeyframeInterpolator.interpolateKeyframe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -18,14 +19,12 @@ public class AnimationJointController extends JointController {
 	private Skeleton skeleton;
 	private int currentTime;
 
-	public AnimationJointController(Animation animation, Skeleton skeleton, List<Joint> joints) {
-		super(joints);
-		this.animation = animation;
-		this.skeleton = skeleton;
+	public AnimationJointController(Animation animation, Skeleton skeleton, Joint... joints) {
+		this(animation, skeleton, new ArrayList<>(Arrays.asList(joints)));
 	}
 
-	public AnimationJointController(Animation animation, Skeleton skeleton, Joint... joints) {
-		super(Arrays.asList(joints));
+	public AnimationJointController(Animation animation, Skeleton skeleton, List<Joint> joints) {
+		super(joints);
 		this.animation = animation;
 		this.skeleton = skeleton;
 	}

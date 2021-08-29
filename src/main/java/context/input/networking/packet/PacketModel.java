@@ -1,7 +1,7 @@
 package context.input.networking.packet;
 
-import static java.util.Arrays.asList;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import context.input.networking.packet.address.PacketAddress;
@@ -18,7 +18,7 @@ public class PacketModel {
 	}
 
 	public PacketModel(PacketAddress dest, PacketBlock... blocks) {
-		this(dest, asList(blocks));
+		this(dest, new ArrayList<>(Arrays.asList(blocks)));
 	}
 
 	public PacketAddress dest() {

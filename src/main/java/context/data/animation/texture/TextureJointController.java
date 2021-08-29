@@ -1,5 +1,6 @@
 package context.data.animation.texture;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class TextureJointController extends JointController {
 	private List<JointTexture> jointTextures;
 
 	public TextureJointController(List<JointTexture> jointTextures, Joint... joints) {
-		this(jointTextures, Arrays.asList(joints));
+		this(jointTextures, new ArrayList<>(Arrays.asList(joints)));
 	}
 
 	public TextureJointController(List<JointTexture> jointTextures, List<Joint> joints) {

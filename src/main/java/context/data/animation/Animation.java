@@ -1,6 +1,7 @@
 package context.data.animation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,8 +9,8 @@ public class Animation {
 
 	private List<Keyframe> keyframes;
 
-	public Animation() {
-		keyframes = new ArrayList<>();
+	public Animation(Keyframe... keyframes) {
+		this.keyframes = new ArrayList<>(Arrays.asList(keyframes));
 	}
 
 	public Animation(List<Keyframe> keyframes) {
