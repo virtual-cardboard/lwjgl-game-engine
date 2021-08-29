@@ -15,7 +15,7 @@ public class InvisibleGui extends Gui {
 	}
 
 	@Override
-	public void setBackgroundColour(int backgroundColour) {
+	public void setBackground(int backgroundColour) {
 		System.err.println("Setting the background colour of an invisible GUI does nothing.");
 	}
 

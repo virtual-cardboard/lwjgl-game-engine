@@ -105,7 +105,7 @@ public class Gui {
 		return backgroundColour;
 	}
 
-	public void setBackgroundColour(int backgroundColour) {
+	public void setBackground(int backgroundColour) {
 		this.backgroundColour = backgroundColour;
 	}
 
