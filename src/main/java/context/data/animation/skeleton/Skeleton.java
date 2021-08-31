@@ -32,4 +32,13 @@ public class Skeleton {
 		return num;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Skeleton)) {
+			return false;
+		}
+		Skeleton skeleton = (Skeleton) obj;
+		return rootNode.equals(skeleton.getRootNode());
+	}
+
 }
