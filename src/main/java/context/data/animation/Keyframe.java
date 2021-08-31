@@ -9,9 +9,13 @@ public class Keyframe implements Comparable<Keyframe> {
 	private InterpolationType interpolationType;
 
 	public Keyframe(int time, SkeletonState skeletonState) {
+		this(time, skeletonState, InterpolationType.LINEAR);
+	}
+
+	public Keyframe(int time, SkeletonState skeletonState, InterpolationType interpolationType) {
 		this.time = time;
 		this.skeletonState = skeletonState;
-		interpolationType = InterpolationType.LINEAR;
+		this.interpolationType = interpolationType;
 	}
 
 	public int getTime() {
