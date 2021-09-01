@@ -1,7 +1,6 @@
 package context.data.animation.skeleton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SkeletonNode {
@@ -14,7 +13,10 @@ public class SkeletonNode {
 	}
 
 	public SkeletonNode(SkeletonNode... children) {
-		this.children = new ArrayList<>(Arrays.asList(children));
+		this();
+		for (int i = 0; i < children.length; i++) {
+			addChild(children[i]);
+		}
 	}
 
 	public void addChild(SkeletonNode child) {
