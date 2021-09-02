@@ -6,16 +6,19 @@ import context.visuals.lwjgl.Texture;
 public class JointTexture {
 
 	private Texture texture;
-
 	private Vector2f translation;
 	private Vector2f scale;
 	private float rotation;
 
 	public JointTexture(Texture texture) {
+		this(texture, new Vector2f(), new Vector2f(1, 1), 0);
+	}
+
+	public JointTexture(Texture texture, Vector2f translation, Vector2f scale, float rotation) {
 		this.texture = texture;
-		translation = new Vector2f();
-		scale = new Vector2f();
-		rotation = 0;
+		this.translation = translation;
+		this.scale = scale;
+		this.rotation = rotation;
 	}
 
 	public Texture getTexture() {
