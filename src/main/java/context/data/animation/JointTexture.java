@@ -1,4 +1,4 @@
-package context.data.animation.texture;
+package context.data.animation;
 
 import common.math.Vector2f;
 import context.visuals.lwjgl.Texture;
