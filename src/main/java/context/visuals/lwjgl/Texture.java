@@ -94,4 +94,16 @@ public class Texture {
 		return linked;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj instanceof Texture) {
+			Texture o = (Texture) obj;
+			return imagePath.equals(o.imagePath);
+		}
+		return false;
+	}
+
 }

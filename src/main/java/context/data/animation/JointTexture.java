@@ -45,4 +45,16 @@ public class JointTexture {
 		this.rotation = rotation;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj instanceof JointTexture) {
+			JointTexture o = (JointTexture) obj;
+			return texture.equals(o.texture) && translation.equals(o.translation) && scale.equals(o.scale) && rotation == o.rotation;
+		}
+		return false;
+	}
+
 }
