@@ -20,16 +20,20 @@ import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import context.input.networking.packet.PacketModel;
+import context.input.networking.packet.address.PacketAddress;
 import context.input.networking.packet.cryption.EncryptionAlgorithmType;
 
-public class PacketBlockBuilder {
+public class PacketBuilder {
 
 	private Queue<PacketPrimitive> primitives;
 	@SuppressWarnings("unused")
 	private Queue<EncryptionAlgorithmType> encryptions;
 	private Queue<Byte> bytes = new LinkedList<>();
+	private PacketAddress dest;
 
-	public PacketBlockBuilder(PacketBlockFormat format) {
+	public PacketBuilder(PacketFormat format, PacketAddress dest) {
+		this.dest = dest;
 		primitives = format.primitives();
 		encryptions = format.encryptions();
 	}
@@ -41,7 +45,7 @@ public class PacketBlockBuilder {
 		}
 	}
 
-	public PacketBlockBuilder consume(long val) {
+	public PacketBuilder consume(long val) {
 		typeValidate(LONG);
 		bytes.add((byte) ((val >> 56) & 0xFF));
 		bytes.add((byte) ((val >> 48) & 0xFF));
@@ -54,7 +58,7 @@ public class PacketBlockBuilder {
 		return this;
 	}
 
-	public PacketBlockBuilder consume(int val) {
+	public PacketBuilder consume(int val) {
 		typeValidate(INT);
 		bytes.add((byte) ((val >> 24) & 0xFF));
 		bytes.add((byte) ((val >> 16) & 0xFF));
@@ -63,20 +67,20 @@ public class PacketBlockBuilder {
 		return this;
 	}
 
-	public PacketBlockBuilder consume(short val) {
+	public PacketBuilder consume(short val) {
 		typeValidate(SHORT);
 		bytes.add((byte) ((val >> 8) & 0xFF));
 		bytes.add((byte) (val & 0xFF));
 		return this;
 	}
 
-	public PacketBlockBuilder consume(byte val) {
+	public PacketBuilder consume(byte val) {
 		typeValidate(BYTE);
 		bytes.add(val);
 		return this;
 	}
 
-	public PacketBlockBuilder consume(long[] val) {
+	public PacketBuilder consume(long[] val) {
 		typeValidate(LONG_ARRAY);
 		for (long x : val) {
 			bytes.add((byte) ((x >> 56) & 0xFF));
@@ -91,7 +95,7 @@ public class PacketBlockBuilder {
 		return this;
 	}
 
-	public PacketBlockBuilder consume(int[] val) {
+	public PacketBuilder consume(int[] val) {
 		typeValidate(INT_ARRAY);
 		for (int x : val) {
 			bytes.add((byte) ((x >> 24) & 0xFF));
@@ -102,7 +106,7 @@ public class PacketBlockBuilder {
 		return this;
 	}
 
-	public PacketBlockBuilder consume(short[] val) {
+	public PacketBuilder consume(short[] val) {
 		typeValidate(SHORT_ARRAY);
 		for (short x : val) {
 			bytes.add((byte) ((x >> 8) & 0xFF));
@@ -111,7 +115,7 @@ public class PacketBlockBuilder {
 		return this;
 	}
 
-	public PacketBlockBuilder consume(byte[] val) {
+	public PacketBuilder consume(byte[] val) {
 		typeValidate(BYTE_ARRAY);
 		for (byte x : val) {
 			bytes.add(x);
@@ -119,7 +123,7 @@ public class PacketBlockBuilder {
 		return this;
 	}
 
-	public PacketBlockBuilder consume(String val) {
+	public PacketBuilder consume(String val) {
 		typeValidate(STRING);
 		byte[] b = val.getBytes(UTF_8);
 		short numBytes = (short) b.length;
@@ -131,7 +135,7 @@ public class PacketBlockBuilder {
 		return this;
 	}
 
-	public PacketBlockBuilder consume(InetAddress val) {
+	public PacketBuilder consume(InetAddress val) {
 		if (val instanceof Inet6Address) {
 			typeValidate(IP_V6);
 			byte[] address = val.getAddress();
@@ -152,7 +156,7 @@ public class PacketBlockBuilder {
 		return this;
 	}
 
-	public PacketBlockBuilder consume(int ipv4_0, int ipv4_1, int ipv4_2, int ipv4_3) {
+	public PacketBuilder consume(int ipv4_0, int ipv4_1, int ipv4_2, int ipv4_3) {
 		typeValidate(IP_V4);
 		bytes.add((byte) ipv4_0);
 		bytes.add((byte) ipv4_1);
@@ -161,7 +165,7 @@ public class PacketBlockBuilder {
 		return this;
 	}
 
-	public PacketBlockBuilder consume(int ipv6_0, int ipv6_1, int ipv6_2, int ipv6_3, int ipv6_4, int ipv6_5) {
+	public PacketBuilder consume(int ipv6_0, int ipv6_1, int ipv6_2, int ipv6_3, int ipv6_4, int ipv6_5) {
 		typeValidate(IP_V4);
 		bytes.add((byte) ipv6_0);
 		bytes.add((byte) ipv6_1);
@@ -172,7 +176,7 @@ public class PacketBlockBuilder {
 		return this;
 	}
 
-	public PacketBlock build() {
+	public PacketModel build() {
 		if (!primitives.isEmpty()) {
 			throw new RuntimeException("Did not complete packet format");
 		}
@@ -184,8 +188,7 @@ public class PacketBlockBuilder {
 		}
 		// TODO
 		// apply encryption
-		PacketBlock packetBlock = new PacketBlock(buffer);
-		return packetBlock;
+		return new PacketModel(buffer, dest);
 	}
 
 }

@@ -72,6 +72,7 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 	@Override
 	protected void endActions() {
 		window.destroy();
+		wrapper.terminate();
 	}
 
 	/**

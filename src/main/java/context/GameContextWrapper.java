@@ -129,4 +129,7 @@ public class GameContextWrapper {
 		return (short) socket.getLocalPort();
 	}
 
+	public void terminate() {
+	}
+
 }

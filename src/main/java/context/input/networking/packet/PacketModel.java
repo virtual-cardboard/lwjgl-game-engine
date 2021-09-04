@@ -1,32 +1,37 @@
 package context.input.networking.packet;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static context.input.networking.packet.address.SelfAddress.SELF_ADDRESS;
+import static java.util.Arrays.copyOf;
+
+import java.net.DatagramPacket;
 
 import context.input.networking.packet.address.PacketAddress;
-import context.input.networking.packet.block.PacketBlock;
 
 public class PacketModel {
 
 	private PacketAddress dest;
-	private List<PacketBlock> blocks;
+	private byte[] bytes;
 
-	public PacketModel(PacketAddress dest, List<PacketBlock> blocks) {
+	public PacketModel(byte[] bytes, PacketAddress dest) {
 		this.dest = dest;
-		this.blocks = blocks;
-	}
-
-	public PacketModel(PacketAddress dest, PacketBlock... blocks) {
-		this(dest, new ArrayList<>(Arrays.asList(blocks)));
+		this.bytes = bytes;
 	}
 
 	public PacketAddress dest() {
 		return dest;
 	}
 
-	public List<PacketBlock> blocks() {
-		return blocks;
+	public byte[] bytes() {
+		return bytes;
+	}
+
+	public static DatagramPacket toPacket(PacketModel model) {
+		DatagramPacket datagramPacket = new DatagramPacket(model.bytes, model.bytes.length, model.dest.ip(), model.dest.port());
+		return datagramPacket;
+	}
+
+	public static PacketModel toModel(DatagramPacket packet) {
+		return new PacketModel(copyOf(packet.getData(), packet.getLength()), SELF_ADDRESS);
 	}
 
 }

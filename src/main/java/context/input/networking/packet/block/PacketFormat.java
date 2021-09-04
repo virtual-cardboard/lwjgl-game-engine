@@ -3,33 +3,35 @@ package context.input.networking.packet.block;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import context.input.networking.packet.PacketModel;
+import context.input.networking.packet.address.PacketAddress;
 import context.input.networking.packet.cryption.EncryptionAlgorithmType;
 
-public class PacketBlockFormat {
+public class PacketFormat {
 
 	private Queue<PacketPrimitive> primitives = new LinkedList<>();
 	private Queue<EncryptionAlgorithmType> encryptions = new LinkedList<>();
 
-	public PacketBlockFormat with(PacketPrimitive... primitives) {
+	public PacketFormat with(PacketPrimitive... primitives) {
 		for (PacketPrimitive primitive : primitives) {
 			this.primitives.add(primitive);
 		}
 		return this;
 	}
 
-	public PacketBlockFormat with(EncryptionAlgorithmType... algorithms) {
+	public PacketFormat with(EncryptionAlgorithmType... algorithms) {
 		for (EncryptionAlgorithmType algorithm : algorithms) {
 			this.encryptions.add(algorithm);
 		}
 		return this;
 	}
 
-	public PacketBlockBuilder builder() {
-		return new PacketBlockBuilder(this);
+	public PacketBuilder builder(PacketAddress dest) {
+		return new PacketBuilder(this, dest);
 	}
 
-	public PacketBlockReader reader(PacketBlock block) {
-		return new PacketBlockReader(this, block);
+	public PacketModelReader reader(PacketModel packet) {
+		return new PacketModelReader(this, packet);
 	}
 
 	public Queue<PacketPrimitive> primitives() {

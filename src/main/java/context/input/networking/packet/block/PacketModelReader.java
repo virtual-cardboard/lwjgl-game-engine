@@ -16,17 +16,19 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.util.InputMismatchException;
 import java.util.Queue;
 
-public class PacketBlockReader {
+import context.input.networking.packet.PacketModel;
+
+public class PacketModelReader {
 
 	private byte[] bytes;
 	private Queue<PacketPrimitive> primitives;
 	private int index = 0;
 
-	public PacketBlockReader(PacketBlockFormat format, PacketBlock block) {
+	public PacketModelReader(PacketFormat format, PacketModel model) {
 		this.primitives = format.primitives();
 		// TODO
 		// apply encryption inverses
-		this.bytes = block.bytes();
+		this.bytes = model.bytes();
 	}
 
 	private void typeValidate(PacketPrimitive actual) {
