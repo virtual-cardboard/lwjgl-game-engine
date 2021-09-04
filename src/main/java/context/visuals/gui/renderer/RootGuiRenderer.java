@@ -23,7 +23,9 @@ public final class RootGuiRenderer extends GuiRenderer<RootGui> {
 		List<Gui> children = root.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			Gui child = children.get(i);
-			doRecursiveRender(child, root, matrix4f, 0, 0, root.width(), root.height());
+			if (child.isEnabled()) {
+				doRecursiveRender(child, root, matrix4f, 0, 0, root.width(), root.height());
+			}
 		}
 	}
 
