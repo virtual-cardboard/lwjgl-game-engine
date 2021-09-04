@@ -1,30 +1,28 @@
-package context.input.networking.packet.block;
+package context.input.networking.packet;
 
-import static context.input.networking.packet.block.PacketPrimitive.BYTE;
-import static context.input.networking.packet.block.PacketPrimitive.BYTE_ARRAY;
-import static context.input.networking.packet.block.PacketPrimitive.INT;
-import static context.input.networking.packet.block.PacketPrimitive.INT_ARRAY;
-import static context.input.networking.packet.block.PacketPrimitive.IP_V4;
-import static context.input.networking.packet.block.PacketPrimitive.IP_V6;
-import static context.input.networking.packet.block.PacketPrimitive.LONG;
-import static context.input.networking.packet.block.PacketPrimitive.LONG_ARRAY;
-import static context.input.networking.packet.block.PacketPrimitive.SHORT;
-import static context.input.networking.packet.block.PacketPrimitive.SHORT_ARRAY;
-import static context.input.networking.packet.block.PacketPrimitive.STRING;
+import static context.input.networking.packet.PacketPrimitive.BYTE;
+import static context.input.networking.packet.PacketPrimitive.BYTE_ARRAY;
+import static context.input.networking.packet.PacketPrimitive.INT;
+import static context.input.networking.packet.PacketPrimitive.INT_ARRAY;
+import static context.input.networking.packet.PacketPrimitive.IP_V4;
+import static context.input.networking.packet.PacketPrimitive.IP_V6;
+import static context.input.networking.packet.PacketPrimitive.LONG;
+import static context.input.networking.packet.PacketPrimitive.LONG_ARRAY;
+import static context.input.networking.packet.PacketPrimitive.SHORT;
+import static context.input.networking.packet.PacketPrimitive.SHORT_ARRAY;
+import static context.input.networking.packet.PacketPrimitive.STRING;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.util.InputMismatchException;
 import java.util.Queue;
 
-import context.input.networking.packet.PacketModel;
-
-public class PacketModelReader {
+public class PacketReader {
 
 	private byte[] bytes;
 	private Queue<PacketPrimitive> primitives;
 	private int index = 0;
 
-	public PacketModelReader(PacketFormat format, PacketModel model) {
+	public PacketReader(PacketFormat format, PacketModel model) {
 		this.primitives = format.primitives();
 		// TODO
 		// apply encryption inverses

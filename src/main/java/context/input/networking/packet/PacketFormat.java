@@ -1,9 +1,8 @@
-package context.input.networking.packet.block;
+package context.input.networking.packet;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
-import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.address.PacketAddress;
 import context.input.networking.packet.cryption.EncryptionAlgorithmType;
 
@@ -30,8 +29,8 @@ public class PacketFormat {
 		return new PacketBuilder(this, dest);
 	}
 
-	public PacketModelReader reader(PacketModel packet) {
-		return new PacketModelReader(this, packet);
+	public PacketReader reader(PacketModel packet) {
+		return new PacketReader(this, packet);
 	}
 
 	public Queue<PacketPrimitive> primitives() {

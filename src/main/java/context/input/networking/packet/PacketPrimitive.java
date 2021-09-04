@@ -1,4 +1,4 @@
-package context.input.networking.packet.block;
+package context.input.networking.packet;
 
 public enum PacketPrimitive {
 
