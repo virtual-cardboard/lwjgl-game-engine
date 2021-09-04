@@ -13,7 +13,6 @@ import java.util.Queue;
 import common.TerminateableRunnable;
 import common.source.NetworkSource;
 import context.input.event.PacketReceivedInputEvent;
-import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.address.PacketAddress;
 
 public class UDPReceiver extends TerminateableRunnable {
