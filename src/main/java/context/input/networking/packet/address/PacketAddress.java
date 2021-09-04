@@ -1,6 +1,7 @@
 package context.input.networking.packet.address;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 
 public class PacketAddress {
 
@@ -13,6 +14,10 @@ public class PacketAddress {
 	public PacketAddress(InetAddress ip, int port) {
 		this.ip = ip;
 		this.port = port & 0xFFFF;
+	}
+
+	public PacketAddress(InetSocketAddress address) {
+		this(address.getAddress(), address.getPort());
 	}
 
 	public InetAddress ip() {

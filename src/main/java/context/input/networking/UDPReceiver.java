@@ -6,6 +6,7 @@ import static java.lang.System.currentTimeMillis;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
 import java.net.SocketTimeoutException;
 import java.util.Queue;
 
@@ -31,8 +32,8 @@ public class UDPReceiver extends TerminateableRunnable {
 	public void doRun() {
 		try {
 			socket.receive(packet);
-			PacketModel model = toModel(packet);
-			PacketReceivedInputEvent event = new PacketReceivedInputEvent(currentTimeMillis(), new NetworkSource(new PacketAddress(null, 0)), model);
+			NetworkSource source = new NetworkSource(new PacketAddress((InetSocketAddress) packet.getSocketAddress()));
+			PacketReceivedInputEvent event = new PacketReceivedInputEvent(currentTimeMillis(), source, toModel(packet));
 			networkReceiveBuffer.add(event);
 		} catch (SocketTimeoutException e) {
 
