@@ -2,11 +2,26 @@ package context.input.networking.packet.address;
 
 import java.net.InetAddress;
 
-public abstract class PacketAddress {
+public class PacketAddress {
 
-	public abstract InetAddress ip();
+	private InetAddress ip;
+	private int port;
 
-	public abstract int port();
+	protected PacketAddress() {
+	}
+
+	public PacketAddress(InetAddress ip, int port) {
+		this.ip = ip;
+		this.port = port & 0xFFFF;
+	}
+
+	public InetAddress ip() {
+		return ip;
+	}
+
+	public int port() {
+		return port;
+	}
 
 	@Override
 	public String toString() {

@@ -13,6 +13,7 @@ import common.TerminateableRunnable;
 import common.source.NetworkSource;
 import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.packet.PacketModel;
+import context.input.networking.packet.address.PacketAddress;
 
 public class UDPReceiver extends TerminateableRunnable {
 
@@ -31,7 +32,7 @@ public class UDPReceiver extends TerminateableRunnable {
 		try {
 			socket.receive(packet);
 			PacketModel model = toModel(packet);
-			PacketReceivedInputEvent event = new PacketReceivedInputEvent(currentTimeMillis(), new NetworkSource(model.dest()), model);
+			PacketReceivedInputEvent event = new PacketReceivedInputEvent(currentTimeMillis(), new NetworkSource(new PacketAddress(null, 0)), model);
 			networkReceiveBuffer.add(event);
 		} catch (SocketTimeoutException e) {
 

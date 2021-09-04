@@ -39,8 +39,9 @@ public class PacketBuilder {
 
 	private void typeValidate(PacketPrimitive actual) {
 		PacketPrimitive expected = primitives.poll();
+		System.out.println(expected + " " + actual);
 		if (expected != actual) {
-			throw new InputMismatchException("Packet block creation failed: expected " + expected + ", actual " + actual);
+			throw new InputMismatchException("Packet Builder packet creation failed: expected " + expected + ", actual " + actual);
 		}
 	}
 
@@ -151,6 +152,11 @@ public class PacketBuilder {
 			bytes.add(address[1]);
 			bytes.add(address[2]);
 			bytes.add(address[3]);
+		} else {
+			if (val == null) {
+				throw new InputMismatchException("Packet Builder consumed IP cannot be null");
+			}
+			throw new InputMismatchException("Packet Builder consumed unknown IP type");
 		}
 		return this;
 	}
