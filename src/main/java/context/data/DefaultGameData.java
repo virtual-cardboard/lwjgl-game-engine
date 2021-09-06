@@ -1,5 +1,5 @@
 package context.data;
 
-public class DefaultGameData extends GameData {
+public final class DefaultGameData extends GameData {
 
 }

@@ -1,6 +1,6 @@
 package context.logic;
 
-public class DefaultGameLogic extends GameLogic {
+public final class DefaultGameLogic extends GameLogic {
 
 	@Override
 	public void update() {

@@ -6,7 +6,7 @@ package context.visuals;
  * @author Jay
  *
  */
-public class DefaultGameVisuals extends GameVisuals {
+public final class DefaultGameVisuals extends GameVisuals {
 
 	@Override
 	public void render() {

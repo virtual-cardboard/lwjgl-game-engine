@@ -1,5 +1,5 @@
 package context.input;
 
-public class DefaultGameInput extends GameInput {
+public final class DefaultGameInput extends GameInput {
 
 }
