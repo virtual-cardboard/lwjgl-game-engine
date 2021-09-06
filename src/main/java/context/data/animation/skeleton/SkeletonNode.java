@@ -24,6 +24,14 @@ public class SkeletonNode {
 		child.parent = this;
 	}
 
+	public int totalNumDescendants() {
+		int num = 1;
+		for (int i = 0; i < children.size(); i++) {
+			num += children.get(i).totalNumDescendants();
+		}
+		return num;
+	}
+
 	public SkeletonNode getParent() {
 		return parent;
 	}
