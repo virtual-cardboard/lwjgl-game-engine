@@ -61,6 +61,7 @@ public class Gui {
 
 	public void remove() {
 		parent.getChildren().remove(this);
+		parent = null;
 	}
 
 	public void clearChildren() {
