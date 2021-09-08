@@ -29,4 +29,8 @@ public class Skeleton {
 		return rootNode.equals(skeleton.getRootNode());
 	}
 
+	public Skeleton deepCopy() {
+		return new Skeleton(rootNode.deepCopy());
+	}
+
 }

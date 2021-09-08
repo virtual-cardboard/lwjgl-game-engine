@@ -39,4 +39,16 @@ public class SkeletonState {
 		return rootPosition;
 	}
 
+	public SkeletonState copy() {
+		SkeletonState copy = new SkeletonState();
+		copy.getRootPosition().set(rootPosition);
+		List<Float> rotationsCopy = copy.getRotations();
+		List<Float> distancesCopy = copy.getDistances();
+		for (int i = 0; i < rotations.size(); i++) {
+			rotationsCopy.add(rotations.get(i));
+			distancesCopy.add(distances.get(i));
+		}
+		return null;
+	}
+
 }

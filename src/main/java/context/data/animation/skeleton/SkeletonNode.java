@@ -49,4 +49,12 @@ public class SkeletonNode {
 		return node.getChildren().equals(children);
 	}
 
+	public SkeletonNode deepCopy() {
+		SkeletonNode copy = new SkeletonNode();
+		for (int i = 0; i < children.size(); i++) {
+			copy.addChild(children.get(i).deepCopy());
+		}
+		return copy;
+	}
+
 }
