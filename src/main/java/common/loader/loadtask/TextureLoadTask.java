@@ -44,9 +44,9 @@ public class TextureLoadTask extends LoadTask {
 			IntBuffer w = stack.mallocInt(1);
 			IntBuffer h = stack.mallocInt(1);
 			IntBuffer comp = stack.mallocInt(1);
-			data = stbi_load(texture.getImagePath(), w, h, comp, 4);
+			data = stbi_load(texture.getTexturePath(), w, h, comp, 4);
 			if (data == null) {
-				System.err.println("Failed to load texture at " + texture.getImagePath());
+				System.err.println("Failed to load texture at " + texture.getTexturePath());
 				throw new RuntimeException(stbi_failure_reason());
 			}
 			texture.setWidth(w.get());

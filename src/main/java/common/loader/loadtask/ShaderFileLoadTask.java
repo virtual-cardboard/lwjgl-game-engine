@@ -2,6 +2,7 @@ package common.loader.loadtask;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Queue;
@@ -22,7 +23,7 @@ public class ShaderFileLoadTask extends LoadTask {
 	private String source;
 	private CountDownLatch countDownLatch;
 
-	public ShaderFileLoadTask(Queue<LinkTask> linkTasks, CountDownLatch createShaderLinkTaskCountDownLatch,
+	public ShaderFileLoadTask(CountDownLatch createShaderLinkTaskCountDownLatch, Queue<LinkTask> linkTasks,
 			ShaderProgram shaderProgram, Shader shader, String sourceLocation) {
 		this(new CountDownLatch(1), createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, sourceLocation);
 	}
@@ -39,13 +40,8 @@ public class ShaderFileLoadTask extends LoadTask {
 
 	@Override
 	public void doRun() throws IOException {
-		StringBuilder code = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new FileReader(getFile()));
-		String line;
-		while ((line = reader.readLine()) != null) {
-			code.append(line + "\n");
-		}
-		source = code.toString();
+		File file = getFile();
+		source = loadSource(file);
 		CreateShaderLinkTask createShaderLinkTask = new CreateShaderLinkTask(createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, source);
 		linkTasks.add(createShaderLinkTask);
 		countDownLatch.countDown();
@@ -53,12 +49,24 @@ public class ShaderFileLoadTask extends LoadTask {
 
 	private File getFile() {
 		String shaderPath = Shader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		// First check relative path for built-in shaders
 		File file = new File(shaderPath + sourceLocation);
 		if (!file.exists()) {
 			// Create file with absolute path if the relative path does not resolve
 			file = new File(sourceLocation);
 		}
 		return file;
+	}
+
+	private String loadSource(File file) throws FileNotFoundException, IOException {
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			StringBuilder code = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				code.append(line + "\n");
+			}
+			return code.toString();
+		}
 	}
 
 	public String getSource() {
