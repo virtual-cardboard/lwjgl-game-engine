@@ -1,6 +1,6 @@
 package context.data.animation.skeleton;
 
-import context.data.animation.SkeletonState;
+import common.IntWrapper;
 
 public class Skeleton {
 
@@ -22,6 +22,24 @@ public class Skeleton {
 		return rootNode.totalNumDescendants();
 	}
 
+	public SkeletonNode getNthNode(int n) {
+		return getNthNodeRecursive(rootNode, new IntWrapper(n));
+	}
+
+	private SkeletonNode getNthNodeRecursive(SkeletonNode node, IntWrapper i) {
+		if (i.val == 0) {
+			return node;
+		}
+		i.val--;
+		for (SkeletonNode child : node.getChildren()) {
+			SkeletonNode getNth = getNthNodeRecursive(child, i);
+			if (getNth != null) {
+				return getNth;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Skeleton)) {
@@ -33,20 +51,6 @@ public class Skeleton {
 
 	public Skeleton deepCopy() {
 		return new Skeleton(rootNode.deepCopy());
-	}
-
-	public float getAbsoluteRotation(SkeletonState state, int nodeIndex) {
-		return getAbsoluteRotationRecursive(rootNode.getNthNode(nodeIndex), state, nodeIndex);
-	}
-
-	private float getAbsoluteRotationRecursive(SkeletonNode node, SkeletonState state, int nodeIndex) {
-		if (nodeIndex == 0) {
-			return state.getRotations().get(0);
-		}
-		SkeletonNode parent = node.getParent();
-		float relativeRot = state.getRotations().get(nodeIndex);
-		int parentIndex = nodeIndex - node.getChildIndex() - 1;
-		return relativeRot + getAbsoluteRotationRecursive(parent, state, parentIndex);
 	}
 
 }

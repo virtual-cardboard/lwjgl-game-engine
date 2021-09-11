@@ -5,6 +5,7 @@ import java.util.List;
 
 import common.math.Vector2f;
 import context.data.animation.skeleton.Skeleton;
+import context.data.animation.skeleton.SkeletonNode;
 
 public class SkeletonState {
 
@@ -25,6 +26,20 @@ public class SkeletonState {
 			rotations.add(0f);
 			distances.add(50f);
 		}
+	}
+
+	public float getAbsoluteRotationOf(Skeleton skeleton, int nodeIndex) {
+		return getAbsoluteRotationOfRecursive(skeleton.getNthNode(nodeIndex), nodeIndex);
+	}
+
+	private float getAbsoluteRotationOfRecursive(SkeletonNode node, int nodeIndex) {
+		if (nodeIndex == 0) {
+			return rotations.get(0);
+		}
+		SkeletonNode parent = node.getParent();
+		float relativeRot = rotations.get(nodeIndex);
+		int parentIndex = nodeIndex - node.getChildIndex() - 1;
+		return relativeRot + getAbsoluteRotationOfRecursive(parent, parentIndex);
 	}
 
 	public List<Float> getRotations() {
