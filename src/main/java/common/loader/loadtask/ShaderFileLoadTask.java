@@ -38,26 +38,27 @@ public class ShaderFileLoadTask extends LoadTask {
 	}
 
 	@Override
-	public void doRun() {
+	public void doRun() throws IOException {
 		StringBuilder code = new StringBuilder();
-		String shaderPath = Shader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		File file = new File(shaderPath + sourceLocation);
-		if (!file.exists()) {
-			file = new File(sourceLocation);
-		}
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				code.append(line + "\n");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
+		BufferedReader reader = new BufferedReader(new FileReader(getFile()));
+		String line;
+		while ((line = reader.readLine()) != null) {
+			code.append(line + "\n");
 		}
 		source = code.toString();
 		CreateShaderLinkTask createShaderLinkTask = new CreateShaderLinkTask(createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, source);
 		linkTasks.add(createShaderLinkTask);
 		countDownLatch.countDown();
+	}
+
+	private File getFile() {
+		String shaderPath = Shader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		File file = new File(shaderPath + sourceLocation);
+		if (!file.exists()) {
+			// Create file with absolute path if the relative path does not resolve
+			file = new File(sourceLocation);
+		}
+		return file;
 	}
 
 	public String getSource() {
