@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SkeletonNode {
 
-	private int childIndex = -1;
+	private int index = -1;
 	private SkeletonNode parent;
 	private List<SkeletonNode> children;
 
@@ -21,7 +21,7 @@ public class SkeletonNode {
 	}
 
 	public void addChild(SkeletonNode child) {
-		child.childIndex = children.size();
+		child.index = children.size();
 		children.add(child);
 		child.parent = this;
 	}
@@ -34,8 +34,8 @@ public class SkeletonNode {
 		return num;
 	}
 
-	public int getChildIndex() {
-		return childIndex;
+	public int getIndex() {
+		return index;
 	}
 
 	public SkeletonNode getParent() {

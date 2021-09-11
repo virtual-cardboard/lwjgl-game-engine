@@ -38,7 +38,7 @@ public class SkeletonState {
 		}
 		SkeletonNode parent = node.getParent();
 		float relativeRot = rotations.get(nodeIndex);
-		int parentIndex = nodeIndex - node.getChildIndex() - 1;
+		int parentIndex = nodeIndex - node.getIndex() - 1;
 		return relativeRot + getAbsoluteRotationOfRecursive(parent, parentIndex);
 	}
 
