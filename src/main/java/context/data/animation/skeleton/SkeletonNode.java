@@ -38,6 +38,10 @@ public class SkeletonNode {
 		return index;
 	}
 
+	void setIndex(int index) {
+		this.index = index;
+	}
+
 	public SkeletonNode getParent() {
 		return parent;
 	}

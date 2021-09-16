@@ -28,19 +28,33 @@ public class SkeletonState {
 		}
 	}
 
-	public float getAbsoluteRotationOf(Skeleton skeleton, int nodeIndex) {
-		return getAbsoluteRotationOfRecursive(skeleton.getNthNode(nodeIndex), nodeIndex);
-	}
-
-	private float getAbsoluteRotationOfRecursive(SkeletonNode node, int nodeIndex) {
-		if (nodeIndex == 0) {
+	public float getAbsoluteRotationOf(SkeletonNode node) {
+		if (node.getIndex() == 0) {
 			return rotations.get(0);
 		}
-		SkeletonNode parent = node.getParent();
-		float relativeRot = rotations.get(nodeIndex);
-		int parentIndex = nodeIndex - node.getIndex() - 1;
-		return relativeRot + getAbsoluteRotationOfRecursive(parent, parentIndex);
+		return getAbsoluteRotationOf(node.getParent()) + rotations.get(node.getIndex());
 	}
+
+	public Vector2f getPositionOf(SkeletonNode node) {
+		if (node.getIndex() == 0) {
+			return rootPosition.copy();
+		}
+		return getPositionOf(node.getParent()).ad;
+	}
+
+//	public float getAbsoluteRotationOf(Skeleton skeleton, int nodeIndex) {
+//		return getAbsoluteRotationOfRecursive(skeleton.getNthNode(nodeIndex), nodeIndex);
+//	}
+//
+//	private float getAbsoluteRotationOfRecursive(SkeletonNode node, int nodeIndex) {
+//		if (nodeIndex == 0) {
+//			return rotations.get(0);
+//		}
+//		SkeletonNode parent = node.getParent();
+//		float relativeRot = rotations.get(nodeIndex);
+//		int parentIndex = nodeIndex - node.getIndex() - 1;
+//		return relativeRot + getAbsoluteRotationOfRecursive(parent, parentIndex);
+//	}
 
 	public List<Float> getRotations() {
 		return rotations;
