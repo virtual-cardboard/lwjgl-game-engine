@@ -36,10 +36,11 @@ public class SkeletonState {
 	}
 
 	public Vector2f getPositionOf(SkeletonNode node) {
-		if (node.getIndex() == 0) {
-			return rootPosition.copy();
+		int index = node.getIndex();
+		if (index == 0) {
+			return rootPosition;
 		}
-		return getPositionOf(node.getParent()).ad;
+		return Vector2f.fromAngleLength(rotations.get(index), distances.get(index)).add(getPositionOf(node.getParent()));
 	}
 
 //	public float getAbsoluteRotationOf(Skeleton skeleton, int nodeIndex) {
