@@ -18,6 +18,10 @@ public class Skeleton {
 		return rootNode;
 	}
 
+	void setRootNode(SkeletonNode rootNode) {
+		this.rootNode = rootNode;
+	}
+
 	public int totalNumNodes() {
 		return rootNode.totalNumDescendants();
 	}

@@ -11,6 +11,11 @@ public class SkeletonBuilder {
 		return new Skeleton(rootNode);
 	}
 
+	public void build(SkeletonNode rootNode, Skeleton skeleton) {
+		markIndexes(rootNode, new IntWrapper(0));
+		skeleton.setRootNode(rootNode);
+	}
+
 	private void markIndexes(SkeletonNode node, IntWrapper intWrapper) {
 		node.setIndex(intWrapper.val++);
 		List<SkeletonNode> children = node.getChildren();
