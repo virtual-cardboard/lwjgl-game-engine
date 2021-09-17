@@ -36,11 +36,18 @@ public class SkeletonState {
 	}
 
 	public Vector2f getPositionOf(SkeletonNode node) {
+		return getPositionOfRecursive(node).position;
+	}
+
+	private PositionRotationContainer getPositionOfRecursive(SkeletonNode node) {
 		int index = node.getIndex();
 		if (index == 0) {
-			return rootPosition;
+			return new PositionRotationContainer(rootPosition.copy(), rotations.get(0));
 		}
-		return Vector2f.fromAngleLength(rotations.get(index), distances.get(index)).add(getPositionOf(node.getParent()));
+		PositionRotationContainer parentPosRot = getPositionOfRecursive(node.getParent());
+		parentPosRot.rotation += rotations.get(index);
+		parentPosRot.position.add(Vector2f.fromAngleLength(parentPosRot.rotation, distances.get(index)));
+		return parentPosRot;
 	}
 
 //	public float getAbsoluteRotationOf(Skeleton skeleton, int nodeIndex) {
@@ -75,6 +82,22 @@ public class SkeletonState {
 		copy.distances.addAll(distances);
 		copy.rootPosition.set(rootPosition);
 		return copy;
+	}
+
+	private static final class PositionRotationContainer {
+
+		private Vector2f position;
+		private float rotation;
+
+		private PositionRotationContainer() {
+			this(new Vector2f(0, 0), 0);
+		}
+
+		private PositionRotationContainer(Vector2f position, float rotation) {
+			this.position = position;
+			this.rotation = rotation;
+		}
+
 	}
 
 }
