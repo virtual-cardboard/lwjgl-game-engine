@@ -21,7 +21,6 @@ public class SkeletonNode {
 	}
 
 	public void addChild(SkeletonNode child) {
-		child.index = children.size();
 		children.add(child);
 		child.parent = this;
 	}
@@ -61,6 +60,7 @@ public class SkeletonNode {
 
 	public SkeletonNode deepCopy() {
 		SkeletonNode copy = new SkeletonNode();
+		copy.index = index;
 		for (int i = 0; i < children.size(); i++) {
 			copy.addChild(children.get(i).deepCopy());
 		}
