@@ -144,6 +144,10 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 		return dest;
 	}
 
+	public float dot(Vector2f vector2f) {
+		return x * vector2f.x + y * vector2f.y;
+	}
+
 	/**
 	 * The dot product of two vectors is calculated as v1.x * v2.x + v1.y * v2.y +
 	 * v1.z * v2.z
@@ -154,6 +158,14 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 	 */
 	public static float dot(Vector2f left, Vector2f right) {
 		return left.x * right.x + left.y * right.y;
+	}
+
+	public Vector2f projectOnto(Vector2f vector) {
+		return set(vector.copy().scale(dot(vector) / vector.lengthSquared()));
+	}
+
+	public Vector2f reflect(Vector2f vector) {
+		return set(projectOnto(vector).scale(2).sub(this));
 	}
 
 	/**
