@@ -69,6 +69,10 @@ public class ShaderFileLoadTask extends LoadTask {
 		}
 	}
 
+	public final CountDownLatch getCountDownLatch() {
+		return countDownLatch;
+	}
+
 	public String getSource() {
 		return source;
 	}

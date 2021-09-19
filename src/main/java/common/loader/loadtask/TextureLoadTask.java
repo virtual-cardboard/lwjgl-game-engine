@@ -56,4 +56,8 @@ public class TextureLoadTask extends LoadTask {
 		countDownLatch.countDown();
 	}
 
+	public final CountDownLatch getCountDownLatch() {
+		return countDownLatch;
+	}
+
 }

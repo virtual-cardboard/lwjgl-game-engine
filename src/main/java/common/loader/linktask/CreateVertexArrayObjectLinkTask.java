@@ -55,4 +55,8 @@ public class CreateVertexArrayObjectLinkTask extends LinkTask {
 		return vbos;
 	}
 
+	public final CountDownLatch getCountDownLatch() {
+		return countDownLatch;
+	}
+
 }
