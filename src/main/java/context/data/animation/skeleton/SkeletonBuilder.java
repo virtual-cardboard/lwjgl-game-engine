@@ -6,6 +6,12 @@ import common.IntWrapper;
 
 public class SkeletonBuilder {
 
+	public Skeleton build() {
+		Skeleton skeleton = new Skeleton();
+		skeleton.getRootNode().setIndex(0);
+		return skeleton;
+	}
+
 	public Skeleton build(SkeletonNode rootNode) {
 		markIndexes(rootNode, new IntWrapper(0));
 		return new Skeleton(rootNode);
