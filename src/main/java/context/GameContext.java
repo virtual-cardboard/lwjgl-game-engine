@@ -54,19 +54,19 @@ public final class GameContext {
 		this.visuals.setContext(this);
 	}
 
-	public GameData getData() {
+	public GameData data() {
 		return data;
 	}
 
-	public GameInput getInput() {
+	public GameInput input() {
 		return input;
 	}
 
-	public GameLogic getLogic() {
+	public GameLogic logic() {
 		return logic;
 	}
 
-	public GameVisuals getVisuals() {
+	public GameVisuals visuals() {
 		return visuals;
 	}
 
@@ -84,7 +84,7 @@ public final class GameContext {
 		visuals.init();
 	}
 
-	public GameContextWrapper getWrapper() {
+	public GameContextWrapper wrapper() {
 		return wrapper;
 	}
 
@@ -96,8 +96,8 @@ public final class GameContext {
 		wrapper.sendPacket(packet);
 	}
 
-	public short getSocketPort() {
-		return wrapper.getSocketPort();
+	public short socketPort() {
+		return wrapper.socketPort();
 	}
 
 }

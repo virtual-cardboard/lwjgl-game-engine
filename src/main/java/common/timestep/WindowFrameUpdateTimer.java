@@ -36,16 +36,16 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 
 	@Override
 	protected void doUpdate() {
-		GameContext context = wrapper.getContext();
+		GameContext context = wrapper.context();
 		glfwPollEvents();
 		// Update the root GUI
 		int[] width = new int[1];
 		int[] height = new int[1];
 		glfwGetWindowSize(windowId, width, height);
-		context.getVisuals().getRootGui().setDimensions(width[0], height[0]);
+		context.visuals().getRootGui().setDimensions(width[0], height[0]);
 		doLinkTasks();
-		context.getInput().handleAll();
-		context.getVisuals().render();
+		context.input().handleAll();
+		context.visuals().render();
 		glfwSwapBuffers(windowId);
 	}
 

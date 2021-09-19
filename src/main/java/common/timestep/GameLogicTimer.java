@@ -16,7 +16,7 @@ public class GameLogicTimer extends TimestepTimer {
 
 	@Override
 	protected void doUpdate() {
-		GameLogic gameLogic = wrapper.getContext().getLogic();
+		GameLogic gameLogic = wrapper.context().logic();
 		gameLogic.update();
 	}
 

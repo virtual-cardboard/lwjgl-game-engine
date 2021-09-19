@@ -14,7 +14,7 @@ public class GameInputHandlerRunnable implements Runnable {
 	@Override
 	public void run() {
 		while (!isDone) {
-			wrapper.getContext().getInput().handleAll();
+			wrapper.context().input().handleAll();
 			Thread.yield();
 		}
 	}

@@ -96,13 +96,13 @@ public class GameContextWrapper {
 	 * 
 	 * @return game context
 	 */
-	public GameContext getContext() {
+	public GameContext context() {
 		synchronized (contextLock.readLock()) {
 			return context;
 		}
 	}
 
-	public Queue<GameInputEvent> getInputBuffer() {
+	public Queue<GameInputEvent> inputBuffer() {
 		return inputBuffer;
 	}
 
@@ -110,7 +110,7 @@ public class GameContextWrapper {
 		networkSendBuffer.add(packet);
 	}
 
-	public TimeAccumulator getAccumulator() {
+	public TimeAccumulator accumulator() {
 		return accumulator;
 	}
 
@@ -118,11 +118,11 @@ public class GameContextWrapper {
 		return windowFrameUpdateTimer;
 	}
 
-	public Loader getLoader() {
+	public Loader loader() {
 		return loader;
 	}
 
-	public short getSocketPort() {
+	public short socketPort() {
 		if (socket == null) {
 			return 0;
 		}

@@ -161,7 +161,7 @@ public final class GameEngine {
 		}
 		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader, socket);
 		print("Initializing context parts");
-		wrapper.getContext().init(inputBuffer, networkReceiveBuffer);
+		wrapper.context().init(inputBuffer, networkReceiveBuffer);
 
 		if (rendering) {
 			print("Creating rendering thread.");

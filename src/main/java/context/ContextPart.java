@@ -4,7 +4,7 @@ public abstract class ContextPart {
 
 	private GameContext context;
 
-	public GameContext getContext() {
+	public GameContext context() {
 		return context;
 	}
 

@@ -87,7 +87,7 @@ public abstract class GameInput extends ContextPart {
 		this.inputEventBuffer = inputEventBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
 		this.eventQueue = eventQueue;
-		frameResizedInputEventHandlers.add(new GameInputEventHandler<>(new RootGuiUpdaterFunction(getContext())));
+		frameResizedInputEventHandlers.add(new GameInputEventHandler<>(new RootGuiUpdaterFunction(context())));
 		mouseMovedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorMovedUpdaterFunction(cursor)));
 		mousePressedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorPressedUpdaterFunction(cursor)));
 		mouseReleasedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorReleasedUpdaterFunction(cursor)));
@@ -194,7 +194,7 @@ public abstract class GameInput extends ContextPart {
 		packetReceivedInputEventHandlers.add(function);
 	}
 
-	public GameCursor getCursor() {
+	public GameCursor cursor() {
 		return cursor;
 	}
 
