@@ -19,23 +19,18 @@ public class LineRenderer extends GameRenderer {
 
 	/** The shader program used to render lines. */
 	private ShaderProgram shaderProgram;
-	/** The vertex array object used to render lines. */
-	private VertexArrayObject vao;
 
 	/**
 	 * Creates an {@link LineRenderer} with the given {@link ShaderProgram} and
 	 * rectangular {@link VertexArrayObject}.
 	 * 
 	 * @param lineShaderProgram the shader program to use when rendering lines
-	 * @param rectangleVao      the vertex array object containing the vertices
-	 *                          needed to render ellipses
 	 * 
 	 * @see ShaderProgram
 	 * @see Shader
 	 */
-	public LineRenderer(ShaderProgram lineShaderProgram, VertexArrayObject rectangleVao) {
+	public LineRenderer(ShaderProgram lineShaderProgram) {
 		this.shaderProgram = lineShaderProgram;
-		this.vao = rectangleVao;
 	}
 
 	/**
@@ -43,17 +38,18 @@ public class LineRenderer extends GameRenderer {
 	 * and colour. This needs the {@link RootGui} in order to convert pixel
 	 * coordinates into normalized device coordinates.
 	 * 
-	 * @param rootGui the <code>RootGui</code>
-	 * @param x1      the x value of the first point of the line, in pixels
-	 * @param y1      the y value of the first point of the line, in pixels
-	 * @param x2      the x value of the second point of the line, in pixels
-	 * @param y2      the y value of the second point of the line, in pixels
-	 * @param width   the width or thickness of the line, in pixels
-	 * @param colour  the colour of the line
+	 * @param rectangleVao the {@link VertexArrayObject} to use
+	 * @param rootGui      the <code>RootGui</code>
+	 * @param x1           the x value of the first point of the line, in pixels
+	 * @param y1           the y value of the first point of the line, in pixels
+	 * @param x2           the x value of the second point of the line, in pixels
+	 * @param y2           the y value of the second point of the line, in pixels
+	 * @param width        the width or thickness of the line, in pixels
+	 * @param colour       the colour of the line
 	 * 
 	 * @see Colour
 	 */
-	public void renderPixelCoords(RootGui rootGui, float x1, float y1, float x2, float y2, float width, int colour) {
+	public void renderPixelCoords(VertexArrayObject vao, RootGui rootGui, float x1, float y1, float x2, float y2, float width, int colour) {
 		// Calculations for matrix transformations
 		width = Math.abs(width);
 		Vector2f rootGuiDimensions = rootGui.getDimensions();

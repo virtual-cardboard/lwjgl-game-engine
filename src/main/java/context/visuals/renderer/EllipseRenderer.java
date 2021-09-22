@@ -18,23 +18,18 @@ public class EllipseRenderer extends GameRenderer {
 
 	/** The shader program used to render ellipses. */
 	private ShaderProgram shaderProgram;
-	/** The vertex array object used to render ellipses. */
-	private VertexArrayObject vao;
 
 	/**
 	 * Creates an {@link EllipseRenderer} with the given {@link ShaderProgram} and
 	 * rectangular {@link VertexArrayObject}.
 	 * 
 	 * @param ellipseShaderProgram the shader program to use when rendering ellipses
-	 * @param rectangleVao         the vertex array object containing the vertices
-	 *                             needed to render ellipses
 	 * 
 	 * @see ShaderProgram
 	 * @see Shader
 	 */
-	public EllipseRenderer(ShaderProgram ellipseShaderProgram, VertexArrayObject rectangleVao) {
+	public EllipseRenderer(ShaderProgram ellipseShaderProgram) {
 		this.shaderProgram = ellipseShaderProgram;
-		this.vao = rectangleVao;
 	}
 
 	/**
@@ -52,7 +47,7 @@ public class EllipseRenderer extends GameRenderer {
 	 * @see RootGui
 	 * @see Colour
 	 */
-	public void renderPixelCoords(final RootGui rootGui, float x, float y, float width, float height, final int colour) {
+	public void renderPixelCoords(VertexArrayObject vao, RootGui rootGui, float x, float y, float width, float height, int colour) {
 		Vector2f center = new Vector2f(x, y);
 		Vector2f dimensions = new Vector2f(width, height);
 		shaderProgram.bind();
@@ -62,7 +57,7 @@ public class EllipseRenderer extends GameRenderer {
 		matrix4f.scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
 		matrix4f.translate(center.copy().sub(dimensions.copy().scale(0.5f)));
 		matrix4f.scale(dimensions);
-		renderWithMatrixOnly(matrix4f, colour);
+		renderWithMatrixOnly(vao, matrix4f, colour);
 	}
 
 	/**
@@ -76,7 +71,7 @@ public class EllipseRenderer extends GameRenderer {
 	 * @see Matrix4f
 	 * @see Colour
 	 */
-	public void renderWithMatrixOnly(final Matrix4f matrix4f, final int colour) {
+	public void renderWithMatrixOnly(VertexArrayObject vao, Matrix4f matrix4f, int colour) {
 		Vector2f transformedCenter = matrix4f.transform(0.5f, 0.5f);
 		Vector2f v00 = matrix4f.transform(0, 0);
 		Vector2f v01 = matrix4f.transform(0, 1);
@@ -85,7 +80,7 @@ public class EllipseRenderer extends GameRenderer {
 		float y = transformedCenter.y;
 		float width = v10.x - v00.x;
 		float height = v01.y - v00.y;
-		renderNDC(matrix4f, x, y, width, height, colour);
+		renderNDC(vao, matrix4f, x, y, width, height, colour);
 	}
 
 	/**
@@ -104,7 +99,7 @@ public class EllipseRenderer extends GameRenderer {
 	 * @see Matrix4f
 	 * @see Colour
 	 */
-	public void renderNDC(final Matrix4f matrix4f, float x, float y, float width, float height, int colour) {
+	public void renderNDC(VertexArrayObject vao, Matrix4f matrix4f, float x, float y, float width, float height, int colour) {
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setFloat("x", x);

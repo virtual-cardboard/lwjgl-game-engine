@@ -13,10 +13,10 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 	protected ShaderProgram shaderProgram;
 	protected VertexArrayObject vao;
 
-	public TexturedGuiRenderer(TextureRenderer textureRenderer, ShaderProgram guiShaderProgram, VertexArrayObject rectangleVao) {
+	public TexturedGuiRenderer(TextureRenderer textureRenderer, ShaderProgram guiShaderProgram, VertexArrayObject vao) {
 		this.textureRenderer = textureRenderer;
 		this.shaderProgram = guiShaderProgram;
-		this.vao = rectangleVao;
+		this.vao = vao;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
 		vao.display();
 		if (gui.getTexture() != null) {
-			textureRenderer.render(gui.getTexture(), matrix4f);
+			textureRenderer.render(vao, gui.getTexture(), matrix4f);
 		}
 	}
 

@@ -6,7 +6,7 @@ import context.visuals.gui.Gui;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.VertexArrayObject;
 
-public class DefaultGuiRenderer extends GuiRenderer<Gui> {
+public final class DefaultGuiRenderer extends GuiRenderer<Gui> {
 
 	protected ShaderProgram shaderProgram;
 	protected VertexArrayObject vao;
