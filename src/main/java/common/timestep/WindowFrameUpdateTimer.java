@@ -13,6 +13,7 @@ import common.loader.linktask.LinkTask;
 import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
+import context.visuals.defaultvao.RectangleVertexArrayObject;
 
 public final class WindowFrameUpdateTimer extends TimestepTimer {
 
@@ -62,6 +63,7 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 	protected void startActions() {
 		window.createDisplay();
 		window.attachCallbacks();
+		RectangleVertexArrayObject.createRectangleVAO();
 		windowCountDownLatch.countDown();
 		this.windowId = window.getWindowId();
 	}

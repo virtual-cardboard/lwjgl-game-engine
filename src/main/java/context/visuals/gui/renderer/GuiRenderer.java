@@ -2,7 +2,6 @@ package context.visuals.gui.renderer;
 
 import common.math.Matrix4f;
 import context.visuals.gui.Gui;
-import context.visuals.lwjgl.RectangleMeshData;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.renderer.GameRenderer;
 
@@ -27,8 +26,6 @@ public abstract class GuiRenderer<T extends Gui> extends GameRenderer {
 	 * @param parentY      the y coordinate of the top left corner of the parent
 	 * @param parentWidth  the width of the parent
 	 * @param parentHeight the height of the parent
-	 * 
-	 * @see RectangleMeshData
 	 */
 	@SuppressWarnings("unchecked")
 	final void renderGui(Gui gui, Matrix4f matrix4f, float parentX, float parentY, float parentWidth, float parentHeight) {
@@ -54,8 +51,6 @@ public abstract class GuiRenderer<T extends Gui> extends GameRenderer {
 	 * @param parentY      the y coordinate of the top left corner of the parent
 	 * @param parentWidth  the width of the parent
 	 * @param parentHeight the height of the parent
-	 * 
-	 * @see RectangleMeshData
 	 */
 	public abstract void render(T gui, Matrix4f matrix4f, float parentX, float parentY, float parentWidth, float parentHeight);
 
