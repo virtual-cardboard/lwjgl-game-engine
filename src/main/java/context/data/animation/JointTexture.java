@@ -57,4 +57,8 @@ public class JointTexture {
 		return false;
 	}
 
+	public JointTexture copy() {
+		return new JointTexture(texture, translation.copy(), scale.copy(), rotation);
+	}
+
 }
