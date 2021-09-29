@@ -12,6 +12,7 @@ public class JointTexture {
 
 	public JointTexture(Texture texture) {
 		this(texture, new Vector2f(), new Vector2f(1, 1), 0);
+		translation.set(-texture.getWidth() / 2, -texture.getHeight() / 2);
 	}
 
 	public JointTexture(Texture texture, Vector2f translation, Vector2f scale, float rotation) {
