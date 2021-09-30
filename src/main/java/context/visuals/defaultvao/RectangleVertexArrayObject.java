@@ -2,11 +2,12 @@ package context.visuals.defaultvao;
 
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.VertexArrayObject;
+import context.visuals.lwjgl.VertexArrayObjectBuilder;
 import context.visuals.lwjgl.VertexBufferObject;
 
 public class RectangleVertexArrayObject {
 
-	public static final VertexArrayObject rectangleVAO = new VertexArrayObject();
+	private static VertexArrayObject rectangleVAO = new VertexArrayObject();
 
 	private static final float[] POSITIONS = {
 			1.0f, 1.0f, 0.0f,
@@ -28,21 +29,14 @@ public class RectangleVertexArrayObject {
 	};
 
 	public static void createRectangleVAO() {
-		rectangleVAO.generateId();
-		rectangleVAO.bind();
 		ElementBufferObject ebo = new ElementBufferObject(INDICES);
 		VertexBufferObject positionsVBO = new VertexBufferObject(POSITIONS, 3);
 		VertexBufferObject textureCoordinatesVBO = new VertexBufferObject(TEXTURE_COORDINATES, 2);
-		ebo.generateId();
-		ebo.loadData();
-		rectangleVAO.setEbo(ebo);
-		positionsVBO.generateId();
-		positionsVBO.loadData();
-		rectangleVAO.attachVBO(positionsVBO);
-		textureCoordinatesVBO.generateId();
-		textureCoordinatesVBO.loadData();
-		rectangleVAO.attachVBO(textureCoordinatesVBO);
-		rectangleVAO.enableVertexAttribPointers();
+		rectangleVAO = new VertexArrayObjectBuilder(ebo, positionsVBO, textureCoordinatesVBO).build();
+	}
+
+	public static VertexArrayObject getRectangleVAO() {
+		return rectangleVAO;
 	}
 
 }
