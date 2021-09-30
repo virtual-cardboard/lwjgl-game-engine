@@ -7,7 +7,7 @@ import context.visuals.lwjgl.VertexBufferObject;
 
 public class RectangleVertexArrayObject {
 
-	private static VertexArrayObject rectangleVAO = new VertexArrayObject();
+	private static VertexArrayObject rectangleVAO = null;
 
 	private static final float[] POSITIONS = {
 			1.0f, 1.0f, 0.0f,
@@ -32,6 +32,9 @@ public class RectangleVertexArrayObject {
 	 * The VAO must be created before the getter is called
 	 */
 	public static void createRectangleVAO() {
+		if (rectangleVAO != null) {
+			return;
+		}
 		ElementBufferObject ebo = new ElementBufferObject(INDICES);
 		VertexBufferObject positionsVBO = new VertexBufferObject(POSITIONS, 3);
 		VertexBufferObject textureCoordinatesVBO = new VertexBufferObject(TEXTURE_COORDINATES, 2);
