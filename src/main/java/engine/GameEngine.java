@@ -2,15 +2,14 @@ package engine;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
 import common.loader.Loader;
 import common.timestep.GameLogicTimer;
-import common.timestep.WindowFrameUpdateTimer;
+import common.timestep.WindowFrameUpdater;
 import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
@@ -112,57 +111,60 @@ public final class GameEngine {
 	 * motion.
 	 */
 	public void run() {
-		print("Creating input buffer.");
-		Queue<GameInputEvent> inputBuffer = new PriorityQueue<>();
-		print("Creating time accumulator.");
-		TimeAccumulator accumulator = new TimeAccumulator();
+		Queue<GameInputEvent> inputBuffer = createInputBuffer();
+		TimeAccumulator accumulator = createTimeAccumulator();
+		CountDownLatch windowCountDownLatch = createWindowFrameCountdownLatch();
+		WindowFrameUpdater frameUpdater = createWindowFrameUpdater(inputBuffer, windowCountDownLatch);
+		Loader loader = createLoader();
 
-		CountDownLatch windowCountDownLatch = null;
-		WindowFrameUpdateTimer frameUpdater = null;
-		if (rendering) {
-			print("Creating window.");
-			GameWindow window = new GameWindow(windowTitle, inputBuffer);
-			print("Creating frame updater and window count down latch.");
-			windowCountDownLatch = new CountDownLatch(1);
-			print("Binding dependencies in context wrapper.");
-			frameUpdater = new WindowFrameUpdateTimer(window, windowCountDownLatch);
-		}
+		DatagramSocket socket = createSocket();
+		Queue<PacketReceivedInputEvent> networkReceiveBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
+		UDPReceiver receiver = createUDPReceiver(socket, networkReceiveBuffer);
+		Queue<PacketModel> networkSendBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
+		UDPSender sender = createUDPSender(socket, networkSendBuffer);
+		createUDPReceiverAndSenderThreads(receiver, sender);
+		GameContextWrapper wrapper = createWrapper(inputBuffer, accumulator, frameUpdater, loader, socket, networkReceiveBuffer, networkSendBuffer);
+		createRenderingOrInputThread(frameUpdater, wrapper);
+		createLogicThread(accumulator, wrapper);
+		waitForWindowCreation(windowCountDownLatch);
+		print("Game engine now running");
+	}
 
-		Loader loader = null;
-		if (loading) {
-			print("Creating loader");
-			loader = new Loader();
-			Thread loaderThread = new Thread(loader);
-			loaderThread.setName("loaderThread");
-			loaderThread.setDaemon(true);
-			print("Starting loader thread,");
-			loaderThread.start();
-		}
+	private void createLogicThread(TimeAccumulator accumulator, GameContextWrapper wrapper) {
+		print("Creating logic timer.");
+		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
+		Thread logicThread = new Thread(logicTimer);
+		logicThread.setName("gameLogicThread");
+		print("Starting logic thread.");
+		logicThread.start();
+	}
 
-		UDPReceiver receiver = null;
-		UDPSender sender = null;
-		DatagramSocket socket = null;
-		Queue<PacketModel> networkSendBuffer = null;
-		Queue<PacketReceivedInputEvent> networkReceiveBuffer = new LinkedList<>();
-		if (networking) {
-			try {
-				print("Locating free network socket");
-				socket = SocketFinder.findSocket(port);
-				networkSendBuffer = new ConcurrentLinkedQueue<>();
-				receiver = new UDPReceiver(socket, networkReceiveBuffer);
-				sender = new UDPSender(socket, networkSendBuffer);
-				Thread receiverThread = new Thread(receiver);
-				Thread senderThread = new Thread(sender);
-				receiverThread.start();
-				senderThread.start();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, WindowFrameUpdater frameUpdater, Loader loader, DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer) {
 		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader, socket);
 		print("Initializing context parts");
 		wrapper.context().init(inputBuffer, networkReceiveBuffer);
+		return wrapper;
+	}
 
+	private void waitForWindowCreation(CountDownLatch windowCountDownLatch) {
+		if (rendering) {
+			try {
+				print("Waiting for window initialization");
+				windowCountDownLatch.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			print("Window initialization finished");
+		}
+	}
+
+	/**
+	 * The rendering thr
+	 * 
+	 * @param frameUpdater
+	 * @param wrapper
+	 */
+	private void createRenderingOrInputThread(WindowFrameUpdater frameUpdater, GameContextWrapper wrapper) {
 		if (rendering) {
 			print("Creating rendering thread.");
 			Thread renderingThread = new Thread(frameUpdater);
@@ -178,25 +180,90 @@ public final class GameEngine {
 			print("Starting input handling thread.");
 			inputHandlingThread.start();
 		}
+	}
 
-		print("Creating updating thread.");
-		print("Creating logic timer.");
-		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
-		Thread logicThread = new Thread(logicTimer);
-		logicThread.setName("gameLogicThread");
-		print("Starting logic thread.");
-		logicThread.start();
+	private void createUDPReceiverAndSenderThreads(UDPReceiver receiver, UDPSender sender) {
+		if (networking) {
+			Thread receiverThread = new Thread(receiver);
+			Thread senderThread = new Thread(sender);
+			receiverThread.start();
+			senderThread.start();
+		}
+	}
 
-		if (rendering) {
+	private UDPSender createUDPSender(DatagramSocket socket, Queue<PacketModel> networkSendBuffer) {
+		UDPSender sender = null;
+		if (networking) {
+			sender = new UDPSender(socket, networkSendBuffer);
+		}
+		return sender;
+	}
+
+	private UDPReceiver createUDPReceiver(DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer) {
+		UDPReceiver receiver = null;
+		if (networking) {
+			receiver = new UDPReceiver(socket, networkReceiveBuffer);
+		}
+		return receiver;
+	}
+
+	private DatagramSocket createSocket() {
+		DatagramSocket socket = null;
+		if (networking) {
 			try {
-				print("Waiting for window initialization");
-				windowCountDownLatch.await();
-			} catch (InterruptedException e) {
+				print("Locating free network socket");
+				socket = SocketFinder.findSocket(port);
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			print("Window initialization finished");
 		}
-		print("Game engine now running");
+		return socket;
+	}
+
+	private Queue<GameInputEvent> createInputBuffer() {
+		print("Creating input buffer.");
+		Queue<GameInputEvent> inputBuffer = new PriorityQueue<>();
+		return inputBuffer;
+	}
+
+	private TimeAccumulator createTimeAccumulator() {
+		print("Creating time accumulator.");
+		TimeAccumulator accumulator = new TimeAccumulator();
+		return accumulator;
+	}
+
+	private WindowFrameUpdater createWindowFrameUpdater(Queue<GameInputEvent> inputBuffer, CountDownLatch windowCountDownLatch) {
+		WindowFrameUpdater frameUpdater = null;
+		if (rendering) {
+			print("Creating window.");
+			GameWindow window = new GameWindow(windowTitle, inputBuffer);
+			print("Binding dependencies in context wrapper.");
+			frameUpdater = new WindowFrameUpdater(window, windowCountDownLatch);
+		}
+		return frameUpdater;
+	}
+
+	private CountDownLatch createWindowFrameCountdownLatch() {
+		CountDownLatch windowCountDownLatch = null;
+		if (rendering) {
+			print("Creating frame updater and window count down latch.");
+			windowCountDownLatch = new CountDownLatch(1);
+		}
+		return windowCountDownLatch;
+	}
+
+	private Loader createLoader() {
+		Loader loader = null;
+		if (loading) {
+			print("Creating loader");
+			loader = new Loader();
+			Thread loaderThread = new Thread(loader);
+			loaderThread.setName("loaderThread");
+			loaderThread.setDaemon(true);
+			print("Starting loader thread,");
+			loaderThread.start();
+		}
+		return loader;
 	}
 
 	private void print(String s) {

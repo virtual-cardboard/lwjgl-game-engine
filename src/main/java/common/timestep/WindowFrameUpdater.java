@@ -15,7 +15,7 @@ import context.GameContextWrapper;
 import context.GameWindow;
 import context.visuals.defaultvao.RectangleVertexArrayObject;
 
-public final class WindowFrameUpdateTimer extends TimestepTimer {
+public final class WindowFrameUpdater extends TimestepTimer {
 
 	private GameContextWrapper wrapper;
 	private GameWindow window;
@@ -28,7 +28,7 @@ public final class WindowFrameUpdateTimer extends TimestepTimer {
 	 */
 	private Queue<LinkTask> linkTasks;
 
-	public WindowFrameUpdateTimer(GameWindow window, CountDownLatch windowCountDownLatch) {
+	public WindowFrameUpdater(GameWindow window, CountDownLatch windowCountDownLatch) {
 		super(60);
 		this.window = window;
 		this.windowCountDownLatch = windowCountDownLatch;
