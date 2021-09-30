@@ -28,6 +28,9 @@ public class RectangleVertexArrayObject {
 			0, 2, 3
 	};
 
+	/**
+	 * The VAO must be created before the getter is called
+	 */
 	public static void createRectangleVAO() {
 		ElementBufferObject ebo = new ElementBufferObject(INDICES);
 		VertexBufferObject positionsVBO = new VertexBufferObject(POSITIONS, 3);
