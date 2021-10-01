@@ -141,6 +141,7 @@ public final class GameEngine {
 		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
 		Thread logicThread = new Thread(logicTimer);
 		logicThread.setName("gameLogicThread");
+		logicThread.setDaemon(true);
 		print("Starting logic thread.");
 		logicThread.start();
 	}
@@ -203,7 +204,11 @@ public final class GameEngine {
 	private void createUDPReceiverAndSenderThreads(UDPReceiver receiver, UDPSender sender) {
 		if (networking) {
 			Thread receiverThread = new Thread(receiver);
+			receiverThread.setDaemon(true);
+			receiverThread.setName("networkReceiverThread");
 			Thread senderThread = new Thread(sender);
+			senderThread.setDaemon(true);
+			senderThread.setName("networkSenderThread");
 			receiverThread.start();
 			senderThread.start();
 		}
