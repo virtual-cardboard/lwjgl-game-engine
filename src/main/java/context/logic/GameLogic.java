@@ -22,9 +22,9 @@ public abstract class GameLogic extends ContextPart {
 
 	private Queue<GameEvent> eventQueue;
 
-	public final void init(Queue<GameEvent> eventQueue) {
+	public final void doInit(Queue<GameEvent> eventQueue) {
 		this.eventQueue = eventQueue;
-		doInit();
+		init();
 	}
 
 	/**

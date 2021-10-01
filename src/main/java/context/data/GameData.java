@@ -12,8 +12,8 @@ import context.ContextPart;
  */
 public abstract class GameData extends ContextPart {
 
-	public final void init() {
-		doInit();
+	public final void doInit() {
+		init();
 	}
 
 }

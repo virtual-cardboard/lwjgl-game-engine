@@ -72,16 +72,20 @@ public final class GameContext {
 
 	/**
 	 * Initializes the context parts with the given input event buffer.
-	 * {@link GameContextWrapper} calls <code>init()</code> after transitioning to
-	 * this context.
+	 * <p>
+	 * Called by {@link GameContextWrapper} whenever
+	 * {@link GameContextWrapper#transition(GameContext) transition}ing to this
+	 * context.
+	 * <p>
+	 * 
 	 * 
 	 * @param inputEventBuffer the input buffer
 	 */
 	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer) {
-		data.init();
-		input.init(inputEventBuffer, networkReceiveBuffer, eventQueue);
-		logic.init(eventQueue);
-		visuals.init();
+		data.doInit();
+		input.doInit(inputEventBuffer, networkReceiveBuffer, eventQueue);
+		logic.doInit(eventQueue);
+		visuals.doInit();
 	}
 
 	public GameContextWrapper wrapper() {
@@ -98,6 +102,19 @@ public final class GameContext {
 
 	public short socketPort() {
 		return wrapper.socketPort();
+	}
+
+	/**
+	 * Called when the {@link GameContextWrapper} terminates.
+	 * <p>
+	 * Note: context parts terminate in the reverse order they are
+	 * {@link #init(Queue, Queue) init}ialized in.
+	 */
+	public void terminate() {
+		visuals.terminate();
+		logic.terminate();
+		input.terminate();
+		data.terminate();
 	}
 
 }

@@ -42,7 +42,7 @@ public class GameContextWrapper {
 	private final Queue<GameInputEvent> inputBuffer;
 	private Queue<PacketReceivedInputEvent> networkReceiveBuffer;
 	private final TimeAccumulator accumulator;
-	private final WindowFrameUpdater windowFrameUpdateTimer;
+	private final WindowFrameUpdater windowFrameUpdater;
 	private final Loader loader;
 	private final Queue<PacketModel> networkSendBuffer;
 	private DatagramSocket socket;
@@ -68,7 +68,7 @@ public class GameContextWrapper {
 		this.networkReceiveBuffer = networkReceiveBuffer;
 		this.networkSendBuffer = networkSendBuffer;
 		this.accumulator = accumulator;
-		this.windowFrameUpdateTimer = windowFrameUpdateTimer;
+		this.windowFrameUpdater = windowFrameUpdateTimer;
 		if (windowFrameUpdateTimer != null) {
 			windowFrameUpdateTimer.setWrapper(this);
 		}
@@ -114,8 +114,8 @@ public class GameContextWrapper {
 		return accumulator;
 	}
 
-	public WindowFrameUpdater getWindowFrameUpdateTimer() {
-		return windowFrameUpdateTimer;
+	public WindowFrameUpdater getWindowFrameUpdater() {
+		return windowFrameUpdater;
 	}
 
 	public Loader loader() {
@@ -130,6 +130,9 @@ public class GameContextWrapper {
 	}
 
 	public void terminate() {
+		if (context != null) {
+			context.terminate();
+		}
 	}
 
 }
