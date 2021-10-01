@@ -89,7 +89,7 @@ public abstract class TimestepTimer implements Runnable {
 	protected abstract void doUpdate();
 
 	/**
-	 * @return if the {@link TimestepTimer} should end.
+	 * @return true if the {@link TimestepTimer} should end, false otherwise.
 	 */
 	protected abstract boolean endCondition();
 

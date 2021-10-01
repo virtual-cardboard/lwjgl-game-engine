@@ -9,6 +9,7 @@ import java.util.concurrent.CountDownLatch;
 
 import common.loader.Loader;
 import common.timestep.GameLogicTimer;
+import common.timestep.TimestepTimer;
 import common.timestep.WindowFrameUpdater;
 import context.GameContext;
 import context.GameContextWrapper;
@@ -109,6 +110,9 @@ public final class GameEngine {
 	/**
 	 * Initializes everything required to start a game, and puts everything in
 	 * motion.
+	 * 
+	 * <p>
+	 * Lunkle [Sep 30, 2021]: some of these methods need better documentation
 	 */
 	public void run() {
 		Queue<GameInputEvent> inputBuffer = createInputBuffer();
@@ -117,16 +121,18 @@ public final class GameEngine {
 		WindowFrameUpdater frameUpdater = createWindowFrameUpdater(inputBuffer, windowCountDownLatch);
 		Loader loader = createLoader();
 
-		DatagramSocket socket = createSocket();
 		Queue<PacketReceivedInputEvent> networkReceiveBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
-		UDPReceiver receiver = createUDPReceiver(socket, networkReceiveBuffer);
 		Queue<PacketModel> networkSendBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
+		DatagramSocket socket = createSocket(); // We should not be passing a raw socket to the wrapper
+		GameContextWrapper wrapper = createWrapper(inputBuffer, accumulator, frameUpdater, loader, socket, networkReceiveBuffer, networkSendBuffer);
+
+		UDPReceiver receiver = createUDPReceiver(socket, networkReceiveBuffer);
 		UDPSender sender = createUDPSender(socket, networkSendBuffer);
 		createUDPReceiverAndSenderThreads(receiver, sender);
-		GameContextWrapper wrapper = createWrapper(inputBuffer, accumulator, frameUpdater, loader, socket, networkReceiveBuffer, networkSendBuffer);
 		createRenderingOrInputThread(frameUpdater, wrapper);
 		createLogicThread(accumulator, wrapper);
 		waitForWindowCreation(windowCountDownLatch);
+
 		print("Game engine now running");
 	}
 
@@ -146,6 +152,16 @@ public final class GameEngine {
 		return wrapper;
 	}
 
+	/**
+	 * The windowCountDownLatch is passed into the {@link WindowFrameUpdater} in
+	 * {@link #createWindowFrameUpdater(Queue, CountDownLatch)
+	 * createWindowFrameUpdater}. In the WindowFrameUpdater, the
+	 * {@link WindowFrameUpdater#startActions() startActions} method creates the
+	 * window and counts down the {@link CountDownLatch} when complete. This method
+	 * {@link CountDownLatch#await() awaits} the completion of the window.
+	 * 
+	 * @param windowCountDownLatch
+	 */
 	private void waitForWindowCreation(CountDownLatch windowCountDownLatch) {
 		if (rendering) {
 			try {
@@ -159,7 +175,9 @@ public final class GameEngine {
 	}
 
 	/**
-	 * The rendering thr
+	 * The rendering thread handles both rendering and input updating, so if
+	 * rendering is enabled we create just the rendering thread. If rendering is
+	 * disabled we have to create a specific input handling thread.
 	 * 
 	 * @param frameUpdater
 	 * @param wrapper
@@ -173,7 +191,7 @@ public final class GameEngine {
 			renderingThread.start();
 		} else {
 			print("Creating input handling thread.");
-			GameInputHandlerRunnable gameInputHandler = new GameInputHandlerRunnable(wrapper);
+			Runnable gameInputHandler = new GameInputHandlerRunnable(wrapper);
 			Thread inputHandlingThread = new Thread(gameInputHandler);
 			inputHandlingThread.setName("inputHandlingThread");
 			inputHandlingThread.setDaemon(true);
@@ -232,24 +250,30 @@ public final class GameEngine {
 		return accumulator;
 	}
 
+	/**
+	 * 
+	 * Create the {@link TimestepTimer} that updates the window.
+	 * 
+	 * @param inputBuffer
+	 * @param windowCountDownLatch
+	 * @return
+	 */
 	private WindowFrameUpdater createWindowFrameUpdater(Queue<GameInputEvent> inputBuffer, CountDownLatch windowCountDownLatch) {
-		WindowFrameUpdater frameUpdater = null;
 		if (rendering) {
 			print("Creating window.");
 			GameWindow window = new GameWindow(windowTitle, inputBuffer);
 			print("Binding dependencies in context wrapper.");
-			frameUpdater = new WindowFrameUpdater(window, windowCountDownLatch);
+			return new WindowFrameUpdater(window, windowCountDownLatch);
 		}
-		return frameUpdater;
+		return null;
 	}
 
 	private CountDownLatch createWindowFrameCountdownLatch() {
-		CountDownLatch windowCountDownLatch = null;
 		if (rendering) {
 			print("Creating frame updater and window count down latch.");
-			windowCountDownLatch = new CountDownLatch(1);
+			return new CountDownLatch(1);
 		}
-		return windowCountDownLatch;
+		return null;
 	}
 
 	private Loader createLoader() {
