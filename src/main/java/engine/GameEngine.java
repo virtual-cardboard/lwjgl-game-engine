@@ -141,7 +141,6 @@ public final class GameEngine {
 		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
 		Thread logicThread = new Thread(logicTimer);
 		logicThread.setName("gameLogicThread");
-		logicThread.setDaemon(true);
 		print("Starting logic thread.");
 		logicThread.start();
 	}
@@ -149,7 +148,7 @@ public final class GameEngine {
 	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, WindowFrameUpdater frameUpdater, Loader loader, DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer) {
 		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader, socket);
 		print("Initializing context parts");
-		wrapper.context().init(inputBuffer, networkReceiveBuffer);
+		wrapper.context().init(inputBuffer, networkReceiveBuffer, loader);
 		return wrapper;
 	}
 
@@ -282,17 +281,11 @@ public final class GameEngine {
 	}
 
 	private Loader createLoader() {
-		Loader loader = null;
 		if (loading) {
 			print("Creating loader");
-			loader = new Loader();
-			Thread loaderThread = new Thread(loader);
-			loaderThread.setName("loaderThread");
-			loaderThread.setDaemon(true);
-			print("Starting loader thread,");
-			loaderThread.start();
+			return new Loader();
 		}
-		return loader;
+		return null;
 	}
 
 	private void print(String s) {

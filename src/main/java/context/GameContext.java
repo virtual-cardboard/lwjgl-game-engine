@@ -4,6 +4,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import common.event.GameEvent;
+import common.loader.Loader;
 import context.data.GameData;
 import context.input.GameInput;
 import context.input.event.GameInputEvent;
@@ -80,12 +81,13 @@ public final class GameContext {
 	 * 
 	 * 
 	 * @param inputEventBuffer the input buffer
+	 * @param loader
 	 */
-	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer) {
-		data.doInit();
+	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Loader loader) {
+		data.doInit(loader);
 		input.doInit(inputEventBuffer, networkReceiveBuffer, eventQueue);
-		logic.doInit(eventQueue);
-		visuals.doInit();
+		logic.doInit(eventQueue, loader);
+		visuals.doInit(loader);
 	}
 
 	public GameContextWrapper wrapper() {

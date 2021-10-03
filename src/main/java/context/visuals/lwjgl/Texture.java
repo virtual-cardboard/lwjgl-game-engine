@@ -20,7 +20,6 @@ public class Texture {
 	private int id;
 	private int width, height;
 	private int textureUnit;
-	private String texturePath;
 	private boolean linked;
 
 	/**
@@ -30,14 +29,13 @@ public class Texture {
 	 * {@link TextureLoadTask} uses the image path to load data from the image.
 	 * 
 	 * @param textureUnit the texture unit
-	 * @param texturePath   the path to the image used in this texture
+	 * @param texturePath the path to the image used in this texture
 	 */
-	public Texture(int textureUnit, String texturePath) {
+	public Texture(int textureUnit) {
 		if (textureUnit < 0 || textureUnit > 31) {
 			throw new IllegalArgumentException("Invalid texture unit: " + textureUnit);
 		}
 		this.textureUnit = textureUnit;
-		this.texturePath = texturePath;
 	}
 
 	/**
@@ -86,24 +84,12 @@ public class Texture {
 		return textureUnit;
 	}
 
-	public String getTexturePath() {
-		return texturePath;
+	public void setTextureUnit(int textureUnit) {
+		this.textureUnit = textureUnit;
 	}
 
 	public boolean isLinked() {
 		return linked;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj instanceof Texture) {
-			Texture o = (Texture) obj;
-			return texturePath.equals(o.texturePath);
-		}
-		return false;
 	}
 
 }

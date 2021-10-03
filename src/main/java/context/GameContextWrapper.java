@@ -84,7 +84,7 @@ public class GameContextWrapper {
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
 			context.setWrapper(this);
-			context.init(inputBuffer, networkReceiveBuffer);
+			context.init(inputBuffer, networkReceiveBuffer, loader);
 			this.context = context;
 		}
 	}
@@ -132,6 +132,9 @@ public class GameContextWrapper {
 	public void terminate() {
 		if (context != null) {
 			context.terminate();
+		}
+		if (loader != null) {
+			loader.terminate();
 		}
 	}
 
