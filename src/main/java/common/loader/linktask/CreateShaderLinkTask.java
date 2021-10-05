@@ -28,7 +28,7 @@ public class CreateShaderLinkTask extends LinkTask {
 
 	@Override
 	public void doRun() {
-		shader.generateId();
+		shader.setId(shader.getShaderType().genId());
 		shader.compile(source);
 		shaderProgram.attachShader(shader);
 		countDownLatch.countDown();

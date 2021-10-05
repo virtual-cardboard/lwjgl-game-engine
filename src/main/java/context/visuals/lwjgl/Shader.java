@@ -1,8 +1,12 @@
 package context.visuals.lwjgl;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL32C.GL_GEOMETRY_SHADER;
+import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glDeleteShader;
+import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glShaderSource;
 
 public class Shader {
 
@@ -19,22 +23,6 @@ public class Shader {
 		if (glGetShaderi(id, GL_COMPILE_STATUS) == GL_FALSE) {
 			System.err.println(glGetShaderInfoLog(id, 500));
 			throw new RuntimeException("Could not compile shader source:\n" + source);
-		}
-	}
-
-	public void generateId() {
-		switch (shaderType) {
-			case VERTEX:
-				setId(glCreateShader(GL_VERTEX_SHADER));
-				break;
-			case FRAGMENT:
-				setId(glCreateShader(GL_FRAGMENT_SHADER));
-				break;
-			case GEOMETRY:
-				setId(glCreateShader(GL_GEOMETRY_SHADER));
-				break;
-			default:
-				throw new IllegalStateException("Could not generate shader ID because of unknown shaderType");
 		}
 	}
 
