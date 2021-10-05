@@ -112,4 +112,8 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		this.wrapper = wrapper;
 	}
 
+	public GameWindow getWindow() {
+		return window;
+	}
+
 }
