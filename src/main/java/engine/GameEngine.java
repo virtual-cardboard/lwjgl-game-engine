@@ -73,7 +73,7 @@ public final class GameEngine {
 		TimeAccumulator accumulator = createTimeAccumulator();
 		CountDownLatch windowCountDownLatch = createWindowFrameCountdownLatch();
 		WindowFrameUpdater frameUpdater = createWindowFrameUpdater(inputBuffer, windowCountDownLatch);
-		Loader loader = createLoader();
+		Loader loader = createLoader(frameUpdater, windowCountDownLatch);
 
 		Queue<PacketReceivedInputEvent> networkReceiveBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
 		Queue<PacketModel> networkSendBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
@@ -99,8 +99,10 @@ public final class GameEngine {
 		logicThread.start();
 	}
 
-	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, WindowFrameUpdater frameUpdater, Loader loader, DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer) {
-		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader, socket);
+	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, WindowFrameUpdater frameUpdater, Loader loader,
+			DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer) {
+		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader,
+				socket);
 		print("Initializing context parts");
 		wrapper.context().init(inputBuffer, networkReceiveBuffer, loader);
 		return wrapper;
@@ -234,10 +236,10 @@ public final class GameEngine {
 		return null;
 	}
 
-	private Loader createLoader() {
+	private Loader createLoader(WindowFrameUpdater frameUpdater, CountDownLatch windowCountDownLatch) {
 		if (loading) {
 			print("Creating loader");
-			return new Loader();
+			return new Loader(frameUpdater != null ? frameUpdater.window() : null, windowCountDownLatch);
 		}
 		return null;
 	}
