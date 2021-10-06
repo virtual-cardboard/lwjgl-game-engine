@@ -11,3 +11,5 @@ target/*
 /bin/
 *.classpath
 *.project
+.idea/*
+*.iml
