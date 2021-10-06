@@ -114,7 +114,7 @@ public class GameContextWrapper {
 		return accumulator;
 	}
 
-	public WindowFrameUpdater getWindowFrameUpdater() {
+	public WindowFrameUpdater windowFrameUpdater() {
 		return windowFrameUpdater;
 	}
 

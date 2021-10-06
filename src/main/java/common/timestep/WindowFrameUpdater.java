@@ -65,7 +65,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		window.attachCallbacks();
 		RectangleVertexArrayObject.createRectangleVAO();
 		windowCountDownLatch.countDown();
-		this.windowId = window.getWindowId();
+		this.windowId = window.windowId();
 	}
 
 	/**
@@ -112,7 +112,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		this.wrapper = wrapper;
 	}
 
-	public GameWindow getWindow() {
+	public GameWindow window() {
 		return window;
 	}
 
