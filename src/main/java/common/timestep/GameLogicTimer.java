@@ -1,10 +1,8 @@
 package common.timestep;
 
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFWErrorCallback.createPrint;
-
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.MemoryUtil;
+import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+import static org.lwjgl.opengl.GL.createCapabilities;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 import context.GameContextWrapper;
 import context.logic.GameLogic;
@@ -22,16 +20,11 @@ public class GameLogicTimer extends TimestepTimer {
 
 	@Override
 	protected void startActions() {
-		glfwSetErrorCallback(createPrint(System.err).set());
-		if (!glfwInit()) throw new IllegalStateException("Unable to initialize GLFW");
-		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-		long window2 = glfwCreateWindow(100, 100, "", MemoryUtil.NULL, wrapper.windowFrameUpdater().window().windowId());
-		PointerBuffer pointBuffer = PointerBuffer.allocateDirect(100);
-		while (glfwGetError(pointBuffer) != GLFW_NO_ERROR) {
-			System.err.println(pointBuffer.getStringUTF8());
+		long sharedContextWindowHandle = wrapper.windowFrameUpdater().window().getSharedContextWindowHandle();
+		if (sharedContextWindowHandle != NULL) {
+			glfwMakeContextCurrent(sharedContextWindowHandle);
+			createCapabilities();
 		}
-		System.out.println("window2: " + window2);
 	}
 
 	@Override

@@ -61,52 +61,6 @@ public final class GameEngine {
 		this.printProgress = printProgress;
 	}
 
-	public GameEngine enablePrintProgress() {
-		printProgress = true;
-		return this;
-	}
-
-	public GameEngine disablePrintProgress() {
-		printProgress = false;
-		return this;
-	}
-
-	public GameEngine enableRendering() {
-		rendering = true;
-		return this;
-	}
-
-	public GameEngine disableRendering() {
-		rendering = false;
-		return this;
-	}
-
-	public GameEngine enableLoading() {
-		loading = true;
-		return this;
-	}
-
-	public GameEngine disableLoading() {
-		loading = false;
-		return this;
-	}
-
-	public GameEngine enableNetworking() {
-		networking = true;
-		return this;
-	}
-
-	public GameEngine enableNetworking(int port) {
-		this.port = port;
-		networking = true;
-		return this;
-	}
-
-	public GameEngine disableNetworking() {
-		networking = false;
-		return this;
-	}
-
 	/**
 	 * Initializes everything required to start a game, and puts everything in
 	 * motion.
@@ -292,6 +246,52 @@ public final class GameEngine {
 		if (printProgress) {
 			System.out.println(s);
 		}
+	}
+
+	public GameEngine enablePrintProgress() {
+		printProgress = true;
+		return this;
+	}
+
+	public GameEngine disablePrintProgress() {
+		printProgress = false;
+		return this;
+	}
+
+	public GameEngine enableRendering() {
+		rendering = true;
+		return this;
+	}
+
+	public GameEngine disableRendering() {
+		rendering = false;
+		return this;
+	}
+
+	public GameEngine enableLoading() {
+		loading = true;
+		return this;
+	}
+
+	public GameEngine disableLoading() {
+		loading = false;
+		return this;
+	}
+
+	public GameEngine enableNetworking() {
+		networking = true;
+		return this;
+	}
+
+	public GameEngine enableNetworking(int port) {
+		this.port = port;
+		networking = true;
+		return this;
+	}
+
+	public GameEngine disableNetworking() {
+		networking = false;
+		return this;
 	}
 
 }

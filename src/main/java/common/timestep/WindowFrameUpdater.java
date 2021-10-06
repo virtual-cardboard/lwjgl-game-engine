@@ -63,6 +63,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	protected void startActions() {
 		window.createDisplay();
 		window.attachCallbacks();
+		window.createSharedContextWindow();
 		RectangleVertexArrayObject.createRectangleVAO();
 		windowCountDownLatch.countDown();
 		this.windowId = window.windowId();
