@@ -113,6 +113,10 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		this.wrapper = wrapper;
 	}
 
+	public CountDownLatch getWindowCountDownLatch() {
+		return windowCountDownLatch;
+	}
+
 	public GameWindow window() {
 		return window;
 	}

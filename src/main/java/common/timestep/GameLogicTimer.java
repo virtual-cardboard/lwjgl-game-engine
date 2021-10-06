@@ -2,6 +2,7 @@ package common.timestep;
 
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.opengl.GL.createCapabilities;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import context.GameContextWrapper;
@@ -20,10 +21,21 @@ public class GameLogicTimer extends TimestepTimer {
 
 	@Override
 	protected void startActions() {
-		long sharedContextWindowHandle = wrapper.windowFrameUpdater().window().getSharedContextWindowHandle();
+		WindowFrameUpdater windowFrameUpdater = wrapper.windowFrameUpdater();
+		if (windowFrameUpdater == null) return;
+		try {
+			windowFrameUpdater.getWindowCountDownLatch().await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		long sharedContextWindowHandle = windowFrameUpdater.window().getSharedContextWindowHandle();
 		if (sharedContextWindowHandle != NULL) {
 			glfwMakeContextCurrent(sharedContextWindowHandle);
 			createCapabilities();
+			System.out.println("Yayyy shared context!!!");
+			System.out.println(glGenVertexArrays());
+		} else {
+			System.err.println("Nooo");
 		}
 	}
 

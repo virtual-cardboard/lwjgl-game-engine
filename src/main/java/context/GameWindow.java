@@ -81,6 +81,11 @@ public class GameWindow {
 	public void createSharedContextWindow() {
 		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
 		sharedContextWindowHandle = glfwCreateWindow(1, 1, "", NULL, windowId);
+		if (sharedContextWindowHandle == NULL) {
+			throw new RuntimeException("Could not create shared context.");
+		} else {
+			System.out.println("Created shared context: window ID = " + sharedContextWindowHandle);
+		}
 	}
 
 	public void attachCallbacks() {
