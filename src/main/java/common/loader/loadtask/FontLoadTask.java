@@ -2,16 +2,17 @@ package common.loader.loadtask;
 
 import java.io.File;
 
-public class FontLoadTask extends LoadTask {
+public final class FontLoadTask extends LoadTask {
 
 	private String fontName;
 
 	public FontLoadTask(String fontName) {
+		super(true);
 		this.fontName = fontName;
 	}
 
 	@Override
-	public void doRun() {
+	public void load() {
 		String pngName = fontName + ".png";
 		File image = new File(pngName);
 //		String fontFileName = fontName + ;

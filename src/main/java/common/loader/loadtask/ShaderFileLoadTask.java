@@ -39,7 +39,7 @@ public class ShaderFileLoadTask extends LoadTask {
 	}
 
 	@Override
-	public void doRun() throws IOException {
+	public void load() throws IOException {
 		File file = getFile();
 		source = loadSource(file);
 		CreateShaderLinkTask createShaderLinkTask = new CreateShaderLinkTask(createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, source);
@@ -69,7 +69,7 @@ public class ShaderFileLoadTask extends LoadTask {
 		}
 	}
 
-	public final CountDownLatch getCountDownLatch() {
+	public final CountDownLatch countDownLatch() {
 		return countDownLatch;
 	}
 

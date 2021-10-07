@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
+import common.loader.loadtask.GlLoadTask;
 import common.loader.loadtask.LoadTask;
 import context.GameWindow;
 
@@ -16,8 +17,8 @@ public class Loader {
 
 	private static final int NUM_THREADS = 4;
 
-	private ExecutorService openGLThread;
-	private ExecutorService nonOpenGLLoaderThreads;
+	private ExecutorService openGLExecutorService;
+	private ExecutorService nonOpenGLExecutorService;
 
 	public Loader(GameWindow window, CountDownLatch windowCountDownLatch) {
 		ThreadFactory daemonThreadFactory = r -> {
@@ -25,10 +26,10 @@ public class Loader {
 			t.setDaemon(true);
 			return t;
 		};
-		openGLThread = Executors.newSingleThreadExecutor(daemonThreadFactory);
-		nonOpenGLLoaderThreads = Executors.newFixedThreadPool(NUM_THREADS, daemonThreadFactory);
+		openGLExecutorService = Executors.newSingleThreadExecutor(daemonThreadFactory);
+		nonOpenGLExecutorService = Executors.newFixedThreadPool(NUM_THREADS, daemonThreadFactory);
 		if (window == null) return;
-		openGLThread.execute(() -> {
+		openGLExecutorService.execute(() -> {
 			try {
 				windowCountDownLatch.await();
 			} catch (InterruptedException e) {
@@ -42,13 +43,14 @@ public class Loader {
 		});
 	}
 
-	public void add(LoadTask task) {
-		nonOpenGLLoaderThreads.execute(task);
+	public void add(LoadTask t) {
+		if (t instanceof GlLoadTask) ((GlLoadTask) t).setOpenGlExecutorService(openGLExecutorService);
+		nonOpenGLExecutorService.execute(t);
 	}
 
 	public void terminate() {
-		openGLThread.shutdown();
-		nonOpenGLLoaderThreads.shutdown();
+		openGLExecutorService.shutdown();
+		nonOpenGLExecutorService.shutdown();
 	}
 
 }

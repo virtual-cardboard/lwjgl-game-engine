@@ -1,6 +1,7 @@
 package common.loader.loadtask;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 import common.loader.Loader;
 import common.loader.linktask.LinkTask;
@@ -15,15 +16,29 @@ import common.loader.linktask.LinkTask;
  */
 public abstract class LoadTask implements Runnable {
 
+	private final CountDownLatch countDownLatch;
+
+	public LoadTask() {
+		this(new CountDownLatch(1));
+	}
+
+	public LoadTask(CountDownLatch countDownLatch) {
+		this.countDownLatch = countDownLatch;
+	}
+
 	@Override
 	public final void run() {
 		try {
-			doRun();
+			load();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public abstract void doRun() throws IOException;
+	public abstract void load() throws IOException;
+
+	public final CountDownLatch countDownLatch() {
+		return countDownLatch;
+	}
 
 }
