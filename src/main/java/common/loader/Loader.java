@@ -2,7 +2,6 @@ package common.loader;
 
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.opengl.GL.createCapabilities;
-import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -26,9 +25,9 @@ public class Loader {
 			t.setDaemon(true);
 			return t;
 		};
-		openGLExecutorService = Executors.newSingleThreadExecutor(daemonThreadFactory);
 		nonOpenGLExecutorService = Executors.newFixedThreadPool(NUM_THREADS, daemonThreadFactory);
 		if (window == null) return;
+		openGLExecutorService = Executors.newSingleThreadExecutor(daemonThreadFactory);
 		openGLExecutorService.execute(() -> {
 			try {
 				windowCountDownLatch.await();
@@ -38,8 +37,6 @@ public class Loader {
 			long sharedContextWindowHandle = window.getSharedContextWindowHandle();
 			glfwMakeContextCurrent(sharedContextWindowHandle);
 			createCapabilities();
-			System.out.println("Yayyy shared context woohoo!!!");
-			System.out.println(glGenVertexArrays());
 		});
 	}
 

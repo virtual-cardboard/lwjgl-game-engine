@@ -1,5 +1,6 @@
 package common.timestep;
 
+import static context.visuals.defaultvao.RectangleVertexArrayObject.createRectangleVAO;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
@@ -13,7 +14,6 @@ import common.loader.linktask.LinkTask;
 import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
-import context.visuals.defaultvao.RectangleVertexArrayObject;
 
 public final class WindowFrameUpdater extends TimestepTimer {
 
@@ -64,7 +64,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		window.createDisplay();
 		window.attachCallbacks();
 		window.createSharedContextWindow();
-		RectangleVertexArrayObject.createRectangleVAO();
+		createRectangleVAO();
 		windowCountDownLatch.countDown();
 		this.windowId = window.windowId();
 	}
