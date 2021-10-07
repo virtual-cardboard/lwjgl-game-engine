@@ -1,25 +1,35 @@
 package common.loader.loadtask;
 
-import java.io.File;
+import static java.io.File.pathSeparator;
 
-public final class FontLoadTask extends LoadTask {
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+
+public final class FontLoadTask extends GlLoadTask {
 
 	private String fontName;
 
 	public FontLoadTask(String fontName) {
-		super(true);
+		this.fontName = fontName;
+	}
+
+	public FontLoadTask(CountDownLatch countDownLatch, String fontName) {
+		super(countDownLatch);
 		this.fontName = fontName;
 	}
 
 	@Override
-	public void load() {
+	public void loadNonOpenGl() throws IOException {
 		String pngName = fontName + ".png";
-		File image = new File(pngName);
-//		String fontFileName = fontName + ;
-//		File fontFile = new File(fontFileName);
-		if (!image.exists()) {
-			image = new File(FontLoadTask.class.getProtectionDomain().getCodeSource().getLocation().getPath() + pngName);
+		File file = new File(pngName);
+		if (!file.exists()) {
+			file = new File(FontLoadTask.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "fonts" + pathSeparator + pngName);
 		}
+	}
+
+	@Override
+	public void loadOpenGl() {
 	}
 
 }

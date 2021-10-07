@@ -22,7 +22,7 @@ public abstract class GlLoadTask extends LoadTask {
 		openGlExecutorService.execute(countDownLatch()::countDown);
 	}
 
-	public abstract void loadNonOpenGl();
+	public abstract void loadNonOpenGl() throws IOException;
 
 	public abstract void loadOpenGl();
 

@@ -41,4 +41,12 @@ public abstract class LoadTask implements Runnable {
 		return countDownLatch;
 	}
 
+	public final void await() {
+		try {
+			countDownLatch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

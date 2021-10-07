@@ -5,46 +5,51 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 
-import common.loader.linktask.CreateShaderLinkTask;
-import common.loader.linktask.LinkTask;
 import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderProgram;
+import context.visuals.lwjgl.ShaderType;
 
-public class ShaderFileLoadTask extends LoadTask {
+public final class ShaderFileLoadTask extends GlLoadTask {
 
-	private CountDownLatch createShaderLinkTaskCountDownLatch;
-	private Queue<LinkTask> linkTasks;
-	private ShaderProgram shaderProgram;
-	private Shader shader;
-	private String sourceLocation;
-	private String source;
 	private CountDownLatch countDownLatch;
+	private ShaderType type;
+	private ShaderProgram shaderProgram;
+	private String sourceLocation;
 
-	public ShaderFileLoadTask(CountDownLatch createShaderLinkTaskCountDownLatch, Queue<LinkTask> linkTasks,
-			ShaderProgram shaderProgram, Shader shader, String sourceLocation) {
-		this(new CountDownLatch(1), createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, sourceLocation);
+	private String source;
+	private Shader shader;
+
+	public ShaderFileLoadTask(ShaderType type, ShaderProgram shaderProgram, String sourceLocation) {
+		this(new CountDownLatch(1), type, shaderProgram, sourceLocation);
 	}
 
-	public ShaderFileLoadTask(CountDownLatch countDownLatch, CountDownLatch createShaderLinkTaskCountDownLatch,
-			Queue<LinkTask> linkTasks, ShaderProgram shaderProgram, Shader shader, String sourceLocation) {
+	public ShaderFileLoadTask(CountDownLatch countDownLatch, ShaderType type, ShaderProgram shaderProgram, String sourceLocation) {
+		super(countDownLatch);
 		this.countDownLatch = countDownLatch;
-		this.createShaderLinkTaskCountDownLatch = createShaderLinkTaskCountDownLatch;
-		this.linkTasks = linkTasks;
+		this.type = type;
 		this.shaderProgram = shaderProgram;
-		this.shader = shader;
 		this.sourceLocation = sourceLocation;
 	}
 
 	@Override
-	public void load() throws IOException {
+	public void loadNonOpenGl() throws IOException {
 		File file = getFile();
 		source = loadSource(file);
-		CreateShaderLinkTask createShaderLinkTask = new CreateShaderLinkTask(createShaderLinkTaskCountDownLatch, linkTasks, shaderProgram, shader, source);
-		linkTasks.add(createShaderLinkTask);
+		shader = new Shader(type);
+	}
+
+	@Override
+	public void loadOpenGl() {
+		shader.setId(shader.getShaderType().genId());
+		shader.compile(source);
+		shaderProgram.attachShader(shader);
 		countDownLatch.countDown();
+		if (countDownLatch.getCount() == 0) {
+			shaderProgram.generateId();
+			shaderProgram.link();
+		}
 	}
 
 	private File getFile() {
@@ -69,16 +74,8 @@ public class ShaderFileLoadTask extends LoadTask {
 		}
 	}
 
-	public final CountDownLatch countDownLatch() {
-		return countDownLatch;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public String getSourceLocation() {
-		return sourceLocation;
+	public Shader getShader() {
+		return shader;
 	}
 
 }
