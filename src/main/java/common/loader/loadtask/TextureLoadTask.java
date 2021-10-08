@@ -66,6 +66,9 @@ public class TextureLoadTask extends OpenglLoadTask {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		stbi_image_free(textureData);
 		texture.link();
+		// Must call glFinish, or else the loader thread buffer this command until the
+		// next glSwapBuffers() call - which would never happen.
+		glFinish();
 	}
 
 	public Texture getTexture() {
