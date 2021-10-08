@@ -1,6 +1,6 @@
 package context.data;
 
-import common.loader.Loader;
+import common.loader.GameLoader;
 import context.ContextPart;
 
 /**
@@ -13,14 +13,14 @@ import context.ContextPart;
  */
 public abstract class GameData extends ContextPart {
 
-	private Loader loader;
+	private GameLoader loader;
 
-	public final void doInit(Loader loader) {
+	public final void doInit(GameLoader loader) {
 		this.loader = loader;
 		init();
 	}
 
-	public Loader loader() {
+	public GameLoader loader() {
 		return loader;
 	}
 

@@ -3,7 +3,7 @@ package common.loader.loadtask;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-import common.loader.Loader;
+import common.loader.GameLoader;
 import common.loader.linktask.LinkTask;
 
 /**
@@ -11,7 +11,7 @@ import common.loader.linktask.LinkTask;
  * 
  * @author Jay
  * @see LinkTask
- * @see Loader
+ * @see GameLoader
  *
  */
 public abstract class LoadTask implements Runnable {

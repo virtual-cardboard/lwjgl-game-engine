@@ -14,7 +14,7 @@ import org.lwjgl.system.MemoryStack;
 
 import context.visuals.lwjgl.Texture;
 
-public class TextureLoadTask extends GlLoadTask {
+public class TextureLoadTask extends OpenglLoadTask {
 
 	private Texture texture;
 	private int textureUnit;
@@ -55,7 +55,7 @@ public class TextureLoadTask extends GlLoadTask {
 	}
 
 	@Override
-	public void loadOpenGl() {
+	public void loadOpengl() {
 		texture.setId(glGenTextures());
 		texture.bind();
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);

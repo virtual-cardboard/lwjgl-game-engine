@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
-import common.loader.Loader;
+import common.loader.GameLoader;
 import common.timestep.GameLogicTimer;
 import common.timestep.TimestepTimer;
 import common.timestep.WindowFrameUpdater;
@@ -73,7 +73,7 @@ public final class GameEngine {
 		TimeAccumulator accumulator = createTimeAccumulator();
 		CountDownLatch windowCountDownLatch = createWindowFrameCountdownLatch();
 		WindowFrameUpdater frameUpdater = createWindowFrameUpdater(inputBuffer, windowCountDownLatch);
-		Loader loader = createLoader(frameUpdater, windowCountDownLatch);
+		GameLoader loader = createLoader();
 
 		Queue<PacketReceivedInputEvent> networkReceiveBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
 		Queue<PacketModel> networkSendBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
@@ -86,6 +86,7 @@ public final class GameEngine {
 		createRenderingOrInputThread(frameUpdater, wrapper);
 		createLogicThread(accumulator, wrapper);
 		waitForWindowCreation(windowCountDownLatch);
+		loader.start(frameUpdater != null ? frameUpdater.window().getSharedContextWindowHandle() : 0);
 
 		print("Game engine now running");
 	}
@@ -99,7 +100,7 @@ public final class GameEngine {
 		logicThread.start();
 	}
 
-	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, WindowFrameUpdater frameUpdater, Loader loader,
+	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, WindowFrameUpdater frameUpdater, GameLoader loader,
 			DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer) {
 		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader,
 				socket);
@@ -236,10 +237,10 @@ public final class GameEngine {
 		return null;
 	}
 
-	private Loader createLoader(WindowFrameUpdater frameUpdater, CountDownLatch windowCountDownLatch) {
+	private GameLoader createLoader() {
 		if (loading) {
 			print("Creating loader");
-			return new Loader(frameUpdater != null ? frameUpdater.window() : null, windowCountDownLatch);
+			return new GameLoader();
 		}
 		return null;
 	}

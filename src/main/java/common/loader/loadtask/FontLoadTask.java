@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-public final class FontLoadTask extends GlLoadTask {
+public final class FontLoadTask extends OpenglLoadTask {
 
 	private String fontName;
 
@@ -29,7 +29,7 @@ public final class FontLoadTask extends GlLoadTask {
 	}
 
 	@Override
-	public void loadOpenGl() {
+	public void loadOpengl() {
 	}
 
 }
