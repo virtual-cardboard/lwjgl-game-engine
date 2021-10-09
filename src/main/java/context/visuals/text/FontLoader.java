@@ -12,7 +12,6 @@ public class FontLoader {
 
 	private GameFont gameFont;
 	private int numCharacterData;
-	private int numKerningData;
 
 	public GameFont readVcFont(File source) throws IOException {
 		gameFont = new GameFont();
@@ -21,8 +20,6 @@ public class FontLoader {
 			loadHeaderData(fis);
 			System.out.println("Reading characters");
 			loadCharacterData(fis);
-			System.out.println("Reading kernings");
-			loadKerningData(fis);
 		}
 		return gameFont;
 	}
@@ -38,7 +35,6 @@ public class FontLoader {
 		gameFont.setFontSize(readShort(fis));
 		gameFont.setNumPages(readShort(fis));
 		numCharacterData = readShort(fis);
-		numKerningData = readShort(fis);
 	}
 
 	private void loadCharacterData(FileInputStream fis) throws IOException {
@@ -55,17 +51,6 @@ public class FontLoader {
 			short page = (short) fis.read();
 			CharacterData c = new CharacterData((char) character, x, y, width, height, xOffset, yOffset, xAdvance, page);
 			characterDatas.add(c);
-		}
-	}
-
-	private void loadKerningData(FileInputStream fis) throws IOException {
-		List<KerningData> kerningDatas = gameFont.getKerningDatas();
-		for (int i = 0; i < numKerningData; i++) {
-			short one = readShort(fis);
-			short two = readShort(fis);
-			short amount = readShort(fis);
-			KerningData k = new KerningData((char) one, (char) two, amount);
-			kerningDatas.add(k);
 		}
 	}
 

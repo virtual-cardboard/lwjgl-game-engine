@@ -12,18 +12,15 @@ public class GameFont {
 	private int fontSize;
 	private int numPages;
 	private List<CharacterData> characterDatas;
-	private List<KerningData> kerningDatas;
 	private List<Texture> pageTextures;
 
 	public GameFont() {
 		characterDatas = new ArrayList<>();
-		kerningDatas = new ArrayList<>();
 		pageTextures = new ArrayList<>();
 	}
 
 	void makeImmutable() {
 		this.characterDatas = Collections.unmodifiableList(characterDatas);
-		this.kerningDatas = Collections.unmodifiableList(kerningDatas);
 		this.pageTextures = Collections.unmodifiableList(pageTextures);
 	}
 
@@ -53,10 +50,6 @@ public class GameFont {
 
 	public List<CharacterData> getCharacterDatas() {
 		return characterDatas;
-	}
-
-	public List<KerningData> getKerningDatas() {
-		return kerningDatas;
 	}
 
 	public List<Texture> getPageTextures() {
