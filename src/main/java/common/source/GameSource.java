@@ -6,7 +6,7 @@ public interface GameSource {
 		return null;
 	}
 
-	public default String getDescription() {
+	public default String description() {
 		return toString();
 	}
 
