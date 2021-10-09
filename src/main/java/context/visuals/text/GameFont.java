@@ -6,15 +6,18 @@ import java.util.List;
 
 import context.visuals.lwjgl.Texture;
 
-public class GameFont {
+public final class GameFont {
 
-	private String name;
-	private int fontSize;
-	private int numPages;
+	private final String name;
+	private final int fontSize;
+	private final int numPages;
 	private List<CharacterData> characterDatas;
 	private List<Texture> pageTextures;
 
-	public GameFont() {
+	public GameFont(String name, int fontSize, int numPages) {
+		this.name = name;
+		this.fontSize = fontSize;
+		this.numPages = numPages;
 		characterDatas = new ArrayList<>();
 		pageTextures = new ArrayList<>();
 	}
@@ -28,24 +31,12 @@ public class GameFont {
 		return name;
 	}
 
-	void setName(String name) {
-		this.name = name;
-	}
-
 	public int getFontSize() {
 		return fontSize;
 	}
 
-	void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
-	}
-
 	public int getNumPages() {
 		return numPages;
-	}
-
-	void setNumPages(int numPages) {
-		this.numPages = numPages;
 	}
 
 	public List<CharacterData> getCharacterDatas() {

@@ -6,21 +6,21 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
-public class FontLoader {
+public final class FontLoader {
 
 	private static final Charset CHARSET = Charset.forName("UTF-8");
 
 	private GameFont gameFont;
-	private int numCharacterData;
+	private int numCharacters;
 
 	public GameFont readVcFont(File source) throws IOException {
-		gameFont = new GameFont();
 		try (FileInputStream fis = new FileInputStream(source)) {
 			System.out.println("Reading header");
 			loadHeaderData(fis);
 			System.out.println("Reading characters");
-			loadCharacterData(fis);
+			loadCharacterData(gameFont, fis);
 		}
+		gameFont.makeImmutable();
 		return gameFont;
 	}
 
@@ -31,15 +31,15 @@ public class FontLoader {
 			nameBytes[i] = (byte) fis.read();
 		}
 		String name = new String(nameBytes, CHARSET);
-		gameFont.setName(name);
-		gameFont.setFontSize(readShort(fis));
-		gameFont.setNumPages(readShort(fis));
-		numCharacterData = readShort(fis);
+		short fontSize = readShort(fis);
+		short numPages = readShort(fis);
+		numCharacters = readShort(fis);
+		gameFont = new GameFont(name, fontSize, numPages);
 	}
 
-	private void loadCharacterData(FileInputStream fis) throws IOException {
-		List<CharacterData> characterDatas = gameFont.getCharacterDatas();
-		for (int i = 0; i < numCharacterData; i++) {
+	private void loadCharacterData(GameFont gameFont, FileInputStream fis) throws IOException {
+		List<CharacterData> characters = gameFont.getCharacterDatas();
+		for (int i = 0; i < numCharacters; i++) {
 			short character = readShort(fis);
 			short x = readShort(fis);
 			short y = readShort(fis);
@@ -50,7 +50,7 @@ public class FontLoader {
 			short xAdvance = readShort(fis);
 			short page = (short) fis.read();
 			CharacterData c = new CharacterData((char) character, x, y, width, height, xOffset, yOffset, xAdvance, page);
-			characterDatas.add(c);
+			characters.add(c);
 		}
 	}
 

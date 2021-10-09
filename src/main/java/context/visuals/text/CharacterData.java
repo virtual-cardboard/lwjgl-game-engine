@@ -1,16 +1,16 @@
 package context.visuals.text;
 
-public class CharacterData implements Comparable<CharacterData> {
+public final class CharacterData {
 
-	private char character;
-	private short x;
-	private short y;
-	private short width;
-	private short height;
-	private short xOffset;
-	private short yOffset;
-	private short xAdvance;
-	private short page;
+	private final char character;
+	private final short x;
+	private final short y;
+	private final short width;
+	private final short height;
+	private final short xOffset;
+	private final short yOffset;
+	private final short xAdvance;
+	private final short page;
 
 	public CharacterData(char character, short x, short y, short width, short height, short xOffset, short yOffset, short xAdvance, short page) {
 		this.character = character;
@@ -58,11 +58,6 @@ public class CharacterData implements Comparable<CharacterData> {
 
 	public short getPage() {
 		return page;
-	}
-
-	@Override
-	public int compareTo(CharacterData o) {
-		return Integer.compare(character, o.character);
 	}
 
 }
