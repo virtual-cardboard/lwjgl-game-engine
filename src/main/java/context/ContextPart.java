@@ -19,6 +19,10 @@ public abstract class ContextPart {
 	protected void init() {
 	}
 
+	/**
+	 * Clean up actions if the game is stopped suddenly. Called by
+	 * {@link GameContext#terminate() terminate}.
+	 */
 	protected void terminate() {
 	}
 

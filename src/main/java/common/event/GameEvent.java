@@ -18,11 +18,11 @@ public abstract class GameEvent implements Comparable<GameEvent> {
 		this(currentTimeMillis(), source);
 	}
 
-	public long getTime() {
+	public long time() {
 		return time;
 	}
 
-	public GameSource getSource() {
+	public GameSource source() {
 		return source;
 	}
 

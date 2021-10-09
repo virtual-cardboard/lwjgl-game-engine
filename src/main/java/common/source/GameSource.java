@@ -2,10 +2,12 @@ package common.source;
 
 public interface GameSource {
 
-	public default GameSource getSource() {
+	public default GameSource source() {
 		return null;
 	}
 
-	public String getDescription();
+	public default String getDescription() {
+		return toString();
+	}
 
 }
