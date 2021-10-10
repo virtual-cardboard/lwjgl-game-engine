@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 import common.loader.loadtask.LoadTask;
-import common.loader.loadtask.OpenglLoadTask;
+import common.loader.loadtask.OpenGLLoadTask;
 
 public class GameLoader {
 
@@ -31,8 +31,8 @@ public class GameLoader {
 
 	public void add(LoadTask t) {
 		threadPool.execute(t);
-		if (t instanceof OpenglLoadTask) {
-			OpenglLoadTask openglLoadTask = (OpenglLoadTask) t;
+		if (t instanceof OpenGLLoadTask) {
+			OpenGLLoadTask openglLoadTask = (OpenGLLoadTask) t;
 			openglLoadTask.setLoaderLinker(loaderLinker);
 		} else {
 			t.countDownLatch().countDown();

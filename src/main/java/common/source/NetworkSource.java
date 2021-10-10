@@ -15,7 +15,7 @@ public class NetworkSource implements GameSource {
 	}
 
 	@Override
-	public String getDescription() {
+	public String description() {
 		return "packet from " + address.toString();
 	}
 

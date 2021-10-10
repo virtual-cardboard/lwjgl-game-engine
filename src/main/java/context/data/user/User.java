@@ -17,7 +17,7 @@ public class User implements GameSource {
 	}
 
 	@Override
-	public String getDescription() {
+	public String description() {
 		return username + " ";
 	}
 

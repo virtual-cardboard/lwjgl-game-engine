@@ -5,27 +5,27 @@ import java.util.concurrent.CountDownLatch;
 
 import common.loader.GameLoaderLinker;
 
-public abstract class OpenglLoadTask extends LoadTask {
+public abstract class OpenGLLoadTask extends LoadTask {
 
 	private GameLoaderLinker loaderLinker;
 
-	public OpenglLoadTask() {
+	public OpenGLLoadTask() {
+		super();
 	}
 
-	public OpenglLoadTask(CountDownLatch countDownLatch) {
+	public OpenGLLoadTask(CountDownLatch countDownLatch) {
 		super(countDownLatch);
 	}
 
 	@Override
 	public final void load() throws IOException {
-		loadNonOpenGl();
+		loadIO();
 		loaderLinker.add(this);
 	}
 
-	public void loadNonOpenGl() throws IOException {
-	};
+	public abstract void loadIO() throws IOException;
 
-	public abstract void loadOpengl();
+	public abstract void loadGL();
 
 	public final void setLoaderLinker(GameLoaderLinker loaderLinker) {
 		this.loaderLinker = loaderLinker;
