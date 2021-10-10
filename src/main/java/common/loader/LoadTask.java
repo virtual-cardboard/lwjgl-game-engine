@@ -1,22 +1,17 @@
-package common.loader.loadtask;
+package common.loader;
 
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
-
-import common.loader.GameLoader;
-import common.loader.linktask.LinkTask;
 
 /**
  * Use a LoadTask for I/O operations.
  * 
  * @author Jay
- * @see LinkTask
  * @see GameLoader
  *
  */
-public abstract class LoadTask implements Runnable {
+abstract class LoadTask implements Runnable {
 
-	private final CountDownLatch countDownLatch;
+	protected final CountDownLatch countDownLatch;
 
 	public LoadTask() {
 		this(new CountDownLatch(1));
@@ -25,17 +20,6 @@ public abstract class LoadTask implements Runnable {
 	public LoadTask(CountDownLatch countDownLatch) {
 		this.countDownLatch = countDownLatch;
 	}
-
-	@Override
-	public final void run() {
-		try {
-			load();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public abstract void load() throws IOException;
 
 	public final CountDownLatch countDownLatch() {
 		return countDownLatch;

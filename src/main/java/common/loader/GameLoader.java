@@ -4,15 +4,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-import common.loader.loadtask.LoadTask;
-import common.loader.loadtask.OpenGLLoadTask;
-
 public class GameLoader {
 
 	private static final int NUM_THREADS = 4;
 
-	private ExecutorService threadPool;
-	private GameLoaderLinker loaderLinker;
+	private ExecutorService loaders;
+	private GameLinker linker;
 
 	public GameLoader() {
 		ThreadFactory daemonThreadFactory = r -> {
@@ -20,32 +17,30 @@ public class GameLoader {
 			t.setDaemon(true);
 			return t;
 		};
-		threadPool = Executors.newFixedThreadPool(NUM_THREADS, daemonThreadFactory);
+		loaders = Executors.newFixedThreadPool(NUM_THREADS, daemonThreadFactory);
 	}
 
 	public void start(long sharedContextWindowHandle) {
-		loaderLinker = new GameLoaderLinker(sharedContextWindowHandle);
-		Thread openglLoaderThread = new Thread(loaderLinker);
+		linker = new GameLinker(sharedContextWindowHandle);
+		Thread openglLoaderThread = new Thread(linker);
 		openglLoaderThread.start();
 	}
 
 	public void add(LoadTask t) {
-		threadPool.execute(t);
-		if (t instanceof OpenGLLoadTask) {
-			OpenGLLoadTask openglLoadTask = (OpenGLLoadTask) t;
-			openglLoadTask.setLoaderLinker(loaderLinker);
-		} else {
-			t.countDownLatch().countDown();
+		if (t instanceof GLLoadTask) {
+			GLLoadTask openglLoadTask = (GLLoadTask) t;
+			openglLoadTask.setLinker(linker);
 		}
+		loaders.execute(t);
 	}
 
 	public void terminate() {
-		loaderLinker.terminate();
-		threadPool.shutdown();
+		linker.terminate();
+		loaders.shutdown();
 	}
 
 	public boolean started() {
-		return loaderLinker != null;
+		return linker != null;
 	}
 
 }

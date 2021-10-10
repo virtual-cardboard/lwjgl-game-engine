@@ -6,11 +6,8 @@ import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
-import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.LinkedBlockingQueue;
 
-import common.loader.linktask.LinkTask;
 import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
@@ -23,16 +20,10 @@ public final class WindowFrameUpdater extends TimestepTimer {
 
 	private CountDownLatch windowCountDownLatch;
 
-	/**
-	 * Queue containing all {@link LinkTask}s waiting to be run.
-	 */
-	private Queue<LinkTask> linkTasks;
-
 	public WindowFrameUpdater(GameWindow window, CountDownLatch windowCountDownLatch) {
 		super(60);
 		this.window = window;
 		this.windowCountDownLatch = windowCountDownLatch;
-		linkTasks = new LinkedBlockingQueue<>();
 	}
 
 	@Override
@@ -44,7 +35,6 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		int[] height = new int[1];
 		glfwGetWindowSize(windowId, width, height);
 		context.visuals().getRootGui().setDimensions(width[0], height[0]);
-		doLinkTasks();
 		context.input().handleAll();
 		context.visuals().render();
 		glfwSwapBuffers(windowId);
@@ -76,37 +66,6 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	protected void endActions() {
 		window.destroy();
 		wrapper.terminate();
-	}
-
-	/**
-	 * Polls and runs {@link LinkTask}s in the queue {@link #linkTasks linkTasks}.
-	 * If <code>linkTasks</code> is empty, this function does nothing. Otherwise,
-	 * this function runs one <code>LinkTask</code> guaranteed, then continues
-	 * running <code>LinkTask</code>s until the next update tick arrives or until
-	 * <code>linkTasks</code> becomes empty.
-	 * <p>
-	 * This function is run once every frame in {@link #doUpdate() doUpdate()}.
-	 * </p>
-	 */
-	private void doLinkTasks() {
-		LinkTask linkTask = linkTasks.poll();
-		if (linkTask != null) {
-			linkTask.run();
-			// Poll ONLY IF we should not be updating. If we poll before checking for
-			// !shouldUpdate(), then when shouldUpdate() returns false, the linkTask will be
-			// polled yet never run.
-			while (!shouldUpdate() && (linkTask = linkTasks.poll()) != null) {
-				linkTask.run();
-			}
-		}
-	}
-
-	public Queue<LinkTask> getLinkTasks() {
-		return linkTasks;
-	}
-
-	public void addLinkTask(LinkTask linkTask) {
-		linkTasks.add(linkTask);
 	}
 
 	public void setWrapper(GameContextWrapper wrapper) {
