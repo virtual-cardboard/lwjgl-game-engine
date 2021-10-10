@@ -1,22 +1,21 @@
 package context.visuals.gui.renderer;
 
+import static context.visuals.defaultvao.RectangleVertexArrayObject.rectangleVAO;
+
 import common.math.Matrix4f;
 import context.visuals.colour.Colour;
 import context.visuals.gui.TexturedGui;
 import context.visuals.lwjgl.ShaderProgram;
-import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.renderer.TextureRenderer;
 
 public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 
 	protected TextureRenderer textureRenderer;
 	protected ShaderProgram shaderProgram;
-	protected VertexArrayObject vao;
 
-	public TexturedGuiRenderer(TextureRenderer textureRenderer, ShaderProgram guiShaderProgram, VertexArrayObject vao) {
+	public TexturedGuiRenderer(TextureRenderer textureRenderer, ShaderProgram guiShaderProgram) {
 		this.textureRenderer = textureRenderer;
 		this.shaderProgram = guiShaderProgram;
-		this.vao = vao;
 	}
 
 	@Override
@@ -30,9 +29,9 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
-		vao.display();
+		rectangleVAO().display();
 		if (gui.getTexture() != null) {
-			textureRenderer.render(vao, gui.getTexture(), matrix4f);
+			textureRenderer.render(gui.getTexture(), matrix4f);
 		}
 	}
 
