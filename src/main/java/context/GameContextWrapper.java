@@ -6,6 +6,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import common.loader.GameLoader;
+import common.timestep.GameLogicTimer;
 import common.timestep.WindowFrameUpdater;
 import context.input.GameInputHandlerRunnable;
 import context.input.event.GameInputEvent;
@@ -56,12 +57,14 @@ public class GameContextWrapper {
 	 * @param networkSendBuffer
 	 * @param accumulator            the logic timer
 	 * @param windowFrameUpdateTimer the {@link WindowFrameUpdater}
+	 * @param logicTimer
 	 * @param inputHandler
 	 * @param loader                 the {@link GameLoader}
 	 */
 	public GameContextWrapper(Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer,
 			Queue<PacketModel> networkSendBuffer, TimeAccumulator accumulator,
-			WindowFrameUpdater windowFrameUpdateTimer, GameInputHandlerRunnable inputHandler, GameLoader loader, DatagramSocket socket) {
+			WindowFrameUpdater windowFrameUpdateTimer, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler,
+			GameLoader loader, DatagramSocket socket) {
 		this.socket = socket;
 		this.inputBuffer = inputBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
@@ -74,6 +77,7 @@ public class GameContextWrapper {
 		if (inputHandler != null) {
 			inputHandler.setWrapper(this);
 		}
+		logicTimer.setWrapper(this);
 		this.loader = loader;
 	}
 
