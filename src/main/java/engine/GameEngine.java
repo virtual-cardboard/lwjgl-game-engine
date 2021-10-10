@@ -70,51 +70,65 @@ public final class GameEngine {
 	 */
 	public void run() {
 		Queue<GameInputEvent> inputBuffer = createInputBuffer();
-		TimeAccumulator accumulator = createTimeAccumulator();
 		CountDownLatch windowCountDownLatch = createWindowFrameCountdownLatch();
-		WindowFrameUpdater frameUpdater = createWindowFrameUpdater(inputBuffer, windowCountDownLatch);
-		GameLoader loader = createLoader();
+		CountDownLatch contextCountDownLatch = new CountDownLatch(1);
+		WindowFrameUpdater frameUpdater = createWindowFrameUpdater(inputBuffer, windowCountDownLatch, contextCountDownLatch);
+		GameInputHandlerRunnable inputHandler = createInputHandler();
+		createRenderingOrInputThread(frameUpdater, inputHandler);
 
+		DatagramSocket socket = createSocket(); // We should not be passing a raw socket to the wrapper
 		Queue<PacketReceivedInputEvent> networkReceiveBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
 		Queue<PacketModel> networkSendBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
-		DatagramSocket socket = createSocket(); // We should not be passing a raw socket to the wrapper
-		GameContextWrapper wrapper = createWrapper(inputBuffer, accumulator, frameUpdater, loader, socket, networkReceiveBuffer, networkSendBuffer);
-
 		UDPReceiver receiver = createUDPReceiver(socket, networkReceiveBuffer);
 		UDPSender sender = createUDPSender(socket, networkSendBuffer);
 		createUDPReceiverAndSenderThreads(receiver, sender);
-		createRenderingOrInputThread(frameUpdater, wrapper);
-		createLogicThread(accumulator, wrapper);
+
+		TimeAccumulator logicAccumulator = createTimeAccumulator();
+		GameLogicTimer logicTimer = createLogicThread(logicAccumulator, contextCountDownLatch);
 		waitForWindowCreation(windowCountDownLatch);
-		loader.start(frameUpdater != null ? frameUpdater.window().getSharedContextWindowHandle() : 0);
+		GameLoader loader = createLoader(frameUpdater);
+
+		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, inputHandler, loader, socket, networkReceiveBuffer, networkSendBuffer, contextCountDownLatch);
 
 		print("Game engine now running");
 	}
 
-	private void createLogicThread(TimeAccumulator accumulator, GameContextWrapper wrapper) {
-		print("Creating logic timer.");
-		GameLogicTimer logicTimer = new GameLogicTimer(wrapper, accumulator);
-		Thread logicThread = new Thread(logicTimer);
-		logicThread.setName("gameLogicThread");
-		print("Starting logic thread.");
-		logicThread.start();
+	private GameInputHandlerRunnable createInputHandler() {
+		if (rendering) {
+			return null;
+		}
+		return new GameInputHandlerRunnable();
 	}
 
-	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, WindowFrameUpdater frameUpdater, GameLoader loader,
-			DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer) {
-		GameContextWrapper wrapper = new GameContextWrapper(context, inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, loader,
-				socket);
+	private GameLogicTimer createLogicThread(TimeAccumulator accumulator, CountDownLatch contextCountDownLatch) {
+		print("Creating logic timer.");
+		GameLogicTimer logicTimer = new GameLogicTimer(accumulator, contextCountDownLatch);
+		Thread logicThread = new Thread(logicTimer);
+		logicThread.setName("gameLogicThread");
+		logicThread.setDaemon(true);
+		print("Starting logic thread.");
+		logicThread.start();
+		return logicTimer;
+	}
+
+	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator,
+			WindowFrameUpdater frameUpdater, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler, GameLoader loader,
+			DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
+			CountDownLatch contextCountDownLatch) {
+		GameContextWrapper wrapper = new GameContextWrapper(inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, logicTimer, inputHandler, loader, socket);
 		print("Initializing context parts");
-		wrapper.context().init(inputBuffer, networkReceiveBuffer, loader);
+		wrapper.transition(context);
+		contextCountDownLatch.countDown();
 		return wrapper;
 	}
 
 	/**
-	 * The windowCountDownLatch is passed into the {@link WindowFrameUpdater} in
+	 * The windowCountDownLatch was previously passed into the
+	 * {@link WindowFrameUpdater} in
 	 * {@link #createWindowFrameUpdater(Queue, CountDownLatch)
-	 * createWindowFrameUpdater}. In the WindowFrameUpdater, the
-	 * {@link WindowFrameUpdater#startActions() startActions} method creates the
-	 * window and counts down the {@link CountDownLatch} when complete. This method
+	 * createWindowFrameUpdater}. In the WindowFrameUpdater,
+	 * {@link WindowFrameUpdater#startActions() startActions} creates the window and
+	 * counts down the {@link CountDownLatch} when complete. This method
 	 * {@link CountDownLatch#await() awaits} the completion of the window.
 	 * 
 	 * @param windowCountDownLatch
@@ -135,11 +149,13 @@ public final class GameEngine {
 	 * The rendering thread handles both rendering and input updating, so if
 	 * rendering is enabled we create just the rendering thread. If rendering is
 	 * disabled we have to create a specific input handling thread.
+	 * <p>
+	 * One of the two parameters must be {@code null}
 	 * 
 	 * @param frameUpdater
-	 * @param wrapper
+	 * @param inputHandler
 	 */
-	private void createRenderingOrInputThread(WindowFrameUpdater frameUpdater, GameContextWrapper wrapper) {
+	private void createRenderingOrInputThread(WindowFrameUpdater frameUpdater, GameInputHandlerRunnable inputHandler) {
 		if (rendering) {
 			print("Creating rendering thread.");
 			Thread renderingThread = new Thread(frameUpdater);
@@ -148,8 +164,7 @@ public final class GameEngine {
 			renderingThread.start();
 		} else {
 			print("Creating input handling thread.");
-			Runnable gameInputHandler = new GameInputHandlerRunnable(wrapper);
-			Thread inputHandlingThread = new Thread(gameInputHandler);
+			Thread inputHandlingThread = new Thread(inputHandler);
 			inputHandlingThread.setName("inputHandlingThread");
 			inputHandlingThread.setDaemon(true);
 			print("Starting input handling thread.");
@@ -217,14 +232,15 @@ public final class GameEngine {
 	 * 
 	 * @param inputBuffer
 	 * @param windowCountDownLatch
+	 * @param contextCountDownLatch
 	 * @return
 	 */
-	private WindowFrameUpdater createWindowFrameUpdater(Queue<GameInputEvent> inputBuffer, CountDownLatch windowCountDownLatch) {
+	private WindowFrameUpdater createWindowFrameUpdater(Queue<GameInputEvent> inputBuffer, CountDownLatch windowCountDownLatch, CountDownLatch contextCountDownLatch) {
 		if (rendering) {
 			print("Creating window.");
 			GameWindow window = new GameWindow(windowTitle, inputBuffer);
 			print("Binding dependencies in context wrapper.");
-			return new WindowFrameUpdater(window, windowCountDownLatch);
+			return new WindowFrameUpdater(window, windowCountDownLatch, contextCountDownLatch);
 		}
 		return null;
 	}
@@ -237,10 +253,12 @@ public final class GameEngine {
 		return null;
 	}
 
-	private GameLoader createLoader() {
+	private GameLoader createLoader(WindowFrameUpdater frameUpdater) {
 		if (loading) {
 			print("Creating loader");
-			return new GameLoader();
+			GameLoader loader = new GameLoader();
+			loader.start(frameUpdater.window().getSharedContextWindowHandle());
+			return loader;
 		}
 		return null;
 	}

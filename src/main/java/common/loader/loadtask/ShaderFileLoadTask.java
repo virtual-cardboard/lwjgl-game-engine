@@ -7,11 +7,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
+import common.loader.GLLoadTask;
 import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.ShaderType;
 
-public final class ShaderFileLoadTask extends OpenGLLoadTask {
+public final class ShaderFileLoadTask extends GLLoadTask {
 
 	private CountDownLatch countDownLatch;
 	private ShaderType type;

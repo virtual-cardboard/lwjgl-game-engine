@@ -9,9 +9,8 @@ public class GameInputHandlerRunnable extends TimestepTimer {
 	private GameContextWrapper wrapper;
 	private boolean isDone = false;
 
-	public GameInputHandlerRunnable(GameContextWrapper wrapper) {
+	public GameInputHandlerRunnable() {
 		super(30, new TimeAccumulator());
-		this.wrapper = wrapper;
 	}
 
 	@Override
@@ -26,6 +25,10 @@ public class GameInputHandlerRunnable extends TimestepTimer {
 	@Override
 	protected boolean endCondition() {
 		return isDone;
+	}
+
+	public void setWrapper(GameContextWrapper wrapper) {
+		this.wrapper = wrapper;
 	}
 
 }
