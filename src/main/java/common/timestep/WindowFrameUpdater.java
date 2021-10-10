@@ -19,11 +19,13 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	private long windowId;
 
 	private CountDownLatch windowCountDownLatch;
+	private CountDownLatch contextCountDownLatch;
 
-	public WindowFrameUpdater(GameWindow window, CountDownLatch windowCountDownLatch) {
+	public WindowFrameUpdater(GameWindow window, CountDownLatch windowCountDownLatch, CountDownLatch contextCountDownLatch) {
 		super(60);
 		this.window = window;
 		this.windowCountDownLatch = windowCountDownLatch;
+		this.contextCountDownLatch = contextCountDownLatch;
 	}
 
 	@Override
@@ -57,6 +59,11 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		createRectangleVAO();
 		windowCountDownLatch.countDown();
 		this.windowId = window.windowId();
+		try {
+			contextCountDownLatch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
