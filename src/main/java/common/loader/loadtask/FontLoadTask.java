@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-public final class FontLoadTask extends OpenglLoadTask {
+public final class FontLoadTask extends OpenGLLoadTask {
 
 	private String fontName;
 
@@ -20,7 +20,7 @@ public final class FontLoadTask extends OpenglLoadTask {
 	}
 
 	@Override
-	public void loadNonOpenGl() throws IOException {
+	public void loadIO() throws IOException {
 		String pngName = fontName + ".png";
 		File file = new File(pngName);
 		if (!file.exists()) {
@@ -29,7 +29,7 @@ public final class FontLoadTask extends OpenglLoadTask {
 	}
 
 	@Override
-	public void loadOpengl() {
+	public void loadGL() {
 	}
 
 }

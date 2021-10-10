@@ -11,7 +11,7 @@ import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.ShaderType;
 
-public final class ShaderFileLoadTask extends OpenglLoadTask {
+public final class ShaderFileLoadTask extends OpenGLLoadTask {
 
 	private CountDownLatch countDownLatch;
 	private ShaderType type;
@@ -34,14 +34,14 @@ public final class ShaderFileLoadTask extends OpenglLoadTask {
 	}
 
 	@Override
-	public void loadNonOpenGl() throws IOException {
+	public void loadIO() throws IOException {
 		File file = getFile();
 		source = loadSource(file);
 		shader = new Shader(type);
 	}
 
 	@Override
-	public void loadOpengl() {
+	public void loadGL() {
 		shader.setId(shader.getShaderType().genId());
 		shader.compile(source);
 		shaderProgram.attachShader(shader);

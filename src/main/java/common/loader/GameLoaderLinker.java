@@ -7,7 +7,7 @@ import static org.lwjgl.opengl.GL11.glFinish;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-import common.loader.loadtask.OpenglLoadTask;
+import common.loader.loadtask.OpenGLLoadTask;
 
 /**
  * A loader thread used for OpenGL function calls. Uses a shared context with
@@ -20,7 +20,7 @@ import common.loader.loadtask.OpenglLoadTask;
 public final class GameLoaderLinker implements Runnable {
 
 	private boolean running = true;
-	private Queue<OpenglLoadTask> openglLoadTasks = new ArrayDeque<>();
+	private Queue<OpenGLLoadTask> openglLoadTasks = new ArrayDeque<>();
 	private long sharedContextWindowHandle;
 
 	public GameLoaderLinker(long sharedContextWindowHandle) {
@@ -31,10 +31,10 @@ public final class GameLoaderLinker implements Runnable {
 	public void run() {
 		glfwMakeContextCurrent(sharedContextWindowHandle);
 		createCapabilities();
-		OpenglLoadTask lt = openglLoadTasks.poll();
+		OpenGLLoadTask lt = openglLoadTasks.poll();
 		while (running) {
 			if (lt != null) {
-				lt.loadOpengl();
+				lt.loadGL();
 				// Must call glFinish, or else the loader thread buffer this command until the
 				// next glSwapBuffers() call - which would never happen.
 				glFinish();
@@ -47,13 +47,13 @@ public final class GameLoaderLinker implements Runnable {
 	}
 
 	/**
-	 * Adds an {@link OpenglLoadTask} to a queue. The load task would be executed
+	 * Adds an {@link OpenGLLoadTask} to a queue. The load task would be executed
 	 * some time in the future. Added load tasks would be executed in the order that
 	 * they are added.
 	 * 
 	 * @param t the <code>OpenglLoadTask</code> to add
 	 */
-	public void add(OpenglLoadTask t) {
+	public void add(OpenGLLoadTask t) {
 		openglLoadTasks.add(t);
 	}
 
