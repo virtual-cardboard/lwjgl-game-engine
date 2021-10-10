@@ -41,7 +41,7 @@ public class RectangleVertexArrayObject {
 		rectangleVAO = new VertexArrayObjectBuilder(ebo, positionsVBO, textureCoordinatesVBO).build();
 	}
 
-	public static VertexArrayObject getRectangleVAO() {
+	public static VertexArrayObject rectangleVAO() {
 		return rectangleVAO;
 	}
 

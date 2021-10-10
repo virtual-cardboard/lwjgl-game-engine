@@ -1,5 +1,7 @@
 package context.visuals.renderer;
 
+import static context.visuals.defaultvao.RectangleVertexArrayObject.rectangleVAO;
+
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
@@ -49,7 +51,7 @@ public class LineRenderer extends GameRenderer {
 	 * 
 	 * @see Colour
 	 */
-	public void renderPixelCoords(VertexArrayObject vao, RootGui rootGui, float x1, float y1, float x2, float y2, float width, int colour) {
+	public void renderPixelCoords(RootGui rootGui, float x1, float y1, float x2, float y2, float width, int colour) {
 		// Calculations for matrix transformations
 		width = Math.abs(width);
 		Vector2f rootGuiDimensions = rootGui.getDimensions();
@@ -77,7 +79,7 @@ public class LineRenderer extends GameRenderer {
 		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
 
 		// Display VAO
-		vao.display();
+		rectangleVAO().display();
 	}
 
 }

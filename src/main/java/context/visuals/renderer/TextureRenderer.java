@@ -1,5 +1,7 @@
 package context.visuals.renderer;
 
+import static context.visuals.defaultvao.RectangleVertexArrayObject.rectangleVAO;
+
 import java.util.Objects;
 
 import common.math.Matrix4f;
@@ -38,12 +40,12 @@ public class TextureRenderer extends GameRenderer {
 	 * @param texture  the texture to render
 	 * @param matrix4f the transformation matrix
 	 */
-	public void render(VertexArrayObject vao, Texture texture, Matrix4f matrix4f) {
+	public void render(Texture texture, Matrix4f matrix4f) {
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
 		texture.bind();
-		vao.display();
+		rectangleVAO().display();
 	}
 
 }
