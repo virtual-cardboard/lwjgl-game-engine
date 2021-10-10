@@ -28,31 +28,31 @@ public final class CharacterData {
 		return character;
 	}
 
-	public short getX() {
+	public short x() {
 		return x;
 	}
 
-	public short getY() {
+	public short y() {
 		return y;
 	}
 
-	public short getWidth() {
+	public short width() {
 		return width;
 	}
 
-	public short getHeight() {
+	public short height() {
 		return height;
 	}
 
-	public short getxOffset() {
+	public short xOffset() {
 		return xOffset;
 	}
 
-	public short getyOffset() {
+	public short yOffset() {
 		return yOffset;
 	}
 
-	public short getxAdvance() {
+	public short xAdvance() {
 		return xAdvance;
 	}
 

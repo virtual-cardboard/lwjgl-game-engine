@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.List;
+
+import context.visuals.lwjgl.Texture;
 
 public final class FontLoader {
 
@@ -13,18 +14,17 @@ public final class FontLoader {
 	private GameFont gameFont;
 	private int numCharacters;
 
-	public GameFont readVcFont(File source) throws IOException {
+	public GameFont loadFont(File source, Texture texture) throws IOException {
 		try (FileInputStream fis = new FileInputStream(source)) {
 			System.out.println("Reading header");
-			loadHeaderData(fis);
+			loadHeaderData(fis, texture);
 			System.out.println("Reading characters");
 			loadCharacterData(gameFont, fis);
 		}
-		gameFont.makeImmutable();
 		return gameFont;
 	}
 
-	private void loadHeaderData(FileInputStream fis) throws IOException {
+	private void loadHeaderData(FileInputStream fis, Texture texture) throws IOException {
 		int nameLength = fis.read();
 		byte[] nameBytes = new byte[nameLength];
 		for (int i = 0; i < nameBytes.length; i++) {
@@ -32,15 +32,15 @@ public final class FontLoader {
 		}
 		String name = new String(nameBytes, CHARSET);
 		short fontSize = readShort(fis);
-		short numPages = readShort(fis);
+		readShort(fis); // The number of pages; Should be 1
 		numCharacters = readShort(fis);
-		gameFont = new GameFont(name, fontSize, numPages);
+		gameFont = new GameFont(name, fontSize, texture);
 	}
 
 	private void loadCharacterData(GameFont gameFont, FileInputStream fis) throws IOException {
-		List<CharacterData> characters = gameFont.getCharacterDatas();
+		CharacterData[] characters = gameFont.getCharacterDatas();
 		for (int i = 0; i < numCharacters; i++) {
-			short character = readShort(fis);
+			short c = readShort(fis);
 			short x = readShort(fis);
 			short y = readShort(fis);
 			short width = readShort(fis);
@@ -49,8 +49,8 @@ public final class FontLoader {
 			short yOffset = readShort(fis);
 			short xAdvance = readShort(fis);
 			short page = (short) fis.read();
-			CharacterData c = new CharacterData((char) character, x, y, width, height, xOffset, yOffset, xAdvance, page);
-			characters.add(c);
+			CharacterData charData = new CharacterData((char) c, x, y, width, height, xOffset, yOffset, xAdvance, page);
+			characters[c] = charData;
 		}
 	}
 
