@@ -3,7 +3,6 @@ package context.visuals.lwjgl;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
@@ -41,12 +40,8 @@ public class VertexArrayObject {
 
 	public void display() {
 		bind();
-		if (ebo == null) {
-			glDrawArrays(GL_TRIANGLES, 0, 3);
-		} else {
-			ebo.bind();
-			glDrawElements(GL_TRIANGLES, ebo.size(), GL_UNSIGNED_INT, 0);
-		}
+		ebo.bind();
+		glDrawElements(GL_TRIANGLES, ebo.size(), GL_UNSIGNED_INT, 0);
 	}
 
 	public void delete() {
