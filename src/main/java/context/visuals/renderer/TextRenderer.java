@@ -1,6 +1,6 @@
 package context.visuals.renderer;
 
-import static context.visuals.defaultvao.RectangleVertexArrayObject.getRectangleVAO;
+import static context.visuals.defaultvao.RectangleVertexArrayObject.rectangleVAO;
 import static java.util.Objects.requireNonNull;
 
 import common.math.Matrix4f;
@@ -88,7 +88,7 @@ public class TextRenderer extends GameRenderer {
 		shaderProgram.setFloat("height", c.height());
 		shaderProgram.setFloat("x", c.x());
 		shaderProgram.setFloat("y", c.y());
-		getRectangleVAO().display();
+		rectangleVAO().display();
 	}
 
 }
