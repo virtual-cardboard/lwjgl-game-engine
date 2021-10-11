@@ -34,6 +34,8 @@ public final class FontLoader {
 		short fontSize = readShort(fis);
 		readShort(fis); // The number of pages; Should be 1
 		numCharacters = readShort(fis);
+		readShort(fis); // The number of kernings; doesn't matter for now
+//		System.out.println("Num characters = " + numCharacters);
 		gameFont = new GameFont(name, fontSize, texture);
 	}
 
@@ -50,6 +52,7 @@ public final class FontLoader {
 			short xAdvance = readShort(fis);
 			short page = (short) fis.read();
 			CharacterData charData = new CharacterData((char) c, x, y, width, height, xOffset, yOffset, xAdvance, page);
+//			System.out.println(c + " " + x + " " + y + " " + width + " " + height + " " + xOffset + " " + yOffset + " " + xAdvance + " " + page);
 			characters[c] = charData;
 		}
 	}

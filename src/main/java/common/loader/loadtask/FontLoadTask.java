@@ -1,6 +1,6 @@
 package common.loader.loadtask;
 
-import static java.io.File.pathSeparator;
+import static java.io.File.separator;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 import static org.lwjgl.stb.STBImage.stbi_failure_reason;
@@ -43,12 +43,12 @@ public final class FontLoadTask extends GLLoadTask {
 	@Override
 	public void loadIO() throws IOException {
 		String pngName = fontName + ".png";
-		String vcfontName = fontName + VC_FONT;
+		String vcfontName = fontName + "." + VC_FONT;
 		File textureFile = new File(pngName);
 		File vcfontFile = new File(vcfontName);
 		if (!textureFile.exists()) {
-			textureFile = new File(PATH + "fonts" + pathSeparator + pngName);
-			vcfontFile = new File(PATH + "fonts" + pathSeparator + vcfontName);
+			textureFile = new File(PATH + "fonts" + separator + pngName);
+			vcfontFile = new File(PATH + "fonts" + separator + vcfontName);
 		}
 		textureLoadIO(textureFile.getPath());
 		font = new FontLoader().loadFont(vcfontFile, texture);
