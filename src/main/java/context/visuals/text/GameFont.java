@@ -1,59 +1,35 @@
 package context.visuals.text;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import context.visuals.lwjgl.Texture;
 
-public class GameFont {
+public final class GameFont {
 
-	private String name;
-	private int fontSize;
-	private int numPages;
-	private List<CharacterData> characterDatas;
-	private List<Texture> pageTextures;
+	private final String name;
+	private final int fontSize;
+	private CharacterData[] characterDatas;
+	private Texture texture;
 
-	public GameFont() {
-		characterDatas = new ArrayList<>();
-		pageTextures = new ArrayList<>();
-	}
-
-	void makeImmutable() {
-		this.characterDatas = Collections.unmodifiableList(characterDatas);
-		this.pageTextures = Collections.unmodifiableList(pageTextures);
+	public GameFont(String name, int fontSize, Texture texture) {
+		this.name = name;
+		this.fontSize = fontSize;
+		characterDatas = new CharacterData[128];
+		this.texture = texture;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	void setName(String name) {
-		this.name = name;
-	}
-
 	public int getFontSize() {
 		return fontSize;
 	}
 
-	void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
-	}
-
-	public int getNumPages() {
-		return numPages;
-	}
-
-	void setNumPages(int numPages) {
-		this.numPages = numPages;
-	}
-
-	public List<CharacterData> getCharacterDatas() {
+	public CharacterData[] getCharacterDatas() {
 		return characterDatas;
 	}
 
-	public List<Texture> getPageTextures() {
-		return pageTextures;
+	public Texture texture() {
+		return texture;
 	}
 
 }

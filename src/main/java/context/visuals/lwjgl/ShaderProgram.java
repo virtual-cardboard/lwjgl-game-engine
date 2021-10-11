@@ -26,7 +26,8 @@ public class ShaderProgram {
 	 * @param shader the shader
 	 */
 	public void attachShader(Shader shader) {
-		attachShader(shader, true);
+		toAttach.add(shader);
+		toDelete.add(shader);
 	}
 
 	/**

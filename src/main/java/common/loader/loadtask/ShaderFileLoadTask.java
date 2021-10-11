@@ -14,7 +14,6 @@ import context.visuals.lwjgl.ShaderType;
 
 public final class ShaderFileLoadTask extends GLLoadTask {
 
-	private CountDownLatch countDownLatch;
 	private ShaderType type;
 	private ShaderProgram shaderProgram;
 	private String sourceLocation;
@@ -23,12 +22,11 @@ public final class ShaderFileLoadTask extends GLLoadTask {
 	private Shader shader;
 
 	public ShaderFileLoadTask(ShaderType type, ShaderProgram shaderProgram, String sourceLocation) {
-		this(new CountDownLatch(1), type, shaderProgram, sourceLocation);
+		this(new CountDownLatch(4), type, shaderProgram, sourceLocation);
 	}
 
 	public ShaderFileLoadTask(CountDownLatch countDownLatch, ShaderType type, ShaderProgram shaderProgram, String sourceLocation) {
 		super(countDownLatch);
-		this.countDownLatch = countDownLatch;
 		this.type = type;
 		this.shaderProgram = shaderProgram;
 		this.sourceLocation = sourceLocation;
@@ -47,7 +45,7 @@ public final class ShaderFileLoadTask extends GLLoadTask {
 		shader.compile(source);
 		shaderProgram.attachShader(shader);
 		countDownLatch.countDown();
-		if (countDownLatch.getCount() == 0) {
+		if (countDownLatch.getCount() < 3) {
 			shaderProgram.generateId();
 			shaderProgram.link();
 		}

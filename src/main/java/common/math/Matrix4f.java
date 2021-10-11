@@ -882,12 +882,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 
 	@Override
 	public Matrix4f clone() {
-		try {
-			return (Matrix4f) super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return new Matrix4f(this);
 	}
 
 }
