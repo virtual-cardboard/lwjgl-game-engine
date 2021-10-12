@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import context.visuals.lwjgl.ShaderProgram;
+import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
+import context.visuals.text.GameFont;
 
 /**
  * A nice leather pack of {@link VertexArrayObject VertexArrayObjects} and
@@ -17,6 +19,8 @@ public final class ResourcePack {
 
 	private Map<String, VertexArrayObject> vertexArrayObjects = new HashMap<>();
 	private Map<String, ShaderProgram> shaderPrograms = new HashMap<>();
+	private Map<String, Texture> textures = new HashMap<>();
+	private Map<String, GameFont> fonts = new HashMap<>();
 
 	public void init(VertexArrayObject rectangleVAO) {
 		vertexArrayObjects.put("rectangle", rectangleVAO);
@@ -36,6 +40,22 @@ public final class ResourcePack {
 
 	public void putShaderProgram(String name, ShaderProgram shaderProgram) {
 		shaderPrograms.put(name, shaderProgram);
+	}
+
+	public Texture getTexture(String name) {
+		return textures.get(name);
+	}
+
+	public void putTexture(String name, Texture texture) {
+		textures.put(name, texture);
+	}
+
+	public GameFont getFont(String name) {
+		return fonts.get(name);
+	}
+
+	public void putFont(String name, GameFont font) {
+		fonts.put(name, font);
 	}
 
 	public VertexArrayObject rectangleVAO() {

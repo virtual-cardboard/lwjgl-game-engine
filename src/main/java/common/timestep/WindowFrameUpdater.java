@@ -58,7 +58,6 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		window.createDisplay();
 		window.attachCallbacks();
 		window.createSharedContextWindow();
-		loadBuiltIn();
 		windowCountDownLatch.countDown();
 		this.windowId = window.windowId();
 		try {
@@ -66,6 +65,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		loadBuiltIn();
 	}
 
 	private void loadBuiltIn() {
