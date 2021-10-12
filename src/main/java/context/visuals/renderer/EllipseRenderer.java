@@ -1,9 +1,8 @@
 package context.visuals.renderer;
 
-import static context.visuals.defaultvao.RectangleVertexArrayObject.rectangleVAO;
-
 import common.math.Matrix4f;
 import common.math.Vector2f;
+import context.GameContext;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.Shader;
@@ -30,8 +29,9 @@ public class EllipseRenderer extends GameRenderer {
 	 * @see ShaderProgram
 	 * @see Shader
 	 */
-	public EllipseRenderer(ShaderProgram ellipseShaderProgram) {
-		this.shaderProgram = ellipseShaderProgram;
+	public EllipseRenderer(GameContext context) {
+		super(context);
+		this.shaderProgram = resourcePack().getShaderProgram("ellipse");
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class EllipseRenderer extends GameRenderer {
 		shaderProgram.setFloat("width", width);
 		shaderProgram.setFloat("height", height);
 		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
-		rectangleVAO().display();
+		resourcePack().rectangleVAO().display();
 	}
 
 }

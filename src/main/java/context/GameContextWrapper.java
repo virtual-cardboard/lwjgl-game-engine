@@ -13,6 +13,9 @@ import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
+import context.visuals.builtin.ColourFragmentShader;
+import context.visuals.builtin.IdentityVertexShader;
+import context.visuals.lwjgl.VertexArrayObject;
 
 /**
  * A container for a game context to make switching game contexts thread-safe.
@@ -49,6 +52,11 @@ public class GameContextWrapper {
 	private final Queue<PacketModel> networkSendBuffer;
 	private DatagramSocket socket;
 
+	// Built-in objects initialized by WindowFrameUpdater
+	private VertexArrayObject rectangleVAO;
+	private IdentityVertexShader identityVertexShader;
+	private ColourFragmentShader colourFragmentShader;
+
 	/**
 	 * A constructor that takes in the context, input buffer, logic timer,
 	 * windowFrameUpdateTimer, and loader.
@@ -61,9 +69,8 @@ public class GameContextWrapper {
 	 * @param inputHandler
 	 * @param loader                 the {@link GameLoader}
 	 */
-	public GameContextWrapper(Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer,
-			Queue<PacketModel> networkSendBuffer, TimeAccumulator accumulator,
-			WindowFrameUpdater windowFrameUpdateTimer, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler,
+	public GameContextWrapper(Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
+			TimeAccumulator accumulator, WindowFrameUpdater windowFrameUpdateTimer, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler,
 			GameLoader loader, DatagramSocket socket) {
 		this.socket = socket;
 		this.inputBuffer = inputBuffer;
@@ -90,7 +97,7 @@ public class GameContextWrapper {
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
 			context.setWrapper(this);
-			context.init(inputBuffer, networkReceiveBuffer, loader);
+			context.init(inputBuffer, networkReceiveBuffer, loader, rectangleVAO);
 			this.context = context;
 		}
 	}
@@ -126,6 +133,33 @@ public class GameContextWrapper {
 
 	public GameLoader loader() {
 		return loader;
+	}
+
+	public VertexArrayObject getRectangleVAO() {
+		return rectangleVAO;
+	}
+
+	public void setRectangleVAO(VertexArrayObject rectangleVAO) {
+		if (this.rectangleVAO != null) throw new IllegalStateException("Rectangle VAO already set.");
+		this.rectangleVAO = rectangleVAO;
+	}
+
+	public IdentityVertexShader getIdentityVertexShader() {
+		return identityVertexShader;
+	}
+
+	public void setIdentityVertexShader(IdentityVertexShader identityVertexShader) {
+		if (this.identityVertexShader != null) throw new IllegalStateException("Identity vertex shader already set.");
+		this.identityVertexShader = identityVertexShader;
+	}
+
+	public ColourFragmentShader getColourFragmentShader() {
+		return colourFragmentShader;
+	}
+
+	public void setColourFragmentShader(ColourFragmentShader colourFragmentShader) {
+		if (this.colourFragmentShader != null) throw new IllegalStateException("Colour fragment shader already set.");
+		this.colourFragmentShader = colourFragmentShader;
 	}
 
 	public short socketPort() {

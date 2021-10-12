@@ -1,6 +1,7 @@
 package context.visuals.gui.renderer;
 
 import common.math.Matrix4f;
+import context.GameContext;
 import context.visuals.gui.Gui;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.renderer.GameRenderer;
@@ -13,6 +14,10 @@ import context.visuals.renderer.GameRenderer;
  * @param <T> the type of Gui that this class renders
  */
 public abstract class GuiRenderer<T extends Gui> extends GameRenderer {
+
+	public GuiRenderer(GameContext context) {
+		super(context);
+	}
 
 	/**
 	 * Casts the gui to T, then calls

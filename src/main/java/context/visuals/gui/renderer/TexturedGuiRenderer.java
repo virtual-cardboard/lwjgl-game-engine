@@ -1,8 +1,7 @@
 package context.visuals.gui.renderer;
 
-import static context.visuals.defaultvao.RectangleVertexArrayObject.rectangleVAO;
-
 import common.math.Matrix4f;
+import context.GameContext;
 import context.visuals.colour.Colour;
 import context.visuals.gui.TexturedGui;
 import context.visuals.lwjgl.ShaderProgram;
@@ -13,9 +12,10 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 	protected TextureRenderer textureRenderer;
 	protected ShaderProgram shaderProgram;
 
-	public TexturedGuiRenderer(TextureRenderer textureRenderer, ShaderProgram guiShaderProgram) {
+	public TexturedGuiRenderer(GameContext context, TextureRenderer textureRenderer) {
+		super(context);
 		this.textureRenderer = textureRenderer;
-		this.shaderProgram = guiShaderProgram;
+		this.shaderProgram = resourcePack().getShaderProgram("gui");
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
-		rectangleVAO().display();
+		resourcePack().rectangleVAO().display();
 		if (gui.getTexture() != null) {
 			textureRenderer.render(gui.getTexture(), matrix4f);
 		}

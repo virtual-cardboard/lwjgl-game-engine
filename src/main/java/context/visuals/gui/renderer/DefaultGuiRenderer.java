@@ -1,19 +1,18 @@
 package context.visuals.gui.renderer;
 
 import common.math.Matrix4f;
+import context.GameContext;
 import context.visuals.colour.Colour;
 import context.visuals.gui.Gui;
 import context.visuals.lwjgl.ShaderProgram;
-import context.visuals.lwjgl.VertexArrayObject;
 
 public final class DefaultGuiRenderer extends GuiRenderer<Gui> {
 
 	protected ShaderProgram shaderProgram;
-	protected VertexArrayObject vao;
 
-	public DefaultGuiRenderer(ShaderProgram guiShaderProgram, VertexArrayObject rectangleVao) {
-		this.shaderProgram = guiShaderProgram;
-		this.vao = rectangleVao;
+	public DefaultGuiRenderer(GameContext context) {
+		super(context);
+		this.shaderProgram = resourcePack().getShaderProgram("gui");
 	}
 
 	@Override
@@ -26,7 +25,7 @@ public final class DefaultGuiRenderer extends GuiRenderer<Gui> {
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f.clone().translate(x, y).scale(width, height));
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
-		vao.display();
+		resourcePack().rectangleVAO().display();
 	}
 
 }

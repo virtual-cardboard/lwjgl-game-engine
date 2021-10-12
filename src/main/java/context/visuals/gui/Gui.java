@@ -3,13 +3,12 @@ package context.visuals.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import context.GameContext;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
 import context.visuals.gui.renderer.DefaultGuiRenderer;
 import context.visuals.gui.renderer.GuiRenderer;
-import context.visuals.lwjgl.ShaderProgram;
-import context.visuals.lwjgl.VertexArrayObject;
 
 /**
  * A Graphical User Interface (GUI) with position constraints and dimension
@@ -46,8 +45,8 @@ public class Gui {
 	@SuppressWarnings("rawtypes")
 	private GuiRenderer guiRenderer;
 
-	public Gui(ShaderProgram guiShaderProgram, VertexArrayObject rectangleVao) {
-		this(new DefaultGuiRenderer(guiShaderProgram, rectangleVao));
+	public Gui(GameContext context) {
+		this(new DefaultGuiRenderer(context));
 	}
 
 	public <T extends Gui> Gui(GuiRenderer<T> guiRenderer) {

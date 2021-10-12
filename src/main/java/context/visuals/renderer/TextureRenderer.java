@@ -1,10 +1,7 @@
 package context.visuals.renderer;
 
-import static context.visuals.defaultvao.RectangleVertexArrayObject.rectangleVAO;
-
-import java.util.Objects;
-
 import common.math.Matrix4f;
+import context.GameContext;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
@@ -28,9 +25,9 @@ public class TextureRenderer extends GameRenderer {
 	 * 
 	 * @param textureShaderProgram the texture shader program
 	 */
-	public TextureRenderer(ShaderProgram textureShaderProgram) {
-		Objects.requireNonNull(textureShaderProgram);
-		shaderProgram = textureShaderProgram;
+	public TextureRenderer(GameContext context) {
+		super(context);
+		shaderProgram = resourcePack().getShaderProgram("texture");
 	}
 
 	/**
@@ -45,7 +42,7 @@ public class TextureRenderer extends GameRenderer {
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
 		texture.bind();
-		rectangleVAO().display();
+		resourcePack().rectangleVAO().display();
 	}
 
 }

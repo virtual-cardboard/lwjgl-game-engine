@@ -1,6 +1,8 @@
 package common.timestep;
 
-import static context.visuals.defaultvao.RectangleVertexArrayObject.createRectangleVAO;
+import static context.visuals.builtin.ColourFragmentShader.createColourFragmentShader;
+import static context.visuals.builtin.IdentityVertexShader.createIdentityVertexShader;
+import static context.visuals.builtin.RectangleVertexArrayObject.createRectangleVAO;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
@@ -56,7 +58,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		window.createDisplay();
 		window.attachCallbacks();
 		window.createSharedContextWindow();
-		createRectangleVAO();
+		loadBuiltIn();
 		windowCountDownLatch.countDown();
 		this.windowId = window.windowId();
 		try {
@@ -64,6 +66,12 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void loadBuiltIn() {
+		wrapper.setRectangleVAO(createRectangleVAO());
+		wrapper.setIdentityVertexShader(createIdentityVertexShader());
+		wrapper.setColourFragmentShader(createColourFragmentShader());
 	}
 
 	/**

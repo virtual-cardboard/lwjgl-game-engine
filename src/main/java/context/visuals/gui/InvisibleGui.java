@@ -23,6 +23,10 @@ public class InvisibleGui extends Gui {
 
 		private static final InvisibleGuiRenderer INSTANCE = new InvisibleGuiRenderer();
 
+		public InvisibleGuiRenderer() {
+			super(null);
+		}
+
 		@Override
 		public void render(InvisibleGui gui, Matrix4f matrix4f, float parentX, float parentY, float parentWidth, float parentHeight) {
 		}

@@ -30,7 +30,6 @@ public class VertexArrayObject {
 	private static VertexArrayObject currentlyBound;
 
 	private int id;
-	private boolean linked;
 	private List<VertexBufferObject> vbos;
 	private ElementBufferObject ebo;
 
@@ -63,7 +62,6 @@ public class VertexArrayObject {
 			glVertexAttribPointer(i, vertexDataSize, GL_FLOAT, false, vertexDataSize * Float.BYTES, 0);
 			glEnableVertexAttribArray(i);
 		}
-		linked = true;
 	}
 
 	public void bind() {
@@ -84,10 +82,6 @@ public class VertexArrayObject {
 
 	public void setEbo(ElementBufferObject ebo) {
 		this.ebo = ebo;
-	}
-
-	public boolean isLinked() {
-		return linked;
 	}
 
 }

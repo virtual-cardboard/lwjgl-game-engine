@@ -10,6 +10,10 @@ import context.visuals.gui.RootGui;
 
 public final class RootGuiRenderer extends GuiRenderer<RootGui> {
 
+	public RootGuiRenderer() {
+		super(null);
+	}
+
 	@Override
 	public void render(RootGui root, Matrix4f matrix4f, float parentX, float parentY, float parentWidth, float parentHeight) {
 		throw new IllegalStateException("Should not be calling this render function in RootGuiRenderer.");

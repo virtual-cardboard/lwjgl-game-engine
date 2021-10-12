@@ -1,10 +1,9 @@
 package context.visuals.renderer;
 
-import static context.visuals.defaultvao.RectangleVertexArrayObject.rectangleVAO;
-
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
+import context.GameContext;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.Shader;
@@ -31,8 +30,9 @@ public class LineRenderer extends GameRenderer {
 	 * @see ShaderProgram
 	 * @see Shader
 	 */
-	public LineRenderer(ShaderProgram lineShaderProgram) {
-		this.shaderProgram = lineShaderProgram;
+	public LineRenderer(GameContext context) {
+		super(context);
+		this.shaderProgram = resourcePack().getShaderProgram("line");
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class LineRenderer extends GameRenderer {
 		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
 
 		// Display VAO
-		rectangleVAO().display();
+		resourcePack().rectangleVAO().display();
 	}
 
 }

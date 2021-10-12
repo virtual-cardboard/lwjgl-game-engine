@@ -1,11 +1,9 @@
 package context.visuals.renderer;
 
-import static context.visuals.defaultvao.RectangleVertexArrayObject.rectangleVAO;
-import static java.util.Objects.requireNonNull;
-
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector4f;
+import context.GameContext;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.ShaderProgram;
@@ -30,9 +28,9 @@ public class TextRenderer extends GameRenderer {
 	 * 
 	 * @param textShaderProgram the text shader program
 	 */
-	public TextRenderer(ShaderProgram textShaderProgram) {
-		requireNonNull(textShaderProgram);
-		shaderProgram = textShaderProgram;
+	public TextRenderer(GameContext context) {
+		super(context);
+		shaderProgram = resourcePack().getShaderProgram("text");
 	}
 
 	/**
@@ -88,7 +86,7 @@ public class TextRenderer extends GameRenderer {
 		shaderProgram.setFloat("height", c.height());
 		shaderProgram.setFloat("x", c.x());
 		shaderProgram.setFloat("y", c.y());
-		rectangleVAO().display();
+		resourcePack().rectangleVAO().display();
 	}
 
 }
