@@ -1,13 +1,14 @@
 package context.data.animation;
 
 import static context.data.animation.interpolation.KeyframeInterpolator.interpolateKeyframe;
+import static context.data.animation.interpolation.KeyframeInterpolator.interpolateSmoothKeyframe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import common.math.Vector2f;
+import context.data.animation.interpolation.InterpolationType;
 import context.data.animation.joint.Joint;
 import context.data.animation.joint.JointController;
 import context.data.animation.skeleton.Skeleton;
@@ -32,19 +33,25 @@ public class AnimationJointController extends JointController {
 	@Override
 	public void updateJoints() {
 		List<Keyframe> keyframes = animation.getKeyframes();
-		int index = Collections.binarySearch(keyframes, new Keyframe(currentTime, null));
+		int index = indexOf(keyframes, currentTime);
 
 		SkeletonState skeletonState = null;
 		if (index >= 0) {
+			// A keyframe exists at the current time
 			skeletonState = keyframes.get(index).getSkeletonState();
 		} else if (-index - 1 > keyframes.size()) {
+			// The current time is past the last keyframe
 			skeletonState = keyframes.get(keyframes.size() - 1).getSkeletonState();
 		} else {
+			// The current time is between two keyframes, so we must interpolate
 			Keyframe k1 = keyframes.get(-index - 2);
 			Keyframe k2 = keyframes.get(-index - 1);
-			skeletonState = interpolateKeyframe(k1, k2, currentTime);
+			if (k1.getInterpolationType() == InterpolationType.SMOOTH) {
+				skeletonState = interpolateSmoothKeyframe(keyframes, -index - 2, currentTime);
+			} else {
+				skeletonState = interpolateKeyframe(k1, k2, currentTime);
+			}
 		}
-
 		updateJointsUsingSkeletonState(getJoints(), skeletonState);
 	}
 
@@ -86,6 +93,19 @@ public class AnimationJointController extends JointController {
 
 	public void setCurrentTime(int currentTime) {
 		this.currentTime = currentTime;
+	}
+
+	private static int indexOf(List<Keyframe> keyframes, int time) {
+		int l = 0, r = keyframes.size() - 1;
+		int m = -1;
+		while (l <= r) {
+			m = l + (r - l) / 2;
+			int t = keyframes.get(m).getTime();
+			if (t == time) return m;
+			if (t < time) l = m++ + 1;
+			else r = m - 1;
+		}
+		return -m - 1;
 	}
 
 }
