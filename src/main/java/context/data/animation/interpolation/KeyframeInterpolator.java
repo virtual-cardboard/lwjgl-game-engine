@@ -1,7 +1,9 @@
 package context.data.animation.interpolation;
 
 import static context.data.animation.interpolation.InterpolationType.SMOOTH;
+import static java.lang.Math.PI;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
@@ -20,25 +22,43 @@ public class KeyframeInterpolator {
 	public static SkeletonState interpolateSmoothKeyframe(List<Keyframe> keyframes, int keyframeIndex, int currentTime) {
 		int start = keyframeIndex;
 		int end = keyframeIndex;
-		for (int i = keyframeIndex; keyframes.get(i).getInterpolationType() == SMOOTH; i--)
+		// Iterate through keyframes to find the start and end of group of SMOOTH
+		// keyframes
+		for (int i = keyframeIndex; i >= 0 && keyframes.get(i).getInterpolationType() == SMOOTH; start = i--)
 			continue;
-		for (int i = keyframeIndex; keyframes.get(i).getInterpolationType() == SMOOTH; i++)
+		for (int i = keyframeIndex; i < keyframes.size() && keyframes.get(i).getInterpolationType() == SMOOTH; end = i++)
 			continue;
 		end++;
+		if (end - start <= 2) {
+			// Too few keyframes to use spline interpolator
+			Keyframe k1 = keyframes.get(start);
+			Keyframe k2 = keyframes.get(start + 1);
+			return interpolateKeyframe(k1, k2, currentTime);
+		}
+
 		SkeletonState interpolated = new SkeletonState();
-		double[] times = keyframes.stream().mapToDouble(k -> k.getTime()).toArray();
+
+		double[] times = extractTimes(keyframes, start, end); // Extract times
 		int numDistances = keyframes.get(start).getSkeletonState().getDistances().size();
 		for (int i = 0; i < numDistances; i++) {
 			double[] distances = extractDistances(keyframes, start, end, i);
 			double[] rotations = extractRotations(keyframes, start, end, i);
 			interpolated.getDistances().add((float) SPLINE_INTERPOLATOR.interpolate(times, distances).value(currentTime));
-			interpolated.getRotations().add((float) SPLINE_INTERPOLATOR.interpolate(times, rotations).value(currentTime));
+			interpolated.getRotations().add(toRadius(SPLINE_INTERPOLATOR.interpolate(times, rotations).value(currentTime)));
 		}
 		double[] xs = extractXs(keyframes, start, end);
 		double[] ys = extractYs(keyframes, start, end);
 		interpolated.getRootPosition().x = (float) SPLINE_INTERPOLATOR.interpolate(times, xs).value(currentTime);
 		interpolated.getRootPosition().y = (float) SPLINE_INTERPOLATOR.interpolate(times, ys).value(currentTime);
 		return interpolated;
+	}
+
+	private static double[] extractTimes(List<Keyframe> keyframes, int start, int end) {
+		double[] times = new double[end - start];
+		for (int i = 0; i < times.length; i++) {
+			times[i] = keyframes.get(i + start).getTime();
+		}
+		return times;
 	}
 
 	private static double[] extractDistances(List<Keyframe> keyframes, int start, int end, int index) {
@@ -71,6 +91,10 @@ public class KeyframeInterpolator {
 			ys[i] = keyframes.get(i + start).getSkeletonState().getRootPosition().y;
 		}
 		return ys;
+	}
+
+	private static float toRadius(double d) {
+		return (float) ((d % (2 * PI) + (2 * PI)) % (2 * PI));
 	}
 
 	public static SkeletonState interpolateKeyframe(Keyframe k1, Keyframe k2, float time) {
@@ -115,6 +139,32 @@ public class KeyframeInterpolator {
 
 	private static float interpolateDistance(float d1, float d2, float factor) {
 		return d1 + (d2 - d1) * factor;
+	}
+//
+//	public static void main(String[] args) {
+//		List<Keyframe> keyframes = new ArrayList<>();
+//		keyframes.add(new Keyframe(0, create(13, -130, new Float[] { 5f, 3f }, new Float[] { 59f, 25f, }), LINEAR));
+//		keyframes.add(new Keyframe(12, create(0, 0, new Float[] { 1f, 2f }, new Float[] { 50f, 40f, }), SMOOTH));
+//		keyframes.add(new Keyframe(23, create(50, 10, new Float[] { 2f, 6f }, new Float[] { 52f, 38f, }), SMOOTH));
+//		keyframes.add(new Keyframe(42, create(13, -130, new Float[] { 5f, 3f }, new Float[] { 59f, 25f, }), SMOOTH));
+//		keyframes.add(new Keyframe(45, create(13, -130, new Float[] { 5f, 3f }, new Float[] { 59f, 25f, }), LINEAR));
+//		long time = System.currentTimeMillis();
+//		for (int i = 12; i <= 42; i++) {
+//			SkeletonState ss = interpolateSmoothKeyframe(keyframes, 3, i);
+//			System.out.println("Time =      " + i);
+//			System.out.println("Root pos =  " + ss.getRootPosition());
+//			System.out.println("Rotations = " + ss.getRotations());
+//			System.out.println("Distances = " + ss.getDistances());
+//		}
+//		System.out.println("Time elapsed = " + (System.currentTimeMillis() - time));
+//	}
+
+	private static SkeletonState create(float rootX, float rootY, Float[] rots, Float[] dists) {
+		SkeletonState skeletonState = new SkeletonState();
+		skeletonState.getRotations().addAll(Arrays.asList(rots));
+		skeletonState.getDistances().addAll(Arrays.asList(dists));
+		skeletonState.getRootPosition().set(rootX, rootY);
+		return skeletonState;
 	}
 
 }
