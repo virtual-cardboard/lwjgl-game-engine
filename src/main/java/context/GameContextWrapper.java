@@ -51,6 +51,7 @@ public class GameContextWrapper {
 	private final GameLoader loader;
 	private final Queue<PacketModel> networkSendBuffer;
 	private DatagramSocket socket;
+	private GLContext glContext = new GLContext();
 
 	// Built-in objects initialized by WindowFrameUpdater
 	private VertexArrayObject rectangleVAO;
@@ -140,7 +141,8 @@ public class GameContextWrapper {
 	}
 
 	public void setRectangleVAO(VertexArrayObject rectangleVAO) {
-		if (this.rectangleVAO != null) throw new IllegalStateException("Rectangle VAO already set.");
+		if (this.rectangleVAO != null)
+			throw new IllegalStateException("Rectangle VAO already set.");
 		this.rectangleVAO = rectangleVAO;
 	}
 
@@ -149,7 +151,8 @@ public class GameContextWrapper {
 	}
 
 	public void setIdentityVertexShader(IdentityVertexShader identityVertexShader) {
-		if (this.identityVertexShader != null) throw new IllegalStateException("Identity vertex shader already set.");
+		if (this.identityVertexShader != null)
+			throw new IllegalStateException("Identity vertex shader already set.");
 		this.identityVertexShader = identityVertexShader;
 	}
 
@@ -158,7 +161,8 @@ public class GameContextWrapper {
 	}
 
 	public void setColourFragmentShader(ColourFragmentShader colourFragmentShader) {
-		if (this.colourFragmentShader != null) throw new IllegalStateException("Colour fragment shader already set.");
+		if (this.colourFragmentShader != null)
+			throw new IllegalStateException("Colour fragment shader already set.");
 		this.colourFragmentShader = colourFragmentShader;
 	}
 
@@ -176,6 +180,10 @@ public class GameContextWrapper {
 		if (loader != null) {
 			loader.terminate();
 		}
+	}
+
+	public GLContext glContext() {
+		return glContext;
 	}
 
 }

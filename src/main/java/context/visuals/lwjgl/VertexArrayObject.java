@@ -13,6 +13,8 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import java.util.ArrayList;
 import java.util.List;
 
+import context.GLContext;
+
 /**
  * An object that contains data about a group of vertices in OpenGL. Learn more
  * about them here: <a href=
@@ -25,16 +27,14 @@ import java.util.List;
  * @author Jay
  *
  */
-public class VertexArrayObject {
-
-	private static VertexArrayObject currentlyBound;
+public class VertexArrayObject extends GLObject {
 
 	private int id;
-	private List<VertexBufferObject> vbos;
+	private List<VertexBufferObject> vbos = new ArrayList<>();
 	private ElementBufferObject ebo;
 
-	public VertexArrayObject() {
-		vbos = new ArrayList<>();
+	public VertexArrayObject(GLContext context) {
+		super(context);
 	}
 
 	public void display() {
@@ -64,15 +64,16 @@ public class VertexArrayObject {
 		}
 	}
 
-	public void bind() {
-		if (currentlyBound == this) {
+	private void bind() {
+		if (context.vao == this) {
 			return;
 		}
 		glBindVertexArray(id);
-		currentlyBound = this;
+		context.vao = this;
 	}
 
 	public void attachVBO(VertexBufferObject vbo) {
+		bind();
 		vbos.add(vbo);
 	}
 

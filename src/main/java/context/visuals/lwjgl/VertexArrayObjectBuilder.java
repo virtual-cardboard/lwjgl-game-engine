@@ -1,5 +1,7 @@
 package context.visuals.lwjgl;
 
+import context.GLContext;
+
 public class VertexArrayObjectBuilder {
 
 	private ElementBufferObject ebo;
@@ -10,10 +12,9 @@ public class VertexArrayObjectBuilder {
 		this.vbos = vbos;
 	}
 
-	public VertexArrayObject build() {
-		VertexArrayObject vao = new VertexArrayObject();
+	public VertexArrayObject build(GLContext context) {
+		VertexArrayObject vao = new VertexArrayObject(context);
 		vao.generateId();
-		vao.bind();
 		ebo.generateId();
 		ebo.loadData();
 		vao.setEbo(ebo);

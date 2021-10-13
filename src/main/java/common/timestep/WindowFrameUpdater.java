@@ -69,7 +69,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	}
 
 	private void loadBuiltIn() {
-		wrapper.setRectangleVAO(createRectangleVAO());
+		wrapper.setRectangleVAO(createRectangleVAO(wrapper.glContext()));
 		wrapper.setIdentityVertexShader(createIdentityVertexShader());
 		wrapper.setColourFragmentShader(createColourFragmentShader());
 	}

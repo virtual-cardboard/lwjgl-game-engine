@@ -1,5 +1,6 @@
 package context.visuals.builtin;
 
+import context.GLContext;
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.lwjgl.VertexArrayObjectBuilder;
@@ -29,11 +30,11 @@ public class RectangleVertexArrayObject {
 	/**
 	 * The VAO must be created before the getter is called
 	 */
-	public static VertexArrayObject createRectangleVAO() {
+	public static VertexArrayObject createRectangleVAO(GLContext context) {
 		ElementBufferObject ebo = new ElementBufferObject(INDICES);
-		VertexBufferObject positionsVBO = new VertexBufferObject(POSITIONS, 3);
-		VertexBufferObject textureCoordinatesVBO = new VertexBufferObject(TEXTURE_COORDINATES, 2);
-		return new VertexArrayObjectBuilder(ebo, positionsVBO, textureCoordinatesVBO).build();
+		VertexBufferObject positionsVBO = new VertexBufferObject(context, POSITIONS, 3);
+		VertexBufferObject textureCoordinatesVBO = new VertexBufferObject(context, TEXTURE_COORDINATES, 2);
+		return new VertexArrayObjectBuilder(ebo, positionsVBO, textureCoordinatesVBO).build(context);
 	}
 
 }

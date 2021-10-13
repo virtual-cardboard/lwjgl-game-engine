@@ -6,6 +6,8 @@ import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 
+import context.GLContext;
+
 /**
  * An object that contains data about the available vertices able to be used in
  * a {@link VertexArrayObject}. Use {@link ElementBufferObject} to determine
@@ -14,9 +16,7 @@ import static org.lwjgl.opengl.GL15.glGenBuffers;
  * @author Jay
  *
  */
-public class VertexBufferObject {
-
-	private static VertexBufferObject currentlyBound;
+public class VertexBufferObject extends GLObject {
 
 	private int id;
 	private float[] data;
@@ -31,7 +31,8 @@ public class VertexBufferObject {
 	 * @param data           float array of values
 	 * @param vertexDataSize the number of columns in the data
 	 */
-	public VertexBufferObject(final float[] data, int vertexDataSize) {
+	public VertexBufferObject(GLContext context, final float[] data, int vertexDataSize) {
+		super(context);
 		this.data = data;
 		this.vertexDataSize = vertexDataSize;
 	}
@@ -42,11 +43,11 @@ public class VertexBufferObject {
 	}
 
 	void bind() {
-		if (currentlyBound == this) {
+		if (context.vbo == this) {
 			return;
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, id);
-		currentlyBound = this;
+		context.vbo = this;
 	}
 
 	public void generateId() {
