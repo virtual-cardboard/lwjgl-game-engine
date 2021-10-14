@@ -25,7 +25,7 @@ public abstract class GameRenderer {
 	 * @param context the {@link GameContext}
 	 */
 	public GameRenderer(GameContext context) {
-		this.resourcePack = context != null ? context.resourcePack() : null;
+		this.resourcePack = context != null ? context.wrapper().resourcePack() : null;
 	}
 
 	/**

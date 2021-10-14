@@ -53,8 +53,9 @@ public class GameContextWrapper {
 	private DatagramSocket socket;
 	private GLContext glContext = new GLContext();
 
+	private ResourcePack resourcePack = new ResourcePack();
+
 	// Built-in objects initialized by WindowFrameUpdater
-	private VertexArrayObject rectangleVAO;
 	private IdentityVertexShader identityVertexShader;
 	private ColourFragmentShader colourFragmentShader;
 
@@ -98,7 +99,7 @@ public class GameContextWrapper {
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
 			context.setWrapper(this);
-			context.init(inputBuffer, networkReceiveBuffer, loader, rectangleVAO);
+			context.init(inputBuffer, networkReceiveBuffer, loader);
 			this.context = context;
 		}
 	}
@@ -136,14 +137,10 @@ public class GameContextWrapper {
 		return loader;
 	}
 
-	public VertexArrayObject getRectangleVAO() {
-		return rectangleVAO;
-	}
-
 	public void setRectangleVAO(VertexArrayObject rectangleVAO) {
-		if (this.rectangleVAO != null)
+		if (resourcePack.rectangleVAO() != null)
 			throw new IllegalStateException("Rectangle VAO already set.");
-		this.rectangleVAO = rectangleVAO;
+		resourcePack.init(rectangleVAO);
 	}
 
 	public IdentityVertexShader getIdentityVertexShader() {
@@ -184,6 +181,10 @@ public class GameContextWrapper {
 
 	public GLContext glContext() {
 		return glContext;
+	}
+
+	public ResourcePack resourcePack() {
+		return resourcePack;
 	}
 
 }

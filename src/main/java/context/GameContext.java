@@ -12,7 +12,6 @@ import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.packet.PacketModel;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
-import context.visuals.lwjgl.VertexArrayObject;
 
 /**
  * A grouping of the four context parts needed in a game: <br>
@@ -34,7 +33,6 @@ public final class GameContext {
 	private final GameVisuals visuals;
 
 	private PriorityQueue<GameEvent> eventQueue = new PriorityQueue<>();
-	private ResourcePack resourcePack = new ResourcePack();
 
 	/**
 	 * Takes in a data, input, logic, and visuals, then sets the context references
@@ -84,11 +82,8 @@ public final class GameContext {
 	 * @param inputEventBuffer     the input buffer
 	 * @param networkReceiveBuffer the receive buffer
 	 * @param loader               the {@link Loader}
-	 * @param rectangleVAO         the rectangular {@link VertexArrayObject}
 	 */
-	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLoader loader,
-			VertexArrayObject rectangleVAO) {
-		resourcePack.init(rectangleVAO);
+	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLoader loader) {
 		data.doInit(loader);
 		input.doInit(inputEventBuffer, networkReceiveBuffer, eventQueue);
 		logic.doInit(eventQueue, loader);
@@ -101,10 +96,6 @@ public final class GameContext {
 
 	void setWrapper(GameContextWrapper wrapper) {
 		this.wrapper = wrapper;
-	}
-
-	public ResourcePack resourcePack() {
-		return resourcePack;
 	}
 
 	public void sendPacket(PacketModel packet) {
