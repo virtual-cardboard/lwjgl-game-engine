@@ -25,6 +25,10 @@ abstract class LoadTask implements Runnable {
 		return countDownLatch;
 	}
 
+	public final boolean isDone() {
+		return countDownLatch.getCount() == 0;
+	}
+
 	public final void await() {
 		try {
 			countDownLatch.await();

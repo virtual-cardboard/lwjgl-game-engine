@@ -12,7 +12,7 @@ public final class DefaultGuiRenderer extends GuiRenderer<Gui> {
 
 	public DefaultGuiRenderer(GameContext context) {
 		super(context);
-		this.shaderProgram = resourcePack().getShaderProgram("gui");
+		this.shaderProgram = resourcePack().getShaderProgram("rectangle");
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 	public TexturedGuiRenderer(GameContext context, TextureRenderer textureRenderer) {
 		super(context);
 		this.textureRenderer = textureRenderer;
-		this.shaderProgram = resourcePack().getShaderProgram("gui");
+		this.shaderProgram = resourcePack().getShaderProgram("rectangle");
 	}
 
 	@Override

@@ -26,6 +26,13 @@ public final class ResourcePack {
 		vertexArrayObjects.put("rectangle", rectangleVAO);
 	}
 
+	public void set(ResourcePack resourcePack) {
+		this.vertexArrayObjects = resourcePack.vertexArrayObjects;
+		this.shaderPrograms = resourcePack.shaderPrograms;
+		this.textures = resourcePack.textures;
+		this.fonts = resourcePack.fonts;
+	}
+
 	public VertexArrayObject getVAO(String name) {
 		return vertexArrayObjects.get(name);
 	}
