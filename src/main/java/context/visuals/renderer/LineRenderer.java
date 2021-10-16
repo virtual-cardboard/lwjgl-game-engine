@@ -3,7 +3,7 @@ package context.visuals.renderer;
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
-import context.GameContext;
+import context.GameContextWrapper;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.Shader;
@@ -30,8 +30,8 @@ public class LineRenderer extends GameRenderer {
 	 * @see ShaderProgram
 	 * @see Shader
 	 */
-	public LineRenderer(GameContext context) {
-		super(context);
+	public LineRenderer(GameContextWrapper wrapper) {
+		super(wrapper);
 		this.shaderProgram = resourcePack().getShaderProgram("line");
 	}
 

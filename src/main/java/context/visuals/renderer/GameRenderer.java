@@ -1,6 +1,6 @@
 package context.visuals.renderer;
 
-import context.GameContext;
+import context.GameContextWrapper;
 import context.ResourcePack;
 import context.visuals.GameVisuals;
 
@@ -20,12 +20,12 @@ public abstract class GameRenderer {
 
 	/**
 	 * Creates a {@link GameRenderer} using the {@link ResourcePack} from a
-	 * {@link GameContext}
+	 * {@link GameContextWrapper}
 	 * 
-	 * @param context the {@link GameContext}
+	 * @param wrapper the {@link GameContextWrapper}
 	 */
-	public GameRenderer(GameContext context) {
-		this.resourcePack = context != null ? context.wrapper().resourcePack() : null;
+	public GameRenderer(GameContextWrapper wrapper) {
+		this.resourcePack = wrapper != null ? wrapper.resourcePack() : null;
 	}
 
 	/**

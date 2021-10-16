@@ -3,7 +3,7 @@ package context.visuals.renderer;
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector4f;
-import context.GameContext;
+import context.GameContextWrapper;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.ShaderProgram;
@@ -28,8 +28,8 @@ public class TextRenderer extends GameRenderer {
 	 * 
 	 * @param textShaderProgram the text shader program
 	 */
-	public TextRenderer(GameContext context) {
-		super(context);
+	public TextRenderer(GameContextWrapper wrapper) {
+		super(wrapper);
 		shaderProgram = resourcePack().getShaderProgram("text");
 	}
 

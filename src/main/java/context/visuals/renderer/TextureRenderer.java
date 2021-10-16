@@ -1,7 +1,7 @@
 package context.visuals.renderer;
 
 import common.math.Matrix4f;
-import context.GameContext;
+import context.GameContextWrapper;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
@@ -25,8 +25,8 @@ public class TextureRenderer extends GameRenderer {
 	 * 
 	 * @param textureShaderProgram the texture shader program
 	 */
-	public TextureRenderer(GameContext context) {
-		super(context);
+	public TextureRenderer(GameContextWrapper wrapper) {
+		super(wrapper);
 		shaderProgram = resourcePack().getShaderProgram("texture");
 	}
 

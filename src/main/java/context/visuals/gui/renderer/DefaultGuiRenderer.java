@@ -1,7 +1,7 @@
 package context.visuals.gui.renderer;
 
 import common.math.Matrix4f;
-import context.GameContext;
+import context.GameContextWrapper;
 import context.visuals.colour.Colour;
 import context.visuals.gui.Gui;
 import context.visuals.lwjgl.ShaderProgram;
@@ -10,8 +10,8 @@ public final class DefaultGuiRenderer extends GuiRenderer<Gui> {
 
 	protected ShaderProgram shaderProgram;
 
-	public DefaultGuiRenderer(GameContext context) {
-		super(context);
+	public DefaultGuiRenderer(GameContextWrapper wrapper) {
+		super(wrapper);
 		this.shaderProgram = resourcePack().getShaderProgram("rectangle");
 	}
 

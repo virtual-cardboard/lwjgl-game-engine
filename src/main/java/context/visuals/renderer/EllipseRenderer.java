@@ -2,7 +2,7 @@ package context.visuals.renderer;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
-import context.GameContext;
+import context.GameContextWrapper;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.Shader;
@@ -29,8 +29,8 @@ public class EllipseRenderer extends GameRenderer {
 	 * @see ShaderProgram
 	 * @see Shader
 	 */
-	public EllipseRenderer(GameContext context) {
-		super(context);
+	public EllipseRenderer(GameContextWrapper wrapper) {
+		super(wrapper);
 		this.shaderProgram = resourcePack().getShaderProgram("ellipse");
 	}
 

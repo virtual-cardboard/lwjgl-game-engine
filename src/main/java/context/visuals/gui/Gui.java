@@ -3,7 +3,7 @@ package context.visuals.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import context.GameContext;
+import context.GameContextWrapper;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
@@ -45,8 +45,8 @@ public class Gui {
 	@SuppressWarnings("rawtypes")
 	private GuiRenderer guiRenderer;
 
-	public Gui(GameContext context) {
-		this(new DefaultGuiRenderer(context));
+	public Gui(GameContextWrapper wrapper) {
+		this(new DefaultGuiRenderer(wrapper));
 	}
 
 	public <T extends Gui> Gui(GuiRenderer<T> guiRenderer) {
