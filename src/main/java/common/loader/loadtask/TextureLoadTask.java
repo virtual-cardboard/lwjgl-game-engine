@@ -1,18 +1,6 @@
 package common.loader.loadtask;
 
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
-import static org.lwjgl.opengl.GL11.GL_LINEAR_MIPMAP_LINEAR;
-import static org.lwjgl.opengl.GL11.GL_REPEAT;
-import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 import static org.lwjgl.stb.STBImage.stbi_failure_reason;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
@@ -25,14 +13,17 @@ import java.util.concurrent.CountDownLatch;
 import org.lwjgl.system.MemoryStack;
 
 import common.loader.GLLoadTask;
+import context.GLContext;
 import context.visuals.lwjgl.Texture;
 
 public class TextureLoadTask extends GLLoadTask {
 
-	private Texture texture;
+	private GLContext context;
 	private int textureUnit;
 	private String path;
 	private ByteBuffer textureData;
+
+	private Texture texture;
 
 	/**
 	 * Creates a <code>TextureLoadTask</code> with a count down latch with a
@@ -40,19 +31,20 @@ public class TextureLoadTask extends GLLoadTask {
 	 * 
 	 * @param texture the texture to load data into
 	 */
-	public TextureLoadTask(int textureUnit, String path) {
-		this(new CountDownLatch(1), textureUnit, path);
+	public TextureLoadTask(GLContext context, int textureUnit, String path) {
+		this(new CountDownLatch(1), context, textureUnit, path);
 	}
 
-	public TextureLoadTask(CountDownLatch countDownLatch, int textureUnit, String path) {
+	public TextureLoadTask(CountDownLatch countDownLatch, GLContext context, int textureUnit, String path) {
 		super(countDownLatch);
+		this.context = context;
 		this.textureUnit = textureUnit;
 		this.path = path;
 	}
 
 	@Override
 	public void loadIO() {
-		texture = new Texture(textureUnit);
+		texture = new Texture(context, textureUnit);
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			IntBuffer w = stack.mallocInt(1);
 			IntBuffer h = stack.mallocInt(1);

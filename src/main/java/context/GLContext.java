@@ -1,11 +1,10 @@
 package context;
 
-import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.lwjgl.VertexBufferObject;
-
 public class GLContext {
 
-	public VertexArrayObject vao = null;
-	public VertexBufferObject vbo = null;
+	public int vaoID = -1;
+	public int vboID = -1;
+	public int eboID = -1;
+	public int[] textureIDs = new int[48];
 
 }

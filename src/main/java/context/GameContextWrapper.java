@@ -15,6 +15,7 @@ import context.input.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
 import context.visuals.builtin.ColourFragmentShader;
 import context.visuals.builtin.IdentityVertexShader;
+import context.visuals.lwjgl.GLObjectFactory;
 import context.visuals.lwjgl.VertexArrayObject;
 
 /**
@@ -52,8 +53,8 @@ public class GameContextWrapper {
 	private final Queue<PacketModel> networkSendBuffer;
 	private DatagramSocket socket;
 	private GLContext glContext = new GLContext();
-
 	private ResourcePack resourcePack = new ResourcePack();
+	private GLObjectFactory glObjectFactory;
 
 	// Built-in objects initialized by WindowFrameUpdater
 	private IdentityVertexShader identityVertexShader;
@@ -88,6 +89,7 @@ public class GameContextWrapper {
 		}
 		logicTimer.setWrapper(this);
 		this.loader = loader;
+		this.glObjectFactory = new GLObjectFactory(loader);
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class GameContextWrapper {
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
 			context.setWrapper(this);
-			context.init(inputBuffer, networkReceiveBuffer, loader);
+			context.init(inputBuffer, networkReceiveBuffer, loader, glObjectFactory);
 			this.context = context;
 		}
 	}

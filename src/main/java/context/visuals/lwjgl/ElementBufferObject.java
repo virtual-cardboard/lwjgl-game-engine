@@ -2,6 +2,8 @@ package context.visuals.lwjgl;
 
 import static org.lwjgl.opengl.GL15.*;
 
+import context.GLContext;
+
 /**
  * An object that tells OpenGL which vertices in a {@link VertexBufferObject} to
  * display.
@@ -11,15 +13,14 @@ import static org.lwjgl.opengl.GL15.*;
  * @author Jay
  *
  */
-public class ElementBufferObject {
-
-	private static ElementBufferObject currentlyBound;
+public class ElementBufferObject extends RegularGLObject {
 
 	private int id;
 	private int[] data;
 	private boolean linked;
 
-	public ElementBufferObject(final int[] indices) {
+	public ElementBufferObject(GLContext context, final int[] indices) {
+		super(context);
 		this.data = indices;
 	}
 
@@ -33,11 +34,9 @@ public class ElementBufferObject {
 	}
 
 	void bind() {
-		if (currentlyBound == this) {
-			return;
-		}
+		if (context.eboID == id) return;
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-		currentlyBound = this;
+		context.eboID = id;
 	}
 
 	public void generateId() {

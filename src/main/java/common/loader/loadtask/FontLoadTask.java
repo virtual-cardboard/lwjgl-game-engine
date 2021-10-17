@@ -16,6 +16,7 @@ import java.util.concurrent.CountDownLatch;
 import org.lwjgl.system.MemoryStack;
 
 import common.loader.GLLoadTask;
+import context.GLContext;
 import context.visuals.lwjgl.Texture;
 import context.visuals.text.FontLoader;
 import context.visuals.text.GameFont;
@@ -25,18 +26,20 @@ public final class FontLoadTask extends GLLoadTask {
 	private static final String PATH = FontLoadTask.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 	public static final String VC_FONT = "vcfont";
 
+	private GLContext context;
 	private String fontName;
 	private Texture texture;
 	private ByteBuffer textureData;
 
 	private GameFont font;
 
-	public FontLoadTask(String fontName) {
-		this.fontName = fontName;
+	public FontLoadTask(GLContext context, String fontName) {
+		this(new CountDownLatch(1), context, fontName);
 	}
 
-	public FontLoadTask(CountDownLatch countDownLatch, String fontName) {
+	public FontLoadTask(CountDownLatch countDownLatch, GLContext context, String fontName) {
 		super(countDownLatch);
+		this.context = context;
 		this.fontName = fontName;
 	}
 
@@ -74,7 +77,7 @@ public final class FontLoadTask extends GLLoadTask {
 	 * @param texturePath the path of the texture to load
 	 */
 	private void textureLoadIO(String texturePath) {
-		texture = new Texture(31); // Use 31st texture unit
+		texture = new Texture(context, 31); // Use 31st texture unit
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			IntBuffer w = stack.mallocInt(1);
 			IntBuffer h = stack.mallocInt(1);

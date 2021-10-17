@@ -3,7 +3,6 @@ package context.visuals.builtin;
 import context.GLContext;
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.lwjgl.VertexArrayObjectBuilder;
 import context.visuals.lwjgl.VertexBufferObject;
 
 public class RectangleVertexArrayObject {
@@ -31,10 +30,22 @@ public class RectangleVertexArrayObject {
 	 * The VAO must be created before the getter is called
 	 */
 	public static VertexArrayObject createRectangleVAO(GLContext context) {
-		ElementBufferObject ebo = new ElementBufferObject(INDICES);
+		ElementBufferObject ebo = new ElementBufferObject(context, INDICES);
 		VertexBufferObject positionsVBO = new VertexBufferObject(context, POSITIONS, 3);
 		VertexBufferObject textureCoordinatesVBO = new VertexBufferObject(context, TEXTURE_COORDINATES, 2);
-		return new VertexArrayObjectBuilder(ebo, positionsVBO, textureCoordinatesVBO).build(context);
+		VertexArrayObject vao = new VertexArrayObject(context);
+		vao.generateId();
+		ebo.generateId();
+		ebo.loadData();
+		vao.setEbo(ebo);
+		positionsVBO.generateId();
+		positionsVBO.loadData();
+		vao.attachVBO(positionsVBO);
+		textureCoordinatesVBO.generateId();
+		textureCoordinatesVBO.loadData();
+		vao.attachVBO(textureCoordinatesVBO);
+		vao.enableVertexAttribPointers();
+		return vao;
 	}
 
 }

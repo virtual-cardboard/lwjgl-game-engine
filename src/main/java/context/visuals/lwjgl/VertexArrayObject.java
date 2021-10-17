@@ -27,7 +27,7 @@ import context.GLContext;
  * @author Jay
  *
  */
-public class VertexArrayObject extends GLObject {
+public class VertexArrayObject extends ContainerGLObject {
 
 	private int id;
 	private List<VertexBufferObject> vbos = new ArrayList<>();
@@ -65,11 +65,9 @@ public class VertexArrayObject extends GLObject {
 	}
 
 	private void bind() {
-		if (context.vao == this) {
-			return;
-		}
+		if (context.vaoID == id) return;
 		glBindVertexArray(id);
-		context.vao = this;
+		context.vaoID = id;
 	}
 
 	public void attachVBO(VertexBufferObject vbo) {

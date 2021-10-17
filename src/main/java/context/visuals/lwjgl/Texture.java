@@ -7,15 +7,16 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 import common.loader.loadtask.TextureLoadTask;
+import context.GLContext;
 
 /**
  * An OpenGL object that represents a 2D image. Texture are made using
- * {@link TextureBuilder}.
+ * {@link TextureLoadTask TextureLoadTasks}.
  * 
  * @author Jay
  *
  */
-public class Texture {
+public class Texture extends RegularGLObject {
 
 	private int id;
 	private int width, height;
@@ -23,16 +24,16 @@ public class Texture {
 	private boolean linked;
 
 	/**
-	 * Creates a texture with the given texture unit and image path. The texture
-	 * unit can be used in shaders to display multiple textures with different
-	 * texture units in one <code>glDrawElements</code> call.
-	 * {@link TextureLoadTask} uses the image path to load data from the image.
+	 * Creates a texture with the given texture unit. The texture unit can be used
+	 * in shaders to display multiple textures with different texture units in one
+	 * <code>glDrawElements</code> call.
 	 * 
 	 * @param textureUnit the texture unit
-	 * @param texturePath the path to the image used in this texture
+	 * 
 	 */
-	public Texture(int textureUnit) {
-		if (textureUnit < 0 || textureUnit > 31) {
+	public Texture(GLContext context, int textureUnit) {
+		super(context);
+		if (textureUnit < 0 || textureUnit > 47) {
 			throw new IllegalArgumentException("Invalid texture unit: " + textureUnit);
 		}
 		this.textureUnit = textureUnit;
@@ -49,8 +50,10 @@ public class Texture {
 	 * Binds the texture.
 	 */
 	public void bind() {
+		if (context.textureIDs[textureUnit] == id) return;
 		glActiveTexture(GL_TEXTURE0 + textureUnit);
 		glBindTexture(GL_TEXTURE_2D, id);
+		context.textureIDs[textureUnit] = id;
 	}
 
 	/**

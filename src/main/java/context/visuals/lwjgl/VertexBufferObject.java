@@ -16,7 +16,7 @@ import context.GLContext;
  * @author Jay
  *
  */
-public class VertexBufferObject extends GLObject {
+public class VertexBufferObject extends RegularGLObject {
 
 	private int id;
 	private float[] data;
@@ -43,11 +43,9 @@ public class VertexBufferObject extends GLObject {
 	}
 
 	void bind() {
-		if (context.vbo == this) {
-			return;
-		}
+		if (context.vboID == id) return;
 		glBindBuffer(GL_ARRAY_BUFFER, id);
-		context.vbo = this;
+		context.vboID = id;
 	}
 
 	public void generateId() {
@@ -64,6 +62,18 @@ public class VertexBufferObject extends GLObject {
 
 	public int getVertexDataSize() {
 		return vertexDataSize;
+	}
+
+	public static class VertexBufferObjectRawData {
+
+		public float[] data;
+		public int dataSize;
+
+		public VertexBufferObjectRawData(float[] data, int dataSize) {
+			this.data = data;
+			this.dataSize = dataSize;
+		}
+
 	}
 
 }
