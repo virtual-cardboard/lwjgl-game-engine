@@ -3,7 +3,7 @@ package context.logic;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import common.loader.GameLoader;
+import common.loader.IOLoader;
 import common.timestep.GameLogicTimer;
 import context.ContextPart;
 import context.data.GameData;
@@ -22,9 +22,9 @@ import context.input.GameInput;
 public abstract class GameLogic extends ContextPart {
 
 	private Queue<GameEvent> eventQueue;
-	private GameLoader loader;
+	private IOLoader loader;
 
-	public final void doInit(Queue<GameEvent> eventQueue, GameLoader loader) {
+	public final void doInit(Queue<GameEvent> eventQueue, IOLoader loader) {
 		this.eventQueue = eventQueue;
 		this.loader = loader;
 		init();
@@ -35,7 +35,7 @@ public abstract class GameLogic extends ContextPart {
 	 */
 	public abstract void update();
 
-	protected final GameLoader loader() {
+	protected final IOLoader loader() {
 		return loader;
 	}
 

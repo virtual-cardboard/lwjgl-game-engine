@@ -3,7 +3,7 @@ package common.loader;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-public abstract class IOLoadTask extends LoadTask {
+public abstract class IOLoadTask<T> extends LoadTask<T> {
 
 	public IOLoadTask() {
 		super();
@@ -12,17 +12,23 @@ public abstract class IOLoadTask extends LoadTask {
 	public IOLoadTask(CountDownLatch countDownLatch) {
 		super(countDownLatch);
 	}
+//
+//	@Override
+//	public final void run() {
+//	}
 
 	@Override
-	public final void run() {
+	public final T call() throws Exception {
+		T t = null;
 		try {
-			load();
+			t = load();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		countDownLatch.countDown();
+		return t;
 	}
 
-	protected abstract void load() throws IOException;
+	protected abstract T load() throws IOException;
 
 }

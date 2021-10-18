@@ -12,7 +12,7 @@ import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.ShaderType;
 
-public final class ShaderFileLoadTask extends GLLoadTask {
+public final class ShaderFileLoadTask extends GLLoadTask<ShaderProgram> {
 
 	private ShaderType type;
 	private ShaderProgram shaderProgram;
@@ -40,7 +40,7 @@ public final class ShaderFileLoadTask extends GLLoadTask {
 	}
 
 	@Override
-	public void loadGL() {
+	public ShaderProgram loadGL() {
 		shader.setId(shader.getShaderType().genId());
 		shader.compile(source);
 		shaderProgram.attachShader(shader);
@@ -49,6 +49,7 @@ public final class ShaderFileLoadTask extends GLLoadTask {
 			shaderProgram.generateId();
 			shaderProgram.link();
 		}
+		return shaderProgram;
 	}
 
 	private File getFile() {

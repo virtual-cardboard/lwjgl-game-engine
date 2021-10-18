@@ -1,5 +1,7 @@
 package context.visuals.lwjgl.builder;
 
+import java.util.concurrent.Future;
+
 import context.GLContext;
 import context.visuals.lwjgl.GLObject;
 
@@ -11,6 +13,6 @@ public abstract class GLObjectBuilder<T extends GLObject> {
 		this.context = context;
 	}
 
-	public abstract T build();
+	protected abstract Future<T> build(GLObjectFactory glFactory);
 
 }

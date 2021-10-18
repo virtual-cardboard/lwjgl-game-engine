@@ -20,21 +20,20 @@ public class VertexBufferObject extends RegularGLObject {
 
 	private int id;
 	private float[] data;
-	private boolean linked;
-	private int vertexDataSize;
+	private int numColumns;
 
 	/**
 	 * Creates a {@link VertexBufferObject} with the data. The data is treated as
 	 * having <code>x</code> rows and <code>vertexDataSize</code> columns, where
 	 * <code>x = data.length / vertexDataSize</code>.
 	 * 
-	 * @param data           float array of values
-	 * @param vertexDataSize the number of columns in the data
+	 * @param data       float array of values
+	 * @param numColumns the number of columns in the data
 	 */
-	public VertexBufferObject(GLContext context, final float[] data, int vertexDataSize) {
+	public VertexBufferObject(GLContext context, final float[] data, int numColumns) {
 		super(context);
 		this.data = data;
-		this.vertexDataSize = vertexDataSize;
+		this.numColumns = numColumns;
 	}
 
 	public void loadData() {
@@ -49,29 +48,25 @@ public class VertexBufferObject extends RegularGLObject {
 	}
 
 	public void generateId() {
-		if (linked) {
-			throw new IllegalStateException("Tried to generate VBO ID when already generated.");
-		}
 		this.id = glGenBuffers();
-		linked = true;
 	}
 
-	public boolean isLinked() {
-		return linked;
-	}
-
-	public int getVertexDataSize() {
-		return vertexDataSize;
+	public int getNumColumns() {
+		return numColumns;
 	}
 
 	public static class VertexBufferObjectRawData {
 
 		public float[] data;
-		public int dataSize;
+		public int numColumns;
 
-		public VertexBufferObjectRawData(float[] data, int dataSize) {
+		public VertexBufferObjectRawData(float[] data, int numColumns) {
 			this.data = data;
-			this.dataSize = dataSize;
+			this.numColumns = numColumns;
+		}
+
+		public VertexBufferObject createVertexBufferObject(GLContext context) {
+			return new VertexBufferObject(context, data, numColumns);
 		}
 
 	}

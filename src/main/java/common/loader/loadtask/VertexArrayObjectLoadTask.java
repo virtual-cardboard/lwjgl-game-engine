@@ -1,6 +1,7 @@
 package common.loader.loadtask;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import common.loader.GLLoadTask;
@@ -9,19 +10,17 @@ import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.lwjgl.VertexBufferObject;
 
-public final class VertexArrayObjectLoadTask extends GLLoadTask {
+public final class VertexArrayObjectLoadTask extends GLLoadTask<VertexArrayObject> {
 
 	private GLContext context;
 	private ElementBufferObject ebo;
-	private VertexBufferObject[] vbos;
+	private List<VertexBufferObject> vbos;
 
-	private VertexArrayObject vao;
-
-	public VertexArrayObjectLoadTask(GLContext context, ElementBufferObject ebo, VertexBufferObject... vbos) {
+	public VertexArrayObjectLoadTask(GLContext context, ElementBufferObject ebo, List<VertexBufferObject> vbos) {
 		this(new CountDownLatch(1), context, ebo, vbos);
 	}
 
-	public VertexArrayObjectLoadTask(CountDownLatch countDownLatch, GLContext context, ElementBufferObject ebo, VertexBufferObject... vbos) {
+	public VertexArrayObjectLoadTask(CountDownLatch countDownLatch, GLContext context, ElementBufferObject ebo, List<VertexBufferObject> vbos) {
 		super(countDownLatch);
 		this.context = context;
 		this.ebo = ebo;
@@ -30,22 +29,13 @@ public final class VertexArrayObjectLoadTask extends GLLoadTask {
 
 	@Override
 	protected void loadIO() throws IOException {
-		vao = new VertexArrayObject(context);
 	}
 
 	@Override
-	protected void loadGL() {
-		ebo.generateId();
-		ebo.loadData();
+	protected VertexArrayObject loadGL() {
+		VertexArrayObject vao = new VertexArrayObject(context);
 		vao.setEbo(ebo);
-		for (int i = 0; i < vbos.length; i++) {
-			vbos[i].generateId();
-			vbos[i].loadData();
-			vao.attachVBO(vbos[i]);
-		}
-	}
-
-	public VertexArrayObject getVertexArrayObject() {
+		vbos.forEach(vao::attachVBO);
 		return vao;
 	}
 

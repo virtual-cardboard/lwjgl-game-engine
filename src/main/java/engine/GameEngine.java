@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
-import common.loader.GameLoader;
+import common.loader.IOLoader;
 import common.timestep.GameLogicTimer;
 import common.timestep.TimestepTimer;
 import common.timestep.WindowFrameUpdater;
@@ -86,7 +86,7 @@ public final class GameEngine {
 		TimeAccumulator logicAccumulator = createTimeAccumulator();
 		GameLogicTimer logicTimer = createLogicThread(logicAccumulator, contextCountDownLatch);
 		waitForWindowCreation(windowCountDownLatch);
-		GameLoader loader = createLoader(frameUpdater);
+		IOLoader loader = createLoader(frameUpdater);
 
 		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, inputHandler, loader, socket, networkReceiveBuffer, networkSendBuffer, contextCountDownLatch);
 
@@ -112,7 +112,7 @@ public final class GameEngine {
 	}
 
 	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator,
-			WindowFrameUpdater frameUpdater, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler, GameLoader loader,
+			WindowFrameUpdater frameUpdater, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler, IOLoader loader,
 			DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
 			CountDownLatch contextCountDownLatch) {
 		GameContextWrapper wrapper = new GameContextWrapper(inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, logicTimer, inputHandler, loader, socket);
@@ -253,10 +253,10 @@ public final class GameEngine {
 		return null;
 	}
 
-	private GameLoader createLoader(WindowFrameUpdater frameUpdater) {
+	private IOLoader createLoader(WindowFrameUpdater frameUpdater) {
 		if (loading) {
 			print("Creating loader");
-			GameLoader loader = new GameLoader();
+			IOLoader loader = new IOLoader();
 			loader.start(frameUpdater.window().getSharedContextWindowHandle());
 			return loader;
 		}

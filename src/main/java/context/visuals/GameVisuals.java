@@ -1,14 +1,17 @@
 package context.visuals;
 
-import java.util.concurrent.CountDownLatch;
-
-import common.loader.GameLoader;
+import common.loader.IOLoader;
 import context.ContextPart;
 import context.data.GameData;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
-import context.visuals.lwjgl.GLObjectFactory;
-import context.visuals.lwjgl.VertexBufferObject.VertexBufferObjectRawData;
+import context.visuals.lwjgl.ElementBufferObject;
+import context.visuals.lwjgl.VertexArrayObject;
+import context.visuals.lwjgl.VertexBufferObject;
+import context.visuals.lwjgl.builder.ElementBufferObjectBuilder;
+import context.visuals.lwjgl.builder.GLObjectFactory;
+import context.visuals.lwjgl.builder.VertexArrayObjectBuilder;
+import context.visuals.lwjgl.builder.VertexBufferObjectBuilder;
 import context.visuals.renderer.GameRenderer;
 
 /**
@@ -23,7 +26,7 @@ public abstract class GameVisuals extends ContextPart {
 	 * The {@link RootGui} to which all GUIs will be children of.
 	 */
 	private RootGui rootGui = new RootGui(0, 0);
-	private GameLoader loader;
+	private IOLoader loader;
 	private GLObjectFactory glFactory;
 
 	public void addGui(Gui gui) {
@@ -40,18 +43,37 @@ public abstract class GameVisuals extends ContextPart {
 	 */
 	public abstract void render();
 
-	public final void doInit(GameLoader loader, GLObjectFactory glFactory) {
+	public final void doInit(IOLoader loader, GLObjectFactory glFactory) {
 		this.loader = loader;
 		this.glFactory = glFactory;
 		init();
 	}
 
-	public final void createVertexArrayObject(int[] indices, VertexBufferObjectRawData... vboRawData) {
-		CountDownLatch cdl = new CountDownLatch(vboRawData.length + 1);
-		// TODO
+	/**
+	 * Creates a {@link VertexArrayObject}. Should not be called outside of the
+	 * rendering thread.
+	 * 
+	 * @param eboBuilder  the {@link ElementBufferObjectBuilder} that will create
+	 *                    the VAO's EBO
+	 * @param vboBuilders the {@link VertexBufferObjectBuilder
+	 *                    VertexBufferObjectBuilders} that will create the VAO's
+	 *                    VBOs
+	 * @return the linked <code>VertexArrayObject</code>
+	 */
+	protected final VertexArrayObject createVertexArrayObject(ElementBufferObjectBuilder eboBuilder, VertexBufferObjectBuilder... vboBuilders) {
+		try {
+			ElementBufferObject ebo = glFactory.createUsingBuilder(eboBuilder).get();
+			VertexBufferObject[] vbos = new VertexBufferObject[vboBuilders.length];
+			for (int i = 0; i < vboBuilders.length; i++) {
+				vbos[i] = glFactory.createUsingBuilder(vboBuilders[i]).get();
+			}
+			return glFactory.createUsingBuilder(new VertexArrayObjectBuilder(context().wrapper().glContext(), ebo, vbos)).get();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	public GameLoader loader() {
+	public IOLoader loader() {
 		return loader;
 	}
 

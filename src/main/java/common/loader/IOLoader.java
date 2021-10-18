@@ -2,16 +2,17 @@ package common.loader;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
-public class GameLoader {
+public class IOLoader {
 
 	private static final int NUM_THREADS = 4;
 
 	private ExecutorService loaders;
-	private GameLinker linker;
+	private GLLoader linker;
 
-	public GameLoader() {
+	public IOLoader() {
 		ThreadFactory daemonThreadFactory = r -> {
 			Thread t = Executors.defaultThreadFactory().newThread(r);
 			t.setDaemon(true);
@@ -21,17 +22,20 @@ public class GameLoader {
 	}
 
 	public void start(long sharedContextWindowHandle) {
-		linker = new GameLinker(sharedContextWindowHandle);
-		Thread openglLoaderThread = new Thread(linker);
-		openglLoaderThread.start();
+		linker = new GLLoader(sharedContextWindowHandle);
+//		Thread openglLoaderThread = new Thread(linker);
+//		openglLoaderThread.start();
 	}
 
-	public void add(LoadTask t) {
+	public <T> Future<T> submit(LoadTask<T> t) {
 		if (t instanceof GLLoadTask) {
-			GLLoadTask openglLoadTask = (GLLoadTask) t;
-			openglLoadTask.setLinker(linker);
+			GLLoadTask<T> gllt = (GLLoadTask<T>) t;
+			GLLoadTaskFutureWrapper<T> futureWrapper = new GLLoadTaskFutureWrapper<>(gllt, linker);
+			loaders.execute(futureWrapper);
+			return futureWrapper;
+		} else {
+			return loaders.submit(t);
 		}
-		loaders.execute(t);
 	}
 
 	public void terminate() {

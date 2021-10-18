@@ -1,5 +1,7 @@
 package context.visuals.lwjgl.builder;
 
+import java.util.concurrent.Future;
+
 import context.GLContext;
 import context.visuals.lwjgl.ElementBufferObject;
 
@@ -13,11 +15,12 @@ public final class ElementBufferObjectBuilder extends RegularGLObjectBuilder<Ele
 	}
 
 	@Override
-	public ElementBufferObject build() {
-		ElementBufferObject ebo = new ElementBufferObject(context, indices);
-		ebo.generateId();
-		ebo.loadData();
-		return ebo;
+	protected Future<ElementBufferObject> build(GLObjectFactory glFactory) {
+		return glFactory.build(this);
+	}
+
+	int[] getIndices() {
+		return indices;
 	}
 
 }

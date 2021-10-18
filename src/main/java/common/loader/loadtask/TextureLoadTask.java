@@ -16,7 +16,7 @@ import common.loader.GLLoadTask;
 import context.GLContext;
 import context.visuals.lwjgl.Texture;
 
-public class TextureLoadTask extends GLLoadTask {
+public class TextureLoadTask extends GLLoadTask<Texture> {
 
 	private GLContext context;
 	private int textureUnit;
@@ -60,7 +60,7 @@ public class TextureLoadTask extends GLLoadTask {
 	}
 
 	@Override
-	public void loadGL() {
+	public Texture loadGL() {
 		texture.setId(glGenTextures());
 		texture.bind();
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
@@ -71,6 +71,7 @@ public class TextureLoadTask extends GLLoadTask {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		stbi_image_free(textureData);
 		texture.link();
+		return texture;
 	}
 
 	public Texture getTexture() {

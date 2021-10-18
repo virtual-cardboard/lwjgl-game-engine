@@ -1,5 +1,7 @@
 package context.visuals.lwjgl.builder;
 
+import java.util.concurrent.Future;
+
 import context.GLContext;
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.VertexArrayObject;
@@ -17,16 +19,16 @@ public class VertexArrayObjectBuilder extends ContainerGLObjectBuilder<VertexArr
 	}
 
 	@Override
-	public VertexArrayObject build() {
-		VertexArrayObject vao = new VertexArrayObject(context);
-		vao.generateId();
-		vao.setEbo(ebo);
-		for (int i = 0, l = vbos.length; i < l; i++) {
-			VertexBufferObject vbo = vbos[i];
-			vao.attachVBO(vbo);
-		}
-		vao.enableVertexAttribPointers();
-		return vao;
+	protected Future<VertexArrayObject> build(GLObjectFactory glFactory) {
+		return glFactory.build(this);
+	}
+
+	ElementBufferObject getEbo() {
+		return ebo;
+	}
+
+	VertexBufferObject[] getVbos() {
+		return vbos;
 	}
 
 }

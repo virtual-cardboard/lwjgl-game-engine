@@ -17,7 +17,6 @@ public class ElementBufferObject extends RegularGLObject {
 
 	private int id;
 	private int[] data;
-	private boolean linked;
 
 	public ElementBufferObject(GLContext context, final int[] indices) {
 		super(context);
@@ -40,19 +39,11 @@ public class ElementBufferObject extends RegularGLObject {
 	}
 
 	public void generateId() {
-		if (linked) {
-			throw new IllegalStateException("Tried to generate EBO ID when already generated.");
-		}
 		this.id = glGenBuffers();
-		linked = true;
 	}
 
 	public int size() {
 		return data.length;
-	}
-
-	public boolean isLinked() {
-		return linked;
 	}
 
 }

@@ -1,25 +1,33 @@
 package context.visuals.lwjgl.builder;
 
+import java.util.concurrent.Future;
+
 import context.GLContext;
 import context.visuals.lwjgl.VertexBufferObject;
+import context.visuals.lwjgl.VertexBufferObject.VertexBufferObjectRawData;
 
 public final class VertexBufferObjectBuilder extends RegularGLObjectBuilder<VertexBufferObject> {
 
 	private float[] data;
-	private int vertexDataSize;
+	private int numColumns;
 
-	public VertexBufferObjectBuilder(GLContext context, float[] data, int vertexDataSize) {
-		super(context);
-		this.data = data;
-		this.vertexDataSize = vertexDataSize;
+	public VertexBufferObjectBuilder(GLContext glContext, VertexBufferObjectRawData vboRawData) {
+		super(glContext);
+		this.data = vboRawData.data;
+		this.numColumns = vboRawData.numColumns;
 	}
 
 	@Override
-	public VertexBufferObject build() {
-		VertexBufferObject vbo = new VertexBufferObject(context, data, vertexDataSize);
-		vbo.generateId();
-		vbo.loadData();
-		return vbo;
+	protected Future<VertexBufferObject> build(GLObjectFactory glFactory) {
+		return glFactory.build(this);
+	}
+
+	float[] getData() {
+		return data;
+	}
+
+	int getNumColumns() {
+		return numColumns;
 	}
 
 }

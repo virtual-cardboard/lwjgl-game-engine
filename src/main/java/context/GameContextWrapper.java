@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import common.loader.GameLoader;
+import common.loader.IOLoader;
 import common.timestep.GameLogicTimer;
 import common.timestep.WindowFrameUpdater;
 import context.input.GameInputHandlerRunnable;
@@ -15,8 +15,8 @@ import context.input.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
 import context.visuals.builtin.ColourFragmentShader;
 import context.visuals.builtin.IdentityVertexShader;
-import context.visuals.lwjgl.GLObjectFactory;
 import context.visuals.lwjgl.VertexArrayObject;
+import context.visuals.lwjgl.builder.GLObjectFactory;
 
 /**
  * A container for a game context to make switching game contexts thread-safe.
@@ -49,7 +49,7 @@ public class GameContextWrapper {
 	private Queue<PacketReceivedInputEvent> networkReceiveBuffer;
 	private final TimeAccumulator accumulator;
 	private final WindowFrameUpdater windowFrameUpdater;
-	private final GameLoader loader;
+	private final IOLoader loader;
 	private final Queue<PacketModel> networkSendBuffer;
 	private DatagramSocket socket;
 	private GLContext glContext = new GLContext();
@@ -70,11 +70,11 @@ public class GameContextWrapper {
 	 * @param windowFrameUpdateTimer the {@link WindowFrameUpdater}
 	 * @param logicTimer
 	 * @param inputHandler
-	 * @param loader                 the {@link GameLoader}
+	 * @param loader                 the {@link IOLoader}
 	 */
 	public GameContextWrapper(Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
 			TimeAccumulator accumulator, WindowFrameUpdater windowFrameUpdateTimer, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler,
-			GameLoader loader, DatagramSocket socket) {
+			IOLoader loader, DatagramSocket socket) {
 		this.socket = socket;
 		this.inputBuffer = inputBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
@@ -89,7 +89,7 @@ public class GameContextWrapper {
 		}
 		logicTimer.setWrapper(this);
 		this.loader = loader;
-		this.glObjectFactory = new GLObjectFactory(loader);
+		this.glObjectFactory = new GLObjectFactory(glContext);
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class GameContextWrapper {
 		return windowFrameUpdater;
 	}
 
-	public GameLoader loader() {
+	public IOLoader loader() {
 		return loader;
 	}
 

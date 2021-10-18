@@ -1,15 +1,17 @@
 package common.loader;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 
 /**
  * Use a LoadTask for I/O operations.
  * 
  * @author Jay
- * @see GameLoader
+ * @param <T> the thing it loads
+ * @see IOLoader
  *
  */
-abstract class LoadTask implements Runnable {
+abstract class LoadTask<T> implements Callable<T> {
 
 	protected final CountDownLatch countDownLatch;
 
@@ -23,10 +25,6 @@ abstract class LoadTask implements Runnable {
 
 	public final CountDownLatch countDownLatch() {
 		return countDownLatch;
-	}
-
-	public final boolean isDone() {
-		return countDownLatch.getCount() == 0;
 	}
 
 	public final void await() {

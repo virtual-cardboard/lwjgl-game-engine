@@ -58,7 +58,7 @@ public class VertexArrayObject extends ContainerGLObject {
 		for (int i = 0; i < vbos.size(); i++) {
 			VertexBufferObject vbo = vbos.get(i);
 			vbo.bind();
-			int vertexDataSize = vbo.getVertexDataSize();
+			int vertexDataSize = vbo.getNumColumns();
 			glVertexAttribPointer(i, vertexDataSize, GL_FLOAT, false, vertexDataSize * Float.BYTES, 0);
 			glEnableVertexAttribArray(i);
 		}
