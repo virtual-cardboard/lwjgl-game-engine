@@ -43,7 +43,7 @@ public abstract class TimestepTimer implements Runnable {
 		currentTime = System.currentTimeMillis();
 		while (!endCondition()) {
 			// Conditional updates if time is up
-			update();
+			doUpdate();
 			// Yielding thread in case other threads need a chance to shine
 			Thread.yield();
 		}
@@ -51,10 +51,10 @@ public abstract class TimestepTimer implements Runnable {
 	}
 
 	/**
-	 * Calls {@link #doUpdate() doUpdate()} enough times to match the
+	 * Calls {@link #update() doUpdate()} enough times to match the
 	 * {@link #targetFrameRate targetFrameRate}.
 	 */
-	private void update() {
+	private void doUpdate() {
 		long newTime = System.currentTimeMillis();
 		long frameTime = newTime - currentTime;
 
@@ -68,13 +68,17 @@ public abstract class TimestepTimer implements Runnable {
 		// Updating as many times as needed to make up for any lag
 		while (shouldUpdate()) {
 			accumulator.sub(targetFrameTime);
-			doUpdate();
+			update();
 			framesElapsed++;
 		}
 	}
 
+	public void clearAccumulator() {
+		accumulator.clear();
+	}
+
 	/**
-	 * Whether or not {@link #doUpdate() doUpdate()} should be called.
+	 * Whether or not {@link #update() doUpdate()} should be called.
 	 * 
 	 * @return if <code>doUpdate()</code> should be called
 	 */
@@ -83,10 +87,10 @@ public abstract class TimestepTimer implements Runnable {
 	}
 
 	/**
-	 * Updates the game. This function is called every tick in {@link #update()
+	 * Updates the game. This function is called every tick in {@link #doUpdate()
 	 * update()}.
 	 */
-	protected abstract void doUpdate();
+	protected abstract void update();
 
 	/**
 	 * @return true if the {@link TimestepTimer} should end, false otherwise.

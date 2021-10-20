@@ -31,7 +31,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	}
 
 	@Override
-	protected void doUpdate() {
+	protected void update() {
 		GameContext context = wrapper.context();
 		glfwPollEvents();
 		// Update the root GUI

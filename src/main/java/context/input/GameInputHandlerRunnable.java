@@ -14,7 +14,7 @@ public class GameInputHandlerRunnable extends TimestepTimer {
 	}
 
 	@Override
-	public void doUpdate() {
+	public void update() {
 		wrapper.context().input().handleAll();
 	}
 

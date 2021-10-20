@@ -23,6 +23,7 @@ public abstract class GameLogic extends ContextPart {
 
 	private Queue<GameEvent> eventQueue;
 	private GameLoader loader;
+	protected boolean timeSensitive = true;
 
 	public final void doInit(Queue<GameEvent> eventQueue, GameLoader loader) {
 		this.eventQueue = eventQueue;
@@ -41,6 +42,10 @@ public abstract class GameLogic extends ContextPart {
 
 	protected final Queue<GameEvent> eventQueue() {
 		return eventQueue;
+	}
+
+	public boolean timeSensitive() {
+		return timeSensitive;
 	}
 
 }

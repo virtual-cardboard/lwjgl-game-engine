@@ -109,6 +109,10 @@ public final class GameContext {
 		return wrapper.socketPort();
 	}
 
+	public void transition(GameContext context) {
+		context.wrapper.transition(context);
+	}
+
 	/**
 	 * Called when the {@link GameContextWrapper} terminates.
 	 * <p>

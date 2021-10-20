@@ -19,9 +19,12 @@ public class GameLogicTimer extends TimestepTimer {
 	}
 
 	@Override
-	protected void doUpdate() {
+	protected void update() {
 		GameLogic gameLogic = wrapper.context().logic();
 		gameLogic.update();
+		if (!gameLogic.timeSensitive()) {
+			clearAccumulator();
+		}
 	}
 
 	@Override
