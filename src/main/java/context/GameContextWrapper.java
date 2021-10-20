@@ -16,6 +16,7 @@ import context.logic.TimeAccumulator;
 import context.visuals.builtin.ColourFragmentShader;
 import context.visuals.builtin.IdentityVertexShader;
 import context.visuals.lwjgl.VertexArrayObject;
+import context.visuals.lwjgl.builder.GLObjectFactory;
 
 /**
  * A container for a game context to make switching game contexts thread-safe.
@@ -31,7 +32,7 @@ import context.visuals.lwjgl.VertexArrayObject;
  * @author Jay, Lunkle
  *
  */
-public class GameContextWrapper {
+public final class GameContextWrapper {
 
 	/**
 	 * Context that is being wrapped.
@@ -52,8 +53,8 @@ public class GameContextWrapper {
 	private final Queue<PacketModel> networkSendBuffer;
 	private DatagramSocket socket;
 	private GLContext glContext = new GLContext();
-
 	private ResourcePack resourcePack = new ResourcePack();
+	private GLObjectFactory glObjectFactory;
 
 	// Built-in objects initialized by WindowFrameUpdater
 	private IdentityVertexShader identityVertexShader;
@@ -88,6 +89,7 @@ public class GameContextWrapper {
 		}
 		logicTimer.setWrapper(this);
 		this.loader = loader;
+		this.glObjectFactory = new GLObjectFactory(glContext);
 	}
 
 	/**
@@ -99,7 +101,7 @@ public class GameContextWrapper {
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
 			context.setWrapper(this);
-			context.init(inputBuffer, networkReceiveBuffer, loader);
+			context.init(inputBuffer, networkReceiveBuffer, loader, glObjectFactory);
 			this.context = context;
 		}
 	}
@@ -131,10 +133,6 @@ public class GameContextWrapper {
 
 	public WindowFrameUpdater windowFrameUpdater() {
 		return windowFrameUpdater;
-	}
-
-	public GameLoader loader() {
-		return loader;
 	}
 
 	public void setRectangleVAO(VertexArrayObject rectangleVAO) {

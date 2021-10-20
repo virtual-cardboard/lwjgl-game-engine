@@ -20,7 +20,7 @@ public abstract class GameData extends ContextPart {
 		init();
 	}
 
-	public GameLoader loader() {
+	protected final GameLoader loader() {
 		return loader;
 	}
 

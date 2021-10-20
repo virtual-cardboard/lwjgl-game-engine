@@ -12,6 +12,7 @@ import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.packet.PacketModel;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
+import context.visuals.lwjgl.builder.GLObjectFactory;
 
 /**
  * A grouping of the four context parts needed in a game: <br>
@@ -81,13 +82,15 @@ public final class GameContext {
 	 * 
 	 * @param inputEventBuffer     the input buffer
 	 * @param networkReceiveBuffer the receive buffer
-	 * @param loader               the {@link Loader}
+	 * @param loader               the {@link GameLoader}
+	 * @param glObjectFactory      the {@link GLObjectFactory}
 	 */
-	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLoader loader) {
+	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLoader loader,
+			GLObjectFactory glObjectFactory) {
 		data.doInit(loader);
 		input.doInit(inputEventBuffer, networkReceiveBuffer, eventQueue);
 		logic.doInit(eventQueue, loader);
-		visuals.doInit(loader);
+		visuals.doInit(loader, glObjectFactory);
 	}
 
 	public GameContextWrapper wrapper() {

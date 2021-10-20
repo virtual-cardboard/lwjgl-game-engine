@@ -2,7 +2,7 @@ package context.visuals.lwjgl;
 
 import context.GLContext;
 
-public class GLObject {
+public abstract class GLObject {
 
 	protected GLContext context;
 
