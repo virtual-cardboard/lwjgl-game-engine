@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
-import common.loader.IOLoader;
+import common.loader.GameLoader;
 import common.timestep.GameLogicTimer;
 import common.timestep.TimestepTimer;
 import common.timestep.WindowFrameUpdater;
@@ -86,9 +86,10 @@ public final class GameEngine {
 		TimeAccumulator logicAccumulator = createTimeAccumulator();
 		GameLogicTimer logicTimer = createLogicThread(logicAccumulator, contextCountDownLatch);
 		waitForWindowCreation(windowCountDownLatch);
-		IOLoader loader = createLoader(frameUpdater);
+		GameLoader loader = createLoader(frameUpdater);
 
-		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, inputHandler, loader, socket, networkReceiveBuffer, networkSendBuffer, contextCountDownLatch);
+		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, inputHandler, loader, socket, networkReceiveBuffer, networkSendBuffer,
+				contextCountDownLatch);
 
 		print("Game engine now running");
 	}
@@ -112,10 +113,11 @@ public final class GameEngine {
 	}
 
 	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator,
-			WindowFrameUpdater frameUpdater, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler, IOLoader loader,
+			WindowFrameUpdater frameUpdater, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler, GameLoader loader,
 			DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
 			CountDownLatch contextCountDownLatch) {
-		GameContextWrapper wrapper = new GameContextWrapper(inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, logicTimer, inputHandler, loader, socket);
+		GameContextWrapper wrapper = new GameContextWrapper(inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, logicTimer,
+				inputHandler, loader, socket);
 		print("Initializing context parts");
 		wrapper.transition(context);
 		contextCountDownLatch.countDown();
@@ -235,7 +237,8 @@ public final class GameEngine {
 	 * @param contextCountDownLatch
 	 * @return
 	 */
-	private WindowFrameUpdater createWindowFrameUpdater(Queue<GameInputEvent> inputBuffer, CountDownLatch windowCountDownLatch, CountDownLatch contextCountDownLatch) {
+	private WindowFrameUpdater createWindowFrameUpdater(Queue<GameInputEvent> inputBuffer, CountDownLatch windowCountDownLatch,
+			CountDownLatch contextCountDownLatch) {
 		if (rendering) {
 			print("Creating window.");
 			GameWindow window = new GameWindow(windowTitle, inputBuffer);
@@ -253,12 +256,10 @@ public final class GameEngine {
 		return null;
 	}
 
-	private IOLoader createLoader(WindowFrameUpdater frameUpdater) {
+	private GameLoader createLoader(WindowFrameUpdater frameUpdater) {
 		if (loading) {
 			print("Creating loader");
-			IOLoader loader = new IOLoader();
-			loader.start(frameUpdater.window().getSharedContextWindowHandle());
-			return loader;
+			return new GameLoader(frameUpdater.window().getSharedContextWindowHandle());
 		}
 		return null;
 	}

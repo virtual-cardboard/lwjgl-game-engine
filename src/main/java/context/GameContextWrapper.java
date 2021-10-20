@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import common.loader.IOLoader;
+import common.loader.GameLoader;
 import common.timestep.GameLogicTimer;
 import common.timestep.WindowFrameUpdater;
 import context.input.GameInputHandlerRunnable;
@@ -32,7 +32,7 @@ import context.visuals.lwjgl.builder.GLObjectFactory;
  * @author Jay, Lunkle
  *
  */
-public class GameContextWrapper {
+public final class GameContextWrapper {
 
 	/**
 	 * Context that is being wrapped.
@@ -49,7 +49,7 @@ public class GameContextWrapper {
 	private Queue<PacketReceivedInputEvent> networkReceiveBuffer;
 	private final TimeAccumulator accumulator;
 	private final WindowFrameUpdater windowFrameUpdater;
-	private final IOLoader loader;
+	private final GameLoader loader;
 	private final Queue<PacketModel> networkSendBuffer;
 	private DatagramSocket socket;
 	private GLContext glContext = new GLContext();
@@ -70,11 +70,11 @@ public class GameContextWrapper {
 	 * @param windowFrameUpdateTimer the {@link WindowFrameUpdater}
 	 * @param logicTimer
 	 * @param inputHandler
-	 * @param loader                 the {@link IOLoader}
+	 * @param loader                 the {@link GameLoader}
 	 */
 	public GameContextWrapper(Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
 			TimeAccumulator accumulator, WindowFrameUpdater windowFrameUpdateTimer, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler,
-			IOLoader loader, DatagramSocket socket) {
+			GameLoader loader, DatagramSocket socket) {
 		this.socket = socket;
 		this.inputBuffer = inputBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
@@ -133,10 +133,6 @@ public class GameContextWrapper {
 
 	public WindowFrameUpdater windowFrameUpdater() {
 		return windowFrameUpdater;
-	}
-
-	public IOLoader loader() {
-		return loader;
 	}
 
 	public void setRectangleVAO(VertexArrayObject rectangleVAO) {

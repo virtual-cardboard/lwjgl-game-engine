@@ -14,9 +14,9 @@ final class GLLoadTaskFutureWrapper<V> implements RunnableFuture<V> {
 	private boolean cancelled;
 	private GLLoader linker;
 
-	public GLLoadTaskFutureWrapper(GLLoadTask<V> loadTask, GLLoader linker) {
+	public GLLoadTaskFutureWrapper(GLLoadTask<V> loadTask, GLLoader glLoader) {
 		this.loadTask = loadTask;
-		this.linker = linker;
+		this.linker = glLoader;
 	}
 
 	@Override

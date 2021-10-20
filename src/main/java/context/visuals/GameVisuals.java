@@ -1,6 +1,6 @@
 package context.visuals;
 
-import common.loader.IOLoader;
+import common.loader.GameLoader;
 import context.ContextPart;
 import context.data.GameData;
 import context.visuals.gui.Gui;
@@ -26,7 +26,7 @@ public abstract class GameVisuals extends ContextPart {
 	 * The {@link RootGui} to which all GUIs will be children of.
 	 */
 	private RootGui rootGui = new RootGui(0, 0);
-	private IOLoader loader;
+	private GameLoader loader;
 	private GLObjectFactory glFactory;
 
 	public void addGui(Gui gui) {
@@ -43,7 +43,7 @@ public abstract class GameVisuals extends ContextPart {
 	 */
 	public abstract void render();
 
-	public final void doInit(IOLoader loader, GLObjectFactory glFactory) {
+	public final void doInit(GameLoader loader, GLObjectFactory glFactory) {
 		this.loader = loader;
 		this.glFactory = glFactory;
 		init();
@@ -73,7 +73,7 @@ public abstract class GameVisuals extends ContextPart {
 		}
 	}
 
-	public IOLoader loader() {
+	protected final GameLoader loader() {
 		return loader;
 	}
 
