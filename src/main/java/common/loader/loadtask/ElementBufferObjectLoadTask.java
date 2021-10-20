@@ -1,6 +1,5 @@
 package common.loader.loadtask;
 
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 import common.loader.GLLoadTask;
@@ -20,10 +19,6 @@ public final class ElementBufferObjectLoadTask extends GLLoadTask<ElementBufferO
 		super(countDownLatch);
 		this.context = context;
 		this.indices = indices;
-	}
-
-	@Override
-	protected void loadIO() throws IOException {
 	}
 
 	@Override

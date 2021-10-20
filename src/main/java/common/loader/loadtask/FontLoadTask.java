@@ -44,7 +44,7 @@ public final class FontLoadTask extends GLLoadTask<GameFont> {
 	}
 
 	@Override
-	public void loadIO() throws IOException {
+	public GameFont loadGL() {
 		String pngName = fontName + ".png";
 		String vcfontName = fontName + "." + VC_FONT;
 		File textureFile = new File(pngName);
@@ -54,11 +54,12 @@ public final class FontLoadTask extends GLLoadTask<GameFont> {
 			vcfontFile = new File(PATH + "fonts" + separator + vcfontName);
 		}
 		textureLoadIO(textureFile.getPath());
-		font = new FontLoader().loadFont(vcfontFile, texture);
-	}
-
-	@Override
-	public GameFont loadGL() {
+		try {
+			font = new FontLoader().loadFont(vcfontFile, texture);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		// Above should be separated into an IOLoadTask.
 		texture.setId(glGenTextures());
 		texture.bind();
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);

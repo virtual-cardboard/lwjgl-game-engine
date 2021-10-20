@@ -1,6 +1,5 @@
 package common.loader.loadtask;
 
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 import common.loader.GLLoadTask;
@@ -22,10 +21,6 @@ public final class VertexBufferObjectLoadTask extends GLLoadTask<VertexBufferObj
 		this.context = context;
 		this.indices = indices;
 		this.dataSize = dataSize;
-	}
-
-	@Override
-	protected void loadIO() throws IOException {
 	}
 
 	@Override

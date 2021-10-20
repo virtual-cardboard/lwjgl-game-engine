@@ -14,10 +14,7 @@ public final class GameLoader {
 
 	public <T> Future<T> submit(LoadTask<T> t) {
 		if (t instanceof GLLoadTask) {
-			GLLoadTask<T> gllt = (GLLoadTask<T>) t;
-			GLLoadTaskFutureWrapper<T> futureWrapper = new GLLoadTaskFutureWrapper<>(gllt, glLoader);
-			ioLoader.execute(futureWrapper);
-			return futureWrapper;
+			return glLoader.submit((GLLoadTask<T>) t);
 		} else {
 			return ioLoader.submit(t);
 		}

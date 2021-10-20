@@ -43,7 +43,7 @@ public class TextureLoadTask extends GLLoadTask<Texture> {
 	}
 
 	@Override
-	public void loadIO() {
+	public Texture loadGL() {
 		texture = new Texture(context, textureUnit);
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			IntBuffer w = stack.mallocInt(1);
@@ -57,10 +57,6 @@ public class TextureLoadTask extends GLLoadTask<Texture> {
 			texture.setWidth(w.get());
 			texture.setHeight(h.get());
 		}
-	}
-
-	@Override
-	public Texture loadGL() {
 		texture.setId(glGenTextures());
 		texture.bind();
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);

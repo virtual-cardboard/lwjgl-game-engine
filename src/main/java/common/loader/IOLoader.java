@@ -23,10 +23,6 @@ public final class IOLoader {
 		return loaders.submit(t);
 	}
 
-	public <T> void execute(GLLoadTaskFutureWrapper<T> futureWrapper) {
-		loaders.execute(futureWrapper);
-	}
-
 	public void terminate() {
 		loaders.shutdown();
 	}

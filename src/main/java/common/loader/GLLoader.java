@@ -33,16 +33,15 @@ public final class GLLoader {
 	}
 
 	/**
-	 * Submits a {@link GLLoadTask} to the executorService. The load task's
-	 * {@link GLLoadTask#doLoadGL() doLoadGL()} method would be executed some time
-	 * in the future. Submitted load tasks would be executed in the order that they
-	 * are added.
+	 * Submits a {@link GLLoadTask} to the executorService. The load task would be
+	 * executed some time in the future. Submitted load tasks would be executed in
+	 * the order that they are added.
 	 * 
 	 * @param glLoadTask the <code>GLLoadTask</code> to submit
 	 * @return the future of the loaded object
 	 */
 	public <T> Future<T> submit(GLLoadTask<T> glLoadTask) {
-		return executor.submit(glLoadTask::doLoadGL);
+		return executor.submit(glLoadTask);
 	}
 
 	public void terminate() {

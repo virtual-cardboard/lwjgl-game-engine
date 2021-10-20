@@ -2,7 +2,6 @@ package common.loader.loadtask;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -33,14 +32,10 @@ public final class ShaderFileLoadTask extends GLLoadTask<ShaderProgram> {
 	}
 
 	@Override
-	public void loadIO() throws IOException {
+	public ShaderProgram loadGL() {
 		File file = getFile();
 		source = loadSource(file);
 		shader = new Shader(type);
-	}
-
-	@Override
-	public ShaderProgram loadGL() {
 		shader.setId(shader.getShaderType().genId());
 		shader.compile(source);
 		shaderProgram.attachShader(shader);
@@ -63,7 +58,7 @@ public final class ShaderFileLoadTask extends GLLoadTask<ShaderProgram> {
 		return file;
 	}
 
-	private String loadSource(File file) throws FileNotFoundException, IOException {
+	private String loadSource(File file) {
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			StringBuilder code = new StringBuilder();
 			String line;
@@ -71,6 +66,8 @@ public final class ShaderFileLoadTask extends GLLoadTask<ShaderProgram> {
 				code.append(line + "\n");
 			}
 			return code.toString();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
