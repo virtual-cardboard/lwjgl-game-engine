@@ -16,7 +16,6 @@ import context.logic.TimeAccumulator;
 import context.visuals.builtin.ColourFragmentShader;
 import context.visuals.builtin.IdentityVertexShader;
 import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.lwjgl.builder.GLObjectFactory;
 
 /**
  * A container for a game context to make switching game contexts thread-safe.
@@ -54,7 +53,6 @@ public final class GameContextWrapper {
 	private DatagramSocket socket;
 	private GLContext glContext = new GLContext();
 	private ResourcePack resourcePack = new ResourcePack();
-	private GLObjectFactory glObjectFactory;
 
 	// Built-in objects initialized by WindowFrameUpdater
 	private IdentityVertexShader identityVertexShader;
@@ -89,7 +87,6 @@ public final class GameContextWrapper {
 		}
 		logicTimer.setWrapper(this);
 		this.loader = loader;
-		this.glObjectFactory = new GLObjectFactory(glContext);
 	}
 
 	/**
@@ -101,7 +98,7 @@ public final class GameContextWrapper {
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
 			context.setWrapper(this);
-			context.init(inputBuffer, networkReceiveBuffer, loader, glObjectFactory);
+			context.init(inputBuffer, networkReceiveBuffer, loader);
 			this.context = context;
 		}
 	}
