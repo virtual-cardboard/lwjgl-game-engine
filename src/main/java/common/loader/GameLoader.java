@@ -1,5 +1,6 @@
 package common.loader;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 public final class GameLoader {
@@ -13,10 +14,22 @@ public final class GameLoader {
 	}
 
 	public <T> Future<T> submit(LoadTask<T> t) {
-		if (t instanceof GLLoadTask) {
-			return glLoader.submit((GLLoadTask<T>) t);
-		} else {
-			return ioLoader.submit(t);
+		return t.accept(this);
+	}
+
+	<T> Future<T> submitIOLoadTask(IOLoadTask<T> ioLoadTask) {
+		return ioLoader.submit(ioLoadTask);
+	}
+
+	<T> Future<T> submitGLLoadTask(GLLoadTask<T> glLoadTask) {
+		return glLoader.submit(glLoadTask);
+	}
+
+	<T> Future<T> submitAndReturnImmediately(LoadTask<T> t) {
+		try {
+			return CompletableFuture.completedFuture(t.call());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 

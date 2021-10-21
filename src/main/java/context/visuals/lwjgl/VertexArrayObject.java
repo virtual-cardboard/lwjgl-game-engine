@@ -27,7 +27,7 @@ import context.GLContext;
  * @author Jay
  *
  */
-public class VertexArrayObject extends ContainerGLObject {
+public class VertexArrayObject extends GLContainerObject {
 
 	private int id;
 	private List<VertexBufferObject> vbos = new ArrayList<>();

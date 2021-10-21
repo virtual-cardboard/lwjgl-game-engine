@@ -13,7 +13,7 @@ import context.GLContext;
  * @author Jay
  *
  */
-public class ElementBufferObject extends RegularGLObject {
+public class ElementBufferObject extends GLRegularObject {
 
 	private int id;
 	private int[] data;

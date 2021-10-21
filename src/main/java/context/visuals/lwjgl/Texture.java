@@ -16,7 +16,7 @@ import context.GLContext;
  * @author Jay
  *
  */
-public class Texture extends RegularGLObject {
+public class Texture extends GLRegularObject {
 
 	private int id;
 	private int width, height;

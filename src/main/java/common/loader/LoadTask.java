@@ -2,6 +2,7 @@ package common.loader;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Future;
 
 /**
  * Use a LoadTask for I/O operations.
@@ -26,6 +27,8 @@ abstract class LoadTask<T> implements Callable<T> {
 	public final CountDownLatch countDownLatch() {
 		return countDownLatch;
 	}
+
+	protected abstract Future<T> accept(GameLoader loader);
 
 	public final void await() {
 		try {

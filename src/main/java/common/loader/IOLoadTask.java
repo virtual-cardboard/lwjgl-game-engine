@@ -2,6 +2,7 @@ package common.loader;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Future;
 
 public abstract class IOLoadTask<T> extends LoadTask<T> {
 
@@ -12,10 +13,6 @@ public abstract class IOLoadTask<T> extends LoadTask<T> {
 	public IOLoadTask(CountDownLatch countDownLatch) {
 		super(countDownLatch);
 	}
-//
-//	@Override
-//	public final void run() {
-//	}
 
 	@Override
 	public final T call() throws Exception {
@@ -29,6 +26,18 @@ public abstract class IOLoadTask<T> extends LoadTask<T> {
 		return t;
 	}
 
+	@Override
+	protected Future<T> accept(GameLoader loader) {
+		return loader.submitIOLoadTask(this);
+	}
+
+	/**
+	 * Loads and returns an object of type <code>T</code>, where <code>T</code> is
+	 * the generic type of this IOLoadTask.
+	 * 
+	 * @return an object of type <code>T</code>
+	 * @throws IOException when an IOException occurs
+	 */
 	protected abstract T load() throws IOException;
 
 }

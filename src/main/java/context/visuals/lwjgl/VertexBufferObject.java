@@ -16,7 +16,7 @@ import context.GLContext;
  * @author Jay
  *
  */
-public class VertexBufferObject extends RegularGLObject {
+public class VertexBufferObject extends GLRegularObject {
 
 	private int id;
 	private float[] data;
