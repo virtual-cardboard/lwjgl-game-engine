@@ -3,10 +3,10 @@ package context.visuals.renderer;
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
-import context.GameContextWrapper;
+import context.GameContext;
+import context.ResourcePack;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
-import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.VertexArrayObject;
 
@@ -22,16 +22,14 @@ public class LineRenderer extends GameRenderer {
 	private ShaderProgram shaderProgram;
 
 	/**
-	 * Creates an {@link LineRenderer} with the given {@link ShaderProgram} and
-	 * rectangular {@link VertexArrayObject}.
+	 * Creates a <code>LineRenderer</code> using the line shader program from a
+	 * {@link GameContext}'s {@link ResourcePack}. The line shader program should be
+	 * put into the <code>ResourcePack</code> with the name <code>"line"</code>.
 	 * 
-	 * @param lineShaderProgram the shader program to use when rendering lines
-	 * 
-	 * @see ShaderProgram
-	 * @see Shader
+	 * @param context the <code>GameContext</code>
 	 */
-	public LineRenderer(GameContextWrapper wrapper) {
-		super(wrapper);
+	public LineRenderer(GameContext context) {
+		super(context);
 		this.shaderProgram = resourcePack().getShaderProgram("line");
 	}
 

@@ -2,12 +2,11 @@ package context.visuals.renderer;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
-import context.GameContextWrapper;
+import context.GameContext;
+import context.ResourcePack;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
-import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderProgram;
-import context.visuals.lwjgl.VertexArrayObject;
 
 /**
  * A {@link GameRenderer} that renders ellipses.
@@ -21,16 +20,15 @@ public class EllipseRenderer extends GameRenderer {
 	private ShaderProgram shaderProgram;
 
 	/**
-	 * Creates an {@link EllipseRenderer} with the given {@link ShaderProgram} and
-	 * rectangular {@link VertexArrayObject}.
+	 * Creates a <code>EllipseRenderer</code> using the ellipse shader program from
+	 * a {@link GameContext}'s {@link ResourcePack}. The ellipse shader program
+	 * should be put into the <code>ResourcePack</code> with the name
+	 * <code>"ellipse"</code>.
 	 * 
-	 * @param ellipseShaderProgram the shader program to use when rendering ellipses
-	 * 
-	 * @see ShaderProgram
-	 * @see Shader
+	 * @param context the <code>GameContext</code>
 	 */
-	public EllipseRenderer(GameContextWrapper wrapper) {
-		super(wrapper);
+	public EllipseRenderer(GameContext context) {
+		super(context);
 		this.shaderProgram = resourcePack().getShaderProgram("ellipse");
 	}
 

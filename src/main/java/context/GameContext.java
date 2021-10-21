@@ -106,6 +106,10 @@ public final class GameContext {
 		return wrapper.glContext();
 	}
 
+	public ResourcePack resourcePack() {
+		return wrapper.resourcePack();
+	}
+
 	public void transition(GameContext context) {
 		context.wrapper.transition(context);
 	}

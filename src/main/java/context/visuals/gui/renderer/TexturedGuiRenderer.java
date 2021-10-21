@@ -1,7 +1,7 @@
 package context.visuals.gui.renderer;
 
 import common.math.Matrix4f;
-import context.GameContextWrapper;
+import context.GameContext;
 import context.visuals.colour.Colour;
 import context.visuals.gui.TexturedGui;
 import context.visuals.lwjgl.ShaderProgram;
@@ -12,8 +12,8 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 	protected TextureRenderer textureRenderer;
 	protected ShaderProgram shaderProgram;
 
-	public TexturedGuiRenderer(GameContextWrapper wrapper, TextureRenderer textureRenderer) {
-		super(wrapper);
+	public TexturedGuiRenderer(GameContext context, TextureRenderer textureRenderer) {
+		super(context);
 		this.textureRenderer = textureRenderer;
 		this.shaderProgram = resourcePack().getShaderProgram("rectangle");
 	}
