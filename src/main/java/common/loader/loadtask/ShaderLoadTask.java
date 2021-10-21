@@ -8,52 +8,43 @@ import java.util.concurrent.CountDownLatch;
 
 import common.loader.GLLoadTask;
 import context.visuals.lwjgl.Shader;
-import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.ShaderType;
 
-public final class ShaderFileLoadTask extends GLLoadTask<ShaderProgram> {
+public final class ShaderLoadTask extends GLLoadTask<Shader> {
 
 	private ShaderType type;
-	private ShaderProgram shaderProgram;
 	private String sourceLocation;
 
 	private String source;
 	private Shader shader;
 
-	public ShaderFileLoadTask(ShaderType type, ShaderProgram shaderProgram, String sourceLocation) {
-		this(new CountDownLatch(4), type, shaderProgram, sourceLocation);
+	public ShaderLoadTask(ShaderType type, String sourceLocation) {
+		this(new CountDownLatch(4), type, sourceLocation);
 	}
 
-	public ShaderFileLoadTask(CountDownLatch countDownLatch, ShaderType type, ShaderProgram shaderProgram, String sourceLocation) {
+	public ShaderLoadTask(CountDownLatch countDownLatch, ShaderType type, String sourceLocation) {
 		super(countDownLatch);
 		this.type = type;
-		this.shaderProgram = shaderProgram;
 		this.sourceLocation = sourceLocation;
 	}
 
 	@Override
-	public ShaderProgram loadGL() {
+	public Shader loadGL() {
 		File file = getFile();
 		source = loadSource(file);
 		shader = new Shader(type);
 		shader.setId(shader.getShaderType().genId());
 		shader.compile(source);
-		shaderProgram.attachShader(shader);
-		countDownLatch.countDown();
-		if (countDownLatch.getCount() < 3) {
-			shaderProgram.generateId();
-			shaderProgram.link();
-		}
-		return shaderProgram;
+		return shader;
 	}
 
 	private File getFile() {
-		String shaderPath = Shader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		// First check relative path for built-in shaders
-		File file = new File(shaderPath + sourceLocation);
+		// First check absolute path
+		File file = new File(sourceLocation);
 		if (!file.exists()) {
-			// Create file with absolute path if the relative path does not resolve
-			file = new File(sourceLocation);
+			String shaderPath = Shader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+			// Then check relative path for built-in shaders
+			file = new File(shaderPath + sourceLocation);
 		}
 		return file;
 	}
@@ -69,10 +60,6 @@ public final class ShaderFileLoadTask extends GLLoadTask<ShaderProgram> {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public Shader getShader() {
-		return shader;
 	}
 
 }

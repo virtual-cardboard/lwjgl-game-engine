@@ -172,6 +172,7 @@ public final class GameContextWrapper {
 		if (loader != null) {
 			loader.terminate();
 		}
+		resourcePack.terminate();
 	}
 
 	public GLContext glContext() {

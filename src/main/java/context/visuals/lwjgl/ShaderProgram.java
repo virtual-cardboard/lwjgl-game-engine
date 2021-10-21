@@ -2,10 +2,8 @@ package context.visuals.lwjgl;
 
 import static org.lwjgl.opengl.GL20.*;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
@@ -15,9 +13,7 @@ import common.math.Vector4f;
 public class ShaderProgram {
 
 	private int id;
-	private boolean linked;
-	private Queue<Shader> toAttach = new ArrayDeque<>();
-	private List<Shader> toDelete = new ArrayList<>();
+	private List<Integer> toDelete = new ArrayList<>(3);
 
 	/**
 	 * Attach a shader to the shader program. Also tracks it to be deleted when the
@@ -26,40 +22,35 @@ public class ShaderProgram {
 	 * @param shader the shader
 	 */
 	public void attachShader(Shader shader) {
-		toAttach.add(shader);
-		toDelete.add(shader);
+		glAttachShader(id, shader.getId());
+		toDelete.add(shader.getId());
 	}
 
-	/**
-	 * Use this method over {@link #attachShader(Shader) attachShader} when a shader
-	 * should not be deleted upon deletion of the shader program.
-	 * <p>
-	 * Some use cases of this functionality can be found here: <a href="
-	 * https://stackoverflow.com/questions/9168252/attaching-multiple-shaders-of-the-same-type-in-a-single-opengl-program">
-	 * Attaching multiple shaders of the same type in a single OpenGL program? </a>
-	 * 
-	 * 
-	 * @param shader   the shader
-	 * @param doDelete set this to false if the shader should not be deleted upon
-	 *                 deletion of the shader program.
-	 */
-	public void attachShader(Shader shader, boolean doDelete) {
-		toAttach.add(shader);
-		if (doDelete) {
-			toDelete.add(shader);
-		}
-	}
+//	/**
+//	 * Use this method over {@link #attachShader(Shader) attachShader} when a shader
+//	 * should not be deleted upon deletion of the shader program.
+//	 * <p>
+//	 * Some use cases of this functionality can be found here: <a href="
+//	 * https://stackoverflow.com/questions/9168252/attaching-multiple-shaders-of-the-same-type-in-a-single-opengl-program">
+//	 * Attaching multiple shaders of the same type in a single OpenGL program? </a>
+//	 * 
+//	 * 
+//	 * @param shader   the shader
+//	 * @param doDelete set this to false if the shader should not be deleted upon
+//	 *                 deletion of the shader program.
+//	 */
+//	public void attachShader(Shader shader, boolean doDelete) {
+////		toAttach.add(shader);
+////		if (doDelete) {
+////			toDelete.add(shader);
+////		}
+//	}
 
 	/**
 	 * Links the shader program to OpenGL. Should only be called once.
 	 */
 	public void link() {
-		int numShaders = toAttach.size();
-		for (int i = 0; i < numShaders; i++) {
-			glAttachShader(id, toAttach.poll().getId());
-		}
 		glLinkProgram(id);
-		linked = true;
 	}
 
 	/**
@@ -73,16 +64,19 @@ public class ShaderProgram {
 		glUseProgram(id);
 	}
 
+	/**
+	 * Unbinds the current shader program.
+	 */
 	public static void unbind() {
 		glUseProgram(0);
 	}
 
 	public void delete() {
-		unbind();
+		glUseProgram(0);
 		for (int i = 0; i < toDelete.size(); i++) {
-			Shader shader = toDelete.get(i);
-			glDetachShader(id, shader.getId());
-			shader.delete();
+			int shaderID = toDelete.get(i);
+			glDetachShader(id, shaderID);
+			glDeleteShader(shaderID);
 		}
 		glDeleteProgram(id);
 	}
@@ -120,10 +114,6 @@ public class ShaderProgram {
 
 	public void generateId() {
 		id = glCreateProgram();
-	}
-
-	public boolean isLinked() {
-		return linked;
 	}
 
 }

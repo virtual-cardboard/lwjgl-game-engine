@@ -32,4 +32,8 @@ public final class GameFont {
 		return texture;
 	}
 
+	public void delete() {
+		texture.delete();
+	}
+
 }

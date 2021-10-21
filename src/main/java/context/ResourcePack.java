@@ -62,4 +62,11 @@ public final class ResourcePack {
 		return vertexArrayObjects.get("rectangle");
 	}
 
+	public void terminate() {
+		vertexArrayObjects.values().forEach(VertexArrayObject::delete);
+		shaderPrograms.values().forEach(ShaderProgram::delete);
+		textures.values().forEach(Texture::delete);
+		fonts.values().forEach(GameFont::delete);
+	}
+
 }
