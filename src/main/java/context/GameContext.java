@@ -111,7 +111,7 @@ public final class GameContext {
 	}
 
 	public void transition(GameContext context) {
-		context.wrapper.transition(context);
+		wrapper.transition(context);
 	}
 
 	/**
