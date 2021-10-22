@@ -10,9 +10,13 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 import java.util.concurrent.CountDownLatch;
 
+import common.loader.loadtask.ShaderProgramLoadTask;
 import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
+import context.visuals.builtin.ColourFragmentShader;
+import context.visuals.builtin.IdentityVertexShader;
+import context.visuals.lwjgl.ShaderProgram;
 
 public final class WindowFrameUpdater extends TimestepTimer {
 
@@ -69,9 +73,16 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	}
 
 	private void loadBuiltIn() {
-		wrapper.setRectangleVAO(createRectangleVAO(wrapper.glContext()));
-		wrapper.setIdentityVertexShader(createIdentityVertexShader());
-		wrapper.setColourFragmentShader(createColourFragmentShader());
+		wrapper.resourcePack().init(createRectangleVAO(wrapper.glContext()));
+		IdentityVertexShader identityVertexShader = createIdentityVertexShader();
+		ColourFragmentShader colourFragmentShader = createColourFragmentShader();
+		try {
+			ShaderProgram defaultShaderProgram = new ShaderProgramLoadTask(identityVertexShader, colourFragmentShader).call();
+			wrapper.resourcePack().putShaderProgram("default", defaultShaderProgram);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**

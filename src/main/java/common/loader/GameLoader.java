@@ -25,7 +25,7 @@ public final class GameLoader {
 		return glLoader.submit(glLoadTask);
 	}
 
-	<T> Future<T> submitAndReturnImmediately(LoadTask<T> t) {
+	<T> Future<T> submitAndReturnImmediately(GLLoadTask<T> t) {
 		try {
 			return CompletableFuture.completedFuture(t.call());
 		} catch (Exception e) {

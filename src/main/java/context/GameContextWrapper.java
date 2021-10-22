@@ -13,9 +13,6 @@ import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
-import context.visuals.builtin.ColourFragmentShader;
-import context.visuals.builtin.IdentityVertexShader;
-import context.visuals.lwjgl.VertexArrayObject;
 
 /**
  * A container for a game context to make switching game contexts thread-safe.
@@ -53,10 +50,6 @@ public final class GameContextWrapper {
 	private DatagramSocket socket;
 	private GLContext glContext = new GLContext();
 	private ResourcePack resourcePack = new ResourcePack();
-
-	// Built-in objects initialized by WindowFrameUpdater
-	private IdentityVertexShader identityVertexShader;
-	private ColourFragmentShader colourFragmentShader;
 
 	/**
 	 * A constructor that takes in the context, input buffer, logic timer,
@@ -130,32 +123,6 @@ public final class GameContextWrapper {
 
 	public WindowFrameUpdater windowFrameUpdater() {
 		return windowFrameUpdater;
-	}
-
-	public void setRectangleVAO(VertexArrayObject rectangleVAO) {
-		if (resourcePack.rectangleVAO() != null)
-			throw new IllegalStateException("Rectangle VAO already set.");
-		resourcePack.init(rectangleVAO);
-	}
-
-	public IdentityVertexShader getIdentityVertexShader() {
-		return identityVertexShader;
-	}
-
-	public void setIdentityVertexShader(IdentityVertexShader identityVertexShader) {
-		if (this.identityVertexShader != null)
-			throw new IllegalStateException("Identity vertex shader already set.");
-		this.identityVertexShader = identityVertexShader;
-	}
-
-	public ColourFragmentShader getColourFragmentShader() {
-		return colourFragmentShader;
-	}
-
-	public void setColourFragmentShader(ColourFragmentShader colourFragmentShader) {
-		if (this.colourFragmentShader != null)
-			throw new IllegalStateException("Colour fragment shader already set.");
-		this.colourFragmentShader = colourFragmentShader;
 	}
 
 	public short socketPort() {

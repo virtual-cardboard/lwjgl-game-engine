@@ -3,9 +3,11 @@ package context;
 import java.util.HashMap;
 import java.util.Map;
 
+import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
+import context.visuals.lwjgl.VertexBufferObject;
 import context.visuals.text.GameFont;
 
 /**
@@ -17,21 +19,39 @@ import context.visuals.text.GameFont;
  */
 public final class ResourcePack {
 
-	private Map<String, VertexArrayObject> vertexArrayObjects = new HashMap<>();
+	private Map<String, VertexArrayObject> vaos = new HashMap<>();
+	private Map<String, VertexBufferObject> vbos = new HashMap<>();
+	private Map<String, ElementBufferObject> ebos = new HashMap<>();
 	private Map<String, ShaderProgram> shaderPrograms = new HashMap<>();
 	private Map<String, Texture> textures = new HashMap<>();
 	private Map<String, GameFont> fonts = new HashMap<>();
 
 	public void init(VertexArrayObject rectangleVAO) {
-		vertexArrayObjects.put("rectangle", rectangleVAO);
+		vaos.put("rectangle", rectangleVAO);
 	}
 
 	public VertexArrayObject getVAO(String name) {
-		return vertexArrayObjects.get(name);
+		return vaos.get(name);
 	}
 
-	public void putVertexArrayObject(String name, VertexArrayObject vao) {
-		vertexArrayObjects.put(name, vao);
+	public void putVAO(String name, VertexArrayObject vao) {
+		vaos.put(name, vao);
+	}
+
+	public VertexBufferObject getVBO(String name) {
+		return vbos.get(name);
+	}
+
+	public void putVBO(String name, VertexBufferObject vbo) {
+		vbos.put(name, vbo);
+	}
+
+	public ElementBufferObject getEBO(String name) {
+		return ebos.get(name);
+	}
+
+	public void putEBO(String name, ElementBufferObject ebo) {
+		ebos.put(name, ebo);
 	}
 
 	public ShaderProgram getShaderProgram(String name) {
@@ -59,11 +79,12 @@ public final class ResourcePack {
 	}
 
 	public VertexArrayObject rectangleVAO() {
-		return vertexArrayObjects.get("rectangle");
+		vaos.get("rectangle");
+		return vaos.get("rectangle");
 	}
 
 	public void terminate() {
-		vertexArrayObjects.values().forEach(VertexArrayObject::delete);
+		vaos.values().forEach(VertexArrayObject::delete);
 		shaderPrograms.values().forEach(ShaderProgram::delete);
 		textures.values().forEach(Texture::delete);
 		fonts.values().forEach(GameFont::delete);

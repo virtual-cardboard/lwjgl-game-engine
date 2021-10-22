@@ -18,13 +18,13 @@ import context.visuals.lwjgl.VertexBufferObject;
  * @author Jay
  *
  */
-public final class VetexArrayObjectLoadTask extends GLContainerObjectLoadTask<VertexArrayObject> {
+public final class VertexArrayObjectLoadTask extends GLContainerObjectLoadTask<VertexArrayObject> {
 
 	private GLContext glContext;
 	private ElementBufferObject ebo;
 	private VertexBufferObject[] vbos;
 
-	public VetexArrayObjectLoadTask(GLContext glContext, ElementBufferObject ebo, VertexBufferObject... vbos) {
+	public VertexArrayObjectLoadTask(GLContext glContext, ElementBufferObject ebo, VertexBufferObject... vbos) {
 		this.glContext = glContext;
 		this.ebo = ebo;
 		this.vbos = vbos;
@@ -33,6 +33,7 @@ public final class VetexArrayObjectLoadTask extends GLContainerObjectLoadTask<Ve
 	@Override
 	protected VertexArrayObject loadGL() {
 		VertexArrayObject vao = new VertexArrayObject(glContext);
+		vao.generateId();
 		vao.setEbo(ebo);
 		for (int i = 0; i < vbos.length; i++)
 			vao.attachVBO(vbos[i]);
