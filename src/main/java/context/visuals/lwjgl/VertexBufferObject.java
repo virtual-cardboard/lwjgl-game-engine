@@ -1,10 +1,6 @@
 package context.visuals.lwjgl;
 
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL15.*;
 
 import context.GLContext;
 
@@ -39,12 +35,17 @@ public class VertexBufferObject extends GLRegularObject {
 	public void loadData() {
 		bind();
 		glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
+		context.bufferID = -1;
+	}
+
+	public void delete() {
+		glDeleteBuffers(id);
 	}
 
 	void bind() {
-		if (context.vboID == id) return;
+		if (context.bufferID == id) return;
 		glBindBuffer(GL_ARRAY_BUFFER, id);
-		context.vboID = id;
+		context.bufferID = id;
 	}
 
 	public void generateId() {
@@ -53,22 +54,6 @@ public class VertexBufferObject extends GLRegularObject {
 
 	public int getNumColumns() {
 		return numColumns;
-	}
-
-	public static class VertexBufferObjectRawData {
-
-		public float[] data;
-		public int numColumns;
-
-		public VertexBufferObjectRawData(float[] data, int numColumns) {
-			this.data = data;
-			this.numColumns = numColumns;
-		}
-
-		public VertexBufferObject createVertexBufferObject(GLContext context) {
-			return new VertexBufferObject(context, data, numColumns);
-		}
-
 	}
 
 }

@@ -26,6 +26,7 @@ public class ElementBufferObject extends GLRegularObject {
 	public void loadData() {
 		bind();
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, data, GL_STATIC_DRAW);
+		context.bufferID = -1;
 	}
 
 	public void delete() {
@@ -33,9 +34,9 @@ public class ElementBufferObject extends GLRegularObject {
 	}
 
 	void bind() {
-		if (context.eboID == id) return;
+		if (context.bufferID == id) return;
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-		context.eboID = id;
+		context.bufferID = id;
 	}
 
 	public void generateId() {
