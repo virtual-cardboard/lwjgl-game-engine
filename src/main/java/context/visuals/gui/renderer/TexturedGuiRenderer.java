@@ -15,7 +15,7 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 	public TexturedGuiRenderer(GameContext context, TextureRenderer textureRenderer) {
 		super(context);
 		this.textureRenderer = textureRenderer;
-		this.shaderProgram = resourcePack().getShaderProgram("rectangle");
+		this.shaderProgram = resourcePack.getShaderProgram("rectangle");
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class TexturedGuiRenderer extends GuiRenderer<TexturedGui> {
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
-		resourcePack().rectangleVAO().display();
+		resourcePack.rectangleVAO().display(glContext);
 		if (gui.getTexture() != null) {
 			textureRenderer.render(gui.getTexture(), matrix4f);
 		}

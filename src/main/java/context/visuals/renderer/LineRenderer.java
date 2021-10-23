@@ -30,7 +30,7 @@ public class LineRenderer extends GameRenderer {
 	 */
 	public LineRenderer(GameContext context) {
 		super(context);
-		this.shaderProgram = resourcePack().getShaderProgram("line");
+		this.shaderProgram = resourcePack.getShaderProgram("line");
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class LineRenderer extends GameRenderer {
 		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
 
 		// Display VAO
-		resourcePack().rectangleVAO().display();
+		resourcePack.rectangleVAO().display(glContext);
 	}
 
 }

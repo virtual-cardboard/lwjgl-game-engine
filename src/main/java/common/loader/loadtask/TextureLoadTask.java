@@ -18,7 +18,6 @@ import context.visuals.lwjgl.Texture;
 
 public class TextureLoadTask extends GLLoadTask<Texture> {
 
-	private GLContext context;
 	private int textureUnit;
 	private String path;
 	private ByteBuffer textureData;
@@ -31,20 +30,19 @@ public class TextureLoadTask extends GLLoadTask<Texture> {
 	 * 
 	 * @param texture the texture to load data into
 	 */
-	public TextureLoadTask(GLContext context, int textureUnit, String path) {
-		this(new CountDownLatch(1), context, textureUnit, path);
+	public TextureLoadTask(int textureUnit, String path) {
+		this(new CountDownLatch(1), textureUnit, path);
 	}
 
-	public TextureLoadTask(CountDownLatch countDownLatch, GLContext context, int textureUnit, String path) {
+	public TextureLoadTask(CountDownLatch countDownLatch, int textureUnit, String path) {
 		super(countDownLatch);
-		this.context = context;
 		this.textureUnit = textureUnit;
 		this.path = path;
 	}
 
 	@Override
-	public Texture loadGL() {
-		texture = new Texture(context, textureUnit);
+	public Texture loadGL(GLContext glContext) {
+		texture = new Texture(textureUnit);
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			IntBuffer w = stack.mallocInt(1);
 			IntBuffer h = stack.mallocInt(1);
@@ -58,7 +56,7 @@ public class TextureLoadTask extends GLLoadTask<Texture> {
 			texture.setHeight(h.get());
 		}
 		texture.setId(glGenTextures());
-		texture.bind();
+		texture.bind(glContext);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

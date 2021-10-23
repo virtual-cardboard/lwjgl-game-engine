@@ -8,24 +8,22 @@ import context.visuals.lwjgl.ElementBufferObject;
 
 public final class ElementBufferObjectLoadTask extends GLLoadTask<ElementBufferObject> {
 
-	private GLContext context;
 	private int[] indices;
 
-	public ElementBufferObjectLoadTask(GLContext context, int[] indices) {
-		this(new CountDownLatch(1), context, indices);
+	public ElementBufferObjectLoadTask(int[] indices) {
+		this(new CountDownLatch(1), indices);
 	}
 
-	public ElementBufferObjectLoadTask(CountDownLatch countDownLatch, GLContext context, int[] indices) {
+	public ElementBufferObjectLoadTask(CountDownLatch countDownLatch, int[] indices) {
 		super(countDownLatch);
-		this.context = context;
 		this.indices = indices;
 	}
 
 	@Override
-	protected ElementBufferObject loadGL() {
-		ElementBufferObject ebo = new ElementBufferObject(context, indices);
+	protected ElementBufferObject loadGL(GLContext glContext) {
+		ElementBufferObject ebo = new ElementBufferObject(indices);
 		ebo.generateId();
-		ebo.loadData();
+		ebo.loadData(glContext);
 		return ebo;
 	}
 

@@ -77,7 +77,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		IdentityVertexShader identityVertexShader = createIdentityVertexShader();
 		ColourFragmentShader colourFragmentShader = createColourFragmentShader();
 		try {
-			ShaderProgram defaultShaderProgram = new ShaderProgramLoadTask(identityVertexShader, colourFragmentShader).call();
+			ShaderProgram defaultShaderProgram = new ShaderProgramLoadTask(identityVertexShader, colourFragmentShader).doLoadGL(wrapper.glContext());
 			wrapper.resourcePack().putShaderProgram("default", defaultShaderProgram);
 		} catch (Exception e) {
 			e.printStackTrace();

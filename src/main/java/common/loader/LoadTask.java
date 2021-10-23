@@ -1,6 +1,5 @@
 package common.loader;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 
@@ -12,7 +11,7 @@ import java.util.concurrent.Future;
  * @see IOLoader
  *
  */
-abstract class LoadTask<T> implements Callable<T> {
+abstract class LoadTask<T> {
 
 	protected final CountDownLatch countDownLatch;
 

@@ -26,25 +26,23 @@ public final class FontLoadTask extends GLLoadTask<GameFont> {
 	private static final String PATH = FontLoadTask.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 	public static final String VC_FONT = "vcfont";
 
-	private GLContext context;
 	private String fontName;
 	private Texture texture;
 	private ByteBuffer textureData;
 
 	private GameFont font;
 
-	public FontLoadTask(GLContext context, String fontName) {
-		this(new CountDownLatch(1), context, fontName);
+	public FontLoadTask(String fontName) {
+		this(new CountDownLatch(1), fontName);
 	}
 
-	public FontLoadTask(CountDownLatch countDownLatch, GLContext context, String fontName) {
+	public FontLoadTask(CountDownLatch countDownLatch, String fontName) {
 		super(countDownLatch);
-		this.context = context;
 		this.fontName = fontName;
 	}
 
 	@Override
-	public GameFont loadGL() {
+	public GameFont loadGL(GLContext glContext) {
 		String pngName = fontName + ".png";
 		String vcfontName = fontName + "." + VC_FONT;
 		File textureFile = new File(pngName);
@@ -61,7 +59,7 @@ public final class FontLoadTask extends GLLoadTask<GameFont> {
 		}
 		// Above should be separated into an IOLoadTask.
 		texture.setId(glGenTextures());
-		texture.bind();
+		texture.bind(glContext);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -79,7 +77,7 @@ public final class FontLoadTask extends GLLoadTask<GameFont> {
 	 * @param texturePath the path of the texture to load
 	 */
 	private void textureLoadIO(String texturePath) {
-		texture = new Texture(context, 31); // Use 31st texture unit
+		texture = new Texture(31); // Use 31st texture unit
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			IntBuffer w = stack.mallocInt(1);
 			IntBuffer h = stack.mallocInt(1);

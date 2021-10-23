@@ -18,25 +18,25 @@ public class ElementBufferObject extends GLRegularObject {
 	private int id;
 	private int[] data;
 
-	public ElementBufferObject(GLContext context, final int[] indices) {
-		super(context);
+	public ElementBufferObject(final int[] indices) {
 		this.data = indices;
 	}
 
-	public void loadData() {
-		bind();
+	public void loadData(GLContext glContext) {
+		bind(glContext);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, data, GL_STATIC_DRAW);
-		context.bufferID = -1;
+		glContext.bufferID = -1;
 	}
 
 	public void delete() {
 		glDeleteBuffers(id);
 	}
 
-	void bind() {
-		if (context.bufferID == id) return;
+	@Override
+	void bind(GLContext glContext) {
+		if (glContext.bufferID == id) return;
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-		context.bufferID = id;
+		glContext.bufferID = id;
 	}
 
 	public void generateId() {

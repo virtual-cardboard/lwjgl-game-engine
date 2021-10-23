@@ -11,6 +11,7 @@ import common.loader.GameLoader;
 import common.timestep.GameLogicTimer;
 import common.timestep.TimestepTimer;
 import common.timestep.WindowFrameUpdater;
+import context.GLContext;
 import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
@@ -86,10 +87,11 @@ public final class GameEngine {
 		TimeAccumulator logicAccumulator = createTimeAccumulator();
 		GameLogicTimer logicTimer = createLogicThread(logicAccumulator, contextCountDownLatch);
 		waitForWindowCreation(windowCountDownLatch);
-		GameLoader loader = createLoader(frameUpdater);
+		GLContext glContext = new GLContext();
+		GameLoader loader = createLoader(frameUpdater, glContext);
 
-		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, inputHandler, loader, socket, networkReceiveBuffer, networkSendBuffer,
-				contextCountDownLatch);
+		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, inputHandler, glContext, loader, socket,
+				networkReceiveBuffer, networkSendBuffer, contextCountDownLatch);
 
 		print("Game engine now running");
 	}
@@ -113,11 +115,11 @@ public final class GameEngine {
 	}
 
 	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator,
-			WindowFrameUpdater frameUpdater, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler, GameLoader loader,
+			WindowFrameUpdater frameUpdater, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler, GLContext glContext, GameLoader loader,
 			DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
 			CountDownLatch contextCountDownLatch) {
 		GameContextWrapper wrapper = new GameContextWrapper(inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, logicTimer,
-				inputHandler, loader, socket);
+				inputHandler, glContext, loader, socket);
 		print("Initializing context parts");
 		wrapper.transition(context);
 		contextCountDownLatch.countDown();
@@ -256,10 +258,10 @@ public final class GameEngine {
 		return null;
 	}
 
-	private GameLoader createLoader(WindowFrameUpdater frameUpdater) {
+	private GameLoader createLoader(WindowFrameUpdater frameUpdater, GLContext glContext) {
 		if (loading) {
 			print("Creating loader");
-			return new GameLoader(frameUpdater.window().getSharedContextWindowHandle());
+			return new GameLoader(frameUpdater.window().getSharedContextWindowHandle(), glContext);
 		}
 		return null;
 	}

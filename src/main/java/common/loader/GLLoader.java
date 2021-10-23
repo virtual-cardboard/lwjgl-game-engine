@@ -7,6 +7,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import context.GLContext;
+
 /**
  * A loader thread used for OpenGL function calls. Uses a shared context with
  * the rendering thread so that all non-container objects can be directly used
@@ -18,6 +20,7 @@ import java.util.concurrent.Future;
 public final class GLLoader {
 
 	private ExecutorService executor;
+	private GLContext glContext;
 
 	public GLLoader(long sharedContextWindowHandle) {
 		executor = Executors.newSingleThreadExecutor(r -> {
@@ -30,6 +33,7 @@ public final class GLLoader {
 			glfwMakeContextCurrent(sharedContextWindowHandle);
 			createCapabilities();
 		});
+		glContext = new GLContext();
 	}
 
 	/**
@@ -41,7 +45,7 @@ public final class GLLoader {
 	 * @return the future of the loaded object
 	 */
 	public <T> Future<T> submit(GLLoadTask<T> glLoadTask) {
-		return executor.submit(glLoadTask);
+		return executor.submit(() -> glLoadTask.doLoadGL(glContext));
 	}
 
 	public void terminate() {

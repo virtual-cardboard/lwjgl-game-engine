@@ -33,7 +33,7 @@ public class TextRenderer extends GameRenderer {
 	 */
 	public TextRenderer(GameContext context) {
 		super(context);
-		shaderProgram = resourcePack().getShaderProgram("text");
+		shaderProgram = resourcePack.getShaderProgram("text");
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class TextRenderer extends GameRenderer {
 		int totalYOffset = 0;
 
 		shaderProgram.bind();
-		font.texture().bind();
+		font.texture().bind(glContext);
 
 		Vector2f rootGuiDimensions = rootGui.getDimensions();
 		Matrix4f matrix4f = new Matrix4f();
@@ -89,7 +89,7 @@ public class TextRenderer extends GameRenderer {
 		shaderProgram.setFloat("height", c.height());
 		shaderProgram.setFloat("x", c.x());
 		shaderProgram.setFloat("y", c.y());
-		resourcePack().rectangleVAO().display();
+		resourcePack.rectangleVAO().display(glContext);
 	}
 
 }

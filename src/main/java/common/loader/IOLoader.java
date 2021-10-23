@@ -19,7 +19,7 @@ public final class IOLoader {
 		loaders = Executors.newFixedThreadPool(NUM_THREADS, daemonThreadFactory);
 	}
 
-	public <T> Future<T> submit(LoadTask<T> t) {
+	public <T> Future<T> submit(IOLoadTask<T> t) {
 		return loaders.submit(t);
 	}
 

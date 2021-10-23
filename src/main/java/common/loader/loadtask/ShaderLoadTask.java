@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 import common.loader.GLLoadTask;
+import context.GLContext;
 import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderType;
 
@@ -29,7 +30,7 @@ public final class ShaderLoadTask extends GLLoadTask<Shader> {
 	}
 
 	@Override
-	public Shader loadGL() {
+	public Shader loadGL(GLContext glContext) {
 		File file = getFile();
 		source = loadSource(file);
 		shader = new Shader(type);

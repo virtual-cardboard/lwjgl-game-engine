@@ -12,7 +12,7 @@ public final class DefaultGuiRenderer extends GuiRenderer<Gui> {
 
 	public DefaultGuiRenderer(GameContext context) {
 		super(context);
-		this.shaderProgram = resourcePack().getShaderProgram("rectangle");
+		this.shaderProgram = resourcePack.getShaderProgram("rectangle");
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public final class DefaultGuiRenderer extends GuiRenderer<Gui> {
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f.clone().translate(x, y).scale(width, height));
 		shaderProgram.setVec4("fill", Colour.toNormalizedVector(gui.getBackgroundColour()));
-		resourcePack().rectangleVAO().display();
+		resourcePack.rectangleVAO().display(glContext);
 	}
 
 }

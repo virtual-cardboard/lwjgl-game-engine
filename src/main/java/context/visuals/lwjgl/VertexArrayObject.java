@@ -33,13 +33,9 @@ public class VertexArrayObject extends GLContainerObject {
 	private List<VertexBufferObject> vbos = new ArrayList<>();
 	private ElementBufferObject ebo;
 
-	public VertexArrayObject(GLContext context) {
-		super(context);
-	}
-
-	public void display() {
-		bind();
-		ebo.bind();
+	public void display(GLContext glContext) {
+		bind(glContext);
+		ebo.bind(glContext);
 		glDrawElements(GL_TRIANGLES, ebo.size(), GL_UNSIGNED_INT, 0);
 	}
 
@@ -53,25 +49,25 @@ public class VertexArrayObject extends GLContainerObject {
 	 * 
 	 * @see VertexBufferObject
 	 */
-	public void enableVertexAttribPointers() {
-		bind();
+	public void enableVertexAttribPointers(GLContext glContext) {
+		bind(glContext);
 		for (int i = 0; i < vbos.size(); i++) {
 			VertexBufferObject vbo = vbos.get(i);
-			vbo.bind();
+			vbo.bind(glContext);
 			int vertexDataSize = vbo.getNumColumns();
 			glVertexAttribPointer(i, vertexDataSize, GL_FLOAT, false, vertexDataSize * Float.BYTES, 0);
 			glEnableVertexAttribArray(i);
 		}
 	}
 
-	private void bind() {
-		if (context.vaoID == id) return;
+	@Override
+	void bind(GLContext glContext) {
+		if (glContext.vaoID == id) return;
 		glBindVertexArray(id);
-		context.vaoID = id;
+		glContext.vaoID = id;
 	}
 
 	public void attachVBO(VertexBufferObject vbo) {
-		bind();
 		vbos.add(vbo);
 	}
 

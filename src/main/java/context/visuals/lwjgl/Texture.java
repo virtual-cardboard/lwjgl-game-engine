@@ -31,8 +31,7 @@ public class Texture extends GLRegularObject {
 	 * @param textureUnit the texture unit
 	 * 
 	 */
-	public Texture(GLContext context, int textureUnit) {
-		super(context);
+	public Texture(int textureUnit) {
 		if (textureUnit < 0 || textureUnit > 47) {
 			throw new IllegalArgumentException("Invalid texture unit: " + textureUnit);
 		}
@@ -49,11 +48,12 @@ public class Texture extends GLRegularObject {
 	/**
 	 * Binds the texture.
 	 */
-	public void bind() {
-		if (context.textureIDs[textureUnit] == id) return;
+	@Override
+	public void bind(GLContext glContext) {
+		if (glContext.textureIDs[textureUnit] == id) return;
 		glActiveTexture(GL_TEXTURE0 + textureUnit);
 		glBindTexture(GL_TEXTURE_2D, id);
-		context.textureIDs[textureUnit] = id;
+		glContext.textureIDs[textureUnit] = id;
 	}
 
 	/**

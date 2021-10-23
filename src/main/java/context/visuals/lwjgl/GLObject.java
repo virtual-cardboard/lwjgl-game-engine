@@ -4,10 +4,11 @@ import context.GLContext;
 
 public abstract class GLObject {
 
-	protected GLContext context;
-
-	public GLObject(GLContext context) {
-		this.context = context;
-	}
+	/**
+	 * Binds the {@link GLObject}.
+	 * 
+	 * @param glContext the {@link GLContext}
+	 */
+	abstract void bind(GLContext glContext);
 
 }

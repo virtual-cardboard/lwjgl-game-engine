@@ -29,22 +29,22 @@ public class RectangleVertexArrayObject {
 	/**
 	 * The VAO must be created before the getter is called
 	 */
-	public static VertexArrayObject createRectangleVAO(GLContext context) {
-		ElementBufferObject ebo = new ElementBufferObject(context, INDICES);
-		VertexBufferObject positionsVBO = new VertexBufferObject(context, POSITIONS, 3);
-		VertexBufferObject textureCoordinatesVBO = new VertexBufferObject(context, TEXTURE_COORDINATES, 2);
-		VertexArrayObject vao = new VertexArrayObject(context);
+	public static VertexArrayObject createRectangleVAO(GLContext glContext) {
+		ElementBufferObject ebo = new ElementBufferObject(INDICES);
+		VertexBufferObject positionsVBO = new VertexBufferObject(POSITIONS, 3);
+		VertexBufferObject textureCoordinatesVBO = new VertexBufferObject(TEXTURE_COORDINATES, 2);
+		VertexArrayObject vao = new VertexArrayObject();
 		vao.generateId();
 		ebo.generateId();
-		ebo.loadData();
+		ebo.loadData(glContext);
 		vao.setEbo(ebo);
 		positionsVBO.generateId();
-		positionsVBO.loadData();
+		positionsVBO.loadData(glContext);
 		vao.attachVBO(positionsVBO);
 		textureCoordinatesVBO.generateId();
-		textureCoordinatesVBO.loadData();
+		textureCoordinatesVBO.loadData(glContext);
 		vao.attachVBO(textureCoordinatesVBO);
-		vao.enableVertexAttribPointers();
+		vao.enableVertexAttribPointers(glContext);
 		return vao;
 	}
 

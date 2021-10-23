@@ -30,7 +30,7 @@ public class TextureRenderer extends GameRenderer {
 	 */
 	public TextureRenderer(GameContext context) {
 		super(context);
-		shaderProgram = resourcePack().getShaderProgram("texture");
+		shaderProgram = resourcePack.getShaderProgram("texture");
 	}
 
 	/**
@@ -44,8 +44,8 @@ public class TextureRenderer extends GameRenderer {
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
-		texture.bind();
-		resourcePack().rectangleVAO().display();
+		texture.bind(glContext);
+		resourcePack.rectangleVAO().display(glContext);
 	}
 
 }

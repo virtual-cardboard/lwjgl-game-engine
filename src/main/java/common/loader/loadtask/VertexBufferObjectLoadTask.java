@@ -8,26 +8,24 @@ import context.visuals.lwjgl.VertexBufferObject;
 
 public final class VertexBufferObjectLoadTask extends GLLoadTask<VertexBufferObject> {
 
-	private GLContext context;
 	private float[] indices;
 	private int dataSize;
 
-	public VertexBufferObjectLoadTask(GLContext context, float[] indices, int dataSize) {
-		this(new CountDownLatch(1), context, indices, dataSize);
+	public VertexBufferObjectLoadTask(float[] indices, int dataSize) {
+		this(new CountDownLatch(1), indices, dataSize);
 	}
 
-	public VertexBufferObjectLoadTask(CountDownLatch countDownLatch, GLContext context, float[] indices, int dataSize) {
+	public VertexBufferObjectLoadTask(CountDownLatch countDownLatch, float[] indices, int dataSize) {
 		super(countDownLatch);
-		this.context = context;
 		this.indices = indices;
 		this.dataSize = dataSize;
 	}
 
 	@Override
-	protected VertexBufferObject loadGL() {
-		VertexBufferObject vbo = new VertexBufferObject(context, indices, dataSize);
+	protected VertexBufferObject loadGL(GLContext glContext) {
+		VertexBufferObject vbo = new VertexBufferObject(indices, dataSize);
 		vbo.generateId();
-		vbo.loadData();
+		vbo.loadData(glContext);
 		return vbo;
 	}
 

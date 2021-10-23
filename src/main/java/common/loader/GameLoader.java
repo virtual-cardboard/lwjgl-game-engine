@@ -3,14 +3,18 @@ package common.loader;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
+import context.GLContext;
+
 public final class GameLoader {
 
 	private IOLoader ioLoader;
 	private GLLoader glLoader;
+	private GLContext renderingThreadGLContext;
 
-	public GameLoader(long shareContextWindowHandle) {
+	public GameLoader(long shareContextWindowHandle, GLContext renderingThreadGLContext) {
 		ioLoader = new IOLoader();
 		glLoader = new GLLoader(shareContextWindowHandle);
+		this.renderingThreadGLContext=renderingThreadGLContext;
 	}
 
 	public <T> Future<T> submit(LoadTask<T> t) {
@@ -27,7 +31,7 @@ public final class GameLoader {
 
 	<T> Future<T> submitAndReturnImmediately(GLLoadTask<T> t) {
 		try {
-			return CompletableFuture.completedFuture(t.call());
+			return CompletableFuture.completedFuture(t.doLoadGL(renderingThreadGLContext));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

@@ -26,26 +26,26 @@ public class VertexBufferObject extends GLRegularObject {
 	 * @param data       float array of values
 	 * @param numColumns the number of columns in the data
 	 */
-	public VertexBufferObject(GLContext context, final float[] data, int numColumns) {
-		super(context);
+	public VertexBufferObject(final float[] data, int numColumns) {
 		this.data = data;
 		this.numColumns = numColumns;
 	}
 
-	public void loadData() {
-		bind();
+	public void loadData(GLContext glContext) {
+		bind(glContext);
 		glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
-		context.bufferID = -1;
+		glContext.bufferID = -1;
 	}
 
 	public void delete() {
 		glDeleteBuffers(id);
 	}
 
-	void bind() {
-		if (context.bufferID == id) return;
+	@Override
+	void bind(GLContext glContext) {
+		if (glContext.bufferID == id) return;
 		glBindBuffer(GL_ARRAY_BUFFER, id);
-		context.bufferID = id;
+		glContext.bufferID = id;
 	}
 
 	public void generateId() {

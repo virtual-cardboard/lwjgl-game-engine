@@ -48,7 +48,7 @@ public final class GameContextWrapper {
 	private final GameLoader loader;
 	private final Queue<PacketModel> networkSendBuffer;
 	private DatagramSocket socket;
-	private GLContext glContext = new GLContext();
+	private GLContext glContext;
 	private ResourcePack resourcePack = new ResourcePack();
 
 	/**
@@ -65,7 +65,7 @@ public final class GameContextWrapper {
 	 */
 	public GameContextWrapper(Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
 			TimeAccumulator accumulator, WindowFrameUpdater windowFrameUpdateTimer, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler,
-			GameLoader loader, DatagramSocket socket) {
+			GLContext glContext, GameLoader loader, DatagramSocket socket) {
 		this.socket = socket;
 		this.inputBuffer = inputBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
@@ -79,6 +79,7 @@ public final class GameContextWrapper {
 			inputHandler.setWrapper(this);
 		}
 		logicTimer.setWrapper(this);
+		this.glContext = glContext;
 		this.loader = loader;
 	}
 

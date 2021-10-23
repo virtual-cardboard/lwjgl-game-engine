@@ -5,6 +5,8 @@ import static org.lwjgl.opengl.GL11.glFinish;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 
+import context.GLContext;
+
 public abstract class GLLoadTask<T> extends LoadTask<T> {
 
 	public GLLoadTask() {
@@ -15,10 +17,8 @@ public abstract class GLLoadTask<T> extends LoadTask<T> {
 		super(countDownLatch);
 	}
 
-	@Override
-	public final T call() throws Exception {
-		T t = loadGL();
-		// Call glFinish to flush openGL buffered commands.
+	public T doLoadGL(GLContext glContext) {
+		T t = loadGL(glContext);
 		glFinish();
 		countDownLatch.countDown();
 		return t;
@@ -29,6 +29,6 @@ public abstract class GLLoadTask<T> extends LoadTask<T> {
 		return loader.submitGLLoadTask(this);
 	}
 
-	protected abstract T loadGL();
+	protected abstract T loadGL(GLContext glContext);
 
 }

@@ -29,7 +29,7 @@ public class EllipseRenderer extends GameRenderer {
 	 */
 	public EllipseRenderer(GameContext context) {
 		super(context);
-		this.shaderProgram = resourcePack().getShaderProgram("ellipse");
+		this.shaderProgram = resourcePack.getShaderProgram("ellipse");
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class EllipseRenderer extends GameRenderer {
 		shaderProgram.setFloat("width", width);
 		shaderProgram.setFloat("height", height);
 		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
-		resourcePack().rectangleVAO().display();
+		resourcePack.rectangleVAO().display(glContext);
 	}
 
 }
