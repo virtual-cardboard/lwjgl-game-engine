@@ -4,7 +4,6 @@ import static context.input.networking.packet.PacketPrimitive.BYTE_ARRAY;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
 
 import common.source.GameSource;
 import context.input.networking.packet.PacketFormat;
@@ -40,7 +39,6 @@ public abstract class NetworkEvent extends SerializableEvent implements Serializ
 
 	public static NetworkEvent fromPacket(PacketModel packet) {
 		byte[] bytes = SERIALIZED_FORMAT.reader(packet).readByteArray();
-		System.out.println(Arrays.toString(bytes));
 		NetworkEvent event = null;
 		try {
 			event = (NetworkEvent) fromBytes(bytes);

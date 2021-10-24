@@ -114,7 +114,6 @@ public class PacketReader {
 	public byte[] readByteArray() {
 		typeValidate(BYTE_ARRAY);
 		int numElements = bytes[index] & 0xFF;
-		System.out.println("numElements:" + numElements);
 		index += 1;
 		byte[] val = new byte[numElements];
 		for (int i = 0; i < numElements; i++) {

@@ -35,7 +35,6 @@ public class UDPReceiver extends TerminateableRunnable {
 			PacketReceivedInputEvent event = new PacketReceivedInputEvent(currentTimeMillis(), source, toModel(packet));
 			networkReceiveBuffer.add(event);
 		} catch (SocketTimeoutException e) {
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
