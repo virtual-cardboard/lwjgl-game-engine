@@ -5,10 +5,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import common.source.GameSource;
 
-public abstract class SerializableEvent extends GameEvent {
+public abstract class SerializableEvent extends GameEvent implements Serializable {
+
+	private static final long serialVersionUID = 2930005876188291805L;
 
 	public SerializableEvent(long time, GameSource source) {
 		super(time, source);

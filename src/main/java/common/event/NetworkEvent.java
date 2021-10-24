@@ -3,15 +3,23 @@ package common.event;
 import static context.input.networking.packet.PacketPrimitive.BYTE_ARRAY;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Arrays;
 
 import common.source.GameSource;
 import context.input.networking.packet.PacketFormat;
 import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.address.PacketAddress;
 
-public abstract class NetworkEvent extends SerializableEvent {
+public abstract class NetworkEvent extends SerializableEvent implements Serializable {
+
+	private static final long serialVersionUID = 4203143549059106367L;
 
 	private static final PacketFormat SERIALIZED_FORMAT = new PacketFormat().with(BYTE_ARRAY);
+
+	public NetworkEvent(GameSource source) {
+		super(source);
+	}
 
 	public NetworkEvent(long time, GameSource source) {
 		super(time, source);
@@ -32,6 +40,7 @@ public abstract class NetworkEvent extends SerializableEvent {
 
 	public static NetworkEvent fromPacket(PacketModel packet) {
 		byte[] bytes = SERIALIZED_FORMAT.reader(packet).readByteArray();
+		System.out.println(Arrays.toString(bytes));
 		NetworkEvent event = null;
 		try {
 			event = (NetworkEvent) fromBytes(bytes);

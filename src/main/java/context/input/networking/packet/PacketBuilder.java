@@ -39,7 +39,6 @@ public class PacketBuilder {
 
 	private void typeValidate(PacketPrimitive actual) {
 		PacketPrimitive expected = primitives.poll();
-		System.out.println(expected + " " + actual);
 		if (expected != actual) {
 			throw new InputMismatchException("Packet Builder packet creation failed: expected " + expected + ", actual " + actual);
 		}
@@ -82,6 +81,7 @@ public class PacketBuilder {
 
 	public PacketBuilder consume(long[] val) {
 		typeValidate(LONG_ARRAY);
+		bytes.add((byte) val.length);
 		for (long x : val) {
 			bytes.add((byte) ((x >> 56) & 0xFF));
 			bytes.add((byte) ((x >> 48) & 0xFF));
@@ -97,6 +97,7 @@ public class PacketBuilder {
 
 	public PacketBuilder consume(int[] val) {
 		typeValidate(INT_ARRAY);
+		bytes.add((byte) val.length);
 		for (int x : val) {
 			bytes.add((byte) ((x >> 24) & 0xFF));
 			bytes.add((byte) ((x >> 16) & 0xFF));
@@ -108,6 +109,7 @@ public class PacketBuilder {
 
 	public PacketBuilder consume(short[] val) {
 		typeValidate(SHORT_ARRAY);
+		bytes.add((byte) val.length);
 		for (short x : val) {
 			bytes.add((byte) ((x >> 8) & 0xFF));
 			bytes.add((byte) (x & 0xFF));
@@ -117,6 +119,7 @@ public class PacketBuilder {
 
 	public PacketBuilder consume(byte[] val) {
 		typeValidate(BYTE_ARRAY);
+		bytes.add((byte) val.length);
 		for (byte x : val) {
 			bytes.add(x);
 		}

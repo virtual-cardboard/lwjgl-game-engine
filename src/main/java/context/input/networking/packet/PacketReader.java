@@ -70,7 +70,7 @@ public class PacketReader {
 
 	public long[] readLongArray() {
 		typeValidate(LONG_ARRAY);
-		byte numElements = bytes[index];
+		int numElements = bytes[index] & 0xFF;
 		index += 1;
 		long[] val = new long[numElements];
 		for (int i = 0; i < numElements; i++) {
@@ -86,7 +86,7 @@ public class PacketReader {
 
 	public int[] readIntArray() {
 		typeValidate(INT_ARRAY);
-		byte numElements = bytes[index];
+		int numElements = bytes[index] & 0xFF;
 		index += 1;
 		int[] val = new int[numElements];
 		for (int i = 0; i < numElements; i++) {
@@ -100,7 +100,7 @@ public class PacketReader {
 
 	public short[] readShortArray() {
 		typeValidate(SHORT_ARRAY);
-		byte numElements = bytes[index];
+		int numElements = bytes[index] & 0xFF;
 		index += 1;
 		short[] val = new short[numElements];
 		for (int i = 0; i < numElements; i++) {
@@ -113,7 +113,8 @@ public class PacketReader {
 
 	public byte[] readByteArray() {
 		typeValidate(BYTE_ARRAY);
-		byte numElements = bytes[index];
+		int numElements = bytes[index] & 0xFF;
+		System.out.println("numElements:" + numElements);
 		index += 1;
 		byte[] val = new byte[numElements];
 		for (int i = 0; i < numElements; i++) {
