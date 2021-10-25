@@ -3,6 +3,8 @@ package context;
 import java.util.HashMap;
 import java.util.Map;
 
+import context.visuals.builtin.ColourFragmentShader;
+import context.visuals.builtin.TransformationVertexShader;
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
@@ -25,9 +27,16 @@ public final class ResourcePack {
 	private Map<String, ShaderProgram> shaderPrograms = new HashMap<>();
 	private Map<String, Texture> textures = new HashMap<>();
 	private Map<String, GameFont> fonts = new HashMap<>();
+	private VertexArrayObject rectangleVAO;
+	private TransformationVertexShader transformationVS;
+	private ColourFragmentShader colourFS;
+	private ShaderProgram defaultSP;
 
-	public void init(VertexArrayObject rectangleVAO) {
-		vaos.put("rectangle", rectangleVAO);
+	public void init(VertexArrayObject rectangleVAO, TransformationVertexShader transformationVS, ColourFragmentShader colourFS, ShaderProgram defaultSP) {
+		this.rectangleVAO = rectangleVAO;
+		this.transformationVS = transformationVS;
+		this.colourFS = colourFS;
+		this.defaultSP = defaultSP;
 	}
 
 	public VertexArrayObject getVAO(String name) {
@@ -79,8 +88,19 @@ public final class ResourcePack {
 	}
 
 	public VertexArrayObject rectangleVAO() {
-		vaos.get("rectangle");
-		return vaos.get("rectangle");
+		return rectangleVAO;
+	}
+
+	public TransformationVertexShader transformationVertexShader() {
+		return transformationVS;
+	}
+
+	public ColourFragmentShader colourFragmentShader() {
+		return colourFS;
+	}
+
+	public ShaderProgram defaultShaderProgram() {
+		return defaultSP;
 	}
 
 	public void terminate() {

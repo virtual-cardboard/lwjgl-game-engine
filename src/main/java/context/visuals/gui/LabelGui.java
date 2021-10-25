@@ -1,28 +1,28 @@
 package context.visuals.gui;
 
-import context.visuals.gui.renderer.GuiRenderer;
+import common.math.Matrix4f;
+import context.visuals.renderer.TextRenderer;
+import context.visuals.text.GameFont;
 
 public class LabelGui extends Gui {
 
-	private int textColour;
+	private TextRenderer textRenderer;
 	private String text;
+	private GameFont font;
+	private int colour;
+	private float size;
 
-	public LabelGui(GuiRenderer<LabelGui> guiRenderer) {
-		this(guiRenderer, 255, "");
-	}
-
-	public LabelGui(GuiRenderer<LabelGui> guiRenderer, int textColour, String text) {
-		super(guiRenderer);
-		this.textColour = textColour;
+	public LabelGui(TextRenderer textRenderer, String text, GameFont font, int colour, float size) {
+		this.textRenderer = textRenderer;
 		this.text = text;
+		this.font = font;
+		this.colour = colour;
+		this.size = size;
 	}
 
-	public int getTextColour() {
-		return textColour;
-	}
-
-	public void setTextColour(int textColour) {
-		this.textColour = textColour;
+	@Override
+	public void render(Matrix4f matrix4f, float x, float y, float width, float height) {
+		textRenderer.render(matrix4f, text, x, y, width, font, size, colour);
 	}
 
 	public String getText() {

@@ -3,22 +3,16 @@ package context.visuals.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import context.GameContext;
+import common.math.Matrix4f;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
-import context.visuals.gui.renderer.DefaultGuiRenderer;
-import context.visuals.gui.renderer.GuiRenderer;
 
 /**
  * A Graphical User Interface (GUI) with position constraints and dimension
  * constraints.
  * <p>
  * A <code>Gui</code> can have any number of children <code>Guis</code>.
- * </p>
- * <p>
- * <code>Guis</code> are recursively displayed by {@link GuiRenderer}, starting
- * with the root Gui.
  * </p>
  * 
  * @author Jay
@@ -29,7 +23,7 @@ import context.visuals.gui.renderer.GuiRenderer;
  * @see RootGui
  *
  */
-public class Gui {
+public abstract class Gui {
 
 	private GuiPositionConstraint posXConstraint;
 	private GuiPositionConstraint posYConstraint;
@@ -42,16 +36,7 @@ public class Gui {
 	private Gui parent;
 	private List<Gui> children = new ArrayList<>();
 
-	@SuppressWarnings("rawtypes")
-	private GuiRenderer guiRenderer;
-
-	public Gui(GameContext context) {
-		this(new DefaultGuiRenderer(context));
-	}
-
-	public <T extends Gui> Gui(GuiRenderer<T> guiRenderer) {
-		this.guiRenderer = guiRenderer;
-	}
+	public abstract void render(Matrix4f matrix4f, float x, float y, float width, float height);
 
 	public void addChild(Gui child) {
 		child.setParent(this);
@@ -127,11 +112,6 @@ public class Gui {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-	}
-
-	@SuppressWarnings("rawtypes")
-	public GuiRenderer getGuiRenderer() {
-		return guiRenderer;
 	}
 
 }

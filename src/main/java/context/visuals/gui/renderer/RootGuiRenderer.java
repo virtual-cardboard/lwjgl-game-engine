@@ -7,16 +7,12 @@ import common.math.Vector2f;
 import common.math.Vector3f;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
+import context.visuals.renderer.GameRenderer;
 
-public final class RootGuiRenderer extends GuiRenderer<RootGui> {
+public final class RootGuiRenderer extends GameRenderer {
 
 	public RootGuiRenderer() {
 		super(null);
-	}
-
-	@Override
-	public void render(RootGui root, Matrix4f matrix4f, float parentX, float parentY, float parentWidth, float parentHeight) {
-		throw new IllegalStateException("Should not be calling this render function in RootGuiRenderer.");
 	}
 
 	public void render(RootGui root) {
@@ -34,11 +30,11 @@ public final class RootGuiRenderer extends GuiRenderer<RootGui> {
 	}
 
 	private void doRecursiveRender(Gui gui, RootGui root, Matrix4f matrix4f, float parentX, float parentY, float parentWidth, float parentHeight) {
-		gui.getGuiRenderer().renderGui(gui, matrix4f, parentX, parentY, parentWidth, parentHeight);
 		float x = gui.getPosX().calculateValue(parentX, parentX + parentWidth);
 		float y = gui.getPosY().calculateValue(parentY, parentY + parentHeight);
 		float w = gui.getWidth().calculateValue(parentX, parentX + parentWidth);
 		float h = gui.getHeight().calculateValue(parentY, parentY + parentHeight);
+		gui.render(matrix4f.clone(), x, y, w, h);
 
 		List<Gui> children = gui.getChildren();
 		for (int i = 0; i < children.size(); i++) {

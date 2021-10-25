@@ -1,8 +1,8 @@
 package common.timestep;
 
 import static context.visuals.builtin.ColourFragmentShader.createColourFragmentShader;
-import static context.visuals.builtin.IdentityVertexShader.createIdentityVertexShader;
 import static context.visuals.builtin.RectangleVertexArrayObject.createRectangleVAO;
+import static context.visuals.builtin.TransformationVertexShader.createTransformationVertexShader;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
@@ -15,8 +15,9 @@ import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
 import context.visuals.builtin.ColourFragmentShader;
-import context.visuals.builtin.IdentityVertexShader;
+import context.visuals.builtin.TransformationVertexShader;
 import context.visuals.lwjgl.ShaderProgram;
+import context.visuals.lwjgl.VertexArrayObject;
 
 public final class WindowFrameUpdater extends TimestepTimer {
 
@@ -73,12 +74,12 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	}
 
 	private void loadBuiltIn() {
-		wrapper.resourcePack().init(createRectangleVAO(wrapper.glContext()));
-		IdentityVertexShader identityVertexShader = createIdentityVertexShader();
+		VertexArrayObject rectangleVAO = createRectangleVAO(wrapper.glContext());
+		TransformationVertexShader transformationVertexShader = createTransformationVertexShader();
 		ColourFragmentShader colourFragmentShader = createColourFragmentShader();
 		try {
-			ShaderProgram defaultShaderProgram = new ShaderProgramLoadTask(identityVertexShader, colourFragmentShader).doLoadGL(wrapper.glContext());
-			wrapper.resourcePack().putShaderProgram("default", defaultShaderProgram);
+			ShaderProgram defaultShaderProgram = new ShaderProgramLoadTask(transformationVertexShader, colourFragmentShader).doLoadGL(wrapper.glContext());
+			wrapper.resourcePack().init(rectangleVAO, transformationVertexShader, colourFragmentShader, defaultShaderProgram);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -52,6 +52,13 @@ public class TextRenderer extends GameRenderer {
 	 * @param colour    the colour of the text
 	 */
 	public void render(RootGui rootGui, String text, int x, int y, int lineWidth, GameFont font, float fontSize, int colour) {
+		Vector2f rootGuiDimensions = rootGui.getDimensions();
+		Matrix4f matrix4f = new Matrix4f();
+		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
+		render(matrix4f, text, x, y, lineWidth, font, fontSize, colour);
+	}
+
+	public void render(Matrix4f matrix4f, String text, float x, float y, float lineWidth, GameFont font, float fontSize, int colour) {
 		char[] chars = text.toCharArray();
 		int totalXOffset = 0;
 		int totalYOffset = 0;
@@ -59,9 +66,6 @@ public class TextRenderer extends GameRenderer {
 		shaderProgram.bind();
 		font.texture().bind(glContext);
 
-		Vector2f rootGuiDimensions = rootGui.getDimensions();
-		Matrix4f matrix4f = new Matrix4f();
-		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
 		matrix4f.translate(x, y);
 		float sizeMultiplier = fontSize / font.getFontSize();
 		Vector4f colourVec4 = Colour.toNormalizedVector(colour);
