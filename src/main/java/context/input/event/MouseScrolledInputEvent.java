@@ -5,6 +5,8 @@ import context.data.user.LocalUser;
 
 public final class MouseScrolledInputEvent extends GameInputEvent {
 
+	private static final long serialVersionUID = 4607372758850330003L;
+
 	private final float xAmount;
 	private final float yAmount;
 
@@ -20,11 +22,11 @@ public final class MouseScrolledInputEvent extends GameInputEvent {
 		this.yAmount = yAmount;
 	}
 
-	public float getxAmount() {
+	public float xAmount() {
 		return xAmount;
 	}
 
-	public float getyAmount() {
+	public float yAmount() {
 		return yAmount;
 	}
 

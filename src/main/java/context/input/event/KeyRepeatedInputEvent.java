@@ -5,20 +5,22 @@ import context.data.user.LocalUser;
 
 public final class KeyRepeatedInputEvent extends GameInputEvent {
 
-	private final int keyCode;
+	private static final long serialVersionUID = 486737297198618279L;
 
-	public KeyRepeatedInputEvent(long time, GameSource source, int keyCode) {
+	private final int code;
+
+	public KeyRepeatedInputEvent(long time, GameSource source, int code) {
 		super(time, source);
-		this.keyCode = keyCode;
+		this.code = code;
 	}
 
-	public KeyRepeatedInputEvent(int keyCode) {
+	public KeyRepeatedInputEvent(int code) {
 		super(LocalUser.LOCAL_USER);
-		this.keyCode = keyCode;
+		this.code = code;
 	}
 
-	public int getKeyCode() {
-		return keyCode;
+	public int code() {
+		return code;
 	}
 
 }

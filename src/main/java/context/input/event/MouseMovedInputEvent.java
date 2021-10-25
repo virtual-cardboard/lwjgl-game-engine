@@ -6,31 +6,33 @@ import context.data.user.LocalUser;
 
 public final class MouseMovedInputEvent extends GameInputEvent {
 
-	private final int mouseX;
-	private final int mouseY;
+	private static final long serialVersionUID = -5757700918491615989L;
+
+	private final int x;
+	private final int y;
 
 	public MouseMovedInputEvent(long time, GameSource source, int mouseX, int mouseY) {
 		super(time, source);
-		this.mouseX = mouseX;
-		this.mouseY = mouseY;
+		this.x = mouseX;
+		this.y = mouseY;
 	}
 
 	public MouseMovedInputEvent(int mouseX, int mouseY) {
 		super(LocalUser.LOCAL_USER);
-		this.mouseX = mouseX;
-		this.mouseY = mouseY;
+		this.x = mouseX;
+		this.y = mouseY;
 	}
 
-	public int getMouseX() {
-		return mouseX;
+	public int x() {
+		return x;
 	}
 
-	public int getMouseY() {
-		return mouseY;
+	public int y() {
+		return y;
 	}
 
-	public VectorCoordinates getMouseCoords() {
-		return new VectorCoordinates(mouseX, mouseY);
+	public VectorCoordinates coords() {
+		return new VectorCoordinates(x, y);
 	}
 
 }

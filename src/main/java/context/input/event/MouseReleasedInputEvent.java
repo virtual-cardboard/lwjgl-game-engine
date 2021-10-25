@@ -5,20 +5,22 @@ import context.data.user.LocalUser;
 
 public final class MouseReleasedInputEvent extends GameInputEvent {
 
-	private final int mouseButton;
+	private static final long serialVersionUID = -7652238176707641764L;
+
+	private final int button;
 
 	public MouseReleasedInputEvent(long time, GameSource source, int mouseButton) {
 		super(time, source);
-		this.mouseButton = mouseButton;
+		this.button = mouseButton;
 	}
 
 	public MouseReleasedInputEvent(int mouseButton) {
 		super(LocalUser.LOCAL_USER);
-		this.mouseButton = mouseButton;
+		this.button = mouseButton;
 	}
 
-	public int getMouseButton() {
-		return mouseButton;
+	public int button() {
+		return button;
 	}
 
 }

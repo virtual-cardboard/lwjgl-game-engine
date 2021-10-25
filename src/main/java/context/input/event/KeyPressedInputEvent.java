@@ -7,16 +7,18 @@ import context.data.user.LocalUser;
 
 public final class KeyPressedInputEvent extends GameInputEvent {
 
-	private final int keyCode;
+	private static final long serialVersionUID = -9019957455388041026L;
 
-	public KeyPressedInputEvent(long time, GameSource source, int keyCode) {
+	private final int code;
+
+	public KeyPressedInputEvent(long time, GameSource source, int code) {
 		super(time, source);
-		this.keyCode = keyCode;
+		this.code = code;
 	}
 
-	public KeyPressedInputEvent(int keyCode) {
+	public KeyPressedInputEvent(int code) {
 		super(LocalUser.LOCAL_USER);
-		this.keyCode = keyCode;
+		this.code = code;
 	}
 
 	/**
@@ -32,8 +34,8 @@ public final class KeyPressedInputEvent extends GameInputEvent {
 	 * @return the key code
 	 * 
 	 */
-	public int getKeyCode() {
-		return keyCode;
+	public int code() {
+		return code;
 	}
 
 }

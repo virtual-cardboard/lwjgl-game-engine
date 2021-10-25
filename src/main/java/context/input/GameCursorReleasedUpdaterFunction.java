@@ -16,7 +16,7 @@ class GameCursorReleasedUpdaterFunction implements Function<MouseReleasedInputEv
 
 	@Override
 	public GameEvent apply(MouseReleasedInputEvent inputEvent) {
-		cursor.getPressedButtons()[inputEvent.getMouseButton()] = false;
+		cursor.getPressedButtons()[inputEvent.button()] = false;
 		return null;
 	}
 

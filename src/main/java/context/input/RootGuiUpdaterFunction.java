@@ -18,7 +18,7 @@ class RootGuiUpdaterFunction implements Function<FrameResizedInputEvent, GameEve
 	@Override
 	public GameEvent apply(FrameResizedInputEvent inputEvent) {
 		RootGui rootGui = context.visuals().getRootGui();
-		rootGui.setDimensions(inputEvent.getWidth(), inputEvent.getHeight());
+		rootGui.setDimensions(inputEvent.width(), inputEvent.height());
 		return null;
 	}
 
