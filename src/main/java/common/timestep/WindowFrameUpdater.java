@@ -43,7 +43,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		int[] width = new int[1];
 		int[] height = new int[1];
 		glfwGetWindowSize(windowId, width, height);
-		context.visuals().getRootGui().setDimensions(width[0], height[0]);
+		context.visuals().rootGui().setDimensions(width[0], height[0]);
 		context.input().handleAll();
 		context.visuals().render();
 		glfwSwapBuffers(windowId);

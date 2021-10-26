@@ -8,7 +8,6 @@ import static org.lwjgl.opengl.GL11.glClearColor;
 import common.loader.GameLoader;
 import context.ContextPart;
 import context.data.GameData;
-import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
 import context.visuals.renderer.GameRenderer;
 
@@ -26,11 +25,7 @@ public abstract class GameVisuals extends ContextPart {
 	private RootGui rootGui = new RootGui(0, 0);
 	private GameLoader loader;
 
-	public void addGui(Gui gui) {
-		rootGui.addChild(gui);
-	}
-
-	public RootGui getRootGui() {
+	public RootGui rootGui() {
 		return rootGui;
 	}
 
