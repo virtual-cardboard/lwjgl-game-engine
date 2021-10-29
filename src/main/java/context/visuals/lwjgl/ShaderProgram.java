@@ -26,26 +26,6 @@ public class ShaderProgram {
 		toDelete.add(shader.getId());
 	}
 
-//	/**
-//	 * Use this method over {@link #attachShader(Shader) attachShader} when a shader
-//	 * should not be deleted upon deletion of the shader program.
-//	 * <p>
-//	 * Some use cases of this functionality can be found here: <a href="
-//	 * https://stackoverflow.com/questions/9168252/attaching-multiple-shaders-of-the-same-type-in-a-single-opengl-program">
-//	 * Attaching multiple shaders of the same type in a single OpenGL program? </a>
-//	 * 
-//	 * 
-//	 * @param shader   the shader
-//	 * @param doDelete set this to false if the shader should not be deleted upon
-//	 *                 deletion of the shader program.
-//	 */
-//	public void attachShader(Shader shader, boolean doDelete) {
-////		toAttach.add(shader);
-////		if (doDelete) {
-////			toDelete.add(shader);
-////		}
-//	}
-
 	/**
 	 * Links the shader program to OpenGL. Should only be called once.
 	 */

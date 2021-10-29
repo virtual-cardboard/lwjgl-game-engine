@@ -1,6 +1,7 @@
 package context.visuals.gui;
 
 import common.math.Matrix4f;
+import context.GLContext;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.text.GameFont;
 
@@ -21,8 +22,8 @@ public class LabelGui extends Gui {
 	}
 
 	@Override
-	public void render(Matrix4f matrix4f, float x, float y, float width, float height) {
-		textRenderer.render(matrix4f, text, x, y, width, font, size, colour);
+	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
+		textRenderer.render(glContext, matrix4f, text, x, y, width, font, size, colour);
 	}
 
 	public String getText() {

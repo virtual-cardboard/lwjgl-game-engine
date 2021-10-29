@@ -33,7 +33,7 @@ public class VertexArrayObject extends GLContainerObject {
 	private List<VertexBufferObject> vbos = new ArrayList<>();
 	private ElementBufferObject ebo;
 
-	public void display(GLContext glContext) {
+	public void draw(GLContext glContext) {
 		bind(glContext);
 		ebo.bind(glContext);
 		glDrawElements(GL_TRIANGLES, ebo.size(), GL_UNSIGNED_INT, 0);

@@ -5,7 +5,7 @@ import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.lwjgl.VertexBufferObject;
 
-public class RectangleVertexArrayObject {
+public class RectangleVertexArrayObject extends VertexArrayObject {
 
 	private static final float[] POSITIONS = {
 			1.0f, 1.0f, 0.0f,
@@ -29,11 +29,11 @@ public class RectangleVertexArrayObject {
 	/**
 	 * The VAO must be created before the getter is called
 	 */
-	public static VertexArrayObject createRectangleVAO(GLContext glContext) {
+	public static RectangleVertexArrayObject createRectangleVAO(GLContext glContext) {
 		ElementBufferObject ebo = new ElementBufferObject(INDICES);
 		VertexBufferObject positionsVBO = new VertexBufferObject(POSITIONS, 3);
 		VertexBufferObject textureCoordinatesVBO = new VertexBufferObject(TEXTURE_COORDINATES, 2);
-		VertexArrayObject vao = new VertexArrayObject();
+		RectangleVertexArrayObject vao = new RectangleVertexArrayObject();
 		vao.generateId();
 		ebo.generateId();
 		ebo.loadData(glContext);

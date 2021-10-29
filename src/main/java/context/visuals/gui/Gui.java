@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.math.Matrix4f;
+import context.GLContext;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
@@ -36,7 +37,7 @@ public abstract class Gui {
 	private Gui parent;
 	private List<Gui> children = new ArrayList<>();
 
-	public abstract void render(Matrix4f matrix4f, float x, float y, float width, float height);
+	public abstract void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height);
 
 	public void addChild(Gui child) {
 		child.setParent(this);

@@ -3,8 +3,9 @@ package context.visuals.renderer;
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
-import context.GameContext;
-import context.ResourcePack;
+import context.GLContext;
+import context.visuals.builtin.LineShaderProgram;
+import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.ShaderProgram;
@@ -20,17 +21,18 @@ public class LineRenderer extends GameRenderer {
 
 	/** The shader program used to render lines. */
 	private ShaderProgram shaderProgram;
+	private RectangleVertexArrayObject vao;
 
 	/**
-	 * Creates a <code>LineRenderer</code> using the line shader program from a
-	 * {@link GameContext}'s {@link ResourcePack}. The line shader program should be
-	 * put into the <code>ResourcePack</code> with the name <code>"line"</code>.
+	 * Creates a <code>LineRenderer</code> using a {@link LineShaderProgram} and a
+	 * {@link RectangleVertexArrayObject}.
 	 * 
-	 * @param context the <code>GameContext</code>
+	 * @param shaderProgram the <code>LineShaderProgram</code>
+	 * @param vao           the <code>RectangleVertexArrayObject</code>
 	 */
-	public LineRenderer(GameContext context) {
-		super(context);
-		this.shaderProgram = resourcePack.getShaderProgram("line");
+	public LineRenderer(LineShaderProgram shaderProgram, RectangleVertexArrayObject vao) {
+		this.shaderProgram = shaderProgram;
+		this.vao = vao;
 	}
 
 	/**
@@ -49,7 +51,7 @@ public class LineRenderer extends GameRenderer {
 	 * 
 	 * @see Colour
 	 */
-	public void renderPixelCoords(RootGui rootGui, float x1, float y1, float x2, float y2, float width, int colour) {
+	public void renderPixelCoords(GLContext glContext, RootGui rootGui, float x1, float y1, float x2, float y2, float width, int colour) {
 		// Calculations for matrix transformations
 		width = Math.abs(width);
 		Vector2f rootGuiDimensions = rootGui.getDimensions();
@@ -77,7 +79,7 @@ public class LineRenderer extends GameRenderer {
 		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
 
 		// Display VAO
-		resourcePack.rectangleVAO().display(glContext);
+		vao.draw(glContext);
 	}
 
 }

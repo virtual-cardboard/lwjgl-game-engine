@@ -3,8 +3,9 @@ package context.visuals.renderer;
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector4f;
-import context.GameContext;
-import context.ResourcePack;
+import context.GLContext;
+import context.visuals.builtin.RectangleVertexArrayObject;
+import context.visuals.builtin.TextShaderProgram;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.ShaderProgram;
@@ -23,22 +24,22 @@ public class TextRenderer extends GameRenderer {
 	 * The {@link ShaderProgram} to use when rendering text.
 	 */
 	private ShaderProgram shaderProgram;
+	private RectangleVertexArrayObject vao;
 
 	/**
-	 * Creates a TextRenderer using the text shader program from a
-	 * {@link GameContext}'s {@link ResourcePack}. The text shader program should be
-	 * put into the <code>ResourcePack</code> with the name <code>"text"</code>.
+	 * Creates a TextRenderer using a {@link TextShaderProgram}.
 	 * 
-	 * @param context the <code>GameContext</code>
+	 * @param shaderProgram the {@link TextShaderProgram}
 	 */
-	public TextRenderer(GameContext context) {
-		super(context);
-		shaderProgram = resourcePack.getShaderProgram("text");
+	public TextRenderer(TextShaderProgram shaderProgram, RectangleVertexArrayObject vao) {
+		this.shaderProgram = shaderProgram;
+		this.vao = vao;
 	}
 
 	/**
 	 * Renders text.
 	 * 
+	 * @param glContext the {@link GLContext}
 	 * @param rootGui   the {@link RootGui}
 	 * @param text      the {@link String} to display
 	 * @param x         the <code>x</code> offset of the text from the left side of
@@ -51,14 +52,14 @@ public class TextRenderer extends GameRenderer {
 	 * @param fontSize  the size of the text
 	 * @param colour    the colour of the text
 	 */
-	public void render(RootGui rootGui, String text, int x, int y, int lineWidth, GameFont font, float fontSize, int colour) {
+	public void render(GLContext glContext, RootGui rootGui, String text, int x, int y, int lineWidth, GameFont font, float fontSize, int colour) {
 		Vector2f rootGuiDimensions = rootGui.getDimensions();
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
-		render(matrix4f, text, x, y, lineWidth, font, fontSize, colour);
+		render(glContext, matrix4f, text, x, y, lineWidth, font, fontSize, colour);
 	}
 
-	public void render(Matrix4f matrix4f, String text, float x, float y, float lineWidth, GameFont font, float fontSize, int colour) {
+	public void render(GLContext glContext, Matrix4f matrix4f, String text, float x, float y, float lineWidth, GameFont font, float fontSize, int colour) {
 		char[] chars = text.toCharArray();
 		int totalXOffset = 0;
 		int totalYOffset = 0;
@@ -80,12 +81,12 @@ public class TextRenderer extends GameRenderer {
 			shaderProgram.setFloat("texWidth", font.texture().getWidth());
 			shaderProgram.setFloat("texHeight", font.texture().getHeight());
 			shaderProgram.setVec4("colour", colourVec4);
-			displayChar(matrix4f.clone(), c, totalXOffset, totalYOffset, sizeMultiplier);
+			displayChar(glContext, matrix4f.clone(), c, totalXOffset, totalYOffset, sizeMultiplier);
 			totalXOffset += xAdvance * sizeMultiplier;
 		}
 	}
 
-	private void displayChar(Matrix4f matrix4f, CharacterData c, int totalXOffset, int totalYOffset, float sizeMultiplier) {
+	private void displayChar(GLContext glContext, Matrix4f matrix4f, CharacterData c, int totalXOffset, int totalYOffset, float sizeMultiplier) {
 		matrix4f.translate(totalXOffset + c.xOffset() * sizeMultiplier, totalYOffset + c.yOffset() * sizeMultiplier);
 		matrix4f.scale(c.width() * sizeMultiplier, c.height() * sizeMultiplier);
 		shaderProgram.setMat4("matrix4f", matrix4f);
@@ -93,7 +94,7 @@ public class TextRenderer extends GameRenderer {
 		shaderProgram.setFloat("height", c.height());
 		shaderProgram.setFloat("x", c.x());
 		shaderProgram.setFloat("y", c.y());
-		resourcePack.rectangleVAO().display(glContext);
+		vao.draw(glContext);
 	}
 
 }
