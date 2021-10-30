@@ -19,6 +19,10 @@ abstract class LoadTask<T> {
 		this.countDownLatch = new CountDownLatch(1);
 	}
 
+	public LoadTask(CountDownLatch countDownLatch) {
+		this.countDownLatch = countDownLatch;
+	}
+
 	public final CountDownLatch countDownLatch() {
 		return countDownLatch;
 	}
