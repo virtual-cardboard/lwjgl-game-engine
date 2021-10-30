@@ -8,24 +8,22 @@ import context.visuals.lwjgl.ShaderProgram;
 public final class ShaderProgramLoadTask extends GLLoadTask<ShaderProgram> {
 
 	private ShaderProgram shaderProgram;
-	private Shader[] shaders;
 
 	public ShaderProgramLoadTask(Shader... shaders) {
 		this.shaderProgram = new ShaderProgram();
-		this.shaders = shaders;
+		for (int i = 0; i < shaders.length; i++) {
+			shaderProgram.addShader(shaders[i]);
+		}
 	}
 
-	public ShaderProgramLoadTask(ShaderProgram shaderProgram, Shader... shaders) {
+	public ShaderProgramLoadTask(ShaderProgram shaderProgram) {
 		this.shaderProgram = shaderProgram;
-		this.shaders = shaders;
 	}
 
 	@Override
 	protected ShaderProgram loadGL(GLContext glContext) {
 		shaderProgram.genId();
-		for (int i = 0; i < shaders.length; i++) {
-			shaderProgram.attachShader(shaders[i]);
-		}
+		shaderProgram.attachShaders();
 		shaderProgram.link();
 		return shaderProgram;
 	}

@@ -58,7 +58,7 @@ public class Texture extends GLRegularObject {
 		glDeleteTextures(id);
 	}
 
-	public void genId() {
+	public void genID() {
 		this.id = glGenTextures();
 		confirmInitialization();
 	}

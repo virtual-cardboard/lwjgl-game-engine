@@ -1,19 +1,6 @@
 package context.visuals.lwjgl;
 
-import static org.lwjgl.opengl.GL20.glAttachShader;
-import static org.lwjgl.opengl.GL20.glCreateProgram;
-import static org.lwjgl.opengl.GL20.glDeleteProgram;
-import static org.lwjgl.opengl.GL20.glDeleteShader;
-import static org.lwjgl.opengl.GL20.glDetachShader;
-import static org.lwjgl.opengl.GL20.glGetUniformLocation;
-import static org.lwjgl.opengl.GL20.glLinkProgram;
-import static org.lwjgl.opengl.GL20.glUniform1f;
-import static org.lwjgl.opengl.GL20.glUniform1i;
-import static org.lwjgl.opengl.GL20.glUniform2f;
-import static org.lwjgl.opengl.GL20.glUniform3f;
-import static org.lwjgl.opengl.GL20.glUniform4f;
-import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
-import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +13,7 @@ import common.math.Vector4f;
 public class ShaderProgram extends GLObject {
 
 	private int id;
+	private List<Shader> toAttach = new ArrayList<>(3);
 	private List<Integer> toDelete = new ArrayList<>(3);
 
 	public void genId() {
@@ -34,15 +22,26 @@ public class ShaderProgram extends GLObject {
 	}
 
 	/**
-	 * Attach a shader to the shader program. Also tracks it to be deleted when the
-	 * shader program is deleted.
+	 * Adds a shader that will be attached in the next
+	 * {@link ShaderProgram#attachShaders() attachShaders()} call. C
 	 * 
-	 * @param shader the shader
+	 * @param shader
 	 */
-	public void attachShader(Shader shader) {
+	public void addShader(Shader shader) {
+		toAttach.add(shader);
+	}
+
+	/**
+	 * Attaches all shaders added using {@link #addShader(Shader)}. Call this after
+	 * {@link #genId()} and before {@link #link()}.
+	 */
+	public void attachShaders() {
 		verifyInitialized();
-		glAttachShader(id, shader.getId());
-		toDelete.add(shader.getId());
+		for (int i = 0; i < toAttach.size(); i++) {
+			int shaderID = toAttach.get(i).id();
+			glAttachShader(id, shaderID);
+			toDelete.add(shaderID);
+		}
 	}
 
 	/**

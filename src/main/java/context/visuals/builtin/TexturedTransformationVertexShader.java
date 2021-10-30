@@ -22,7 +22,7 @@ public class TexturedTransformationVertexShader extends Shader {
 
 	public static TexturedTransformationVertexShader createTexturedTransformationVertexShader() {
 		TexturedTransformationVertexShader shader = new TexturedTransformationVertexShader();
-		shader.genId();
+		shader.genID();
 		shader.compile(TEXTURED_TRANSFORMATION_VERTEX_SHADER_SOURCE);
 		return shader;
 	}

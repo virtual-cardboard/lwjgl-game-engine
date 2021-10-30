@@ -17,7 +17,7 @@ public class TransformationVertexShader extends Shader {
 
 	public static TransformationVertexShader createTransformationVertexShader() {
 		TransformationVertexShader shader = new TransformationVertexShader();
-		shader.genId();
+		shader.genID();
 		shader.compile(TRANSFORMATION_VERTEX_SHADER_SOURCE);
 		return shader;
 	}

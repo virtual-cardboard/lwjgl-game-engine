@@ -8,8 +8,8 @@ import context.visuals.lwjgl.ShaderProgram;
 public class EllipseShaderProgram extends ShaderProgram {
 
 	public EllipseShaderProgram(TransformationVertexShader vertexShader, Shader fragmentShader) {
-		attachShader(vertexShader);
-		attachShader(fragmentShader.verifyShaderType(FRAGMENT));
+		addShader(vertexShader);
+		addShader(fragmentShader.verifyShaderType(FRAGMENT));
 	}
 
 }

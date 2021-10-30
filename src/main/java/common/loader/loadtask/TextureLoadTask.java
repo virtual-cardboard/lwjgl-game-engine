@@ -67,7 +67,7 @@ public class TextureLoadTask extends GLLoadTask<Texture> {
 			texture.setWidth(w.get());
 			texture.setHeight(h.get());
 		}
-		texture.genId();
+		texture.genID();
 		texture.bind(glContext);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
 		glGenerateMipmap(GL_TEXTURE_2D);

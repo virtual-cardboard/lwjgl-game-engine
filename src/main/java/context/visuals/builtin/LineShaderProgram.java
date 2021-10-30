@@ -8,8 +8,8 @@ import context.visuals.lwjgl.ShaderProgram;
 public class LineShaderProgram extends ShaderProgram {
 
 	public LineShaderProgram(TransformationVertexShader vertexShader, Shader fragmentShader) {
-		attachShader(vertexShader);
-		attachShader(fragmentShader.verifyShaderType(FRAGMENT));
+		addShader(vertexShader);
+		addShader(fragmentShader.verifyShaderType(FRAGMENT));
 	}
 
 }

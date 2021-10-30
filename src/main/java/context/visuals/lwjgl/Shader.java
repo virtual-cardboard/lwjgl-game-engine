@@ -39,11 +39,11 @@ public class Shader extends GLObject {
 		glDeleteShader(id);
 	}
 
-	public int getId() {
+	public int id() {
 		return id;
 	}
 
-	public void genId() {
+	public void genID() {
 		this.id = glCreateShader(shaderType.type);
 		confirmInitialization();
 	}

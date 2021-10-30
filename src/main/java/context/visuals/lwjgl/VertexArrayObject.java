@@ -73,7 +73,7 @@ public class VertexArrayObject extends GLContainerObject {
 		vbos.add(vbo);
 	}
 
-	public void genId() {
+	public void genID() {
 		this.id = glGenVertexArrays();
 		confirmInitialization();
 	}

@@ -34,14 +34,14 @@ public class RectangleVertexArrayObject extends VertexArrayObject {
 		VertexBufferObject positionsVBO = new VertexBufferObject(POSITIONS, 3);
 		VertexBufferObject textureCoordinatesVBO = new VertexBufferObject(TEXTURE_COORDINATES, 2);
 		RectangleVertexArrayObject vao = new RectangleVertexArrayObject();
-		vao.genId();
-		ebo.genId();
+		vao.genID();
+		ebo.genID();
 		ebo.loadData(glContext);
 		vao.setEbo(ebo);
-		positionsVBO.genId();
+		positionsVBO.genID();
 		positionsVBO.loadData(glContext);
 		vao.attachVBO(positionsVBO);
-		textureCoordinatesVBO.genId();
+		textureCoordinatesVBO.genID();
 		textureCoordinatesVBO.loadData(glContext);
 		vao.attachVBO(textureCoordinatesVBO);
 		vao.enableVertexAttribPointers(glContext);

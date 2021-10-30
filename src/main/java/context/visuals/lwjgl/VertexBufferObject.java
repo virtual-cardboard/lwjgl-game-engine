@@ -55,7 +55,7 @@ public class VertexBufferObject extends GLRegularObject {
 		glContext.bufferID = id;
 	}
 
-	public void genId() {
+	public void genID() {
 		this.id = glGenBuffers();
 		confirmInitialization();
 	}

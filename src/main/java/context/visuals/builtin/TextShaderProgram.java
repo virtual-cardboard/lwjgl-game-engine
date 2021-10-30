@@ -8,8 +8,8 @@ import context.visuals.lwjgl.ShaderProgram;
 public class TextShaderProgram extends ShaderProgram {
 
 	public TextShaderProgram(TexturedTransformationVertexShader vertexShader, Shader fragmentShader) {
-		attachShader(vertexShader);
-		attachShader(fragmentShader.verifyShaderType(FRAGMENT));
+		addShader(vertexShader);
+		addShader(fragmentShader.verifyShaderType(FRAGMENT));
 	}
 
 }
