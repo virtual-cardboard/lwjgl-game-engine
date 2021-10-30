@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import context.visuals.builtin.ColourFragmentShader;
+import context.visuals.builtin.TexturedTransformationVertexShader;
 import context.visuals.builtin.TransformationVertexShader;
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.ShaderProgram;
@@ -29,12 +30,15 @@ public final class ResourcePack {
 	private Map<String, GameFont> fonts = new HashMap<>();
 	private VertexArrayObject rectangleVAO;
 	private TransformationVertexShader transformationVS;
+	private TexturedTransformationVertexShader texturedTransformationVS;
 	private ColourFragmentShader colourFS;
 	private ShaderProgram defaultSP;
 
-	public void init(VertexArrayObject rectangleVAO, TransformationVertexShader transformationVS, ColourFragmentShader colourFS, ShaderProgram defaultSP) {
+	public void init(VertexArrayObject rectangleVAO, TransformationVertexShader transformationVS,
+			TexturedTransformationVertexShader texturedTransformationVS, ColourFragmentShader colourFS, ShaderProgram defaultSP) {
 		this.rectangleVAO = rectangleVAO;
 		this.transformationVS = transformationVS;
+		this.texturedTransformationVS = texturedTransformationVS;
 		this.colourFS = colourFS;
 		this.defaultSP = defaultSP;
 	}
@@ -93,6 +97,10 @@ public final class ResourcePack {
 
 	public TransformationVertexShader transformationVertexShader() {
 		return transformationVS;
+	}
+
+	public TexturedTransformationVertexShader texturedTransformationVertexShader() {
+		return texturedTransformationVS;
 	}
 
 	public ColourFragmentShader colourFragmentShader() {

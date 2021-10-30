@@ -2,7 +2,7 @@ package common.timestep;
 
 import static context.visuals.builtin.ColourFragmentShader.createColourFragmentShader;
 import static context.visuals.builtin.RectangleVertexArrayObject.createRectangleVAO;
-import static context.visuals.builtin.TransformationVertexShader.createTransformationVertexShader;
+import static context.visuals.builtin.TexturedTransformationVertexShader.createTransformationVertexShader;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
@@ -15,6 +15,7 @@ import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
 import context.visuals.builtin.ColourFragmentShader;
+import context.visuals.builtin.TexturedTransformationVertexShader;
 import context.visuals.builtin.TransformationVertexShader;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.VertexArrayObject;
@@ -75,11 +76,12 @@ public final class WindowFrameUpdater extends TimestepTimer {
 
 	private void loadBuiltIn() {
 		VertexArrayObject rectangleVAO = createRectangleVAO(wrapper.glContext());
-		TransformationVertexShader transformationVertexShader = createTransformationVertexShader();
-		ColourFragmentShader colourFragmentShader = createColourFragmentShader();
+		TransformationVertexShader tranformationVS = createTransformationVertexShader();
+		TexturedTransformationVertexShader texturedTransformationVS = createTransformationVertexShader();
+		ColourFragmentShader colourFS = createColourFragmentShader();
 		try {
-			ShaderProgram defaultShaderProgram = new ShaderProgramLoadTask(transformationVertexShader, colourFragmentShader).doLoadGL(wrapper.glContext());
-			wrapper.resourcePack().init(rectangleVAO, transformationVertexShader, colourFragmentShader, defaultShaderProgram);
+			ShaderProgram defaultSP = new ShaderProgramLoadTask(tranformationVS, colourFS).doLoadGL(wrapper.glContext());
+			wrapper.resourcePack().init(rectangleVAO, tranformationVS, texturedTransformationVS, colourFS, defaultSP);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
