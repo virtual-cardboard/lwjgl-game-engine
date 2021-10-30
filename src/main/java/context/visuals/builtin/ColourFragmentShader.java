@@ -17,7 +17,7 @@ public final class ColourFragmentShader extends Shader {
 
 	public static ColourFragmentShader createColourFragmentShader() {
 		ColourFragmentShader shader = new ColourFragmentShader();
-		shader.setId(FRAGMENT.genId());
+		shader.genId();
 		shader.compile(COLOUR_FRAGMENT_SHADER_SOURCE);
 		return shader;
 	}

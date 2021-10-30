@@ -18,7 +18,7 @@ public final class VertexBufferObjectLoadTask extends GLLoadTask<VertexBufferObj
 
 	@Override
 	protected VertexBufferObject loadGL(GLContext glContext) {
-		vbo.generateId();
+		vbo.genId();
 		vbo.loadData(glContext);
 		return vbo;
 	}

@@ -3,6 +3,7 @@ package context.visuals.lwjgl;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDeleteTextures;
+import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
@@ -21,7 +22,6 @@ public class Texture extends GLRegularObject {
 	private int id;
 	private int width, height;
 	private int textureUnit;
-	private boolean linked;
 
 	/**
 	 * Creates a texture with the given texture unit. The texture unit can be used
@@ -39,18 +39,12 @@ public class Texture extends GLRegularObject {
 	}
 
 	/**
-	 * Marks the texture as having been loaded into OpenGL.
-	 */
-	public void link() {
-		linked = true;
-	}
-
-	/**
 	 * Binds the texture.
 	 */
-	@Override
 	public void bind(GLContext glContext) {
-		if (glContext.textureIDs[textureUnit] == id) return;
+		if (glContext.textureIDs[textureUnit] == id) {
+			return;
+		}
 		glActiveTexture(GL_TEXTURE0 + textureUnit);
 		glBindTexture(GL_TEXTURE_2D, id);
 		glContext.textureIDs[textureUnit] = id;
@@ -63,8 +57,9 @@ public class Texture extends GLRegularObject {
 		glDeleteTextures(id);
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void genId() {
+		this.id = glGenTextures();
+		confirmInitialization();
 	}
 
 	public int getWidth() {
@@ -89,10 +84,6 @@ public class Texture extends GLRegularObject {
 
 	public void setTextureUnit(int textureUnit) {
 		this.textureUnit = textureUnit;
-	}
-
-	public boolean isLinked() {
-		return linked;
 	}
 
 }

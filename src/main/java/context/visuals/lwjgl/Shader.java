@@ -1,9 +1,15 @@
 package context.visuals.lwjgl;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glDeleteShader;
+import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glShaderSource;
 
-public class Shader {
+public class Shader extends GLObject {
 
 	private int id;
 	private ShaderType shaderType;
@@ -36,8 +42,9 @@ public class Shader {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void genId() {
+		this.id = glCreateShader(shaderType.type);
+		confirmInitialization();
 	}
 
 	public ShaderType getShaderType() {

@@ -29,7 +29,7 @@ public class ShaderLoadTask extends GLLoadTask<Shader> {
 	public Shader loadGL(GLContext glContext) {
 		File file = getFile();
 		source = loadSource(file);
-		shader.setId(shader.getShaderType().genId());
+		shader.genId();
 		shader.compile(source);
 		return shader;
 	}

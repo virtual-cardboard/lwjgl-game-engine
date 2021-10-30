@@ -18,7 +18,7 @@ public final class ElementBufferObjectLoadTask extends GLLoadTask<ElementBufferO
 
 	@Override
 	protected ElementBufferObject loadGL(GLContext glContext) {
-		ebo.generateId();
+		ebo.genId();
 		ebo.loadData(glContext);
 		return ebo;
 	}

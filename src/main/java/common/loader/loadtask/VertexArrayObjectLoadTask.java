@@ -36,7 +36,7 @@ public final class VertexArrayObjectLoadTask extends GLContainerObjectLoadTask<V
 
 	@Override
 	protected VertexArrayObject loadGL(GLContext glContext) {
-		vao.generateId();
+		vao.genId();
 		vao.setEbo(ebo);
 		for (int i = 0; i < vbos.length; i++)
 			vao.attachVBO(vbos[i]);

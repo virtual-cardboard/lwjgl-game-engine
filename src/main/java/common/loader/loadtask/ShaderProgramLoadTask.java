@@ -22,7 +22,7 @@ public final class ShaderProgramLoadTask extends GLLoadTask<ShaderProgram> {
 
 	@Override
 	protected ShaderProgram loadGL(GLContext glContext) {
-		shaderProgram.generateId();
+		shaderProgram.genId();
 		for (int i = 0; i < shaders.length; i++) {
 			shaderProgram.attachShader(shaders[i]);
 		}
