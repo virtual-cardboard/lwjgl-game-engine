@@ -63,7 +63,7 @@ public class Texture extends GLRegularObject {
 		confirmInitialization();
 	}
 
-	public int getWidth() {
+	public int width() {
 		return width;
 	}
 
@@ -71,7 +71,7 @@ public class Texture extends GLRegularObject {
 		this.width = width;
 	}
 
-	public int getHeight() {
+	public int height() {
 		return height;
 	}
 

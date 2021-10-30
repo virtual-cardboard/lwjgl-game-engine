@@ -78,8 +78,8 @@ public class TextRenderer extends GameRenderer {
 				totalYOffset += fontSize;
 			}
 			shaderProgram.setInt("textureSampler", font.texture().getTextureUnit());
-			shaderProgram.setFloat("texWidth", font.texture().getWidth());
-			shaderProgram.setFloat("texHeight", font.texture().getHeight());
+			shaderProgram.setFloat("texWidth", font.texture().width());
+			shaderProgram.setFloat("texHeight", font.texture().height());
 			shaderProgram.setVec4("fill", colourVec4);
 			displayChar(glContext, matrix4f.clone(), c, totalXOffset, totalYOffset, sizeMultiplier);
 			totalXOffset += xAdvance * sizeMultiplier;
