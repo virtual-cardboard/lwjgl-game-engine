@@ -34,7 +34,6 @@ public class VertexArrayObject extends GLContainerObject {
 	private ElementBufferObject ebo;
 
 	public void draw(GLContext glContext) {
-		verifyInitialized();
 		bind(glContext);
 		ebo.bind(glContext);
 		glDrawElements(GL_TRIANGLES, ebo.size(), GL_UNSIGNED_INT, 0);
@@ -62,6 +61,7 @@ public class VertexArrayObject extends GLContainerObject {
 	}
 
 	protected void bind(GLContext glContext) {
+		verifyInitialized();
 		if (glContext.vaoID == id) {
 			return;
 		}

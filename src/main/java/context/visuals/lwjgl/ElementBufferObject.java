@@ -38,6 +38,7 @@ public class ElementBufferObject extends GLRegularObject {
 	}
 
 	protected void bind(GLContext glContext) {
+		verifyInitialized();
 		if (glContext.bufferID == id) {
 			return;
 		}

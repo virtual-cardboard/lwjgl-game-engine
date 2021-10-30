@@ -47,6 +47,7 @@ public class VertexBufferObject extends GLRegularObject {
 	}
 
 	protected void bind(GLContext glContext) {
+		verifyInitialized();
 		if (glContext.bufferID == id) {
 			return;
 		}

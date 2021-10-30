@@ -26,6 +26,7 @@ public class Shader extends GLObject {
 	}
 
 	public void compile(String source) {
+		verifyInitialized();
 		glShaderSource(id, source);
 		glCompileShader(id);
 		if (glGetShaderi(id, GL_COMPILE_STATUS) == GL_FALSE) {

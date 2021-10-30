@@ -28,6 +28,11 @@ public class ShaderProgram extends GLObject {
 	private int id;
 	private List<Integer> toDelete = new ArrayList<>(3);
 
+	public void genId() {
+		id = glCreateProgram();
+		confirmInitialization();
+	}
+
 	/**
 	 * Attach a shader to the shader program. Also tracks it to be deleted when the
 	 * shader program is deleted.
@@ -35,6 +40,7 @@ public class ShaderProgram extends GLObject {
 	 * @param shader the shader
 	 */
 	public void attachShader(Shader shader) {
+		verifyInitialized();
 		glAttachShader(id, shader.getId());
 		toDelete.add(shader.getId());
 	}
@@ -43,6 +49,7 @@ public class ShaderProgram extends GLObject {
 	 * Links the shader program to OpenGL. Should only be called once.
 	 */
 	public void link() {
+		verifyInitialized();
 		glLinkProgram(id);
 	}
 
@@ -54,6 +61,7 @@ public class ShaderProgram extends GLObject {
 	 * @see {@link #link() link()}
 	 */
 	public void bind() {
+		verifyInitialized();
 		glUseProgram(id);
 	}
 
@@ -65,6 +73,7 @@ public class ShaderProgram extends GLObject {
 	}
 
 	public void delete() {
+		verifyInitialized();
 		glUseProgram(0);
 		for (int i = 0; i < toDelete.size(); i++) {
 			int shaderID = toDelete.get(i);
@@ -75,39 +84,41 @@ public class ShaderProgram extends GLObject {
 	}
 
 	public void setBoolean(String uniform, boolean value) {
+		verifyInitialized();
 		glUniform1f(glGetUniformLocation(id, uniform), value ? 1 : 0);
 	}
 
 	public void setInt(String uniform, int i) {
+		verifyInitialized();
 		glUniform1i(glGetUniformLocation(id, uniform), i);
 	}
 
 	public void setFloat(String uniform, float value) {
+		verifyInitialized();
 		glUniform1f(glGetUniformLocation(id, uniform), value);
 	}
 
-	public void setVec2(String uniform, Vector2f vector) {
-		glUniform2f(glGetUniformLocation(id, uniform), vector.x, vector.y);
+	public void setVec2(String uniform, Vector2f vec2) {
+		verifyInitialized();
+		glUniform2f(glGetUniformLocation(id, uniform), vec2.x, vec2.y);
 	}
 
-	public void setVec3(String uniform, Vector3f vector) {
-		glUniform3f(glGetUniformLocation(id, uniform), vector.x, vector.y, vector.z);
+	public void setVec3(String uniform, Vector3f vec3) {
+		verifyInitialized();
+		glUniform3f(glGetUniformLocation(id, uniform), vec3.x, vec3.y, vec3.z);
 	}
 
 	public void setVec4(String uniform, Vector4f vec4) {
+		verifyInitialized();
 		glUniform4f(glGetUniformLocation(id, uniform), vec4.x, vec4.y, vec4.z, vec4.w);
 	}
 
 	private static final float[] FLOAT_BUFFER = new float[16];
 
 	public void setMat4(String uniform, Matrix4f mat4) {
+		verifyInitialized();
 		mat4.store(FLOAT_BUFFER);
 		glUniformMatrix4fv(glGetUniformLocation(id, uniform), false, FLOAT_BUFFER);
-	}
-
-	public void genId() {
-		id = glCreateProgram();
-		confirmInitialization();
 	}
 
 }
