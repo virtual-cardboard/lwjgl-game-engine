@@ -8,7 +8,6 @@ import static org.lwjgl.stb.STBImage.stbi_load;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.concurrent.CountDownLatch;
 
 import org.lwjgl.system.MemoryStack;
 
@@ -18,31 +17,33 @@ import context.visuals.lwjgl.Texture;
 
 public class TextureLoadTask extends GLLoadTask<Texture> {
 
-	private int textureUnit;
+	private Texture texture;
 	private String path;
 	private ByteBuffer textureData;
 
-	private Texture texture;
-
 	/**
-	 * Creates a <code>TextureLoadTask</code> with a count down latch with a
-	 * starting count of 2.
+	 * Creates a <code>TextureLoadTask</code> with a texture unit and a path.
 	 * 
-	 * @param texture the texture to load data into
+	 * @param textureUnit the texture to load data into
+	 * @param path        the path to the texture's source image
 	 */
 	public TextureLoadTask(int textureUnit, String path) {
-		this(new CountDownLatch(1), textureUnit, path);
+		this(new Texture(textureUnit), path);
 	}
 
-	public TextureLoadTask(CountDownLatch countDownLatch, int textureUnit, String path) {
-		super(countDownLatch);
-		this.textureUnit = textureUnit;
+	/**
+	 * Creates a <code>TextureLoadTask</code> with an unloaded texture and a path.
+	 * 
+	 * @param texture the texture to load data into
+	 * @param path    the path to the texture's source image
+	 */
+	public TextureLoadTask(Texture texture, String path) {
+		this.texture = texture;
 		this.path = path;
 	}
 
 	@Override
 	public Texture loadGL(GLContext glContext) {
-		texture = new Texture(textureUnit);
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			IntBuffer w = stack.mallocInt(1);
 			IntBuffer h = stack.mallocInt(1);
@@ -65,10 +66,6 @@ public class TextureLoadTask extends GLLoadTask<Texture> {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		stbi_image_free(textureData);
 		texture.link();
-		return texture;
-	}
-
-	public Texture getTexture() {
 		return texture;
 	}
 

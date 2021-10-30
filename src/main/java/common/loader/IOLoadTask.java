@@ -2,18 +2,9 @@ package common.loader;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 
 public abstract class IOLoadTask<T> extends LoadTask<T> implements Callable<T> {
-
-	public IOLoadTask() {
-		super();
-	}
-
-	public IOLoadTask(CountDownLatch countDownLatch) {
-		super(countDownLatch);
-	}
 
 	@Override
 	public final T call() throws Exception {

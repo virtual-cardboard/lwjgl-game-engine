@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.concurrent.CountDownLatch;
 
 import org.lwjgl.system.MemoryStack;
 
@@ -33,11 +32,6 @@ public final class FontLoadTask extends GLLoadTask<GameFont> {
 	private GameFont font;
 
 	public FontLoadTask(String fontName) {
-		this(new CountDownLatch(1), fontName);
-	}
-
-	public FontLoadTask(CountDownLatch countDownLatch, String fontName) {
-		super(countDownLatch);
 		this.fontName = fontName;
 	}
 

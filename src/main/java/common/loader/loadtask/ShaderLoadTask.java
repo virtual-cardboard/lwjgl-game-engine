@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
 
 import common.loader.GLLoadTask;
 import context.GLContext;
@@ -13,19 +12,16 @@ import context.visuals.lwjgl.ShaderType;
 
 public class ShaderLoadTask extends GLLoadTask<Shader> {
 
-	private ShaderType type;
-	private String sourceLocation;
-
-	private String source;
 	private Shader shader;
+	private String sourceLocation;
+	private String source;
 
 	public ShaderLoadTask(ShaderType type, String sourceLocation) {
-		this(new CountDownLatch(4), type, sourceLocation);
+		this(new Shader(type), sourceLocation);
 	}
 
-	public ShaderLoadTask(CountDownLatch countDownLatch, ShaderType type, String sourceLocation) {
-		super(countDownLatch);
-		this.type = type;
+	public ShaderLoadTask(Shader shader, String sourceLocation) {
+		this.shader = shader;
 		this.sourceLocation = sourceLocation;
 	}
 
@@ -33,7 +29,6 @@ public class ShaderLoadTask extends GLLoadTask<Shader> {
 	public Shader loadGL(GLContext glContext) {
 		File file = getFile();
 		source = loadSource(file);
-		shader = new Shader(type);
 		shader.setId(shader.getShaderType().genId());
 		shader.compile(source);
 		return shader;

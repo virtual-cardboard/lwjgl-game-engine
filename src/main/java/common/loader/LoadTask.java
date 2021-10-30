@@ -13,18 +13,18 @@ import java.util.concurrent.Future;
  */
 abstract class LoadTask<T> {
 
-	protected final CountDownLatch countDownLatch;
+	protected CountDownLatch countDownLatch;
 
 	public LoadTask() {
-		this(new CountDownLatch(1));
-	}
-
-	public LoadTask(CountDownLatch countDownLatch) {
-		this.countDownLatch = countDownLatch;
+		this.countDownLatch = new CountDownLatch(1);
 	}
 
 	public final CountDownLatch countDownLatch() {
 		return countDownLatch;
+	}
+
+	public final void setCountDownLatch(CountDownLatch countDownLatch) {
+		this.countDownLatch = countDownLatch;
 	}
 
 	protected abstract Future<T> accept(GameLoader loader);
