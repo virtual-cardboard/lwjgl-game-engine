@@ -1,11 +1,8 @@
 package context.visuals.lwjgl;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
@@ -52,11 +49,7 @@ public class VertexArrayObject extends GLContainerObject {
 	public void enableVertexAttribPointers(GLContext glContext) {
 		bind(glContext);
 		for (int i = 0; i < vbos.size(); i++) {
-			VertexBufferObject vbo = vbos.get(i);
-			vbo.bind(glContext);
-			int vertexDataSize = vbo.getNumColumns();
-			glVertexAttribPointer(i, vertexDataSize, GL_FLOAT, false, vertexDataSize * Float.BYTES, 0);
-			glEnableVertexAttribArray(i);
+			vbos.get(i).enableVertexAttribPointer(glContext, i);
 		}
 	}
 

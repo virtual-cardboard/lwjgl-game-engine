@@ -1,11 +1,9 @@
 package context.visuals.lwjgl;
 
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glDeleteBuffers;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import context.GLContext;
 
@@ -42,11 +40,17 @@ public class VertexBufferObject extends GLRegularObject {
 		glContext.bufferID = -1;
 	}
 
+	protected void enableVertexAttribPointer(GLContext glContext, int i) {
+		bind(glContext);
+		glVertexAttribPointer(i, numColumns, GL_FLOAT, false, numColumns * Float.BYTES, 0);
+		glEnableVertexAttribArray(i);
+	}
+
 	public void delete() {
 		glDeleteBuffers(id);
 	}
 
-	protected void bind(GLContext glContext) {
+	private void bind(GLContext glContext) {
 		verifyInitialized();
 		if (glContext.bufferID == id) {
 			return;
