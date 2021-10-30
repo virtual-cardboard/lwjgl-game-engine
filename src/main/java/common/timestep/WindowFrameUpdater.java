@@ -16,10 +16,10 @@ import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
 import context.visuals.builtin.ColourFragmentShader;
+import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TexturedTransformationVertexShader;
 import context.visuals.builtin.TransformationVertexShader;
 import context.visuals.lwjgl.ShaderProgram;
-import context.visuals.lwjgl.VertexArrayObject;
 
 public final class WindowFrameUpdater extends TimestepTimer {
 
@@ -76,7 +76,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	}
 
 	private void loadBuiltIn() {
-		VertexArrayObject rectangleVAO = createRectangleVAO(wrapper.glContext());
+		RectangleVertexArrayObject rectangleVAO = createRectangleVAO(wrapper.glContext());
 		TransformationVertexShader tranformationVS = createTransformationVertexShader();
 		TexturedTransformationVertexShader texturedTransformationVS = createTexturedTransformationVertexShader();
 		ColourFragmentShader colourFS = createColourFragmentShader();
