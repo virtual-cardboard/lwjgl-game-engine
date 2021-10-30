@@ -70,9 +70,9 @@ public class TextureRenderer extends GameRenderer {
 	 */
 	public void render(GLContext glContext, Texture texture, Matrix4f matrix4f) {
 		shaderProgram.bind();
+		texture.bind(glContext);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
-		texture.bind(glContext);
 		vao.draw(glContext);
 	}
 

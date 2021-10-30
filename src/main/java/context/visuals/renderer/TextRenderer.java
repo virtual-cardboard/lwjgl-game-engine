@@ -73,7 +73,7 @@ public class TextRenderer extends GameRenderer {
 		for (int i = 0; i < chars.length; i++) {
 			CharacterData c = font.getCharacterDatas()[chars[i]];
 			short xAdvance = c.xAdvance();
-			if (lineWidth != -1 && totalXOffset + xAdvance > lineWidth) {
+			if (lineWidth != -1 && totalXOffset + xAdvance * sizeMultiplier > lineWidth) {
 				totalXOffset = 0;
 				totalYOffset += fontSize;
 			}
