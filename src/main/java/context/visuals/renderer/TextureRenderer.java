@@ -1,11 +1,13 @@
 package context.visuals.renderer;
 
 import common.math.Matrix4f;
+import common.math.Vector2f;
 import context.GLContext;
 import context.GameContext;
 import context.ResourcePack;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextureShaderProgram;
+import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
@@ -35,6 +37,27 @@ public class TextureRenderer extends GameRenderer {
 	public TextureRenderer(TextureShaderProgram shaderProgram, RectangleVertexArrayObject vao) {
 		this.shaderProgram = shaderProgram;
 		this.vao = vao;
+	}
+
+	/**
+	 * Renders a texture in pixel coordinates.
+	 * 
+	 * @param glContext the {@link GLContext}
+	 * @param rootGui   the {@link RootGui}
+	 * @param texture   the {@link Texture} to render
+	 * @param x         the x position in pixels of the top left corner of the
+	 *                  texture
+	 * @param y         the y position in pixels of the top left corner of the
+	 *                  texture
+	 * @param w         the width in pixels
+	 * @param h         the height in pixels
+	 */
+	public void render(GLContext glContext, RootGui rootGui, Texture texture, float x, float y, float w, float h) {
+		Vector2f rootGuiDimensions = rootGui.getDimensions();
+		Matrix4f matrix4f = new Matrix4f();
+		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
+				.translate(x, y).scale(w, h);
+		render(glContext, texture, matrix4f);
 	}
 
 	/**
