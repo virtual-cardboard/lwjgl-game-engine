@@ -7,7 +7,7 @@ uniform float x;
 uniform float y;
 uniform float width;
 uniform float height;
-uniform vec4 colour;
+uniform vec4 fill;
 
 void main() {
 	float xDiff = fragmentPos.x - x;
@@ -16,6 +16,6 @@ void main() {
 	float halfHeight = height * 0.5f;
 	float dist = xDiff * xDiff / (halfWidth * halfWidth) + yDiff * yDiff / (halfHeight * halfHeight);
 	float delta = fwidth(dist);
-	fragmentColor = colour;
+	fragmentColor = fill;
 	fragmentColor.a *= 1 - smoothstep(1 - delta, 1, dist);
 }

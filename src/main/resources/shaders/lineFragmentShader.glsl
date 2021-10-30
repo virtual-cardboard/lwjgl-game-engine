@@ -8,7 +8,7 @@ uniform float y1;
 uniform float x2;
 uniform float y2;
 uniform float halfWidth;
-uniform vec4 colour;
+uniform vec4 fill;
 
 float lengthSquared(float x1, float y1, float x2, float y2) {
 	return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
@@ -33,7 +33,7 @@ float getDist(vec2 p, float x1, float y1, float x2, float y2) {
 
 void main() {
 	float dist = getDist(gl_FragCoord.xy, x1, y1, x2, y2);
-	fragmentColor = colour;
+	fragmentColor = fill;
 	float delta = fwidth(dist);
 	fragmentColor.a *= 1 - smoothstep(halfWidth - 2 * delta, halfWidth, dist);
 }

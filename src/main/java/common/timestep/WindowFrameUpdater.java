@@ -2,7 +2,8 @@ package common.timestep;
 
 import static context.visuals.builtin.ColourFragmentShader.createColourFragmentShader;
 import static context.visuals.builtin.RectangleVertexArrayObject.createRectangleVAO;
-import static context.visuals.builtin.TexturedTransformationVertexShader.createTransformationVertexShader;
+import static context.visuals.builtin.TexturedTransformationVertexShader.createTexturedTransformationVertexShader;
+import static context.visuals.builtin.TransformationVertexShader.createTransformationVertexShader;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
@@ -77,7 +78,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	private void loadBuiltIn() {
 		VertexArrayObject rectangleVAO = createRectangleVAO(wrapper.glContext());
 		TransformationVertexShader tranformationVS = createTransformationVertexShader();
-		TexturedTransformationVertexShader texturedTransformationVS = createTransformationVertexShader();
+		TexturedTransformationVertexShader texturedTransformationVS = createTexturedTransformationVertexShader();
 		ColourFragmentShader colourFS = createColourFragmentShader();
 		try {
 			ShaderProgram defaultSP = new ShaderProgramLoadTask(tranformationVS, colourFS).doLoadGL(wrapper.glContext());

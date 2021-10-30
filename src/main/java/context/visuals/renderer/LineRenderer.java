@@ -76,7 +76,7 @@ public class LineRenderer extends GameRenderer {
 		shaderProgram.setFloat("x2", x2);
 		shaderProgram.setFloat("y2", y2);
 		shaderProgram.setFloat("halfWidth", halfWidth);
-		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
+		shaderProgram.setVec4("fill", Colour.toNormalizedVector(colour));
 
 		// Display VAO
 		vao.draw(glContext);

@@ -2,7 +2,13 @@ package context.visuals.builtin;
 
 import static context.visuals.lwjgl.ShaderType.VERTEX;
 
-public class TexturedTransformationVertexShader extends TransformationVertexShader {
+import context.visuals.lwjgl.Shader;
+
+public class TexturedTransformationVertexShader extends Shader {
+
+	public TexturedTransformationVertexShader() {
+		super(VERTEX);
+	}
 
 	private static final String TEXTURED_TRANSFORMATION_VERTEX_SHADER_SOURCE = "#version 330 core\r\n"
 			+ "layout (location = 0) in vec3 vertexPos;"
@@ -14,7 +20,7 @@ public class TexturedTransformationVertexShader extends TransformationVertexShad
 			+ "texCoord = textureCoord;"
 			+ "}";
 
-	public static TexturedTransformationVertexShader createTransformationVertexShader() {
+	public static TexturedTransformationVertexShader createTexturedTransformationVertexShader() {
 		TexturedTransformationVertexShader shader = new TexturedTransformationVertexShader();
 		shader.setId(VERTEX.genId());
 		shader.compile(TEXTURED_TRANSFORMATION_VERTEX_SHADER_SOURCE);

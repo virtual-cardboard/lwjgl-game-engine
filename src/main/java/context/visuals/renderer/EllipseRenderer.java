@@ -108,7 +108,7 @@ public class EllipseRenderer extends GameRenderer {
 		shaderProgram.setFloat("y", y);
 		shaderProgram.setFloat("width", width);
 		shaderProgram.setFloat("height", height);
-		shaderProgram.setVec4("colour", Colour.toNormalizedVector(colour));
+		shaderProgram.setVec4("fill", Colour.toNormalizedVector(colour));
 		vao.draw(glContext);
 	}
 

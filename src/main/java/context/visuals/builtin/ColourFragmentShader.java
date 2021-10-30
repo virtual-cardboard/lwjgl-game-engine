@@ -7,9 +7,9 @@ import context.visuals.lwjgl.Shader;
 public final class ColourFragmentShader extends Shader {
 
 	private static final String COLOUR_FRAGMENT_SHADER_SOURCE = "#version 330 core\r\n"
-			+ "out vec4 fragColor;\r\n"
-			+ "uniform vec4 colour;\r\n"
-			+ "void main() { fragColor = colour; }";
+			+ "out vec4 fragColor;"
+			+ "uniform vec4 fill;"
+			+ "void main() { fragColor = fill; }";
 
 	private ColourFragmentShader() {
 		super(FRAGMENT);
