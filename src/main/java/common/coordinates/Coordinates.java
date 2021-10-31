@@ -2,6 +2,8 @@ package common.coordinates;
 
 import java.io.Serializable;
 
+import common.math.Vector2f;
+
 public abstract class Coordinates<T extends Number> implements Serializable {
 
 	private static final long serialVersionUID = -3775082492525975448L;
@@ -25,5 +27,9 @@ public abstract class Coordinates<T extends Number> implements Serializable {
 	}
 
 	public abstract Coordinates<T> copy();
+
+	public Vector2f toVector() {
+		return new Vector2f(x.floatValue(), y.floatValue());
+	}
 
 }
