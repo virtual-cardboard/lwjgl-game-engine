@@ -1,5 +1,9 @@
 package context.visuals.lwjgl;
 
+import static context.visuals.colour.Colour.normalizedA;
+import static context.visuals.colour.Colour.normalizedB;
+import static context.visuals.colour.Colour.normalizedG;
+import static context.visuals.colour.Colour.normalizedR;
 import static org.lwjgl.opengl.GL20.*;
 
 import java.util.ArrayList;
@@ -110,6 +114,10 @@ public class ShaderProgram extends GLObject {
 	public void setVec4(String uniform, Vector4f vec4) {
 		verifyInitialized();
 		glUniform4f(glGetUniformLocation(id, uniform), vec4.x, vec4.y, vec4.z, vec4.w);
+	}
+
+	public void setColour(String uniform, int colour) {
+		setVec4(uniform, new Vector4f(normalizedR(colour), normalizedG(colour), normalizedB(colour), normalizedA(colour)));
 	}
 
 	private static final float[] FLOAT_BUFFER = new float[16];

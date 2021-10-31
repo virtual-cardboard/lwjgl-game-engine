@@ -113,8 +113,4 @@ public class Colour {
 		return new Vector4f(r(colour), g(colour), b(colour), a(colour));
 	}
 
-	public static Vector4f toNormalizedVector(int colour) {
-		return new Vector4f(normalizedR(colour), normalizedG(colour), normalizedB(colour), normalizedA(colour));
-	}
-
 }

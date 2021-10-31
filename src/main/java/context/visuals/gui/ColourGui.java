@@ -10,10 +10,12 @@ public class ColourGui extends Gui {
 
 	private ShaderProgram shaderProgram;
 	private VertexArrayObject vao;
+	private int colour;
 
-	public ColourGui(ShaderProgram defaultShaderProgram, RectangleVertexArrayObject vao) {
+	public ColourGui(ShaderProgram defaultShaderProgram, RectangleVertexArrayObject vao, int colour) {
 		shaderProgram = defaultShaderProgram;
 		this.vao = vao;
+		this.colour = colour;
 	}
 
 	@Override
@@ -21,6 +23,7 @@ public class ColourGui extends Gui {
 		matrix4f.translate(x, y).scale(width, height);
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f);
+		shaderProgram.setColour("fill", colour);
 		vao.draw(glContext);
 	}
 

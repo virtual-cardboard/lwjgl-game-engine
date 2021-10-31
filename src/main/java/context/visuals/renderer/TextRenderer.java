@@ -2,11 +2,9 @@ package context.visuals.renderer;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
-import common.math.Vector4f;
 import context.GLContext;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextShaderProgram;
-import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.text.CharacterData;
@@ -69,7 +67,6 @@ public class TextRenderer extends GameRenderer {
 
 		matrix4f.translate(x, y);
 		float sizeMultiplier = fontSize / font.getFontSize();
-		Vector4f colourVec4 = Colour.toNormalizedVector(colour);
 		for (int i = 0; i < chars.length; i++) {
 			CharacterData c = font.getCharacterDatas()[chars[i]];
 			short xAdvance = c.xAdvance();
@@ -80,7 +77,7 @@ public class TextRenderer extends GameRenderer {
 			shaderProgram.setInt("textureSampler", font.texture().getTextureUnit());
 			shaderProgram.setFloat("texWidth", font.texture().width());
 			shaderProgram.setFloat("texHeight", font.texture().height());
-			shaderProgram.setVec4("fill", colourVec4);
+			shaderProgram.setColour("fill", colour);
 			displayChar(glContext, matrix4f.clone(), c, totalXOffset, totalYOffset, sizeMultiplier);
 			totalXOffset += xAdvance * sizeMultiplier;
 		}

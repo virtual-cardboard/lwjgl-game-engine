@@ -32,7 +32,6 @@ public abstract class Gui {
 	private GuiDimensionConstraint widthConstraint;
 	private GuiDimensionConstraint heightConstraint;
 
-	private int backgroundColour;
 	private boolean enabled = true;
 
 	private Gui parent;
@@ -97,14 +96,6 @@ public abstract class Gui {
 
 	public void setHeight(GuiDimensionConstraint heightConstraint) {
 		this.heightConstraint = heightConstraint;
-	}
-
-	public int getBackgroundColour() {
-		return backgroundColour;
-	}
-
-	public void setBackground(int backgroundColour) {
-		this.backgroundColour = backgroundColour;
 	}
 
 	public Gui parent() {
