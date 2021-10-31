@@ -107,7 +107,7 @@ public abstract class Gui {
 		this.backgroundColour = backgroundColour;
 	}
 
-	public Gui getParent() {
+	public Gui parent() {
 		return parent;
 	}
 
