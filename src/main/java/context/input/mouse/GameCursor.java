@@ -1,22 +1,22 @@
 package context.input.mouse;
 
-import common.coordinates.IntCoordinates;
+import common.math.Vector2f;
 
 public class GameCursor {
 
-	private IntCoordinates cursorCoordinates;
+	private Vector2f cursorCoordinates;
 	private boolean[] pressedButtons;
 
 	public GameCursor() {
-		cursorCoordinates = new IntCoordinates(0, 0);
+		cursorCoordinates = new Vector2f();
 		pressedButtons = new boolean[8];
 	}
 
-	public IntCoordinates getCursorCoordinates() {
+	public Vector2f cursorCoordinates() {
 		return cursorCoordinates;
 	}
 
-	public void setCursorCoordinates(IntCoordinates cursorCoordinates) {
+	public void setCursorCoordinates(Vector2f cursorCoordinates) {
 		this.cursorCoordinates.set(cursorCoordinates);
 	}
 
