@@ -1,5 +1,6 @@
 package context.visuals.gui;
 
+import common.math.PosDim;
 import common.math.Vector2f;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
@@ -53,6 +54,11 @@ public class RootGui extends InvisibleGui {
 		widthConstraint.setPixels(width);
 		PixelDimensionConstraint heightConstraint = (PixelDimensionConstraint) getHeight();
 		heightConstraint.setPixels(height);
+	}
+
+	@Override
+	public PosDim posdim() {
+		return new PosDim(0, 0, width(), height());
 	}
 
 	@Override

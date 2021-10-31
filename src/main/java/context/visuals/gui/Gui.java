@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.math.Matrix4f;
+import common.math.PosDim;
 import context.GLContext;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
@@ -51,6 +52,17 @@ public abstract class Gui {
 
 	public void clearChildren() {
 		children.clear();
+	}
+
+	/**
+	 * Gets the absolute position and dimensions.
+	 * 
+	 * @return a {@link PosDim} containing the position and dimensions
+	 */
+	public PosDim posdim() {
+		PosDim p = parent.posdim();
+		return new PosDim(posXConstraint.calculateValue(p.x, p.x + p.w), posYConstraint.calculateValue(p.y, p.y + p.h),
+				widthConstraint.calculateValue(p.x, p.x + p.w), heightConstraint.calculateValue(p.y, p.y + p.h));
 	}
 
 	// Getters and setters
