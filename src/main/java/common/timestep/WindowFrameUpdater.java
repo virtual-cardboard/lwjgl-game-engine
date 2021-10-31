@@ -30,6 +30,8 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	private CountDownLatch windowCountDownLatch;
 	private CountDownLatch contextCountDownLatch;
 
+	private boolean initialized;
+
 	public WindowFrameUpdater(GameWindow window, CountDownLatch windowCountDownLatch, CountDownLatch contextCountDownLatch) {
 		super(60);
 		this.window = window;
@@ -46,6 +48,10 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		int[] height = new int[1];
 		glfwGetWindowSize(windowId, width, height);
 		context.visuals().rootGui().setDimensions(width[0], height[0]);
+		if (!initialized) {
+			context.visuals().init();
+			initialized = true;
+		}
 		context.input().handleAll();
 		context.visuals().render();
 		glfwSwapBuffers(windowId);
@@ -69,6 +75,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		this.windowId = window.windowId();
 		try {
 			contextCountDownLatch.await();
+			contextCountDownLatch = null;
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -87,6 +94,10 @@ public final class WindowFrameUpdater extends TimestepTimer {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void requireInit() {
+		initialized = false;
 	}
 
 	/**

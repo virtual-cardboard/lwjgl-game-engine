@@ -87,7 +87,7 @@ public final class GameContext {
 		data.doInit(loader);
 		input.doInit(inputEventBuffer, networkReceiveBuffer, eventQueue);
 		logic.doInit(eventQueue, loader);
-		visuals.doInit(loader);
+		visuals.setLoader(loader);
 	}
 
 	void setWrapper(GameContextWrapper wrapper) {

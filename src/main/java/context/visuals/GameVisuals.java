@@ -40,34 +40,16 @@ public abstract class GameVisuals extends ContextPart {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	public final void doInit(GameLoader loader) {
+	public final void setLoader(GameLoader loader) {
 		this.loader = loader;
-		init();
 	}
-//
-//	/**
-//	 * Creates a {@link VertexArrayObject}. Should not be called outside of the
-//	 * rendering thread.
-//	 * 
-//	 * @param eboBuilder  the {@link ElementBufferObjectBuilder} that will create
-//	 *                    the VAO's EBO
-//	 * @param vboBuilders the {@link VertexBufferObjectBuilder
-//	 *                    VertexBufferObjectBuilders} that will create the VAO's
-//	 *                    VBOs
-//	 * @return the linked <code>VertexArrayObject</code>
-//	 */
-//	protected final VertexArrayObject createVertexArrayObject(ElementBufferObjectBuilder eboBuilder, VertexBufferObjectBuilder... vboBuilders) {
-//		try {
-//			ElementBufferObject ebo = glFactory.createUsingBuilder(eboBuilder).get();
-//			VertexBufferObject[] vbos = new VertexBufferObject[vboBuilders.length];
-//			for (int i = 0; i < vboBuilders.length; i++) {
-//				vbos[i] = glFactory.createUsingBuilder(vboBuilders[i]).get();
-//			}
-//			return glFactory.createUsingBuilder(new VertexArrayObjectBuilder(context().glContext(), ebo, vbos)).get();
-//		} catch (Exception e) {
-//			throw new RuntimeException(e);
-//		}
-//	}
+
+	/**
+	 * Initializes the {@link GameVisuals}. This is called by the rendering thread.
+	 */
+	@Override
+	public void init() {
+	}
 
 	protected final GameLoader loader() {
 		return loader;

@@ -93,6 +93,7 @@ public final class GameContextWrapper {
 		synchronized (contextLock.writeLock()) {
 			context.setWrapper(this);
 			context.init(inputBuffer, networkReceiveBuffer, loader);
+			windowFrameUpdater.requireInit();
 			this.context = context;
 		}
 	}
