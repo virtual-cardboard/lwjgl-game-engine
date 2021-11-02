@@ -52,8 +52,8 @@ public final class WindowFrameUpdater extends TimestepTimer {
 			context.visuals().init();
 			initialized = true;
 		}
-		context.input().handleAll();
 		context.visuals().render();
+		context.input().handleAll();
 		glfwSwapBuffers(windowId);
 	}
 
