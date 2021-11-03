@@ -4,23 +4,13 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 import common.GameInputEventHandler;
 import common.event.GameEvent;
 import context.ContextPart;
 import context.GameWindow;
-import context.input.event.FrameResizedInputEvent;
-import context.input.event.GameInputEvent;
-import context.input.event.KeyPressedInputEvent;
-import context.input.event.KeyReleasedInputEvent;
-import context.input.event.KeyRepeatedInputEvent;
-import context.input.event.MouseMovedInputEvent;
-import context.input.event.MousePressedInputEvent;
-import context.input.event.MouseReleasedInputEvent;
-import context.input.event.MouseScrolledInputEvent;
-import context.input.event.PacketReceivedInputEvent;
+import context.input.event.*;
 import context.input.mouse.GameCursor;
 import context.logic.GameLogic;
 import engine.GameEngine;
@@ -83,7 +73,7 @@ public abstract class GameInput extends ContextPart {
 	 */
 	private GameCursor cursor = new GameCursor();
 
-	public final void doInit(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, PriorityQueue<GameEvent> eventQueue) {
+	public final void doInit(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<GameEvent> eventQueue) {
 		this.inputEventBuffer = inputEventBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
 		this.eventQueue = eventQueue;

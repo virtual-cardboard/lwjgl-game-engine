@@ -1,7 +1,7 @@
 package context;
 
-import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import common.event.GameEvent;
 import common.loader.GameLoader;
@@ -32,7 +32,7 @@ public final class GameContext {
 	private final GameLogic logic;
 	private final GameVisuals visuals;
 
-	private PriorityQueue<GameEvent> eventQueue = new PriorityQueue<>();
+	private PriorityBlockingQueue<GameEvent> eventQueue = new PriorityBlockingQueue<>();
 
 	/**
 	 * Takes in a data, input, logic, and visuals, then sets the context references
