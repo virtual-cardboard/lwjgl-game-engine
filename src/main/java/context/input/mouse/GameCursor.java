@@ -12,7 +12,7 @@ public class GameCursor {
 		pressedButtons = new boolean[8];
 	}
 
-	public Vector2f cursorCoordinates() {
+	public Vector2f coordinates() {
 		return cursorCoordinates;
 	}
 
