@@ -12,6 +12,7 @@ import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.lwjgl.VertexBufferObject;
+import context.visuals.renderer.GameRenderer;
 import context.visuals.text.GameFont;
 
 /**
@@ -27,6 +28,7 @@ public final class ResourcePack {
 	private Map<String, VertexBufferObject> vbos = new HashMap<>();
 	private Map<String, ElementBufferObject> ebos = new HashMap<>();
 	private Map<String, ShaderProgram> shaderPrograms = new HashMap<>();
+	private Map<String, GameRenderer> renderers = new HashMap<>();
 	private Map<String, Texture> textures = new HashMap<>();
 	private Map<String, GameFont> fonts = new HashMap<>();
 	private RectangleVertexArrayObject rectangleVAO;
@@ -72,8 +74,20 @@ public final class ResourcePack {
 		return shaderPrograms.get(name);
 	}
 
+	public <T extends ShaderProgram> T getShaderProgram(String name, Class<T> clazz) {
+		return clazz.cast(shaderPrograms.get(name));
+	}
+
 	public void putShaderProgram(String name, ShaderProgram shaderProgram) {
 		shaderPrograms.put(name, shaderProgram);
+	}
+
+	public <T extends GameRenderer> T getRenderer(String name, Class<T> clazz) {
+		return clazz.cast(renderers.get(name));
+	}
+
+	public void putRenderer(String name, GameRenderer renderer) {
+		renderers.put(name, renderer);
 	}
 
 	public Texture getTexture(String name) {
