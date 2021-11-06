@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-import common.GameInputEventHandler;
 import common.event.GameEvent;
 import context.ContextPart;
 import context.GameWindow;
