@@ -1,10 +1,9 @@
-package common;
+package context.input;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import common.event.GameEvent;
-import context.input.GameInput;
 import context.input.event.GameInputEvent;
 
 /**
