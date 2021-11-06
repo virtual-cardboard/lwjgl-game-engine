@@ -28,6 +28,7 @@ public abstract class GameVisuals extends ContextPart {
 	 */
 	private RootGui rootGui = new RootGui(0, 0);
 	private GameLoader loader;
+	private boolean initialized;
 
 	public RootGui rootGui() {
 		return rootGui;
@@ -48,11 +49,20 @@ public abstract class GameVisuals extends ContextPart {
 		this.loader = loader;
 	}
 
+	public final void doInit() {
+		init();
+		initialized = true;
+	}
+
 	/**
 	 * Initializes the {@link GameVisuals}. This is called by the rendering thread.
 	 */
 	@Override
 	public void init() {
+	}
+
+	public final boolean initialized() {
+		return initialized;
 	}
 
 	protected final GameLoader loader() {
