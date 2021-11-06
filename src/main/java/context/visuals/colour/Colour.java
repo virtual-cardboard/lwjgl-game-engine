@@ -28,8 +28,8 @@ public class Colour {
 	 * @param b the b value
 	 * @return An integer that contains all of the RGB values.
 	 */
-	public static int colour(int r, int g, int b) {
-		return colour(r, g, b, 255);
+	public static int rgb(int r, int g, int b) {
+		return rgb(r, g, b, 255);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class Colour {
 	 * @param a the alpha value
 	 * @return An integer that contains all of the RGBA values.
 	 */
-	public static int colour(int r, int g, int b, int a) {
+	public static int rgb(int r, int g, int b, int a) {
 		return (r << 24) + (g << 16) + (b << 8) + (a);
 	}
 
@@ -54,7 +54,7 @@ public class Colour {
 	 * 
 	 * @param colour the colour
 	 * @return The {@code r} value of the colour.
-	 * @see {@link #colour(int, int, int, int) colour(r, g, b, a)}
+	 * @see {@link #rgb(int, int, int, int) colour(r, g, b, a)}
 	 */
 	public static int r(int colour) {
 		return 255 & (colour >> 24);
@@ -65,7 +65,7 @@ public class Colour {
 	 * 
 	 * @param colour the colour
 	 * @return The {@code g} value of the colour.
-	 * @see {@link #colour(int, int, int, int) colour(r, g, b, a)}
+	 * @see {@link #rgb(int, int, int, int) colour(r, g, b, a)}
 	 */
 	public static int g(int colour) {
 		return 255 & (colour >> 16);
@@ -76,7 +76,7 @@ public class Colour {
 	 * 
 	 * @param colour the colour
 	 * @return The {@code b} value of the colour.
-	 * @see {@link #colour(int, int, int, int) colour(r, g, b, a)}
+	 * @see {@link #rgb(int, int, int, int) colour(r, g, b, a)}
 	 */
 	public static int b(int colour) {
 		return 255 & (colour >> 8);
@@ -87,7 +87,7 @@ public class Colour {
 	 * 
 	 * @param colour the colour
 	 * @return The {@code alpha} value of the colour.
-	 * @see {@link #colour(int, int, int, int) colour(r, g, b, a)}
+	 * @see {@link #rgb(int, int, int, int) colour(r, g, b, a)}
 	 */
 	public static int a(int colour) {
 		return 255 & (colour);

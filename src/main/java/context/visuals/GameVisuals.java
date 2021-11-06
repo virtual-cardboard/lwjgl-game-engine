@@ -1,5 +1,9 @@
 package context.visuals;
 
+import static context.visuals.colour.Colour.normalizedA;
+import static context.visuals.colour.Colour.normalizedB;
+import static context.visuals.colour.Colour.normalizedG;
+import static context.visuals.colour.Colour.normalizedR;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
@@ -35,8 +39,8 @@ public abstract class GameVisuals extends ContextPart {
 	 */
 	public abstract void render();
 
-	protected final void background(float r, float g, float b, float a) {
-		glClearColor(r, g, b, a);
+	protected final void background(int colour) {
+		glClearColor(normalizedR(colour), normalizedG(colour), normalizedB(colour), normalizedA(colour));
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
