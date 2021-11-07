@@ -2,13 +2,13 @@ package context.visuals.gui.traits;
 
 import java.util.function.Consumer;
 
-import common.coordinates.IntCoordinates;
+import common.math.Vector2i;
 
 public interface HasMoveEffect {
 
-	public Consumer<IntCoordinates> getMoveEffect();
+	public Consumer<Vector2i> getMoveEffect();
 
-	public default void doMoveEffect(IntCoordinates cursorCoordinates) {
+	public default void doMoveEffect(Vector2i cursorCoordinates) {
 		getMoveEffect().accept(cursorCoordinates);
 	}
 

@@ -11,7 +11,7 @@ import java.util.Queue;
 
 import org.lwjgl.glfw.GLFWVidMode;
 
-import common.coordinates.IntCoordinates;
+import common.math.Vector2i;
 import context.input.event.GameInputEvent;
 import context.input.lwjglcallback.KeyCallback;
 import context.input.lwjglcallback.MouseButtonCallback;
@@ -37,14 +37,14 @@ public class GameWindow {
 	/**
 	 * Dimensions of the window.
 	 */
-	private IntCoordinates windowDimensions;
+	private Vector2i windowDimensions;
 	private long sharedContextWindowHandle;
 
 	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer) {
-		this(windowTitle, inputEventBuffer, new IntCoordinates(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
+		this(windowTitle, inputEventBuffer, new Vector2i(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
 	}
 
-	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer, IntCoordinates windowDimensions) {
+	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer, Vector2i windowDimensions) {
 		this.windowTitle = windowTitle;
 		this.inputEventBuffer = inputEventBuffer;
 		this.windowDimensions = windowDimensions;
@@ -113,7 +113,7 @@ public class GameWindow {
 	 * 
 	 * @return a copy of {@link #windowDimensions windowDimensions}
 	 */
-	public IntCoordinates getWindowDimensionsCopy() {
+	public Vector2i getWindowDimensionsCopy() {
 		return windowDimensions.copy();
 	}
 

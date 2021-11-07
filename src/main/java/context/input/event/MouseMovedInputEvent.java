@@ -1,6 +1,5 @@
 package context.input.event;
 
-import common.coordinates.VectorCoordinates;
 import common.source.GameSource;
 import context.data.user.LocalUser;
 
@@ -29,10 +28,6 @@ public final class MouseMovedInputEvent extends GameInputEvent {
 
 	public int y() {
 		return y;
-	}
-
-	public VectorCoordinates coords() {
-		return new VectorCoordinates(x, y);
 	}
 
 }

@@ -56,6 +56,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	 * 
 	 * @see org.lwjgl.util.vector.WritableVector2f#set(float, float)
 	 */
+	@Override
 	public void set(float x, float y) {
 		this.x = x;
 		this.y = y;
@@ -66,6 +67,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	 * 
 	 * @see org.lwjgl.util.vector.WritableVector3f#set(float, float, float)
 	 */
+	@Override
 	public void set(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
@@ -77,6 +79,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	 * 
 	 * @see org.lwjgl.util.vector.WritableVector4f#set(float, float, float, float)
 	 */
+	@Override
 	public void set(float x, float y, float z, float w) {
 		this.x = x;
 		this.y = y;
@@ -139,7 +142,8 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	}
 
 	/**
-	 * Subtract a vector from another vector and place the result in a destination vector.
+	 * Subtract a vector from another vector and place the result in a destination
+	 * vector.
 	 * 
 	 * @param left  The LHS vector
 	 * @param right The RHS vector
@@ -203,7 +207,8 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	}
 
 	/**
-	 * The dot product of two vectors is calculated as v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w
+	 * The dot product of two vectors is calculated as v1.x * v2.x + v1.y * v2.y +
+	 * v1.z * v2.z + v1.w * v2.w
 	 * 
 	 * @param left  The LHS vector
 	 * @param right The RHS vector
@@ -281,6 +286,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	/**
 	 * @return x
 	 */
+	@Override
 	public final float getX() {
 		return x;
 	}
@@ -288,6 +294,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	/**
 	 * @return y
 	 */
+	@Override
 	public final float getY() {
 		return y;
 	}
@@ -297,6 +304,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	 * 
 	 * @param x
 	 */
+	@Override
 	public final void setX(float x) {
 		this.x = x;
 	}
@@ -306,6 +314,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	 * 
 	 * @param y
 	 */
+	@Override
 	public final void setY(float y) {
 		this.y = y;
 	}
@@ -315,6 +324,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	 * 
 	 * @param z
 	 */
+	@Override
 	public void setZ(float z) {
 		this.z = z;
 	}
@@ -324,6 +334,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	 * 
 	 * @see org.lwjgl.vector.ReadableVector3f#getZ()
 	 */
+	@Override
 	public float getZ() {
 		return z;
 	}
@@ -333,6 +344,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	 * 
 	 * @param w
 	 */
+	@Override
 	public void setW(float w) {
 		this.w = w;
 	}
@@ -342,6 +354,7 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 	 * 
 	 * @see org.lwjgl.vector.ReadableVector3f#getZ()
 	 */
+	@Override
 	public float getW() {
 		return w;
 	}
@@ -361,4 +374,10 @@ public class Vector4f extends Vector implements Serializable, ReadableVector4f, 
 
 		return false;
 	}
+
+	@Override
+	public Vector4f copy() {
+		return new Vector4f(x, y, z, w);
+	}
+
 }

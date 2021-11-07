@@ -93,4 +93,11 @@ public abstract class Vector implements Serializable, ReadableVector {
 	 */
 	public abstract Vector scale(float scale);
 
+	/**
+	 * Copy this vector
+	 * 
+	 * @return copy of this vector
+	 */
+	public abstract Vector copy();
+
 }

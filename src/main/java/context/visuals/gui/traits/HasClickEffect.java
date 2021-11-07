@@ -1,11 +1,11 @@
 package context.visuals.gui.traits;
 
-import common.coordinates.IntCoordinates;
+import common.math.Vector2i;
 
 public interface HasClickEffect extends HasPressEffect, HasReleaseEffect {
 
 	@Override
-	default void doReleaseEffect(IntCoordinates cursorCoordinates) {
+	default void doReleaseEffect(Vector2i cursorCoordinates) {
 		if (isPressed()) {
 			HasReleaseEffect.super.doReleaseEffect(cursorCoordinates);
 		}

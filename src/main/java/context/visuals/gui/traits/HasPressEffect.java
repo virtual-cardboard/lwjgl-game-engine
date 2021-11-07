@@ -2,7 +2,7 @@ package context.visuals.gui.traits;
 
 import java.util.function.Consumer;
 
-import common.coordinates.IntCoordinates;
+import common.math.Vector2i;
 
 public interface HasPressEffect {
 
@@ -10,9 +10,9 @@ public interface HasPressEffect {
 
 	public void setPressed(boolean pressed);
 
-	public Consumer<IntCoordinates> getPressEffect();
+	public Consumer<Vector2i> getPressEffect();
 
-	public default void doPressEffect(IntCoordinates cursorCoordinates) {
+	public default void doPressEffect(Vector2i cursorCoordinates) {
 		getPressEffect().accept(cursorCoordinates);
 		setPressed(true);
 	}

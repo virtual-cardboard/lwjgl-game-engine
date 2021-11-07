@@ -2,7 +2,7 @@ package context.visuals.gui.traits;
 
 import java.util.function.Consumer;
 
-import common.coordinates.IntCoordinates;
+import common.math.Vector2i;
 
 public interface HasReleaseEffect {
 
@@ -10,9 +10,9 @@ public interface HasReleaseEffect {
 
 	public void setPressed(boolean pressed);
 
-	public Consumer<IntCoordinates> getReleaseEffect();
+	public Consumer<Vector2i> getReleaseEffect();
 
-	public default void doReleaseEffect(IntCoordinates cursorCoordinates) {
+	public default void doReleaseEffect(Vector2i cursorCoordinates) {
 		getReleaseEffect().accept(cursorCoordinates);
 		setPressed(false);
 	}
