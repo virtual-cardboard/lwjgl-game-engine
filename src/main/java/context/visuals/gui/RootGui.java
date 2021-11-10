@@ -35,20 +35,35 @@ public class RootGui extends InvisibleGui {
 		return 0;
 	}
 
+	/**
+	 * @return The width in pixels
+	 */
 	public int width() {
 		PixelDimensionConstraint width = (PixelDimensionConstraint) super.getWidth();
 		return (int) width.getPixels();
 	}
 
+	/**
+	 * @return The height in pixels
+	 */
 	public int height() {
 		PixelDimensionConstraint height = (PixelDimensionConstraint) super.getHeight();
 		return (int) height.getPixels();
 	}
 
+	/**
+	 * @return A new {@link Vector2f} representing the dimensions
+	 */
 	public Vector2f getDimensions() {
 		return new Vector2f(width(), height());
 	}
 
+	/**
+	 * Sets the dimensions.
+	 * 
+	 * @param width  the new width in pixels
+	 * @param height the new height in pixels
+	 */
 	public void setDimensions(int width, int height) {
 		PixelDimensionConstraint widthConstraint = (PixelDimensionConstraint) getWidth();
 		widthConstraint.setPixels(width);
@@ -56,6 +71,9 @@ public class RootGui extends InvisibleGui {
 		heightConstraint.setPixels(height);
 	}
 
+	/**
+	 * @return a {@link PosDim} representing the position and dimension
+	 */
 	@Override
 	public PosDim posdim() {
 		return new PosDim(0, 0, width(), height());
