@@ -16,7 +16,7 @@ class GameCursorMovedUpdaterFunction implements Function<MouseMovedInputEvent, G
 
 	@Override
 	public GameEvent apply(MouseMovedInputEvent inputEvent) {
-		cursor.setCursorCoordinates(inputEvent.x(), inputEvent.y());
+		cursor.setPos(inputEvent.x(), inputEvent.y());
 		return null;
 	}
 
