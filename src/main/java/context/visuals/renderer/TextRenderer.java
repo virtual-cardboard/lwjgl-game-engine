@@ -65,7 +65,7 @@ public class TextRenderer extends GameRenderer {
 		shaderProgram.bind();
 		font.texture().bind(glContext);
 
-		matrix4f.translate(x, y);
+		Matrix4f copy = matrix4f.copy().translate(x, y);
 		float sizeMultiplier = fontSize / font.getFontSize();
 		for (int i = 0; i < chars.length; i++) {
 			CharacterData c = font.getCharacterDatas()[chars[i]];
@@ -78,7 +78,7 @@ public class TextRenderer extends GameRenderer {
 			shaderProgram.setFloat("texWidth", font.texture().width());
 			shaderProgram.setFloat("texHeight", font.texture().height());
 			shaderProgram.setColour("fill", colour);
-			displayChar(glContext, matrix4f.clone(), c, totalXOffset, totalYOffset, sizeMultiplier);
+			displayChar(glContext, copy.copy(), c, totalXOffset, totalYOffset, sizeMultiplier);
 			totalXOffset += xAdvance * sizeMultiplier;
 		}
 	}

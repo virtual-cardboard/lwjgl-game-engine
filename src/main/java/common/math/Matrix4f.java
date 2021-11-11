@@ -383,6 +383,10 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 		return dest;
 	}
 
+	public Matrix4f multiply(Matrix4f matrix4f) {
+		return load(multiply(this, matrix4f));
+	}
+
 	/**
 	 * Multiply the right matrix by the left and return the result.
 	 * 
@@ -880,8 +884,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 		return dest;
 	}
 
-	@Override
-	public Matrix4f clone() {
+	public Matrix4f copy() {
 		return new Matrix4f(this);
 	}
 

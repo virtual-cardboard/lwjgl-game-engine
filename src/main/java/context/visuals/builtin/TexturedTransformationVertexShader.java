@@ -16,8 +16,8 @@ public class TexturedTransformationVertexShader extends Shader {
 			+ "out vec2 texCoord;"
 			+ "uniform mat4 matrix4f;"
 			+ "void main() {"
-			+ "gl_Position = matrix4f * vec4(vertexPos, 1);"
-			+ "texCoord = textureCoord;"
+			+ "    gl_Position = matrix4f * vec4(vertexPos, 1);"
+			+ "    texCoord = textureCoord;"
 			+ "}";
 
 	public static TexturedTransformationVertexShader createTexturedTransformationVertexShader() {
