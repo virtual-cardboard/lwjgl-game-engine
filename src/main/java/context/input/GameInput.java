@@ -5,6 +5,8 @@ import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import common.event.GameEvent;
 import context.ContextPart;
@@ -147,40 +149,81 @@ public abstract class GameInput extends ContextPart {
 		}
 	}
 
-	protected void addKeyPressedFunction(GameInputEventHandler<KeyPressedInputEvent> function) {
-		keyPressedInputEventHandlers.add(function);
+	protected void addKeyPressedFunction(Function<KeyPressedInputEvent, GameEvent> function) {
+		keyPressedInputEventHandlers.add(new GameInputEventHandler<>(function));
 	}
 
-	protected void addKeyReleasedFunction(GameInputEventHandler<KeyReleasedInputEvent> function) {
-		keyReleasedInputEventHandlers.add(function);
+	protected void addKeyReleasedFunction(Function<KeyReleasedInputEvent, GameEvent> function) {
+		keyReleasedInputEventHandlers.add(new GameInputEventHandler<>(function));
 	}
 
-	protected void addMousePressedFunction(GameInputEventHandler<MousePressedInputEvent> function) {
-		mousePressedInputEventHandlers.add(function);
+	protected void addMousePressedFunction(Function<MousePressedInputEvent, GameEvent> function) {
+		mousePressedInputEventHandlers.add(new GameInputEventHandler<>(function));
 	}
 
-	protected void addMouseReleasedFunction(GameInputEventHandler<MouseReleasedInputEvent> function) {
-		mouseReleasedInputEventHandlers.add(function);
+	protected void addMouseReleasedFunction(Function<MouseReleasedInputEvent, GameEvent> function) {
+		mouseReleasedInputEventHandlers.add(new GameInputEventHandler<>(function));
 	}
 
-	protected void addMouseMovedFunction(GameInputEventHandler<MouseMovedInputEvent> function) {
-		mouseMovedInputEventHandlers.add(function);
+	protected void addMouseMovedFunction(Function<MouseMovedInputEvent, GameEvent> function) {
+		mouseMovedInputEventHandlers.add(new GameInputEventHandler<>(function));
 	}
 
-	protected void addMouseScrolledFunction(GameInputEventHandler<MouseScrolledInputEvent> function) {
-		mouseScrolledInputEventHandlers.add(function);
+	protected void addMouseScrolledFunction(Function<MouseScrolledInputEvent, GameEvent> function) {
+		mouseScrolledInputEventHandlers.add(new GameInputEventHandler<>(function));
 	}
 
-	protected void addFrameResizedFunction(GameInputEventHandler<FrameResizedInputEvent> function) {
-		frameResizedInputEventHandlers.add(function);
+	protected void addFrameResizedFunction(Function<FrameResizedInputEvent, GameEvent> function) {
+		frameResizedInputEventHandlers.add(new GameInputEventHandler<>(function));
 	}
 
-	protected void addKeyRepeatedFunction(GameInputEventHandler<KeyRepeatedInputEvent> function) {
-		keyRepeatedInputEventHandlers.add(function);
+	protected void addKeyRepeatedFunction(Function<KeyRepeatedInputEvent, GameEvent> function) {
+		keyRepeatedInputEventHandlers.add(new GameInputEventHandler<>(function));
 	}
 
-	protected void addPacketReceivedFunction(GameInputEventHandler<PacketReceivedInputEvent> function) {
-		packetReceivedInputEventHandlers.add(function);
+	protected void addPacketReceivedFunction(Function<PacketReceivedInputEvent, GameEvent> function) {
+		packetReceivedInputEventHandlers.add(new GameInputEventHandler<>(function));
+	}
+
+	protected void addKeyPressedFunction(Predicate<KeyPressedInputEvent> predicate, Function<KeyPressedInputEvent, GameEvent> function, boolean consumes) {
+		keyPressedInputEventHandlers.add(new GameInputEventHandler<>(predicate, function, consumes));
+	}
+
+	protected void addKeyReleasedFunction(Predicate<KeyReleasedInputEvent> predicate, Function<KeyReleasedInputEvent, GameEvent> function, boolean consumes) {
+		keyReleasedInputEventHandlers.add(new GameInputEventHandler<>(predicate, function, consumes));
+	}
+
+	protected void addMousePressedFunction(Predicate<MousePressedInputEvent> predicate, Function<MousePressedInputEvent, GameEvent> function,
+			boolean consumes) {
+		mousePressedInputEventHandlers.add(new GameInputEventHandler<>(predicate, function, consumes));
+	}
+
+	protected void addMouseReleasedFunction(Predicate<MouseReleasedInputEvent> predicate, Function<MouseReleasedInputEvent, GameEvent> function,
+			boolean consumes) {
+		mouseReleasedInputEventHandlers.add(new GameInputEventHandler<>(predicate, function, consumes));
+	}
+
+	protected void addMouseMovedFunction(Predicate<MouseMovedInputEvent> predicate, Function<MouseMovedInputEvent, GameEvent> function, boolean consumes) {
+		mouseMovedInputEventHandlers.add(new GameInputEventHandler<>(predicate, function, consumes));
+	}
+
+	protected void addMouseScrolledFunction(Predicate<MouseScrolledInputEvent> predicate, Function<MouseScrolledInputEvent, GameEvent> function,
+			boolean consumes) {
+		mouseScrolledInputEventHandlers.add(new GameInputEventHandler<>(predicate, function, consumes));
+	}
+
+	protected void addFrameResizedFunction(Predicate<FrameResizedInputEvent> predicate, Function<FrameResizedInputEvent, GameEvent> function,
+			boolean consumes) {
+		frameResizedInputEventHandlers.add(new GameInputEventHandler<>(predicate, function, consumes));
+	}
+
+	protected void addKeyRepeatedFunction(Predicate<KeyRepeatedInputEvent> predicate, Function<KeyRepeatedInputEvent, GameEvent> function, boolean consumes) {
+		keyRepeatedInputEventHandlers.add(new GameInputEventHandler<>(predicate, function, consumes));
+	}
+
+	protected void addPacketReceivedFunction(Predicate<PacketReceivedInputEvent> predicate, Function<PacketReceivedInputEvent, GameEvent> function,
+			boolean consumes) {
+		packetReceivedInputEventHandlers.add(new GameInputEventHandler<>(predicate, function, consumes));
 	}
 
 	public GameCursor cursor() {

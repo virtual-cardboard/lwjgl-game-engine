@@ -24,7 +24,7 @@ import context.input.event.GameInputEvent;
  *
  * @param <T> the type of GameInputEvent to handle
  */
-public class GameInputEventHandler<T extends GameInputEvent> implements Function<T, GameEvent> {
+class GameInputEventHandler<T extends GameInputEvent> implements Function<T, GameEvent> {
 
 	/**
 	 * The predicate that determines if the function will be run.
