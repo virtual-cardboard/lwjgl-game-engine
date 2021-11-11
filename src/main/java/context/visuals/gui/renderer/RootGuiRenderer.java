@@ -24,12 +24,12 @@ public final class RootGuiRenderer extends GameRenderer {
 		for (int i = 0; i < children.size(); i++) {
 			Gui child = children.get(i);
 			if (child.isEnabled()) {
-				doRecursiveRender(glContext, child, root, matrix4f, 0, 0, root.width(), root.height());
+				recursiveRender(glContext, child, root, matrix4f, 0, 0, root.width(), root.height());
 			}
 		}
 	}
 
-	private void doRecursiveRender(GLContext glContext, Gui gui, RootGui root, Matrix4f matrix4f, float parentX, float parentY, float parentWidth,
+	private void recursiveRender(GLContext glContext, Gui gui, RootGui root, Matrix4f matrix4f, float parentX, float parentY, float parentWidth,
 			float parentHeight) {
 		float x = gui.getPosX().calculateValue(parentX, parentX + parentWidth);
 		float y = gui.getPosY().calculateValue(parentY, parentY + parentHeight);
@@ -41,7 +41,7 @@ public final class RootGuiRenderer extends GameRenderer {
 		for (int i = 0; i < children.size(); i++) {
 			Gui child = children.get(i);
 			if (child.isEnabled()) {
-				doRecursiveRender(glContext, child, root, matrix4f, x, y, w, h);
+				recursiveRender(glContext, child, root, matrix4f, x, y, w, h);
 			}
 		}
 	}

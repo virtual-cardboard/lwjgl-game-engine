@@ -2,25 +2,25 @@ package context.visuals.gui.constraint.position;
 
 import java.util.Objects;
 
-import context.visuals.gui.Anchor;
+import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 
 public class PixelPositionConstraint extends GuiPositionConstraint {
 
 	private float pixels;
-	private Anchor anchor;
+	private GuiDimensionConstraint dimensionConstraint;
 
 	public PixelPositionConstraint(float pixels) {
-		this(pixels, Anchor.LEADING);
+		this.pixels = pixels;
 	}
 
-	public PixelPositionConstraint(float pixels, Anchor anchor) {
+	public PixelPositionConstraint(float pixels, GuiDimensionConstraint dimensionConstraint) {
 		this.pixels = pixels;
-		this.anchor = Objects.requireNonNull(anchor);
+		this.dimensionConstraint = Objects.requireNonNull(dimensionConstraint);
 	}
 
 	@Override
 	public float calculateValue(float start, float end) {
-		return anchor == Anchor.LEADING ? start + pixels : end - pixels;
+		return dimensionConstraint == null ? start + pixels : end - pixels - dimensionConstraint.calculateValue(start, end);
 	}
 
 	public float getPixels() {
@@ -31,16 +31,12 @@ public class PixelPositionConstraint extends GuiPositionConstraint {
 		this.pixels = pixels;
 	}
 
-	public Anchor getAnchor() {
-		return anchor;
+	public boolean leading() {
+		return dimensionConstraint == null;
 	}
 
-	public void setAnchorLeading() {
-		this.anchor = Anchor.LEADING;
-	}
-
-	public void setAnchorTrailing() {
-		this.anchor = Anchor.TRAILING;
+	public boolean trailing() {
+		return !leading();
 	}
 
 }
