@@ -51,7 +51,7 @@ public class TextRenderer extends GameRenderer {
 	 * @param colour    the colour of the text
 	 */
 	public void render(GLContext glContext, RootGui rootGui, String text, int x, int y, int lineWidth, GameFont font, float fontSize, int colour) {
-		Vector2f rootGuiDimensions = rootGui.getDimensions();
+		Vector2f rootGuiDimensions = rootGui.dimensions();
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
 		render(glContext, matrix4f, text, x, y, lineWidth, font, fontSize, colour);

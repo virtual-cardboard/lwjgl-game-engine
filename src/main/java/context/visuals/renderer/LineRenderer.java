@@ -54,7 +54,7 @@ public class LineRenderer extends GameRenderer {
 	public void renderPixelCoords(GLContext glContext, RootGui rootGui, float x1, float y1, float x2, float y2, float width, int colour) {
 		// Calculations for matrix transformations
 		width = Math.abs(width);
-		Vector2f rootGuiDimensions = rootGui.getDimensions();
+		Vector2f rootGuiDimensions = rootGui.dimensions();
 		float halfWidth = width * 0.5f;
 		Matrix4f matrix4f = new Matrix4f();
 		float rectLength = (float) Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) + width;

@@ -54,7 +54,7 @@ public class RootGui extends InvisibleGui {
 	/**
 	 * @return A new {@link Vector2f} representing the dimensions
 	 */
-	public Vector2f getDimensions() {
+	public Vector2f dimensions() {
 		return new Vector2f(width(), height());
 	}
 

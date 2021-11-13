@@ -382,15 +382,11 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Vector2f other = (Vector2f) obj;
-
 		if (x == other.x && y == other.y)
 			return true;
-
 		return false;
 	}
 
