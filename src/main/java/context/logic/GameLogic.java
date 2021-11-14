@@ -1,6 +1,6 @@
 package context.logic;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +80,10 @@ public abstract class GameLogic extends ContextPart {
 	private <T extends GameEvent> void addHandler(Class<T> clazz, GameEventHandler<T> handler) {
 		handlers.compute(clazz, (k, v) -> {
 			if (v == null) {
-				return Arrays.asList(handler);
+				@SuppressWarnings("rawtypes")
+				List<GameEventHandler> list = new ArrayList<>();
+				list.add(handler);
+				return list;
 			}
 			v.add(handler);
 			return v;
