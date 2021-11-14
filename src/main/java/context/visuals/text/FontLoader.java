@@ -16,9 +16,9 @@ public final class FontLoader {
 
 	public GameFont loadFont(File source, Texture texture) throws IOException {
 		try (FileInputStream fis = new FileInputStream(source)) {
-			System.out.println("Reading header");
+			System.out.println("Reading font header");
 			loadHeaderData(fis, texture);
-			System.out.println("Reading characters");
+			System.out.println("Reading font characters");
 			loadCharacterData(gameFont, fis);
 		}
 		return gameFont;
