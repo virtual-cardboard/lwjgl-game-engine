@@ -51,13 +51,10 @@ public class TextRenderer extends GameRenderer {
 	 * @param colour    the colour of the text
 	 */
 	public void render(GLContext glContext, RootGui rootGui, String text, int x, int y, int lineWidth, GameFont font, float fontSize, int colour) {
-		Vector2f rootGuiDimensions = rootGui.dimensions();
-		Matrix4f matrix4f = new Matrix4f();
-		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
-		render(glContext, matrix4f, text, x, y, lineWidth, font, fontSize, colour);
+		render(glContext, rootGui.dimensions(), new Matrix4f().translate(x, y), text, lineWidth, font, fontSize, colour);
 	}
 
-	public void render(GLContext glContext, Matrix4f matrix4f, String text, float x, float y, float lineWidth, GameFont font, float fontSize, int colour) {
+	public void render(GLContext glContext, Vector2f screenDim, Matrix4f transform, String text, float lineWidth, GameFont font, float fontSize, int colour) {
 		char[] chars = text.toCharArray();
 		int totalXOffset = 0;
 		int totalYOffset = 0;
@@ -65,7 +62,7 @@ public class TextRenderer extends GameRenderer {
 		shaderProgram.bind();
 		font.texture().bind(glContext);
 
-		Matrix4f copy = matrix4f.copy().translate(x, y);
+		Matrix4f pixelScaleTransform = new Matrix4f().translate(-1, 1).scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y).multiply(transform);
 		float sizeMultiplier = fontSize / font.getFontSize();
 		for (int i = 0; i < chars.length; i++) {
 			CharacterData c = font.getCharacterDatas()[chars[i]];
@@ -78,20 +75,17 @@ public class TextRenderer extends GameRenderer {
 			shaderProgram.setFloat("texWidth", font.texture().width());
 			shaderProgram.setFloat("texHeight", font.texture().height());
 			shaderProgram.setColour("fill", colour);
-			displayChar(glContext, copy.copy(), c, totalXOffset, totalYOffset, sizeMultiplier);
+			Matrix4f copy = pixelScaleTransform.copy()
+					.translate(totalXOffset + c.xOffset() * sizeMultiplier, totalYOffset + c.yOffset() * sizeMultiplier)
+					.scale(c.width() * sizeMultiplier, c.height() * sizeMultiplier);
+			shaderProgram.setMat4("matrix4f", copy);
+			shaderProgram.setFloat("width", c.width());
+			shaderProgram.setFloat("height", c.height());
+			shaderProgram.setFloat("x", c.x());
+			shaderProgram.setFloat("y", c.y());
+			vao.draw(glContext);
 			totalXOffset += xAdvance * sizeMultiplier;
 		}
-	}
-
-	private void displayChar(GLContext glContext, Matrix4f matrix4f, CharacterData c, int totalXOffset, int totalYOffset, float sizeMultiplier) {
-		matrix4f.translate(totalXOffset + c.xOffset() * sizeMultiplier, totalYOffset + c.yOffset() * sizeMultiplier);
-		matrix4f.scale(c.width() * sizeMultiplier, c.height() * sizeMultiplier);
-		shaderProgram.setMat4("matrix4f", matrix4f);
-		shaderProgram.setFloat("width", c.width());
-		shaderProgram.setFloat("height", c.height());
-		shaderProgram.setFloat("x", c.x());
-		shaderProgram.setFloat("y", c.y());
-		vao.draw(glContext);
 	}
 
 }

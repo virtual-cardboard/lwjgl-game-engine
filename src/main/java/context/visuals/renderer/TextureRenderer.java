@@ -40,6 +40,30 @@ public class TextureRenderer extends GameRenderer {
 	}
 
 	/**
+	 * Renders a texture with default proportions in pixel coordinates.
+	 * 
+	 * @param glContext         the {@link GLContext}
+	 * @param rootGuiDimensions a {@link Vector2f} representing the dimensions of
+	 *                          the {@link RootGui}
+	 * @param texture           the {@link Texture} to render
+	 * @param centerX           the x position in pixels of the center of the
+	 *                          texture
+	 * @param centerY           the y position in pixels of the center of the
+	 *                          texture
+	 * @param scale             the scale of the texture
+	 */
+	public void render(GLContext glContext, Vector2f rootGuiDimensions, Texture texture, float centerX, float centerY, float scale) {
+		Matrix4f matrix4f = new Matrix4f();
+		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
+				.translate(centerX, centerY).scale(texture.width() * scale, texture.height() * scale).translate(-0.5f, -0.5f);
+		shaderProgram.bind();
+		texture.bind(glContext);
+		shaderProgram.setMat4("matrix4f", matrix4f);
+		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
+		vao.draw(glContext);
+	}
+
+	/**
 	 * Renders a texture in pixel coordinates.
 	 * 
 	 * @param glContext the {@link GLContext}
