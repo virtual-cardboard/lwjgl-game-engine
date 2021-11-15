@@ -1,6 +1,7 @@
 package context.visuals.gui;
 
 import common.math.Matrix4f;
+import common.math.Vector2f;
 import context.GLContext;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.lwjgl.ShaderProgram;
@@ -19,8 +20,8 @@ public class ColourGui extends Gui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
-		matrix4f.translate(x, y).scale(width, height);
+	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
+		Matrix4f matrix4f = rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height);
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setColour("fill", colour);
