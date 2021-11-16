@@ -60,21 +60,25 @@ public class TextRenderer extends GameRenderer {
 		int totalYOffset = 0;
 
 		shaderProgram.bind();
+		shaderProgram.setInt("textureSampler", font.texture().getTextureUnit());
+		shaderProgram.setFloat("texWidth", font.texture().width());
+		shaderProgram.setFloat("texHeight", font.texture().height());
+		shaderProgram.setColour("fill", colour);
 		font.texture().bind(glContext);
 
 		Matrix4f pixelScaleTransform = new Matrix4f().translate(-1, 1).scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y).multiply(transform);
 		float sizeMultiplier = fontSize / font.getFontSize();
 		for (int i = 0; i < chars.length; i++) {
 			CharacterData c = font.getCharacterDatas()[chars[i]];
+			if (chars[i] == ' ') {
+				totalXOffset += c.xAdvance() * sizeMultiplier;
+				continue;
+			}
 			short xAdvance = c.xAdvance();
 			if (lineWidth != -1 && totalXOffset + xAdvance * sizeMultiplier > lineWidth) {
 				totalXOffset = 0;
 				totalYOffset += fontSize;
 			}
-			shaderProgram.setInt("textureSampler", font.texture().getTextureUnit());
-			shaderProgram.setFloat("texWidth", font.texture().width());
-			shaderProgram.setFloat("texHeight", font.texture().height());
-			shaderProgram.setColour("fill", colour);
 			Matrix4f copy = pixelScaleTransform.copy()
 					.translate(totalXOffset + c.xOffset() * sizeMultiplier, totalYOffset + c.yOffset() * sizeMultiplier)
 					.scale(c.width() * sizeMultiplier, c.height() * sizeMultiplier);
