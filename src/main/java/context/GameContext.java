@@ -32,7 +32,8 @@ public final class GameContext {
 	private final GameLogic logic;
 	private final GameVisuals visuals;
 
-	private PriorityBlockingQueue<GameEvent> eventQueue = new PriorityBlockingQueue<>();
+	private PriorityBlockingQueue<GameEvent> inputToLogicEventQueue = new PriorityBlockingQueue<>();
+	private PriorityBlockingQueue<GameEvent> logicToVisualsEventQueue = new PriorityBlockingQueue<>();
 
 	/**
 	 * Takes in a data, input, logic, and visuals, then sets the context references
@@ -84,10 +85,13 @@ public final class GameContext {
 	 * @param loader               the {@link GameLoader}
 	 */
 	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLoader loader) {
-		data.doInit(loader);
-		input.doInit(inputEventBuffer, networkReceiveBuffer, eventQueue);
-		logic.doInit(eventQueue, loader);
-		visuals.setLoader(loader);
+		data.setComponents(loader);
+		input.setComponents(inputEventBuffer, networkReceiveBuffer, inputToLogicEventQueue);
+		logic.setComponents(inputToLogicEventQueue, logicToVisualsEventQueue, loader);
+		visuals.setComponents(logicToVisualsEventQueue, loader);
+		data.init();
+		input.init();
+		logic.init();
 	}
 
 	void setWrapper(GameContextWrapper wrapper) {

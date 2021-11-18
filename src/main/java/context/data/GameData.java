@@ -15,9 +15,8 @@ public abstract class GameData extends ContextPart {
 
 	private GameLoader loader;
 
-	public final void doInit(GameLoader loader) {
+	public final void setComponents(GameLoader loader) {
 		this.loader = loader;
-		init();
 	}
 
 	protected final GameLoader loader() {

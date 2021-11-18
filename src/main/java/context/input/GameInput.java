@@ -48,7 +48,7 @@ public abstract class GameInput extends ContextPart {
 	 * The queue that {@link GameInput} would put {@link GameEvent}s into. These
 	 * {@link GameEvent}s should then be handled in {@link GameLogic}.
 	 */
-	private Queue<GameEvent> eventQueue;
+	private Queue<GameEvent> out;
 
 	/** {@link List} of {@link FrameResizedInputEvent} handlers. */
 	private List<GameInputEventHandler<FrameResizedInputEvent>> frameResizedInputEventHandlers = new ArrayList<>();
@@ -74,15 +74,14 @@ public abstract class GameInput extends ContextPart {
 	 */
 	private GameCursor cursor = new GameCursor();
 
-	public final void doInit(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<GameEvent> eventQueue) {
+	public final void setComponents(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<GameEvent> out) {
 		this.inputEventBuffer = inputEventBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
-		this.eventQueue = eventQueue;
+		this.out = out;
 		frameResizedInputEventHandlers.add(new GameInputEventHandler<>(new RootGuiUpdaterFunction(context())));
 		mouseMovedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorMovedUpdaterFunction(cursor)));
 		mousePressedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorPressedUpdaterFunction(cursor)));
 		mouseReleasedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorReleasedUpdaterFunction(cursor)));
-		init();
 	}
 
 	/**
@@ -140,7 +139,7 @@ public abstract class GameInput extends ContextPart {
 			if (eventHandler.isSatisfiedBy(inputEvent)) {
 				GameEvent event = eventHandler.apply(inputEvent);
 				if (event != null) {
-					eventQueue.add(event);
+					out.add(event);
 				}
 				if (eventHandler.doesConsume()) {
 					break;

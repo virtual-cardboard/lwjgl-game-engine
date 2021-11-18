@@ -27,27 +27,24 @@ import context.input.GameInput;
  */
 public abstract class GameLogic extends ContextPart {
 
-	private Queue<GameEvent> eventQueue;
 	private GameLoader loader;
 	protected boolean timeSensitive = true;
 
+	private Queue<GameEvent> in;
 	@SuppressWarnings("rawtypes")
-	protected Map<Class, List<GameEventHandler>> handlers;
+	protected Map<Class, List<GameEventHandler>> handlers = new HashMap<>();
+	private Queue<GameEvent> out;
 
-	public GameLogic() {
-		handlers = new HashMap<>();
-	}
-
-	public final void doInit(Queue<GameEvent> eventQueue, GameLoader loader) {
-		this.eventQueue = eventQueue;
+	public final void setComponents(Queue<GameEvent> in, Queue<GameEvent> out, GameLoader loader) {
+		this.in = in;
+		this.out = out;
 		this.loader = loader;
-		init();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public final void doUpdate() {
-		while (!eventQueue().isEmpty()) {
-			GameEvent event = eventQueue().poll();
+		while (!in.isEmpty()) {
+			GameEvent event = in.poll();
 			List<GameEventHandler> list = handlers.get(event.getClass());
 			if (list == null) {
 				continue;
@@ -94,8 +91,15 @@ public abstract class GameLogic extends ContextPart {
 		return loader;
 	}
 
-	protected final Queue<GameEvent> eventQueue() {
-		return eventQueue;
+	public void pushEvent(GameEvent event) {
+		out.add(event);
+	}
+
+	public void pushAndClearBuffer(Queue<GameEvent> eventBuffer) {
+		while (!eventBuffer.isEmpty()) {
+			out.add(eventBuffer.poll());
+		}
+		eventBuffer.clear();
 	}
 
 	public boolean timeSensitive() {
