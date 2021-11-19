@@ -9,6 +9,10 @@ public abstract class GameEvent implements Comparable<GameEvent> {
 	private final long time;
 	private transient final GameSource source;
 
+	public GameEvent() {
+		this(null);
+	}
+
 	public GameEvent(long time, GameSource source) {
 		this.time = time;
 		this.source = source;
