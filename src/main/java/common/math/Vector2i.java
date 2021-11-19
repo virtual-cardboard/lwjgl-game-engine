@@ -36,6 +36,12 @@ public class Vector2i extends Vector {
 		return this;
 	}
 
+	public Vector2i add(Vector2i vector) {
+		x += vector.x;
+		y += vector.y;
+		return this;
+	}
+
 	@Override
 	public Vector2i store(FloatBuffer buf) {
 		buf.put(x);
