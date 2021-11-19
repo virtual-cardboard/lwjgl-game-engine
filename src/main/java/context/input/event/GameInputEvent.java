@@ -5,8 +5,6 @@ import common.source.GameSource;
 
 public abstract class GameInputEvent extends GameEvent {
 
-	private static final long serialVersionUID = -1048135985569243259L;
-
 	public GameInputEvent(long time, GameSource source) {
 		super(time, source);
 	}

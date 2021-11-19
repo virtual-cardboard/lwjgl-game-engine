@@ -5,8 +5,6 @@ import context.data.user.LocalUser;
 
 public final class KeyRepeatedInputEvent extends GameInputEvent {
 
-	private static final long serialVersionUID = 486737297198618279L;
-
 	private final int code;
 
 	public KeyRepeatedInputEvent(long time, GameSource source, int code) {

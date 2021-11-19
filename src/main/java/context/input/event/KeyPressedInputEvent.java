@@ -7,8 +7,6 @@ import context.data.user.LocalUser;
 
 public final class KeyPressedInputEvent extends GameInputEvent {
 
-	private static final long serialVersionUID = -9019957455388041026L;
-
 	private final int code;
 
 	public KeyPressedInputEvent(long time, GameSource source, int code) {

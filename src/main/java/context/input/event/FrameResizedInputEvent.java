@@ -5,8 +5,6 @@ import context.data.user.LocalUser;
 
 public final class FrameResizedInputEvent extends GameInputEvent {
 
-	private static final long serialVersionUID = -3610766427450415914L;
-
 	private final int width;
 	private final int height;
 

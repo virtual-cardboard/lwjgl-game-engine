@@ -2,13 +2,9 @@ package common.event;
 
 import static java.lang.System.currentTimeMillis;
 
-import java.io.Serializable;
-
 import common.source.GameSource;
 
-public abstract class GameEvent implements Comparable<GameEvent>, Serializable {
-
-	private static final long serialVersionUID = -5963087341962350911L;
+public abstract class GameEvent implements Comparable<GameEvent> {
 
 	private final long time;
 	private transient final GameSource source;

@@ -5,8 +5,6 @@ import context.data.user.LocalUser;
 
 public final class MouseMovedInputEvent extends GameInputEvent {
 
-	private static final long serialVersionUID = -5757700918491615989L;
-
 	private final int x;
 	private final int y;
 
