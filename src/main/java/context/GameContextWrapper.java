@@ -118,6 +118,10 @@ public final class GameContextWrapper {
 		networkSendBuffer.add(packet);
 	}
 
+	public Queue<PacketModel> networkSend() {
+		return networkSendBuffer;
+	}
+
 	public TimeAccumulator accumulator() {
 		return accumulator;
 	}

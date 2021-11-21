@@ -114,6 +114,10 @@ public final class GameContext {
 		return wrapper.resourcePack();
 	}
 
+	public Queue<PacketModel> networkSend() {
+		return wrapper.networkSend();
+	}
+
 	public void transition(GameContext context) {
 		wrapper.transition(context);
 	}
