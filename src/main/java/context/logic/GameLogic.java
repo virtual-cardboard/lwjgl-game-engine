@@ -95,11 +95,11 @@ public abstract class GameLogic extends ContextPart {
 		out.add(event);
 	}
 
-	public void pushAndClearBuffer(Queue<GameEvent> eventBuffer) {
-		while (!eventBuffer.isEmpty()) {
-			out.add(eventBuffer.poll());
+	public void pushAll(Queue<GameEvent> events) {
+		while (!events.isEmpty()) {
+			out.add(events.poll());
 		}
-		eventBuffer.clear();
+		events.clear();
 	}
 
 	public boolean timeSensitive() {
