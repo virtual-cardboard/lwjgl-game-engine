@@ -75,7 +75,7 @@ public class TextRenderer extends GameRenderer {
 				continue;
 			}
 			short xAdvance = c.xAdvance();
-			if (lineWidth != -1 && totalXOffset + xAdvance * sizeMultiplier > lineWidth) {
+			if (lineWidth > 0 && totalXOffset + xAdvance * sizeMultiplier > lineWidth) {
 				totalXOffset = 0;
 				totalYOffset += fontSize;
 			}
