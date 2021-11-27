@@ -81,7 +81,7 @@ public class Vector2i extends Vector {
 		return this;
 	}
 
-	public Vector2f toVector2f() {
+	public Vector2f toVec2f() {
 		return new Vector2f(x, y);
 	}
 
