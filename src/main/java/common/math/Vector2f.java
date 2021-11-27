@@ -15,6 +15,7 @@ package common.math;
 
 import java.io.Serializable;
 import java.nio.FloatBuffer;
+import java.util.Objects;
 
 /**
  *
@@ -376,6 +377,11 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 	public Vector2f copy() {
 		Vector2f v = new Vector2f(x, y);
 		return v;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y);
 	}
 
 	@Override

@@ -55,6 +55,12 @@ public class Vector2l extends Vector {
 		return this;
 	}
 
+	public Vector2l sub(Vector2l vector) {
+		x -= vector.x;
+		y -= vector.y;
+		return this;
+	}
+
 	@Override
 	public Vector2l store(FloatBuffer buf) {
 		buf.put(x);
@@ -84,6 +90,28 @@ public class Vector2l extends Vector {
 	@Override
 	public Vector2l copy() {
 		return new Vector2l(x, y);
+	}
+
+	public Vector2l add(Vector2f vector2f) {
+		x += vector2f.x;
+		y += vector2f.y;
+		return this;
+	}
+
+	public Vector2l sub(Vector2f vector2f) {
+		x -= vector2f.x;
+		y -= vector2f.y;
+		return this;
+	}
+
+	public Vector2l sub(long x, long y) {
+		this.x -= x;
+		this.y -= y;
+		return this;
+	}
+
+	public Vector2f toVector2f() {
+		return new Vector2f(x, y);
 	}
 
 }
