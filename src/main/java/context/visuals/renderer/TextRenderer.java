@@ -39,18 +39,18 @@ public class TextRenderer extends GameRenderer {
 	 * 
 	 * @param glContext the {@link GLContext}
 	 * @param rootGui   the {@link RootGui}
-	 * @param text      the {@link String} to display
 	 * @param x         the <code>x</code> offset of the text from the left side of
 	 *                  the screen
 	 * @param y         the <code>y</code> offset of the text from the top of the
 	 *                  screen
+	 * @param text      the {@link String} to display
 	 * @param lineWidth the max width of a line of text in pixels, or -1 to indicate
 	 *                  no wrapping of text
 	 * @param font      the {@link GameFont} of the text
 	 * @param fontSize  the size of the text
 	 * @param colour    the colour of the text
 	 */
-	public void render(GLContext glContext, RootGui rootGui, String text, int x, int y, int lineWidth, GameFont font, float fontSize, int colour) {
+	public void render(GLContext glContext, RootGui rootGui, int x, int y, String text, int lineWidth, GameFont font, float fontSize, int colour) {
 		render(glContext, rootGui.dimensions(), new Matrix4f().translate(x, y), text, lineWidth, font, fontSize, colour);
 	}
 
