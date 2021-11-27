@@ -44,6 +44,9 @@ public final class GameEngine {
 	private boolean loading = true;
 	private Integer port;
 
+	private int width = 1920;
+	private int height = 1012;
+
 	/**
 	 * Creates a {@link GameEngine} with a window title and a context.
 	 * 
@@ -243,7 +246,7 @@ public final class GameEngine {
 			CountDownLatch contextCountDownLatch) {
 		if (rendering) {
 			print("Creating window.");
-			GameWindow window = new GameWindow(windowTitle, inputBuffer);
+			GameWindow window = new GameWindow(windowTitle, inputBuffer, width, height);
 			print("Binding dependencies in context wrapper.");
 			return new WindowFrameUpdater(window, windowCountDownLatch, contextCountDownLatch);
 		}
@@ -274,6 +277,12 @@ public final class GameEngine {
 
 	public GameEngine enablePrintProgress() {
 		printProgress = true;
+		return this;
+	}
+
+	public GameEngine windowDimensions(int width, int height) {
+		this.width = width;
+		this.height = height;
 		return this;
 	}
 
