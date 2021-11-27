@@ -40,6 +40,7 @@ public final class GameEngine {
 
 	private boolean printProgress = false;
 	private boolean rendering = true;
+	private boolean resizable = true;
 	private boolean networking = true;
 	private boolean loading = true;
 	private Integer port;
@@ -246,7 +247,7 @@ public final class GameEngine {
 			CountDownLatch contextCountDownLatch) {
 		if (rendering) {
 			print("Creating window.");
-			GameWindow window = new GameWindow(windowTitle, inputBuffer, width, height);
+			GameWindow window = new GameWindow(windowTitle, inputBuffer, resizable, width, height);
 			print("Binding dependencies in context wrapper.");
 			return new WindowFrameUpdater(window, windowCountDownLatch, contextCountDownLatch);
 		}
@@ -298,6 +299,16 @@ public final class GameEngine {
 
 	public GameEngine disableRendering() {
 		rendering = false;
+		return this;
+	}
+
+	public GameEngine enableResizing() {
+		resizable = true;
+		return this;
+	}
+
+	public GameEngine disableResizing() {
+		resizable = false;
 		return this;
 	}
 

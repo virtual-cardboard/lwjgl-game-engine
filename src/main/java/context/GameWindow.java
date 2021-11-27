@@ -60,21 +60,22 @@ import context.input.lwjglcallback.WindowResizeCallback;
 public class GameWindow {
 
 	private static final boolean FULLSCREEN = false;
-	private static final boolean RESIZABLE = true;
 
+	private boolean resizable = true;
 	private long windowId = NULL;
 	private String windowTitle;
 	private Queue<GameInputEvent> inputEventBuffer;
 	private Vector2i windowDimensions;
 	private long sharedContextWindowHandle;
 
-	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer, int width, int height) {
-		this(windowTitle, inputEventBuffer, new Vector2i(width, height));
+	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer, boolean resizable, int width, int height) {
+		this(windowTitle, inputEventBuffer, resizable, new Vector2i(width, height));
 	}
 
-	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer, Vector2i windowDimensions) {
+	public GameWindow(String windowTitle, Queue<GameInputEvent> inputEventBuffer, boolean resizable, Vector2i windowDimensions) {
 		this.windowTitle = windowTitle;
 		this.inputEventBuffer = inputEventBuffer;
+		this.resizable = resizable;
 		this.windowDimensions = windowDimensions;
 	}
 
@@ -84,7 +85,7 @@ public class GameWindow {
 			throw new IllegalStateException("Unable to initialize GLFW");
 //		glfwDefaultWindowHints(); // optional, the current window hints are already the default
 		glfwWindowHint(GLFW_VISIBLE, GL_FALSE); // the window will stay hidden after creation
-		glfwWindowHint(GLFW_RESIZABLE, RESIZABLE ? GL_TRUE : GL_FALSE); // the window will be resizable
+		glfwWindowHint(GLFW_RESIZABLE, resizable ? GL_TRUE : GL_FALSE); // the window will be resizable
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // Use GLFW version 3.3
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
