@@ -29,6 +29,10 @@ public class PacketFormat {
 		return new PacketBuilder(this, dest);
 	}
 
+	public PacketBuilder builder(PacketBuilder builder) {
+		return new PacketBuilder(this, builder);
+	}
+
 	public PacketReader reader(PacketModel packet) {
 		return new PacketReader(this, packet);
 	}

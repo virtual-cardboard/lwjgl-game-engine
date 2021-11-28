@@ -16,8 +16,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.util.ArrayDeque;
 import java.util.InputMismatchException;
-import java.util.LinkedList;
 import java.util.Queue;
 
 import context.input.networking.packet.address.PacketAddress;
@@ -28,11 +28,18 @@ public class PacketBuilder {
 	private Queue<PacketPrimitive> primitives;
 	@SuppressWarnings("unused")
 	private Queue<EncryptionAlgorithmType> encryptions;
-	private Queue<Byte> bytes = new LinkedList<>();
+	private Queue<Byte> bytes = new ArrayDeque<>();
 	private PacketAddress dest;
 
 	public PacketBuilder(PacketFormat format, PacketAddress dest) {
 		this.dest = dest;
+		primitives = format.primitives();
+		encryptions = format.encryptions();
+	}
+
+	public PacketBuilder(PacketFormat format, PacketBuilder builder) {
+		this.dest = builder.dest;
+		this.bytes = builder.bytes;
 		primitives = format.primitives();
 		encryptions = format.encryptions();
 	}
