@@ -10,7 +10,7 @@ public class NetworkSource implements GameSource {
 		this.address = address;
 	}
 
-	public PacketAddress getAddress() {
+	public PacketAddress address() {
 		return address;
 	}
 
