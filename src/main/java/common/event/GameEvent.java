@@ -6,7 +6,7 @@ import common.source.GameSource;
 
 public abstract class GameEvent implements Comparable<GameEvent> {
 
-	private final long time;
+	private long time;
 	private transient final GameSource source;
 
 	public GameEvent() {
@@ -20,6 +20,10 @@ public abstract class GameEvent implements Comparable<GameEvent> {
 
 	public GameEvent(GameSource source) {
 		this(currentTimeMillis(), source);
+	}
+
+	protected void setTime(long time) {
+		this.time = time;
 	}
 
 	public long time() {
