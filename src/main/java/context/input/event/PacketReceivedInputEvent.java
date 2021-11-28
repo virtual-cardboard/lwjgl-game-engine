@@ -12,6 +12,11 @@ public class PacketReceivedInputEvent extends GameInputEvent {
 		this.model = model;
 	}
 
+	@Override
+	public NetworkSource source() {
+		return (NetworkSource) super.source();
+	}
+
 	public PacketModel model() {
 		return model;
 	}

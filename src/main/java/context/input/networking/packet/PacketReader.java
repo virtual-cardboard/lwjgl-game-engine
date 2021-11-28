@@ -29,6 +29,13 @@ public class PacketReader {
 		this.bytes = model.bytes();
 	}
 
+	public PacketReader(PacketFormat format, PacketReader reader) {
+		this.primitives = format.primitives();
+		// encryption here too?
+		this.bytes = reader.bytes;
+		this.index = reader.index;
+	}
+
 	private void typeValidate(PacketPrimitive actual) {
 		PacketPrimitive expected = primitives.poll();
 		if (expected != actual) {

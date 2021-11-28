@@ -33,6 +33,10 @@ public class PacketFormat {
 		return new PacketReader(this, packet);
 	}
 
+	public PacketReader reader(PacketReader reader) {
+		return new PacketReader(this, reader);
+	}
+
 	public Queue<PacketPrimitive> primitives() {
 		return new LinkedList<>(primitives);
 	}
