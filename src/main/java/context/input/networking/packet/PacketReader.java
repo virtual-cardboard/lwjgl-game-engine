@@ -155,7 +155,7 @@ public class PacketReader {
 	}
 
 	public void close() {
-		if (index + 1 != bytes.length) {
+		if (index != bytes.length) {
 			throw new RuntimeException("Closed packet reader prematurely, " + index + " out of " + bytes.length + " bytes read.");
 		}
 	}
