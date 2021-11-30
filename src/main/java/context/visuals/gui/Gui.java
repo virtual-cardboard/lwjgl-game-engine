@@ -49,6 +49,11 @@ public abstract class Gui {
 		this.children.add(child);
 	}
 
+	public void addChild(int i, Gui child) {
+		child.setParent(this);
+		this.children.add(i, child);
+	}
+
 	public void remove() {
 		parent.getChildren().remove(this);
 		parent = null;
