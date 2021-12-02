@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 import common.event.GameEvent;
 import common.loader.GameLoader;
 import context.ContextPart;
+import context.GLContext;
 import context.data.GameData;
 import context.logic.GameEventHandler;
 import context.visuals.gui.RootGui;
@@ -122,6 +123,10 @@ public abstract class GameVisuals extends ContextPart {
 
 	protected final GameLoader loader() {
 		return loader;
+	}
+
+	protected GLContext glContext() {
+		return context().glContext();
 	}
 
 }
