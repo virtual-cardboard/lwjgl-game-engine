@@ -22,7 +22,7 @@ public class ColourGui extends Gui {
 	@Override
 	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
 		Matrix4f matrix4f = rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height);
-		shaderProgram.bind();
+		shaderProgram.bind(glContext);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setColour("fill", colour);
 		vao.draw(glContext);

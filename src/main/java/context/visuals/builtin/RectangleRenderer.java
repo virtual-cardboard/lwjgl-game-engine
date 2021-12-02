@@ -22,7 +22,7 @@ public class RectangleRenderer extends GameRenderer {
 	}
 
 	public void render(GLContext glContext, Matrix4f matrix4f, int colour) {
-		shaderProgram.bind();
+		shaderProgram.bind(glContext);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setColour("fill", colour);
 		vao.draw(glContext);

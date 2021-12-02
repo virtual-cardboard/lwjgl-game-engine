@@ -59,7 +59,7 @@ public class TextRenderer extends GameRenderer {
 		int totalXOffset = 0;
 		int totalYOffset = 0;
 
-		shaderProgram.bind();
+		shaderProgram.bind(glContext);
 		shaderProgram.setInt("textureSampler", font.texture().getTextureUnit());
 		shaderProgram.setFloat("texWidth", font.texture().width());
 		shaderProgram.setFloat("texHeight", font.texture().height());

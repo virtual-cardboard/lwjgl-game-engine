@@ -56,7 +56,7 @@ public class TextureRenderer extends GameRenderer {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
 				.translate(centerX, centerY).scale(texture.width() * scale, texture.height() * scale).translate(-0.5f, -0.5f);
-		shaderProgram.bind();
+		shaderProgram.bind(glContext);
 		texture.bind(glContext);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
@@ -93,7 +93,7 @@ public class TextureRenderer extends GameRenderer {
 	 * @param matrix4f  the transformation matrix
 	 */
 	public void render(GLContext glContext, Texture texture, Matrix4f matrix4f) {
-		shaderProgram.bind();
+		shaderProgram.bind(glContext);
 		texture.bind(glContext);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setInt("textureSampler", texture.getTextureUnit());

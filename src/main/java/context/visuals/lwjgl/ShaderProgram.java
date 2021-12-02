@@ -13,6 +13,7 @@ import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
 import common.math.Vector4f;
+import context.GLContext;
 
 public class ShaderProgram extends GLObject {
 
@@ -61,11 +62,17 @@ public class ShaderProgram extends GLObject {
 	 * glDrawElements() calls. This is likely to be called multiple times. You must
 	 * call {@link #link() link()} before using bind().
 	 * 
+	 * @param glContext TODO
+	 * 
 	 * @see {@link #link() link()}
 	 */
-	public void bind() {
+	public void bind(GLContext glContext) {
 		verifyInitialized();
+		if (glContext.shaderProgramID == id) {
+			return;
+		}
 		glUseProgram(id);
+		glContext.shaderProgramID = id;
 	}
 
 	/**

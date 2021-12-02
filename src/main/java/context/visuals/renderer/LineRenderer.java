@@ -69,7 +69,7 @@ public class LineRenderer extends GameRenderer {
 		matrix4f.scale(rectLength, width);
 
 		// Set uniforms
-		shaderProgram.bind();
+		shaderProgram.bind(glContext);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setFloat("x1", x1);
 		shaderProgram.setFloat("y1", y1);

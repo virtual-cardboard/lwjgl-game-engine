@@ -17,4 +17,8 @@ public abstract class GLObject {
 		initialized = true;
 	}
 
+	public boolean initialized() {
+		return initialized;
+	}
+
 }

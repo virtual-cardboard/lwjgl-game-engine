@@ -50,7 +50,7 @@ public class EllipseRenderer extends GameRenderer {
 	public void renderPixelCoords(GLContext glContext, RootGui rootGui, float x, float y, float width, float height, int colour) {
 		Vector2f center = new Vector2f(x, y);
 		Vector2f dimensions = new Vector2f(width, height);
-		shaderProgram.bind();
+		shaderProgram.bind(glContext);
 		Vector2f rootGuiDimensions = rootGui.dimensions();
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1);
@@ -102,7 +102,7 @@ public class EllipseRenderer extends GameRenderer {
 	 * @see Colour
 	 */
 	public void renderNDC(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height, int colour) {
-		shaderProgram.bind();
+		shaderProgram.bind(glContext);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setFloat("x", x);
 		shaderProgram.setFloat("y", y);
