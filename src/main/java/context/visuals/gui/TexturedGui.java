@@ -20,7 +20,7 @@ public class TexturedGui extends Gui {
 		textureRenderer.render(glContext, texture, rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
 	}
 
-	public Texture getTexture() {
+	public Texture texture() {
 		return texture;
 	}
 

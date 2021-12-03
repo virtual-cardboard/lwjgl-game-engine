@@ -6,8 +6,6 @@ import static java.lang.Math.PI;
 
 import java.util.List;
 
-import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
-
 import common.math.Vector2f;
 import context.data.animation.Keyframe;
 import context.data.animation.SkeletonState;
@@ -38,39 +36,39 @@ public class KeyframeInterpolator {
 
 		SkeletonState interpolated = new SkeletonState();
 
-		double[] times = extractTimes(keyframes, start, end); // Extract times
+		float[] times = extractTimes(keyframes, start, end); // Extract times
 		int numDistances = keyframes.get(start).getSkeletonState().getDistances().size();
 		for (int i = 0; i < numDistances; i++) {
-			double[] distances = extractDistances(keyframes, start, end, i);
-			double[] rotations = extractRotations(keyframes, start, end, i);
-			interpolated.getDistances().add((float) SPLINE_INTERPOLATOR.interpolate(times, distances).value(currentTime));
-			interpolated.getRotations().add(toRadius(SPLINE_INTERPOLATOR.interpolate(times, rotations).value(currentTime)));
+			float[] distances = extractDistances(keyframes, start, end, i);
+			float[] rotations = extractRotations(keyframes, start, end, i);
+			interpolated.getDistances().add(SPLINE_INTERPOLATOR.interpolate(times, distances, currentTime));
+			interpolated.getRotations().add(toRadius(SPLINE_INTERPOLATOR.interpolate(times, rotations, currentTime)));
 		}
-		double[] xs = extractXs(keyframes, start, end);
-		double[] ys = extractYs(keyframes, start, end);
-		interpolated.getRootPosition().x = (float) SPLINE_INTERPOLATOR.interpolate(times, xs).value(currentTime);
-		interpolated.getRootPosition().y = (float) SPLINE_INTERPOLATOR.interpolate(times, ys).value(currentTime);
+		float[] xs = extractXs(keyframes, start, end);
+		float[] ys = extractYs(keyframes, start, end);
+		interpolated.getRootPosition().x = SPLINE_INTERPOLATOR.interpolate(times, xs, currentTime);
+		interpolated.getRootPosition().y = SPLINE_INTERPOLATOR.interpolate(times, ys, currentTime);
 		return interpolated;
 	}
 
-	private static double[] extractTimes(List<Keyframe> keyframes, int start, int end) {
-		double[] times = new double[end - start];
+	private static float[] extractTimes(List<Keyframe> keyframes, int start, int end) {
+		float[] times = new float[end - start];
 		for (int i = 0; i < times.length; i++) {
 			times[i] = keyframes.get(i + start).getTime();
 		}
 		return times;
 	}
 
-	private static double[] extractDistances(List<Keyframe> keyframes, int start, int end, int index) {
-		double[] distances = new double[end - start];
+	private static float[] extractDistances(List<Keyframe> keyframes, int start, int end, int index) {
+		float[] distances = new float[end - start];
 		for (int i = 0; i < distances.length; i++) {
 			distances[i] = keyframes.get(i + start).getSkeletonState().getDistances().get(index);
 		}
 		return distances;
 	}
 
-	private static double[] extractRotations(List<Keyframe> keyframes, int start, int end, int index) {
-		double[] rotations = new double[end - start];
+	private static float[] extractRotations(List<Keyframe> keyframes, int start, int end, int index) {
+		float[] rotations = new float[end - start];
 		float prev = 0;
 		for (int i = 0; i < rotations.length; i++) {
 			rotations[i] = prev + angleDifference(prev, keyframes.get(i + start).getSkeletonState().getRotations().get(index));
@@ -78,23 +76,23 @@ public class KeyframeInterpolator {
 		return rotations;
 	}
 
-	private static double[] extractXs(List<Keyframe> keyframes, int start, int end) {
-		double[] xs = new double[end - start];
+	private static float[] extractXs(List<Keyframe> keyframes, int start, int end) {
+		float[] xs = new float[end - start];
 		for (int i = 0; i < xs.length; i++) {
 			xs[i] = keyframes.get(i + start).getSkeletonState().getRootPosition().x;
 		}
 		return xs;
 	}
 
-	private static double[] extractYs(List<Keyframe> keyframes, int start, int end) {
-		double[] ys = new double[end - start];
+	private static float[] extractYs(List<Keyframe> keyframes, int start, int end) {
+		float[] ys = new float[end - start];
 		for (int i = 0; i < ys.length; i++) {
 			ys[i] = keyframes.get(i + start).getSkeletonState().getRootPosition().y;
 		}
 		return ys;
 	}
 
-	private static float toRadius(double d) {
+	private static float toRadius(float d) {
 		return (float) ((d % (2 * PI) + (2 * PI)) % (2 * PI));
 	}
 
