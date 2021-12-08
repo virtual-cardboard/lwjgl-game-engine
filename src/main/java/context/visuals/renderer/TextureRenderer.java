@@ -100,4 +100,23 @@ public class TextureRenderer extends GameRenderer {
 		vao.draw(glContext);
 	}
 
+	/**
+	 * Renders a texture using a transformation matrix and diffuse colour.
+	 * 
+	 * @param glContext the {@link GLContext}
+	 * @param vao       the {@link VertexArrayObject} to use
+	 * @param texture   the texture to render
+	 * @param matrix4f  the transformation matrix
+	 * @param diffuse   the diffuse colour
+	 */
+	public void render(GLContext glContext, Texture texture, Matrix4f matrix4f, int diffuse) {
+		shaderProgram.bind(glContext);
+		texture.bind(glContext);
+		shaderProgram.setMat4("matrix4f", matrix4f);
+		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
+		shaderProgram.setColour("diffuse", diffuse);
+		vao.draw(glContext);
+		shaderProgram.setColour("diffuse", -1);
+	}
+
 }
