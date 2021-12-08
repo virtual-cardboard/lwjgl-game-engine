@@ -20,7 +20,7 @@ import java.nio.FloatBuffer;
  * Holds a 4x4 float matrix.
  *
  */
-public class Matrix4f extends Matrix implements Serializable, Cloneable {
+public class Matrix4f implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 
 	public float m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33;
@@ -56,36 +56,24 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * 
 	 * @return this
 	 */
-	@Override
-	public Matrix setIdentity() {
-		return setIdentity(this);
-	}
-
-	/**
-	 * Set the given matrix to be the identity matrix.
-	 * 
-	 * @param m The matrix to set to the identity
-	 * @return m
-	 */
-	public static Matrix4f setIdentity(Matrix4f m) {
-		m.m00 = 1.0f;
-		m.m01 = 0.0f;
-		m.m02 = 0.0f;
-		m.m03 = 0.0f;
-		m.m10 = 0.0f;
-		m.m11 = 1.0f;
-		m.m12 = 0.0f;
-		m.m13 = 0.0f;
-		m.m20 = 0.0f;
-		m.m21 = 0.0f;
-		m.m22 = 1.0f;
-		m.m23 = 0.0f;
-		m.m30 = 0.0f;
-		m.m31 = 0.0f;
-		m.m32 = 0.0f;
-		m.m33 = 1.0f;
-
-		return m;
+	public Matrix4f setIdentity() {
+		m00 = 1.0f;
+		m01 = 0.0f;
+		m02 = 0.0f;
+		m03 = 0.0f;
+		m10 = 0.0f;
+		m11 = 1.0f;
+		m12 = 0.0f;
+		m13 = 0.0f;
+		m20 = 0.0f;
+		m21 = 0.0f;
+		m22 = 1.0f;
+		m23 = 0.0f;
+		m30 = 0.0f;
+		m31 = 0.0f;
+		m32 = 0.0f;
+		m33 = 1.0f;
+		return this;
 	}
 
 	/**
@@ -93,36 +81,24 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * 
 	 * @return this
 	 */
-	@Override
-	public Matrix setZero() {
-		return setZero(this);
-	}
-
-	/**
-	 * Set the given matrix to 0.
-	 * 
-	 * @param m The matrix to set to 0
-	 * @return m
-	 */
-	public static Matrix4f setZero(Matrix4f m) {
-		m.m00 = 0.0f;
-		m.m01 = 0.0f;
-		m.m02 = 0.0f;
-		m.m03 = 0.0f;
-		m.m10 = 0.0f;
-		m.m11 = 0.0f;
-		m.m12 = 0.0f;
-		m.m13 = 0.0f;
-		m.m20 = 0.0f;
-		m.m21 = 0.0f;
-		m.m22 = 0.0f;
-		m.m23 = 0.0f;
-		m.m30 = 0.0f;
-		m.m31 = 0.0f;
-		m.m32 = 0.0f;
-		m.m33 = 0.0f;
-
-		return m;
+	public Matrix4f setZero() {
+		m00 = 0.0f;
+		m01 = 0.0f;
+		m02 = 0.0f;
+		m03 = 0.0f;
+		m10 = 0.0f;
+		m11 = 0.0f;
+		m12 = 0.0f;
+		m13 = 0.0f;
+		m20 = 0.0f;
+		m21 = 0.0f;
+		m22 = 0.0f;
+		m23 = 0.0f;
+		m30 = 0.0f;
+		m31 = 0.0f;
+		m32 = 0.0f;
+		m33 = 0.0f;
+		return this;
 	}
 
 	/**
@@ -172,9 +148,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * @param buf A float buffer to read from
 	 * @return this
 	 */
-	@Override
-	public Matrix load(FloatBuffer buf) {
-
+	public Matrix4f load(FloatBuffer buf) {
 		m00 = buf.get();
 		m01 = buf.get();
 		m02 = buf.get();
@@ -191,7 +165,6 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 		m31 = buf.get();
 		m32 = buf.get();
 		m33 = buf.get();
-
 		return this;
 	}
 
@@ -202,9 +175,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * @param buf A float buffer to read from
 	 * @return this
 	 */
-	@Override
-	public Matrix loadTranspose(FloatBuffer buf) {
-
+	public Matrix4f loadTranspose(FloatBuffer buf) {
 		m00 = buf.get();
 		m10 = buf.get();
 		m20 = buf.get();
@@ -221,7 +192,6 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 		m13 = buf.get();
 		m23 = buf.get();
 		m33 = buf.get();
-
 		return this;
 	}
 
@@ -231,8 +201,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * 
 	 * @param buf The buffer to store this matrix in
 	 */
-	@Override
-	public Matrix store(FloatBuffer buf) {
+	public Matrix4f store(FloatBuffer buf) {
 		buf.put(m00);
 		buf.put(m01);
 		buf.put(m02);
@@ -278,8 +247,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * 
 	 * @param buf The buffer to store this matrix in
 	 */
-	@Override
-	public Matrix storeTranspose(FloatBuffer buf) {
+	public Matrix4f storeTranspose(FloatBuffer buf) {
 		buf.put(m00);
 		buf.put(m10);
 		buf.put(m20);
@@ -305,7 +273,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * 
 	 * @param buf The buffer to store this matrix in
 	 */
-	public Matrix store3f(FloatBuffer buf) {
+	public Matrix4f store3f(FloatBuffer buf) {
 		buf.put(m00);
 		buf.put(m01);
 		buf.put(m02);
@@ -435,19 +403,15 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	}
 
 	public Vector2f transform(float x, float y) {
-		Vector2f result = new Vector2f();
-		result.x = m00 * x + m10 * y + m30;
-		result.y = m01 * x + m11 * y + m31;
-		return result;
+		return new Vector2f(m00 * x + m10 * y + m30, m01 * x + m11 * y + m31);
 	}
 
 	public Vector4f transform(float x, float y, float z, float w) {
-		Vector4f result = new Vector4f();
-		result.x = m00 * x + m10 * y + m20 * z + m30 * w;
-		result.y = m01 * x + m11 * y + m21 * z + m31 * w;
-		result.z = m02 * x + m12 * y + m22 * z + m32 * w;
-		result.w = m03 * x + m13 * y + m23 * z + m33 * w;
-		return result;
+		float nx = m00 * x + m10 * y + m20 * z + m30 * w;
+		float ny = m01 * x + m11 * y + m21 * z + m31 * w;
+		float nz = m02 * x + m12 * y + m22 * z + m32 * w;
+		float nw = m03 * x + m13 * y + m23 * z + m33 * w;
+		return new Vector4f(nx, ny, nz, nw);
 	}
 
 	/**
@@ -455,8 +419,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * 
 	 * @return this
 	 */
-	@Override
-	public Matrix transpose() {
+	public Matrix4f transpose() {
 		return transpose(this);
 	}
 
@@ -753,7 +716,6 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	/**
 	 * @return the determinant of the matrix
 	 */
-	@Override
 	public float determinant() {
 		float f = m00 * ((m11 * m22 * m33 + m12 * m23 * m31 + m13 * m21 * m32) - m13 * m22 * m31 - m11 * m23 * m32 - m12 * m21 * m33);
 		f -= m01 * ((m10 * m22 * m33 + m12 * m23 * m30 + m13 * m20 * m32) - m13 * m22 * m30 - m10 * m23 * m32 - m12 * m20 * m33);
@@ -777,8 +739,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * 
 	 * @return this if successful, null otherwise
 	 */
-	@Override
-	public Matrix invert() {
+	public Matrix4f invert() {
 		return invert(this);
 	}
 
@@ -846,8 +807,7 @@ public class Matrix4f extends Matrix implements Serializable, Cloneable {
 	 * 
 	 * @return this
 	 */
-	@Override
-	public Matrix negate() {
+	public Matrix4f negate() {
 		return negate(this);
 	}
 

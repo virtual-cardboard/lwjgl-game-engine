@@ -59,7 +59,7 @@ public class AnimationJointController extends JointController {
 		Joint parent = joints.get(0);
 		for (int i = 0; i < skeleton.getRootNode().getChildren().size(); i++) {
 			doUpdateJointsUsingSkeletonState(skeleton.getRootNode(), joints, skeletonState.getRotations(), skeletonState.getDistances(), i + 1, parent,
-					parent.getRotation());
+					parent.rotation());
 		}
 	}
 
@@ -70,7 +70,7 @@ public class AnimationJointController extends JointController {
 		float distance = distances.get(index);
 		Vector2f relativeOffset = Vector2f.fromAngleLength(parentAbsoluteRotation + rotation, distance);
 		joint.setRotation(rotation);
-		joint.getPosition().set(parent.getPosition().add(relativeOffset));
+		joint.setPosition(parent.position().add(relativeOffset));
 		for (SkeletonNode child : node.getChildren()) {
 			index++;
 			doUpdateJointsUsingSkeletonState(child, joints, rotations, distances, index, joint, parentAbsoluteRotation + rotation);

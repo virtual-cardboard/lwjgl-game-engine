@@ -29,7 +29,7 @@ public final class RootGuiRenderer extends GameRenderer {
 		float y = gui.getPosY().calculateValue(parentY, parentY + parentHeight);
 		float w = gui.getWidth().calculateValue(parentX, parentX + parentWidth);
 		float h = gui.getHeight().calculateValue(parentY, parentY + parentHeight);
-		gui.render(glContext, screenDim.copy(), x, y, w, h);
+		gui.render(glContext, screenDim, x, y, w, h);
 
 		List<Gui> children = gui.getChildren();
 		for (int i = 0; i < children.size(); i++) {

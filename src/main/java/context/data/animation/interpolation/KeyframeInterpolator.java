@@ -46,8 +46,9 @@ public class KeyframeInterpolator {
 		}
 		float[] xs = extractXs(keyframes, start, end);
 		float[] ys = extractYs(keyframes, start, end);
-		interpolated.getRootPosition().x = SPLINE_INTERPOLATOR.interpolate(times, xs, currentTime);
-		interpolated.getRootPosition().y = SPLINE_INTERPOLATOR.interpolate(times, ys, currentTime);
+		interpolated.setRootPosition(new Vector2f(
+				SPLINE_INTERPOLATOR.interpolate(times, xs, currentTime),
+				SPLINE_INTERPOLATOR.interpolate(times, ys, currentTime)));
 		return interpolated;
 	}
 
@@ -127,7 +128,7 @@ public class KeyframeInterpolator {
 		// Interpolate root position
 		Vector2f s1RootPos = s1.getRootPosition();
 		Vector2f s2RootPos = s2.getRootPosition();
-		interpolated.getRootPosition().set(s1RootPos.copy().add(s2RootPos.copy().sub(s1RootPos).scale(factor)));
+		interpolated.setRootPosition(s1RootPos.add(s2RootPos.sub(s1RootPos).scale(factor)));
 		return interpolated;
 	}
 

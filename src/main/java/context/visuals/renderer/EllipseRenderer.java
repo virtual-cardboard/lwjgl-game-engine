@@ -55,7 +55,7 @@ public class EllipseRenderer extends GameRenderer {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1);
 		matrix4f.scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
-		matrix4f.translate(center.copy().sub(dimensions.copy().scale(0.5f)));
+		matrix4f.translate(center.sub(dimensions.scale(0.5f)));
 		matrix4f.scale(dimensions);
 		renderWithMatrixOnly(glContext, matrix4f, colour);
 	}

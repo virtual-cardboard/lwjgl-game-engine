@@ -11,8 +11,7 @@ public class JointTexture {
 	private float rotation;
 
 	public JointTexture(Texture texture) {
-		this(texture, new Vector2f(), new Vector2f(1, 1), 0);
-		translation.set(-texture.width() / 2, -texture.height() / 2);
+		this(texture, new Vector2f(-texture.width() / 2, -texture.height() / 2), new Vector2f(1, 1), 0);
 	}
 
 	public JointTexture(Texture texture, Vector2f translation, Vector2f scale, float rotation) {
@@ -22,7 +21,7 @@ public class JointTexture {
 		this.rotation = rotation;
 	}
 
-	public Texture getTexture() {
+	public Texture texture() {
 		return texture;
 	}
 
@@ -30,15 +29,23 @@ public class JointTexture {
 		this.texture = texture;
 	}
 
-	public Vector2f getTranslation() {
+	public Vector2f translation() {
 		return translation;
 	}
 
-	public Vector2f getScale() {
+	public void setTranslation(Vector2f translation) {
+		this.translation = translation;
+	}
+
+	public Vector2f scale() {
 		return scale;
 	}
 
-	public float getRotation() {
+	public void setScale(Vector2f scale) {
+		this.scale = scale;
+	}
+
+	public float rotation() {
 		return rotation;
 	}
 
@@ -59,7 +66,7 @@ public class JointTexture {
 	}
 
 	public JointTexture copy() {
-		return new JointTexture(texture, translation.copy(), scale.copy(), rotation);
+		return new JointTexture(texture, translation, scale, rotation);
 	}
 
 }

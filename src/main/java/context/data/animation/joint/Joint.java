@@ -11,11 +11,15 @@ public class Joint {
 		position = new Vector2f();
 	}
 
-	public Vector2f getPosition() {
+	public Vector2f position() {
 		return position;
 	}
 
-	public float getRotation() {
+	public void setPosition(Vector2f position) {
+		this.position = position;
+	}
+
+	public float rotation() {
 		return rotation;
 	}
 

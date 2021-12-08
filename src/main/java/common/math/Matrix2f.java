@@ -24,7 +24,7 @@ import java.nio.FloatBuffer;
  * @version $Revision$ $Id$
  */
 
-public class Matrix2f extends Matrix implements Serializable {
+public class Matrix2f implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -64,56 +64,50 @@ public class Matrix2f extends Matrix implements Serializable {
 	public static Matrix2f load(Matrix2f src, Matrix2f dest) {
 		if (dest == null)
 			dest = new Matrix2f();
-
 		dest.m00 = src.m00;
 		dest.m01 = src.m01;
 		dest.m10 = src.m10;
 		dest.m11 = src.m11;
-
 		return dest;
 	}
 
 	/**
-	 * Load from a float buffer. The buffer stores the matrix in column major (OpenGL) order.
+	 * Load from a float buffer. The buffer stores the matrix in column major
+	 * (OpenGL) order.
 	 *
 	 * @param buf A float buffer to read from
 	 * @return this
 	 */
-	@Override
-	public Matrix load(FloatBuffer buf) {
-
+	public Matrix2f load(FloatBuffer buf) {
 		m00 = buf.get();
 		m01 = buf.get();
 		m10 = buf.get();
 		m11 = buf.get();
-
 		return this;
 	}
 
 	/**
-	 * Load from a float buffer. The buffer stores the matrix in row major (mathematical) order.
+	 * Load from a float buffer. The buffer stores the matrix in row major
+	 * (mathematical) order.
 	 *
 	 * @param buf A float buffer to read from
 	 * @return this
 	 */
-	@Override
-	public Matrix loadTranspose(FloatBuffer buf) {
-
+	public Matrix2f loadTranspose(FloatBuffer buf) {
 		m00 = buf.get();
 		m10 = buf.get();
 		m01 = buf.get();
 		m11 = buf.get();
-
 		return this;
 	}
 
 	/**
-	 * Store this matrix in a float buffer. The matrix is stored in column major (openGL) order.
+	 * Store this matrix in a float buffer. The matrix is stored in column major
+	 * (openGL) order.
 	 * 
 	 * @param buf The buffer to store this matrix in
 	 */
-	@Override
-	public Matrix store(FloatBuffer buf) {
+	public Matrix2f store(FloatBuffer buf) {
 		buf.put(m00);
 		buf.put(m01);
 		buf.put(m10);
@@ -122,12 +116,12 @@ public class Matrix2f extends Matrix implements Serializable {
 	}
 
 	/**
-	 * Store this matrix in a float buffer. The matrix is stored in row major (maths) order.
+	 * Store this matrix in a float buffer. The matrix is stored in row major
+	 * (maths) order.
 	 * 
 	 * @param buf The buffer to store this matrix in
 	 */
-	@Override
-	public Matrix storeTranspose(FloatBuffer buf) {
+	public Matrix2f storeTranspose(FloatBuffer buf) {
 		buf.put(m00);
 		buf.put(m10);
 		buf.put(m01);
@@ -156,7 +150,8 @@ public class Matrix2f extends Matrix implements Serializable {
 	}
 
 	/**
-	 * Subtract the right matrix from the left and place the result in a third matrix.
+	 * Subtract the right matrix from the left and place the result in a third
+	 * matrix.
 	 * 
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
@@ -212,23 +207,7 @@ public class Matrix2f extends Matrix implements Serializable {
 		if (dest == null)
 			dest = new Vector2f();
 
-		float x = left.m00 * right.x + left.m10 * right.y;
-		float y = left.m01 * right.x + left.m11 * right.y;
-
-		dest.x = x;
-		dest.y = y;
-
-		return dest;
-	}
-
-	/**
-	 * Transpose this matrix
-	 * 
-	 * @return this
-	 */
-	@Override
-	public Matrix transpose() {
-		return transpose(this);
+		return new Vector2f(left.m00 * right.x + left.m10 * right.y, left.m01 * right.x + left.m11 * right.y);
 	}
 
 	/**
@@ -266,8 +245,7 @@ public class Matrix2f extends Matrix implements Serializable {
 	 * 
 	 * @return this if successful, null otherwise
 	 */
-	@Override
-	public Matrix invert() {
+	public Matrix2f invert() {
 		return invert(this, this);
 	}
 
@@ -318,8 +296,7 @@ public class Matrix2f extends Matrix implements Serializable {
 	 * 
 	 * @return this
 	 */
-	@Override
-	public Matrix negate() {
+	public Matrix2f negate() {
 		return negate(this);
 	}
 
@@ -357,23 +334,12 @@ public class Matrix2f extends Matrix implements Serializable {
 	 * 
 	 * @return this
 	 */
-	@Override
-	public Matrix setIdentity() {
-		return setIdentity(this);
-	}
-
-	/**
-	 * Set the source matrix to be the identity matrix.
-	 * 
-	 * @param src The matrix to set to the identity.
-	 * @return The source matrix
-	 */
-	public static Matrix2f setIdentity(Matrix2f src) {
-		src.m00 = 1.0f;
-		src.m01 = 0.0f;
-		src.m10 = 0.0f;
-		src.m11 = 1.0f;
-		return src;
+	public Matrix2f setIdentity() {
+		m00 = 1.0f;
+		m01 = 0.0f;
+		m10 = 0.0f;
+		m11 = 1.0f;
+		return this;
 	}
 
 	/**
@@ -381,26 +347,20 @@ public class Matrix2f extends Matrix implements Serializable {
 	 * 
 	 * @return this
 	 */
-	@Override
-	public Matrix setZero() {
-		return setZero(this);
-	}
-
-	public static Matrix2f setZero(Matrix2f src) {
-		src.m00 = 0.0f;
-		src.m01 = 0.0f;
-		src.m10 = 0.0f;
-		src.m11 = 0.0f;
-		return src;
+	public Matrix2f setZero() {
+		m00 = 0.0f;
+		m01 = 0.0f;
+		m10 = 0.0f;
+		m11 = 0.0f;
+		return this;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.lwjgl.vector.Matrix#determinant()
 	 */
-	@Override
 	public float determinant() {
 		return m00 * m11 - m01 * m10;
 	}
+
 }

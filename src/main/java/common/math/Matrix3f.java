@@ -24,7 +24,7 @@ import java.nio.FloatBuffer;
  * @version $Revision$ $Id$
  */
 
-public class Matrix3f extends Matrix implements Serializable {
+public class Matrix3f implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,7 +58,6 @@ public class Matrix3f extends Matrix implements Serializable {
 	public static Matrix3f load(Matrix3f src, Matrix3f dest) {
 		if (dest == null)
 			dest = new Matrix3f();
-
 		dest.m00 = src.m00;
 		dest.m10 = src.m10;
 		dest.m20 = src.m20;
@@ -68,19 +67,17 @@ public class Matrix3f extends Matrix implements Serializable {
 		dest.m02 = src.m02;
 		dest.m12 = src.m12;
 		dest.m22 = src.m22;
-
 		return dest;
 	}
 
 	/**
-	 * Load from a float buffer. The buffer stores the matrix in column major (OpenGL) order.
+	 * Load from a float buffer. The buffer stores the matrix in column major
+	 * (OpenGL) order.
 	 *
 	 * @param buf A float buffer to read from
 	 * @return this
 	 */
-	@Override
-	public Matrix load(FloatBuffer buf) {
-
+	public Matrix3f load(FloatBuffer buf) {
 		m00 = buf.get();
 		m01 = buf.get();
 		m02 = buf.get();
@@ -90,19 +87,17 @@ public class Matrix3f extends Matrix implements Serializable {
 		m20 = buf.get();
 		m21 = buf.get();
 		m22 = buf.get();
-
 		return this;
 	}
 
 	/**
-	 * Load from a float buffer. The buffer stores the matrix in row major (maths) order.
+	 * Load from a float buffer. The buffer stores the matrix in row major (maths)
+	 * order.
 	 *
 	 * @param buf A float buffer to read from
 	 * @return this
 	 */
-	@Override
-	public Matrix loadTranspose(FloatBuffer buf) {
-
+	public Matrix3f loadTranspose(FloatBuffer buf) {
 		m00 = buf.get();
 		m10 = buf.get();
 		m20 = buf.get();
@@ -112,17 +107,16 @@ public class Matrix3f extends Matrix implements Serializable {
 		m02 = buf.get();
 		m12 = buf.get();
 		m22 = buf.get();
-
 		return this;
 	}
 
 	/**
-	 * Store this matrix in a float buffer. The matrix is stored in column major (openGL) order.
+	 * Store this matrix in a float buffer. The matrix is stored in column major
+	 * (openGL) order.
 	 * 
 	 * @param buf The buffer to store this matrix in
 	 */
-	@Override
-	public Matrix store(FloatBuffer buf) {
+	public Matrix3f store(FloatBuffer buf) {
 		buf.put(m00);
 		buf.put(m01);
 		buf.put(m02);
@@ -136,12 +130,12 @@ public class Matrix3f extends Matrix implements Serializable {
 	}
 
 	/**
-	 * Store this matrix in a float buffer. The matrix is stored in row major (maths) order.
+	 * Store this matrix in a float buffer. The matrix is stored in row major
+	 * (maths) order.
 	 * 
 	 * @param buf The buffer to store this matrix in
 	 */
-	@Override
-	public Matrix storeTranspose(FloatBuffer buf) {
+	public Matrix3f storeTranspose(FloatBuffer buf) {
 		buf.put(m00);
 		buf.put(m10);
 		buf.put(m20);
@@ -180,7 +174,8 @@ public class Matrix3f extends Matrix implements Serializable {
 	}
 
 	/**
-	 * Subtract the right matrix from the left and place the result in a third matrix.
+	 * Subtract the right matrix from the left and place the result in a third
+	 * matrix.
 	 * 
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
@@ -240,84 +235,8 @@ public class Matrix3f extends Matrix implements Serializable {
 	}
 
 	/**
-	 * Transform a Vector by a matrix and return the result in a destination vector.
-	 * 
-	 * @param left  The left matrix
-	 * @param right The right vector
-	 * @param dest  The destination vector, or null if a new one is to be created
-	 * @return the destination vector
-	 */
-	public static Vector3f transform(Matrix3f left, Vector3f right, Vector3f dest) {
-		if (dest == null)
-			dest = new Vector3f();
-
-		float x = left.m00 * right.x + left.m10 * right.y + left.m20 * right.z;
-		float y = left.m01 * right.x + left.m11 * right.y + left.m21 * right.z;
-		float z = left.m02 * right.x + left.m12 * right.y + left.m22 * right.z;
-
-		dest.x = x;
-		dest.y = y;
-		dest.z = z;
-
-		return dest;
-	}
-
-	/**
-	 * Transpose this matrix
-	 * 
-	 * @return this
-	 */
-	@Override
-	public Matrix transpose() {
-		return transpose(this, this);
-	}
-
-	/**
-	 * Transpose this matrix and place the result in another matrix
-	 * 
-	 * @param dest The destination matrix or null if a new matrix is to be created
-	 * @return the transposed matrix
-	 */
-	public Matrix3f transpose(Matrix3f dest) {
-		return transpose(this, dest);
-	}
-
-	/**
-	 * Transpose the source matrix and place the result into the destination matrix
-	 * 
-	 * @param src  The source matrix to be transposed
-	 * @param dest The destination matrix or null if a new matrix is to be created
-	 * @return the transposed matrix
-	 */
-	public static Matrix3f transpose(Matrix3f src, Matrix3f dest) {
-		if (dest == null)
-			dest = new Matrix3f();
-		float m00 = src.m00;
-		float m01 = src.m10;
-		float m02 = src.m20;
-		float m10 = src.m01;
-		float m11 = src.m11;
-		float m12 = src.m21;
-		float m20 = src.m02;
-		float m21 = src.m12;
-		float m22 = src.m22;
-
-		dest.m00 = m00;
-		dest.m01 = m01;
-		dest.m02 = m02;
-		dest.m10 = m10;
-		dest.m11 = m11;
-		dest.m12 = m12;
-		dest.m20 = m20;
-		dest.m21 = m21;
-		dest.m22 = m22;
-		return dest;
-	}
-
-	/**
 	 * @return the determinant of the matrix
 	 */
-	@Override
 	public float determinant() {
 		float f = m00 * (m11 * m22 - m12 * m21) + m01 * (m12 * m20 - m10 * m22) + m02 * (m10 * m21 - m11 * m20);
 		return f;
@@ -340,8 +259,7 @@ public class Matrix3f extends Matrix implements Serializable {
 	 * 
 	 * @return this if successful, null otherwise
 	 */
-	@Override
-	public Matrix invert() {
+	public Matrix3f invert() {
 		return invert(this, this);
 	}
 
@@ -397,8 +315,7 @@ public class Matrix3f extends Matrix implements Serializable {
 	 * 
 	 * @return this
 	 */
-	@Override
-	public Matrix negate() {
+	public Matrix3f negate() {
 		return negate(this);
 	}
 
@@ -440,28 +357,17 @@ public class Matrix3f extends Matrix implements Serializable {
 	 * 
 	 * @return this
 	 */
-	@Override
-	public Matrix setIdentity() {
-		return setIdentity(this);
-	}
-
-	/**
-	 * Set the matrix to be the identity matrix.
-	 * 
-	 * @param m The matrix to be set to the identity
-	 * @return m
-	 */
-	public static Matrix3f setIdentity(Matrix3f m) {
-		m.m00 = 1.0f;
-		m.m01 = 0.0f;
-		m.m02 = 0.0f;
-		m.m10 = 0.0f;
-		m.m11 = 1.0f;
-		m.m12 = 0.0f;
-		m.m20 = 0.0f;
-		m.m21 = 0.0f;
-		m.m22 = 1.0f;
-		return m;
+	public Matrix3f setIdentity() {
+		m00 = 1.0f;
+		m01 = 0.0f;
+		m02 = 0.0f;
+		m10 = 0.0f;
+		m11 = 1.0f;
+		m12 = 0.0f;
+		m20 = 0.0f;
+		m21 = 0.0f;
+		m22 = 1.0f;
+		return this;
 	}
 
 	/**
@@ -469,27 +375,17 @@ public class Matrix3f extends Matrix implements Serializable {
 	 * 
 	 * @return this
 	 */
-	@Override
-	public Matrix setZero() {
-		return setZero(this);
+	public Matrix3f setZero() {
+		m00 = 0.0f;
+		m01 = 0.0f;
+		m02 = 0.0f;
+		m10 = 0.0f;
+		m11 = 0.0f;
+		m12 = 0.0f;
+		m20 = 0.0f;
+		m21 = 0.0f;
+		m22 = 0.0f;
+		return this;
 	}
 
-	/**
-	 * Set the matrix matrix to 0.
-	 * 
-	 * @param m The matrix to be set to 0
-	 * @return m
-	 */
-	public static Matrix3f setZero(Matrix3f m) {
-		m.m00 = 0.0f;
-		m.m01 = 0.0f;
-		m.m02 = 0.0f;
-		m.m10 = 0.0f;
-		m.m11 = 0.0f;
-		m.m12 = 0.0f;
-		m.m20 = 0.0f;
-		m.m21 = 0.0f;
-		m.m22 = 0.0f;
-		return m;
-	}
 }

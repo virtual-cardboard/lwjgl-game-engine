@@ -17,7 +17,7 @@ public class GameCursor {
 	}
 
 	public Vector2i velocity() {
-		return pos.copy().sub(previousPos);
+		return pos.sub(previousPos);
 	}
 
 	public void setPos(Vector2i pos) {
@@ -25,8 +25,8 @@ public class GameCursor {
 	}
 
 	public void setPos(int x, int y) {
-		previousPos.set(pos);
-		this.pos.set(x, y);
+		previousPos = pos;
+		pos = new Vector2i(x, y);
 	}
 
 	public boolean leftButtonPressed() {

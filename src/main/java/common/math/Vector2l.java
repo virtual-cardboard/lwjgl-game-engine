@@ -1,16 +1,20 @@
 package common.math;
 
-import java.nio.FloatBuffer;
-import java.nio.LongBuffer;
+import java.util.Objects;
 
-public class Vector2l extends Vector {
+/**
+ * An immutable vector of two longs.
+ * 
+ * @author Jay
+ */
+public class Vector2l {
 
-	private static final long serialVersionUID = 3362276223716947671L;
-
-	public long x;
-	public long y;
+	public final long x;
+	public final long y;
 
 	public Vector2l() {
+		this.x = 0;
+		this.y = 0;
 	}
 
 	public Vector2l(long x, long y) {
@@ -18,100 +22,69 @@ public class Vector2l extends Vector {
 		this.y = y;
 	}
 
-	@Override
-	public float lengthSquared() {
-		return x * x + y * y;
+	public Vector2l(Vector2l src) {
+		this.x = src.x;
+		this.y = src.y;
 	}
 
-	@Override
-	public Vector2l load(FloatBuffer buf) {
-		x = (long) buf.get();
-		y = (long) buf.get();
-		return this;
-	}
-
-	public Vector2l load(LongBuffer buf) {
-		x = buf.get();
-		y = buf.get();
-		return this;
-	}
-
-	@Override
 	public Vector2l negate() {
-		x = -x;
-		y = -y;
-		return this;
+		return new Vector2l(-x, -y);
 	}
 
 	public Vector2l add(Vector2l vector) {
-		x += vector.x;
-		y += vector.y;
-		return this;
-	}
-
-	public Vector2l add(long x, long y) {
-		this.x += x;
-		this.y += y;
-		return this;
+		return new Vector2l(x + vector.x, y + vector.y);
 	}
 
 	public Vector2l sub(Vector2l vector) {
-		x -= vector.x;
-		y -= vector.y;
-		return this;
+		return new Vector2l(x - vector.x, y - vector.y);
 	}
 
-	@Override
-	public Vector2l store(FloatBuffer buf) {
-		buf.put(x);
-		buf.put(y);
-		return this;
-	}
-
-	public Vector2l store(LongBuffer buf) {
-		buf.put(x);
-		buf.put(y);
-		return this;
-	}
-
-	@Override
 	public Vector2l scale(float scale) {
-		x *= scale;
-		y *= scale;
-		return this;
+		return new Vector2l((long) (x * scale), (long) (y * scale));
 	}
 
-	public Vector2l set(long x, long y) {
-		this.x = x;
-		this.y = y;
-		return this;
+	public Vector2l normalise() {
+		float len = length();
+		if (len != 0f) {
+			return scale(1f / len);
+		} else
+			throw new IllegalStateException("Zero length vector");
+	}
+
+	public long lengthSquared() {
+		return x * x + y * y;
+	}
+
+	public long length() {
+		return (long) Math.sqrt(x * x + y * y);
+	}
+
+	public float dot(Vector2l vector) {
+		return x * vector.x + y * vector.y;
+	}
+
+	public float angle() {
+		return (float) ((Math.atan2(y, x) + 2 * Math.PI) % (2 * Math.PI));
 	}
 
 	@Override
-	public Vector2l copy() {
-		return new Vector2l(x, y);
+	public int hashCode() {
+		return Objects.hash(x, y);
 	}
 
-	public Vector2l add(Vector2f vector2f) {
-		x += vector2f.x;
-		y += vector2f.y;
-		return this;
+	@Override
+	public String toString() {
+		return "Vector2l[" + x + ", " + y + "]";
 	}
 
-	public Vector2l sub(Vector2f vector2f) {
-		x -= vector2f.x;
-		y -= vector2f.y;
-		return this;
-	}
-
-	public Vector2l sub(long x, long y) {
-		this.x -= x;
-		this.y -= y;
-		return this;
-	}
-
-	public Vector2f toVec2f() {
-		return new Vector2f(x, y);
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+		Vector2l other = (Vector2l) obj;
+		return x == other.x && y == other.y;
 	}
 
 }

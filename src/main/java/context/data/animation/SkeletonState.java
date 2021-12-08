@@ -42,11 +42,11 @@ public class SkeletonState {
 	private PositionRotationContainer getPositionOfRecursive(SkeletonNode node) {
 		int index = node.getIndex();
 		if (index == 0) {
-			return new PositionRotationContainer(rootPosition.copy(), rotations.get(0));
+			return new PositionRotationContainer(rootPosition, rotations.get(0));
 		}
 		PositionRotationContainer parentPosRot = getPositionOfRecursive(node.getParent());
 		parentPosRot.rotation += rotations.get(index);
-		parentPosRot.position.add(Vector2f.fromAngleLength(parentPosRot.rotation, distances.get(index)));
+		parentPosRot.position = parentPosRot.position.add(Vector2f.fromAngleLength(parentPosRot.rotation, distances.get(index)));
 		return parentPosRot;
 	}
 
@@ -76,11 +76,15 @@ public class SkeletonState {
 		return rootPosition;
 	}
 
+	public void setRootPosition(Vector2f rootPosition) {
+		this.rootPosition = rootPosition;
+	}
+
 	public SkeletonState copy() {
 		SkeletonState copy = new SkeletonState();
 		copy.rotations.addAll(rotations);
 		copy.distances.addAll(distances);
-		copy.rootPosition.set(rootPosition);
+		copy.rootPosition = rootPosition;
 		return copy;
 	}
 
