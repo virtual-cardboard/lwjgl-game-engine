@@ -89,6 +89,16 @@ public class Vector2f extends Vector implements Serializable, ReadableVector2f, 
 		return x * x + y * y;
 	}
 
+	@Override
+	public Vector2f normalise() {
+		float len = length();
+		if (len != 0.0f) {
+			float l = 1.0f / len;
+			return scale(l);
+		} else
+			throw new IllegalStateException("Zero length vector");
+	}
+
 	/**
 	 * Translate a vector
 	 * 
