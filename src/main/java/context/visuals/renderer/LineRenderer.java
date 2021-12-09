@@ -7,7 +7,6 @@ import context.GLContext;
 import context.visuals.builtin.LineShaderProgram;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.colour.Colour;
-import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.VertexArrayObject;
 
@@ -37,11 +36,11 @@ public class LineRenderer extends GameRenderer {
 
 	/**
 	 * Renders a line segment from (x1, y1) to (x2, y2) with the given line width
-	 * and colour. This needs the {@link RootGui} in order to convert pixel
+	 * and colour. This needs the screen dimensions in order to convert pixel
 	 * coordinates into normalized device coordinates.
 	 * 
 	 * @param rectangleVao the {@link VertexArrayObject} to use
-	 * @param rootGui      the <code>RootGui</code>
+	 * @param screenDim    the dimensions of the screen
 	 * @param x1           the x value of the first point of the line, in pixels
 	 * @param y1           the y value of the first point of the line, in pixels
 	 * @param x2           the x value of the second point of the line, in pixels
@@ -51,10 +50,9 @@ public class LineRenderer extends GameRenderer {
 	 * 
 	 * @see Colour
 	 */
-	public void renderPixelCoords(GLContext glContext, RootGui rootGui, float x1, float y1, float x2, float y2, float width, int colour) {
+	public void renderPixelCoords(GLContext glContext, Vector2f screenDim, float x1, float y1, float x2, float y2, float width, int colour) {
 		// Calculations for matrix transformations
 		width = Math.abs(width);
-		Vector2f rootGuiDimensions = rootGui.dimensions();
 		float halfWidth = width * 0.5f;
 		Matrix4f matrix4f = new Matrix4f();
 		float rectLength = (float) Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) + width;
@@ -62,7 +60,7 @@ public class LineRenderer extends GameRenderer {
 
 		// Matrix transformations
 		matrix4f.translate(-1, 1);
-		matrix4f.scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
+		matrix4f.scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y);
 		matrix4f.translate(x1, y1);
 		matrix4f.rotate(-theta, Vector3f.Z_AXIS);
 		matrix4f.translate(-halfWidth, -halfWidth);
