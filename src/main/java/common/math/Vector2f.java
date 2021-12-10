@@ -43,6 +43,10 @@ public class Vector2f {
 		return new Vector2f(x + vector.x, y + vector.y);
 	}
 
+	public Vector2f sub(float x, float y) {
+		return new Vector2f(this.x - x, this.y - y);
+	}
+
 	public Vector2f sub(Vector2f vector) {
 		return new Vector2f(x - vector.x, y - vector.y);
 	}
