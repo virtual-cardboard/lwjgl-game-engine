@@ -88,7 +88,7 @@ public final class GameContext {
 		data.setComponents(loader);
 		input.setComponents(inputEventBuffer, networkReceiveBuffer, inputToLogicEventQueue);
 		logic.setComponents(inputToLogicEventQueue, logicToVisualsEventQueue, loader);
-		visuals.setComponents(logicToVisualsEventQueue, loader);
+		visuals.setComponents(logicToVisualsEventQueue, loader, resourcePack());
 		data.init();
 		input.init();
 		logic.init();

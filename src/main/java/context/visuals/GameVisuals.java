@@ -21,6 +21,7 @@ import common.event.GameEvent;
 import common.loader.GameLoader;
 import context.ContextPart;
 import context.GLContext;
+import context.ResourcePack;
 import context.data.GameData;
 import context.logic.GameEventHandler;
 import context.visuals.gui.RootGui;
@@ -44,6 +45,7 @@ public abstract class GameVisuals extends ContextPart {
 	private Queue<GameEvent> in;
 	@SuppressWarnings("rawtypes")
 	protected Map<Class, List<GameEventHandler>> handlers = new HashMap<>();
+	private ResourcePack resourcePack;
 
 	public RootGui rootGui() {
 		return rootGui;
@@ -100,9 +102,10 @@ public abstract class GameVisuals extends ContextPart {
 		});
 	}
 
-	public final void setComponents(Queue<GameEvent> in, GameLoader loader) {
+	public final void setComponents(Queue<GameEvent> in, GameLoader loader, ResourcePack resourcePack) {
 		this.in = in;
 		this.loader = loader;
+		this.resourcePack = resourcePack;
 	}
 
 	public final void doInit() {
@@ -123,6 +126,10 @@ public abstract class GameVisuals extends ContextPart {
 
 	protected final GameLoader loader() {
 		return loader;
+	}
+
+	protected final ResourcePack resourcePack() {
+		return resourcePack;
 	}
 
 	protected GLContext glContext() {
