@@ -21,6 +21,11 @@ public class RectangleRenderer extends GameRenderer {
 		render(glContext, matrix4f, colour);
 	}
 
+	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float d, float width, float height, int colour) {
+		Matrix4f matrix4f = new Matrix4f().translate(-1, 1).scale(2f / screenDim.x, -2f / screenDim.y).translate(x, y, d).scale(width, height);
+		render(glContext, matrix4f, colour);
+	}
+
 	public void render(GLContext glContext, Matrix4f matrix4f, int colour) {
 		shaderProgram.bind(glContext);
 		shaderProgram.setMat4("matrix4f", matrix4f);
