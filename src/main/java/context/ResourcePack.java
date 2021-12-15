@@ -7,11 +7,10 @@ import context.visuals.builtin.ColourFragmentShader;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TexturedTransformationVertexShader;
 import context.visuals.builtin.TransformationVertexShader;
-import context.visuals.lwjgl.ElementBufferObject;
+import context.visuals.lwjgl.FrameBufferObject;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.lwjgl.VertexBufferObject;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.text.GameFont;
 
@@ -25,8 +24,7 @@ import context.visuals.text.GameFont;
 public final class ResourcePack {
 
 	private Map<String, VertexArrayObject> vaos = new HashMap<>();
-	private Map<String, VertexBufferObject> vbos = new HashMap<>();
-	private Map<String, ElementBufferObject> ebos = new HashMap<>();
+	private Map<String, FrameBufferObject> fbos = new HashMap<>();
 	private Map<String, ShaderProgram> shaderPrograms = new HashMap<>();
 	private Map<String, GameRenderer> renderers = new HashMap<>();
 	private Map<String, Texture> textures = new HashMap<>();
@@ -54,20 +52,12 @@ public final class ResourcePack {
 		vaos.put(name, vao);
 	}
 
-	public VertexBufferObject getVBO(String name) {
-		return vbos.get(name);
+	public FrameBufferObject getFBO(String name) {
+		return fbos.get(name);
 	}
 
-	public void putVBO(String name, VertexBufferObject vbo) {
-		vbos.put(name, vbo);
-	}
-
-	public ElementBufferObject getEBO(String name) {
-		return ebos.get(name);
-	}
-
-	public void putEBO(String name, ElementBufferObject ebo) {
-		ebos.put(name, ebo);
+	public void putFBO(String name, FrameBufferObject fbo) {
+		fbos.put(name, fbo);
 	}
 
 	public ShaderProgram getShaderProgram(String name) {

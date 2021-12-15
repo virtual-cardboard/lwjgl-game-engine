@@ -1,15 +1,9 @@
 package context.visuals.lwjgl;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
-import static org.lwjgl.opengl.GL20.glCompileShader;
-import static org.lwjgl.opengl.GL20.glCreateShader;
-import static org.lwjgl.opengl.GL20.glDeleteShader;
-import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
-import static org.lwjgl.opengl.GL20.glGetShaderi;
-import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.*;
 
-public class Shader extends GLObject {
+public class Shader extends GLRegularObject {
 
 	private int id;
 	private ShaderType shaderType;

@@ -87,4 +87,8 @@ public class Texture extends GLRegularObject {
 		this.textureUnit = textureUnit;
 	}
 
+	int id() {
+		return id;
+	}
+
 }

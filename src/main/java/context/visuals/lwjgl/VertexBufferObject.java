@@ -37,7 +37,7 @@ public class VertexBufferObject extends GLRegularObject {
 	public void loadData(GLContext glContext) {
 		bind(glContext);
 		glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
-		glContext.bufferID = -1;
+		glContext.bufferID = 0;
 	}
 
 	protected void enableVertexAttribPointer(GLContext glContext, int i) {

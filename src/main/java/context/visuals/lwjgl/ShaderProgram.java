@@ -15,7 +15,7 @@ import common.math.Vector3f;
 import common.math.Vector4f;
 import context.GLContext;
 
-public class ShaderProgram extends GLObject {
+public class ShaderProgram extends GLRegularObject {
 
 	private int id;
 	private List<Shader> toAttach = new ArrayList<>(3);
