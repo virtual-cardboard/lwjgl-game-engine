@@ -9,19 +9,17 @@ import context.visuals.lwjgl.Texture;
 
 public class EmptyTextureLoadTask extends GLLoadTask<Texture> {
 
-	private int textureUnit;
 	private int width;
 	private int height;
 
-	public EmptyTextureLoadTask(int textureUnit, int width, int height) {
-		this.textureUnit = textureUnit;
+	public EmptyTextureLoadTask(int width, int height) {
 		this.width = width;
 		this.height = height;
 	}
 
 	@Override
 	protected Texture loadGL(GLContext glContext) {
-		Texture texture = new Texture(textureUnit);
+		Texture texture = new Texture();
 		texture.genID();
 		texture.bind(glContext);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);

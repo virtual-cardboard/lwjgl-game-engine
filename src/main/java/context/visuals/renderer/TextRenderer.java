@@ -59,12 +59,13 @@ public class TextRenderer extends GameRenderer {
 		int totalXOffset = 0;
 		int totalYOffset = 0;
 
+		font.texture().bind(glContext, 0);
+
 		shaderProgram.bind(glContext);
-		shaderProgram.setInt("textureSampler", font.texture().getTextureUnit());
+		shaderProgram.setInt("textureSampler", 0);
 		shaderProgram.setFloat("texWidth", font.texture().width());
 		shaderProgram.setFloat("texHeight", font.texture().height());
 		shaderProgram.setColour("fill", colour);
-		font.texture().bind(glContext);
 
 		Matrix4f pixelScaleTransform = new Matrix4f().translate(-1, 1).scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y).multiply(transform);
 		float sizeMultiplier = fontSize / font.getFontSize();

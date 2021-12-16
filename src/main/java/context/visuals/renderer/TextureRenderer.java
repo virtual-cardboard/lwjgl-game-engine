@@ -57,9 +57,9 @@ public class TextureRenderer extends GameRenderer {
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
 				.translate(centerX, centerY).scale(texture.width() * scale, texture.height() * scale).translate(-0.5f, -0.5f);
 		shaderProgram.bind(glContext);
-		texture.bind(glContext);
+		texture.bind(glContext, 0);
 		shaderProgram.setMat4("matrix4f", matrix4f);
-		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
+		shaderProgram.setInt("textureSampler", 0);
 		vao.draw(glContext);
 	}
 
@@ -82,9 +82,9 @@ public class TextureRenderer extends GameRenderer {
 		matrix4f.translate(-1, 1, depth).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
 				.translate(centerX, centerY).scale(texture.width() * scale, texture.height() * scale).translate(-0.5f, -0.5f);
 		shaderProgram.bind(glContext);
-		texture.bind(glContext);
+		texture.bind(glContext, 0);
 		shaderProgram.setMat4("matrix4f", matrix4f);
-		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
+		shaderProgram.setInt("textureSampler", 0);
 		vao.draw(glContext);
 	}
 
@@ -119,9 +119,9 @@ public class TextureRenderer extends GameRenderer {
 	 */
 	public void render(GLContext glContext, Texture texture, Matrix4f matrix4f) {
 		shaderProgram.bind(glContext);
-		texture.bind(glContext);
+		texture.bind(glContext, 0);
 		shaderProgram.setMat4("matrix4f", matrix4f);
-		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
+		shaderProgram.setInt("textureSampler", 0);
 		vao.draw(glContext);
 	}
 
@@ -136,9 +136,9 @@ public class TextureRenderer extends GameRenderer {
 	 */
 	public void render(GLContext glContext, Texture texture, Matrix4f matrix4f, int diffuse) {
 		shaderProgram.bind(glContext);
-		texture.bind(glContext);
+		texture.bind(glContext, 0);
 		shaderProgram.setMat4("matrix4f", matrix4f);
-		shaderProgram.setInt("textureSampler", texture.getTextureUnit());
+		shaderProgram.setInt("textureSampler", 0);
 		shaderProgram.setColour("diffuse", diffuse);
 		vao.draw(glContext);
 		shaderProgram.setColour("diffuse", -1);

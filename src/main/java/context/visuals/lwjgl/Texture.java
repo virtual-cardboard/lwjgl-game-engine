@@ -21,27 +21,23 @@ public class Texture extends GLRegularObject {
 
 	private int id;
 	private int width, height;
-	private int textureUnit;
 
 	/**
-	 * Creates a texture with the given texture unit. The texture unit can be used
-	 * in shaders to display multiple textures with different texture units in one
-	 * <code>glDrawElements</code> call.
+	 * Binds the texture to texture unit 0.
 	 * 
-	 * @param textureUnit the texture unit
-	 * 
+	 * @param glContext the <code>GLContext</code>
 	 */
-	public Texture(int textureUnit) {
-		if (textureUnit < 0 || textureUnit > 47) {
-			throw new IllegalArgumentException("Invalid texture unit: " + textureUnit);
-		}
-		this.textureUnit = textureUnit;
+	public void bind(GLContext glContext) {
+		bind(glContext, 0);
 	}
 
 	/**
-	 * Binds the texture.
+	 * Binds the texture to the given texture unit.
+	 * 
+	 * @param glContext   the <code>GLContext</code>
+	 * @param textureUnit the texture unit
 	 */
-	public void bind(GLContext glContext) {
+	public void bind(GLContext glContext, int textureUnit) {
 		verifyInitialized();
 		if (glContext.textureIDs[textureUnit] == id) {
 			return;
@@ -77,14 +73,6 @@ public class Texture extends GLRegularObject {
 
 	public void setHeight(int height) {
 		this.height = height;
-	}
-
-	public int getTextureUnit() {
-		return textureUnit;
-	}
-
-	public void setTextureUnit(int textureUnit) {
-		this.textureUnit = textureUnit;
 	}
 
 	int id() {

@@ -26,8 +26,8 @@ public class TextureLoadTask extends GLLoadTask<Texture> {
 	 * @param textureUnit the texture to load data into
 	 * @param path        the path to the texture's source image
 	 */
-	public TextureLoadTask(int textureUnit, String path) {
-		this(new Texture(textureUnit), path);
+	public TextureLoadTask(String path) {
+		this(new Texture(), path);
 	}
 
 	/**
