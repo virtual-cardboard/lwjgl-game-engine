@@ -42,19 +42,17 @@ public class TextureRenderer extends GameRenderer {
 	/**
 	 * Renders a texture with default proportions in pixel coordinates.
 	 * 
-	 * @param glContext         the {@link GLContext}
-	 * @param rootGuiDimensions a {@link Vector2f} representing the dimensions of
-	 *                          the {@link RootGui}
-	 * @param texture           the {@link Texture} to render
-	 * @param centerX           the x position in pixels of the center of the
-	 *                          texture
-	 * @param centerY           the y position in pixels of the center of the
-	 *                          texture
-	 * @param scale             the scale of the texture
+	 * @param glContext the {@link GLContext}
+	 * @param screenDim a {@link Vector2f} representing the dimensions of the
+	 *                  {@link RootGui}
+	 * @param texture   the {@link Texture} to render
+	 * @param centerX   the x position in pixels of the center of the texture
+	 * @param centerY   the y position in pixels of the center of the texture
+	 * @param scale     the scale of the texture
 	 */
-	public void render(GLContext glContext, Vector2f rootGuiDimensions, Texture texture, float centerX, float centerY, float scale) {
+	public void render(GLContext glContext, Vector2f screenDim, Texture texture, float centerX, float centerY, float scale) {
 		Matrix4f matrix4f = new Matrix4f();
-		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
+		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y)
 				.translate(centerX, centerY).scale(texture.width() * scale, texture.height() * scale).translate(-0.5f, -0.5f);
 		shaderProgram.bind(glContext);
 		texture.bind(glContext, 0);
@@ -66,20 +64,18 @@ public class TextureRenderer extends GameRenderer {
 	/**
 	 * Renders a texture with default proportions in pixel coordinates.
 	 * 
-	 * @param glContext         the {@link GLContext}
-	 * @param rootGuiDimensions a {@link Vector2f} representing the dimensions of
-	 *                          the {@link RootGui}
-	 * @param texture           the {@link Texture} to render
-	 * @param centerX           the x position in pixels of the center of the
-	 *                          texture
-	 * @param centerY           the y position in pixels of the center of the
-	 *                          texture
-	 * @param depth             the depth of the texture
-	 * @param scale             the scale of the texture
+	 * @param glContext the {@link GLContext}
+	 * @param screenDim a {@link Vector2f} representing the dimensions of the
+	 *                  {@link RootGui}
+	 * @param texture   the {@link Texture} to render
+	 * @param centerX   the x position in pixels of the center of the texture
+	 * @param centerY   the y position in pixels of the center of the texture
+	 * @param depth     the depth of the texture
+	 * @param scale     the scale of the texture
 	 */
-	public void render(GLContext glContext, Vector2f rootGuiDimensions, Texture texture, float centerX, float centerY, float depth, float scale) {
+	public void render(GLContext glContext, Vector2f screenDim, Texture texture, float centerX, float centerY, float depth, float scale) {
 		Matrix4f matrix4f = new Matrix4f();
-		matrix4f.translate(-1, 1, depth).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
+		matrix4f.translate(-1, 1, depth).scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y)
 				.translate(centerX, centerY).scale(texture.width() * scale, texture.height() * scale).translate(-0.5f, -0.5f);
 		shaderProgram.bind(glContext);
 		texture.bind(glContext, 0);
