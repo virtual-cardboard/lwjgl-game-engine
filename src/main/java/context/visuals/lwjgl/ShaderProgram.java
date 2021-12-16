@@ -62,9 +62,7 @@ public class ShaderProgram extends GLRegularObject {
 	 * glDrawElements() calls. This is likely to be called multiple times. You must
 	 * call {@link #link() link()} before using bind().
 	 * 
-	 * @param glContext TODO
-	 * 
-	 * @see {@link #link() link()}
+	 * @param glContext the <code>GLContext</code>
 	 */
 	public void bind(GLContext glContext) {
 		verifyInitialized();
