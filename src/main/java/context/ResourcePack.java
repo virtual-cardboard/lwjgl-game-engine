@@ -8,6 +8,7 @@ import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TexturedTransformationVertexShader;
 import context.visuals.builtin.TransformationVertexShader;
 import context.visuals.lwjgl.FrameBufferObject;
+import context.visuals.lwjgl.ScreenFrameBufferObject;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
@@ -34,14 +35,17 @@ public final class ResourcePack {
 	private TexturedTransformationVertexShader texturedTransformationVS;
 	private ColourFragmentShader colourFS;
 	private ShaderProgram defaultSP;
+	private ScreenFrameBufferObject screenFBO;
 
 	public void init(RectangleVertexArrayObject rectangleVAO, TransformationVertexShader transformationVS,
-			TexturedTransformationVertexShader texturedTransformationVS, ColourFragmentShader colourFS, ShaderProgram defaultSP) {
+			TexturedTransformationVertexShader texturedTransformationVS, ColourFragmentShader colourFS, ShaderProgram defaultSP,
+			ScreenFrameBufferObject screenFBO) {
 		this.rectangleVAO = rectangleVAO;
 		this.transformationVS = transformationVS;
 		this.texturedTransformationVS = texturedTransformationVS;
 		this.colourFS = colourFS;
 		this.defaultSP = defaultSP;
+		this.screenFBO = screenFBO;
 	}
 
 	public VertexArrayObject getVAO(String name) {
@@ -116,11 +120,21 @@ public final class ResourcePack {
 		return defaultSP;
 	}
 
+	public ScreenFrameBufferObject screenFrameBufferObject() {
+		return screenFBO;
+	}
+
 	public void terminate() {
 		vaos.values().forEach(VertexArrayObject::delete);
 		shaderPrograms.values().forEach(ShaderProgram::delete);
 		textures.values().forEach(Texture::delete);
 		fonts.values().forEach(GameFont::delete);
+		fbos.values().forEach(FrameBufferObject::delete);
+		rectangleVAO.delete();
+		transformationVS.delete();
+		texturedTransformationVS.delete();
+		colourFS.delete();
+		defaultSP.delete();
 	}
 
 }

@@ -3,7 +3,7 @@ package context.visuals.lwjgl;
 public final class ScreenFrameBufferObject extends FrameBufferObject {
 
 	public ScreenFrameBufferObject() {
-		verifyInitialized();
+		confirmInitialization();
 	}
 
 	@Override

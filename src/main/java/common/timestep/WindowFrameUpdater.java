@@ -19,6 +19,7 @@ import context.visuals.builtin.ColourFragmentShader;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TexturedTransformationVertexShader;
 import context.visuals.builtin.TransformationVertexShader;
+import context.visuals.lwjgl.ScreenFrameBufferObject;
 import context.visuals.lwjgl.ShaderProgram;
 
 public final class WindowFrameUpdater extends TimestepTimer {
@@ -85,9 +86,10 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		TransformationVertexShader tranformationVS = createTransformationVertexShader();
 		TexturedTransformationVertexShader texturedTransformationVS = createTexturedTransformationVertexShader();
 		ColourFragmentShader colourFS = createColourFragmentShader();
+		ScreenFrameBufferObject screenFBO = new ScreenFrameBufferObject();
 		try {
 			ShaderProgram defaultSP = new ShaderProgramLoadTask(tranformationVS, colourFS).doLoadGL(wrapper.glContext());
-			wrapper.resourcePack().init(rectangleVAO, tranformationVS, texturedTransformationVS, colourFS, defaultSP);
+			wrapper.resourcePack().init(rectangleVAO, tranformationVS, texturedTransformationVS, colourFS, defaultSP, screenFBO);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
