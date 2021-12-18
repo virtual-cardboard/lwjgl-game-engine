@@ -1,11 +1,23 @@
 package context.visuals.renderer;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
+import common.Pair;
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import context.GLContext;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextShaderProgram;
+import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
+import context.visuals.lwjgl.FrameBufferObject;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.text.CharacterData;
 import context.visuals.text.GameFont;
@@ -18,20 +30,32 @@ import context.visuals.text.GameFont;
  */
 public class TextRenderer extends GameRenderer {
 
+	public static final int ALIGN_LEFT = 0;
+	public static final int ALIGN_CENTER = 1;
+	public static final int ALIGN_RIGHT = 2;
+
+	private final TextureRenderer textureRenderer;
 	/**
 	 * The {@link ShaderProgram} to use when rendering text.
 	 */
-	private ShaderProgram shaderProgram;
-	private RectangleVertexArrayObject vao;
+	private final ShaderProgram shaderProgram;
+	private final RectangleVertexArrayObject vao;
+	private final FrameBufferObject fbo;
+
+	private int align = ALIGN_LEFT;
 
 	/**
 	 * Creates a TextRenderer using a {@link TextShaderProgram}.
 	 * 
-	 * @param shaderProgram the {@link TextShaderProgram}
+	 * @param shaderProgram the <code>TextShaderProgram</code>
+	 * @param vao           the <code>RectangleVertexArrayObject</code>
+	 * @param fbo           the <code>FrameBufferObject</code>
 	 */
-	public TextRenderer(TextShaderProgram shaderProgram, RectangleVertexArrayObject vao) {
+	public TextRenderer(TextureRenderer textureRenderer, TextShaderProgram shaderProgram, RectangleVertexArrayObject vao, FrameBufferObject fbo) {
+		this.textureRenderer = textureRenderer;
 		this.shaderProgram = shaderProgram;
 		this.vao = vao;
+		this.fbo = fbo;
 	}
 
 	/**
@@ -54,12 +78,25 @@ public class TextRenderer extends GameRenderer {
 		render(glContext, rootGui.dimensions(), new Matrix4f().translate(x, y), text, lineWidth, font, fontSize, colour);
 	}
 
+	/**
+	 * Renders text.
+	 * 
+	 * @param glContext the {@link GLContext}
+	 * @param screenDim the dimensions of the sreen
+	 * @param transform the transformation matrix to be applied to the text at the
+	 *                  end
+	 * @param text      the text
+	 * @param lineWidth the max width of the line of text in pixels, or 0 to
+	 *                  indicate no wrapping
+	 * @param font      the <code>GameFont</code> of the text
+	 * @param fontSize  the font size
+	 * @param colour    the {@link Colour} (int)
+	 */
 	public void render(GLContext glContext, Vector2f screenDim, Matrix4f transform, String text, float lineWidth, GameFont font, float fontSize, int colour) {
-		char[] chars = text.toCharArray();
-		int totalXOffset = 0;
-		int totalYOffset = 0;
-
-		font.texture().bind(glContext, 0);
+		fbo.bind(glContext);
+		font.texture().bind(glContext);
+		glClearColor(0, 0, 0, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 		shaderProgram.bind(glContext);
 		shaderProgram.setInt("textureSampler", 0);
@@ -67,21 +104,47 @@ public class TextRenderer extends GameRenderer {
 		shaderProgram.setFloat("texHeight", font.texture().height());
 		shaderProgram.setColour("fill", colour);
 
-		Matrix4f pixelScaleTransform = new Matrix4f().translate(-1, 1).scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y).multiply(transform);
+		if (lineWidth == 0) {
+			renderOneLine(glContext, screenDim, 0, 0, text, font, fontSize);
+		} else {
+			List<Pair<String, Float>> stringPairs = convertToStringPairs(text, font, fontSize, lineWidth);
+			if (align == ALIGN_LEFT) {
+				for (int i = 0; i < stringPairs.size(); i++) {
+					Pair<String, Float> pair = stringPairs.get(i);
+					renderOneLine(glContext, screenDim, 0, i * fontSize, pair.a, font, fontSize);
+				}
+			} else if (align == ALIGN_CENTER) {
+				for (int i = 0; i < stringPairs.size(); i++) {
+					Pair<String, Float> pair = stringPairs.get(i);
+					renderOneLine(glContext, screenDim, (lineWidth - pair.b) * 0.5f, i * fontSize, pair.a, font, fontSize);
+				}
+			} else if (align == ALIGN_RIGHT) {
+				for (int i = 0; i < stringPairs.size(); i++) {
+					Pair<String, Float> pair = stringPairs.get(i);
+					renderOneLine(glContext, screenDim, lineWidth - pair.b, i * fontSize, pair.a, font, fontSize);
+				}
+			}
+		}
+		FrameBufferObject.unbind(glContext);
+		textureRenderer.render(glContext, fbo.texture(),
+				new Matrix4f().translate(-1, 1).scale(2 / screenDim.x, -2 / screenDim.y).multiply(transform).scale(screenDim));
+	}
+
+	private void renderOneLine(GLContext glContext, Vector2f screenDim, float xOffset, float yOffset, String text, GameFont font, float fontSize) {
+		char[] chars = text.toCharArray();
+		Matrix4f transform = new Matrix4f().translate(-1, -1).scale(2, 2).scale(1 / screenDim.x, 1 / screenDim.y);
 		float sizeMultiplier = fontSize / font.getFontSize();
+		fbo.bind(glContext);
+
 		for (int i = 0; i < chars.length; i++) {
 			CharacterData c = font.getCharacterDatas()[chars[i]];
+			short xAdvance = c.xAdvance();
 			if (chars[i] == ' ') {
-				totalXOffset += c.xAdvance() * sizeMultiplier;
+				xOffset += xAdvance * sizeMultiplier;
 				continue;
 			}
-			short xAdvance = c.xAdvance();
-			if (lineWidth > 0 && totalXOffset + xAdvance * sizeMultiplier > lineWidth) {
-				totalXOffset = 0;
-				totalYOffset += fontSize;
-			}
-			Matrix4f copy = pixelScaleTransform.copy()
-					.translate(totalXOffset + c.xOffset() * sizeMultiplier, totalYOffset + c.yOffset() * sizeMultiplier)
+			Matrix4f copy = transform.copy()
+					.translate(xOffset + c.xOffset() * sizeMultiplier, yOffset + c.yOffset() * sizeMultiplier)
 					.scale(c.width() * sizeMultiplier, c.height() * sizeMultiplier);
 			shaderProgram.setMat4("matrix4f", copy);
 			shaderProgram.setFloat("width", c.width());
@@ -89,8 +152,54 @@ public class TextRenderer extends GameRenderer {
 			shaderProgram.setFloat("x", c.x());
 			shaderProgram.setFloat("y", c.y());
 			vao.draw(glContext);
-			totalXOffset += xAdvance * sizeMultiplier;
+			xOffset += xAdvance * sizeMultiplier;
 		}
+	}
+
+	private List<Pair<String, Float>> convertToStringPairs(String text, GameFont font, float fontSize, float lineWidth) {
+		CharacterData[] characterDatas = font.getCharacterDatas();
+
+		List<Pair<String, Float>> pairs = new ArrayList<>();
+
+		String[] words = text.split(" ");
+		float sizeMultiplier = fontSize / font.getFontSize();
+
+		float currentStringWidth = 0;
+		String currentString = "";
+		for (int i = 0; i < words.length; i++) {
+			String word = words[i];
+			float wordWidth = 0;
+			for (int j = 0; j < word.length(); j++) {
+				wordWidth += characterDatas[word.charAt(j)].xAdvance() * sizeMultiplier;
+			}
+
+			if (currentStringWidth + wordWidth <= lineWidth) {
+				if (!currentString.isEmpty()) {
+					currentString += " ";
+					currentStringWidth += characterDatas[' '].xAdvance() * sizeMultiplier;
+				}
+				currentStringWidth += wordWidth;
+				currentString += word;
+			} else {
+				pairs.add(new Pair<>(currentString.trim(), currentStringWidth));
+				currentStringWidth = wordWidth;
+				currentString = word;
+			}
+		}
+		pairs.add(new Pair<>(currentString.trim(), currentStringWidth));
+		return pairs;
+	}
+
+	public void alignLeft() {
+		align = ALIGN_LEFT;
+	}
+
+	public void alignCenter() {
+		align = ALIGN_CENTER;
+	}
+
+	public void alignRight() {
+		align = ALIGN_RIGHT;
 	}
 
 }
