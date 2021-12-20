@@ -1,6 +1,6 @@
 #version 330 core
 in vec2 fragmentPos;
-out vec4 fragmentColor;
+out vec4 fragColor;
 
 // The following floats are in NORMALIZED DEVICE COORDINATES
 uniform float x;
@@ -16,6 +16,6 @@ void main() {
 	float halfHeight = height * 0.5f;
 	float dist = xDiff * xDiff / (halfWidth * halfWidth) + yDiff * yDiff / (halfHeight * halfHeight);
 	float delta = fwidth(dist);
-	fragmentColor = fill;
-	fragmentColor.a *= 1 - smoothstep(1 - delta, 1, dist);
+	fragColor = fill;
+	fragColor.a *= 1 - smoothstep(1 - delta, 1, dist);
 }

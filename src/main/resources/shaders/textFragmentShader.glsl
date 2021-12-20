@@ -13,4 +13,7 @@ void main() {
 	newTexCoord.x = (texCoord.x * width + x) / texWidth;
 	newTexCoord.y = (texCoord.y * height + y) / texHeight;
     fragColor = texture(textureSampler, newTexCoord) * fill;
+    if (fragColor.a == 0) {
+    	discard;
+    }
 }

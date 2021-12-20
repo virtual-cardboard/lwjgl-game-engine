@@ -9,4 +9,7 @@ uniform vec4 diffuse = vec4(1, 1, 1, 1);
 void main()
 {
     fragColor = texture(textureSampler, texCoord) * diffuse;
+    if (fragColor.a == 0) {
+    	discard;
+    }
 }
