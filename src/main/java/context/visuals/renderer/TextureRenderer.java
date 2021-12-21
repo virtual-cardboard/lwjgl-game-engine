@@ -25,6 +25,7 @@ public class TextureRenderer extends GameRenderer {
 	 */
 	private ShaderProgram shaderProgram;
 	private RectangleVertexArrayObject vao;
+	private int diffuse = -1;
 
 	/**
 	 * Creates a <code>TextureRenderer</code> using the texture shader program from
@@ -58,6 +59,7 @@ public class TextureRenderer extends GameRenderer {
 		texture.bind(glContext, 0);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setInt("textureSampler", 0);
+		shaderProgram.setColour("diffuse", diffuse);
 		vao.draw(glContext);
 	}
 
@@ -81,6 +83,7 @@ public class TextureRenderer extends GameRenderer {
 		texture.bind(glContext, 0);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setInt("textureSampler", 0);
+		shaderProgram.setColour("diffuse", diffuse);
 		vao.draw(glContext);
 	}
 
@@ -118,26 +121,20 @@ public class TextureRenderer extends GameRenderer {
 		texture.bind(glContext, 0);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setInt("textureSampler", 0);
+		shaderProgram.setColour("diffuse", diffuse);
 		vao.draw(glContext);
 	}
 
-	/**
-	 * Renders a texture using a transformation matrix and diffuse colour.
-	 * 
-	 * @param glContext the {@link GLContext}
-	 * @param vao       the {@link VertexArrayObject} to use
-	 * @param texture   the texture to render
-	 * @param matrix4f  the transformation matrix
-	 * @param diffuse   the diffuse colour
-	 */
-	public void render(GLContext glContext, Texture texture, Matrix4f matrix4f, int diffuse) {
-		shaderProgram.bind(glContext);
-		texture.bind(glContext, 0);
-		shaderProgram.setMat4("matrix4f", matrix4f);
-		shaderProgram.setInt("textureSampler", 0);
-		shaderProgram.setColour("diffuse", diffuse);
-		vao.draw(glContext);
-		shaderProgram.setColour("diffuse", -1);
+	public int getDiffuse() {
+		return diffuse;
+	}
+
+	public void setDiffuse(int diffuse) {
+		this.diffuse = diffuse;
+	}
+
+	public void resetDiffuse() {
+		diffuse = -1;
 	}
 
 }
