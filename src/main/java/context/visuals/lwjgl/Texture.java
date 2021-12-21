@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import common.loader.loadtask.TextureLoadTask;
+import common.math.Vector2f;
 import context.GLContext;
 
 /**
@@ -78,6 +79,10 @@ public class Texture extends GLRegularObject {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public Vector2f dimensions() {
+		return new Vector2f(width, height);
 	}
 
 	int id() {
