@@ -1,13 +1,12 @@
 package context.visuals.renderer;
 
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.lwjgl.opengl.GL11;
 
 import common.Pair;
 import common.math.Matrix4f;
@@ -19,6 +18,7 @@ import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.FrameBufferObject;
 import context.visuals.lwjgl.ShaderProgram;
+import context.visuals.lwjgl.Texture;
 import context.visuals.text.CharacterData;
 import context.visuals.text.GameFont;
 
@@ -96,7 +96,7 @@ public class TextRenderer extends GameRenderer {
 		fbo.bind(glContext);
 		font.texture().bind(glContext);
 		glClearColor(0, 0, 0, 0);
-		glClear(GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shaderProgram.bind(glContext);
 		shaderProgram.setInt("textureSampler", 0);
@@ -126,8 +126,9 @@ public class TextRenderer extends GameRenderer {
 			}
 		}
 		FrameBufferObject.unbind(glContext);
-		textureRenderer.render(glContext, fbo.texture(),
-				new Matrix4f().translate(-1, 1).scale(2 / screenDim.x, -2 / screenDim.y).multiply(transform).scale(screenDim));
+		Texture tex = fbo.texture();
+		Matrix4f m = new Matrix4f().translate(-1, 1).scale(2 / screenDim.x, -2 / screenDim.y).multiply(transform).scale(tex.width(), tex.height());
+		textureRenderer.render(glContext, tex, m);
 	}
 
 	private void renderOneLine(GLContext glContext, Vector2f screenDim, float xOffset, float yOffset, String text, GameFont font, float fontSize) {
