@@ -203,4 +203,12 @@ public class TextRenderer extends GameRenderer {
 		align = ALIGN_RIGHT;
 	}
 
+	public int align() {
+		return align;
+	}
+
+	public void setAlign(int align) {
+		this.align = align;
+	}
+
 }
