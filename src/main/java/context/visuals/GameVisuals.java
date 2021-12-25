@@ -38,14 +38,16 @@ public abstract class GameVisuals extends ContextPart {
 	/**
 	 * The {@link RootGui} to which all GUIs will be children of.
 	 */
-	private RootGui rootGui = new RootGui(0, 0);
-	private GameLoader loader;
+	protected RootGui rootGui = new RootGui(0, 0);
+
+	protected GameLoader loader;
+	protected ResourcePack resourcePack;
+
 	private boolean initialized;
 
 	private Queue<GameEvent> in;
 	@SuppressWarnings("rawtypes")
 	protected Map<Class, List<GameEventHandler>> handlers = new HashMap<>();
-	private ResourcePack resourcePack;
 
 	public RootGui rootGui() {
 		return rootGui;
