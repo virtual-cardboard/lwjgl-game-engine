@@ -27,7 +27,7 @@ public class TimeAccumulator {
 		this.frameTime = frameTime;
 	}
 
-	public float getAlpha() {
+	public float alpha() {
 		return accumulation / frameTime;
 	}
 

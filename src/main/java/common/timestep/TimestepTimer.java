@@ -67,8 +67,8 @@ public abstract class TimestepTimer implements Runnable {
 
 		// Updating as many times as needed to make up for any lag
 		while (shouldUpdate()) {
-			accumulator.sub(targetFrameTime);
 			update();
+			accumulator.sub(targetFrameTime);
 			framesElapsed++;
 		}
 	}

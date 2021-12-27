@@ -24,6 +24,7 @@ import context.GLContext;
 import context.ResourcePack;
 import context.data.GameData;
 import context.logic.GameEventHandler;
+import context.logic.TimeAccumulator;
 import context.visuals.gui.RootGui;
 import context.visuals.renderer.GameRenderer;
 
@@ -43,6 +44,7 @@ public abstract class GameVisuals extends ContextPart {
 	protected GameLoader loader;
 	protected ResourcePack resourcePack;
 
+	private TimeAccumulator logicAccumulator;
 	private boolean initialized;
 
 	private Queue<GameEvent> in;
@@ -110,7 +112,8 @@ public abstract class GameVisuals extends ContextPart {
 		this.resourcePack = resourcePack;
 	}
 
-	public final void doInit() {
+	public final void doInit(TimeAccumulator logicAccumulator) {
+		this.logicAccumulator = logicAccumulator;
 		init();
 		initialized = true;
 	}
@@ -136,6 +139,10 @@ public abstract class GameVisuals extends ContextPart {
 
 	protected GLContext glContext() {
 		return context().glContext();
+	}
+
+	public final float alpha() {
+		return logicAccumulator.alpha();
 	}
 
 }

@@ -77,7 +77,11 @@ public final class GameEngine {
 		Queue<GameInputEvent> inputBuffer = createInputBuffer();
 		CountDownLatch windowCountDownLatch = createWindowFrameCountdownLatch();
 		CountDownLatch contextCountDownLatch = new CountDownLatch(1);
-		WindowFrameUpdater frameUpdater = createWindowFrameUpdater(inputBuffer, windowCountDownLatch, contextCountDownLatch);
+
+		TimeAccumulator logicAccumulator = createTimeAccumulator();
+		GameLogicTimer logicTimer = createLogicThread(logicAccumulator, contextCountDownLatch);
+
+		WindowFrameUpdater frameUpdater = createWindowFrameUpdater(inputBuffer, logicAccumulator, windowCountDownLatch, contextCountDownLatch);
 		GameInputHandlerRunnable inputHandler = createInputHandler();
 		createRenderingOrInputThread(frameUpdater, inputHandler);
 
@@ -88,8 +92,6 @@ public final class GameEngine {
 		UDPSender sender = createUDPSender(socket, networkSendBuffer);
 		createUDPReceiverAndSenderThreads(receiver, sender);
 
-		TimeAccumulator logicAccumulator = createTimeAccumulator();
-		GameLogicTimer logicTimer = createLogicThread(logicAccumulator, contextCountDownLatch);
 		waitForWindowCreation(windowCountDownLatch);
 		GLContext glContext = new GLContext();
 		GameLoader loader = createLoader(frameUpdater, glContext);
@@ -239,17 +241,19 @@ public final class GameEngine {
 	 * Create the {@link TimestepTimer} that updates the window.
 	 * 
 	 * @param inputBuffer
+	 * @param logicAccumulator
 	 * @param windowCountDownLatch
 	 * @param contextCountDownLatch
 	 * @return
 	 */
-	private WindowFrameUpdater createWindowFrameUpdater(Queue<GameInputEvent> inputBuffer, CountDownLatch windowCountDownLatch,
+	private WindowFrameUpdater createWindowFrameUpdater(Queue<GameInputEvent> inputBuffer, TimeAccumulator logicAccumulator,
+			CountDownLatch windowCountDownLatch,
 			CountDownLatch contextCountDownLatch) {
 		if (rendering) {
 			print("Creating window.");
 			GameWindow window = new GameWindow(windowTitle, inputBuffer, resizable, width, height);
 			print("Binding dependencies in context wrapper.");
-			return new WindowFrameUpdater(window, windowCountDownLatch, contextCountDownLatch);
+			return new WindowFrameUpdater(window, logicAccumulator, windowCountDownLatch, contextCountDownLatch);
 		}
 		return null;
 	}
