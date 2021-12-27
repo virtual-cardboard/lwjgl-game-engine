@@ -8,11 +8,14 @@ public enum PacketPrimitive {
 	BYTE,
 	BOOLEAN_MASK,
 	STRING,
+	IP_V4,
+	IP_V6,
 	LONG_ARRAY,
 	INT_ARRAY,
 	SHORT_ARRAY,
 	BYTE_ARRAY,
-	IP_V4,
-	IP_V6
+	STRING_ARRAY,
+	IP_V4_ARRAY,
+	IP_V6_ARRAY,
 
 }

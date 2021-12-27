@@ -5,12 +5,14 @@ import static context.input.networking.packet.PacketPrimitive.BYTE_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.INT;
 import static context.input.networking.packet.PacketPrimitive.INT_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.IP_V4;
+import static context.input.networking.packet.PacketPrimitive.IP_V4_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.IP_V6;
 import static context.input.networking.packet.PacketPrimitive.LONG;
 import static context.input.networking.packet.PacketPrimitive.LONG_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.SHORT;
 import static context.input.networking.packet.PacketPrimitive.SHORT_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.STRING;
+import static context.input.networking.packet.PacketPrimitive.STRING_ARRAY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.net.Inet4Address;
@@ -145,6 +147,21 @@ public class PacketBuilder {
 		return this;
 	}
 
+	public PacketBuilder consume(String[] val) {
+		typeValidate(STRING_ARRAY);
+		bytes.add((byte) val.length);
+		for (String x : val) {
+			byte[] b = x.getBytes(UTF_8);
+			short numBytes = (short) b.length;
+			bytes.add((byte) ((numBytes >> 8) & 0xFF));
+			bytes.add((byte) (numBytes & 0xFF));
+			for (byte y : b) {
+				bytes.add(y);
+			}
+		}
+		return this;
+	}
+
 	public PacketBuilder consume(InetAddress val) {
 		if (val instanceof Inet6Address) {
 			typeValidate(IP_V6);
@@ -167,6 +184,34 @@ public class PacketBuilder {
 				throw new InputMismatchException("Packet Builder consumed IP cannot be null");
 			}
 			throw new InputMismatchException("Packet Builder consumed unknown IP type");
+		}
+		return this;
+	}
+
+	public PacketBuilder consume(Inet4Address[] val) {
+		typeValidate(IP_V4_ARRAY);
+		bytes.add((byte) val.length);
+		for (Inet4Address x : val) {
+			byte[] address = x.getAddress();
+			bytes.add(address[0]);
+			bytes.add(address[1]);
+			bytes.add(address[2]);
+			bytes.add(address[3]);
+		}
+		return this;
+	}
+
+	public PacketBuilder consume(Inet6Address[] val) {
+		typeValidate(IP_V4_ARRAY);
+		bytes.add((byte) val.length);
+		for (Inet6Address x : val) {
+			byte[] address = x.getAddress();
+			bytes.add(address[0]);
+			bytes.add(address[1]);
+			bytes.add(address[2]);
+			bytes.add(address[3]);
+			bytes.add(address[4]);
+			bytes.add(address[5]);
 		}
 		return this;
 	}

@@ -5,12 +5,15 @@ import static context.input.networking.packet.PacketPrimitive.BYTE_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.INT;
 import static context.input.networking.packet.PacketPrimitive.INT_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.IP_V4;
+import static context.input.networking.packet.PacketPrimitive.IP_V4_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.IP_V6;
+import static context.input.networking.packet.PacketPrimitive.IP_V6_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.LONG;
 import static context.input.networking.packet.PacketPrimitive.LONG_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.SHORT;
 import static context.input.networking.packet.PacketPrimitive.SHORT_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.STRING;
+import static context.input.networking.packet.PacketPrimitive.STRING_ARRAY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.util.InputMismatchException;
@@ -140,6 +143,20 @@ public class PacketReader {
 		return val;
 	}
 
+	public String[] readStringArray() {
+		typeValidate(STRING_ARRAY);
+		int numElements = bytes[index] & 0xFF;
+		index += 1;
+		String[] strings = new String[numElements];
+		for (int i = 0; i < numElements; i++) {
+			short numBytes = (short) (((bytes[index] & 0xFF) << 8) | (0xFF & bytes[index + 1] & 0xFF));
+			index += 2;
+			strings[i] = new String(bytes, index, numBytes, UTF_8);
+			index += numBytes;
+		}
+		return strings;
+	}
+
 	public byte[] readIPv4() {
 		typeValidate(IP_V4);
 		byte[] val = new byte[] { bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3] };
@@ -152,6 +169,30 @@ public class PacketReader {
 		byte[] val = new byte[] { bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3], bytes[index + 4], bytes[index + 5] };
 		index += 6;
 		return val;
+	}
+
+	public byte[][] readIPv4Array() {
+		typeValidate(IP_V4_ARRAY);
+		int numElements = bytes[index] & 0xFF;
+		index += 1;
+		byte[][] ips = new byte[numElements][4];
+		for (int i = 0; i < numElements; i++) {
+			ips[i] = new byte[] { bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3] };
+			index += 4;
+		}
+		return ips;
+	}
+
+	public byte[][] readIPv6Array() {
+		typeValidate(IP_V6_ARRAY);
+		int numElements = bytes[index] & 0xFF;
+		index += 1;
+		byte[][] ips = new byte[numElements][6];
+		for (int i = 0; i < numElements; i++) {
+			ips[i] = new byte[] { bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3], bytes[index + 4], bytes[index + 5] };
+			index += 6;
+		}
+		return ips;
 	}
 
 	public void close() {
