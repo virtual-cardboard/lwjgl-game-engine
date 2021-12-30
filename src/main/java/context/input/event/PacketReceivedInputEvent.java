@@ -5,16 +5,16 @@ import context.input.networking.packet.PacketModel;
 
 public class PacketReceivedInputEvent extends GameInputEvent {
 
+	private NetworkSource source;
 	private PacketModel model;
 
 	public PacketReceivedInputEvent(long time, NetworkSource source, PacketModel model) {
-		super(time, source);
+		this.source = source;
 		this.model = model;
 	}
 
-	@Override
 	public NetworkSource source() {
-		return (NetworkSource) super.source();
+		return source;
 	}
 
 	public PacketModel model() {

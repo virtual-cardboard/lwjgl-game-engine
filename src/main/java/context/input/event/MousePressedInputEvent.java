@@ -1,19 +1,10 @@
 package context.input.event;
 
-import common.source.GameSource;
-import context.data.user.LocalUser;
-
 public final class MousePressedInputEvent extends GameInputEvent {
 
 	private final int button;
 
-	public MousePressedInputEvent(long time, GameSource source, int mouseButton) {
-		super(time, source);
-		this.button = mouseButton;
-	}
-
 	public MousePressedInputEvent(int mouseButton) {
-		super(LocalUser.LOCAL_USER);
 		this.button = mouseButton;
 	}
 

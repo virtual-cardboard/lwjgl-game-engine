@@ -2,24 +2,16 @@ package common.event;
 
 import static java.lang.System.currentTimeMillis;
 
-import common.source.GameSource;
-
 public abstract class GameEvent implements Comparable<GameEvent> {
 
 	private long time;
-	private transient final GameSource source;
+
+	public GameEvent(long time) {
+		this.time = time;
+	}
 
 	public GameEvent() {
-		this(null);
-	}
-
-	public GameEvent(long time, GameSource source) {
-		this.time = time;
-		this.source = source;
-	}
-
-	public GameEvent(GameSource source) {
-		this(currentTimeMillis(), source);
+		this(currentTimeMillis());
 	}
 
 	protected void setTime(long time) {
@@ -28,10 +20,6 @@ public abstract class GameEvent implements Comparable<GameEvent> {
 
 	public long time() {
 		return time;
-	}
-
-	public GameSource source() {
-		return source;
 	}
 
 	@Override

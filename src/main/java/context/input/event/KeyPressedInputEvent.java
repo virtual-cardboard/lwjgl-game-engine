@@ -2,20 +2,11 @@ package context.input.event;
 
 import java.awt.event.KeyEvent;
 
-import common.source.GameSource;
-import context.data.user.LocalUser;
-
 public final class KeyPressedInputEvent extends GameInputEvent {
 
 	private final int code;
 
-	public KeyPressedInputEvent(long time, GameSource source, int code) {
-		super(time, source);
-		this.code = code;
-	}
-
 	public KeyPressedInputEvent(int code) {
-		super(LocalUser.LOCAL_USER);
 		this.code = code;
 	}
 
