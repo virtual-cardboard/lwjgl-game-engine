@@ -37,10 +37,10 @@ public class LabelGui extends Gui {
 
 	@Override
 	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
-		rectangleRenderer.render(glContext, screenDim, x, y, width, height, colour);
+		rectangleRenderer.render(glContext, x, y, width, height, colour);
 		textRenderer.setAlign(align);
-		textRenderer.render(glContext, screenDim, new Matrix4f().translate(x + paddingLeft, y + paddingTop), text,
-				width - paddingLeft - paddingRight, font, size, textColour);
+		textRenderer.render(glContext, new Matrix4f().translate(x + paddingLeft, y + paddingTop), text, width - paddingLeft - paddingRight,
+				font, size, textColour);
 	}
 
 }

@@ -6,6 +6,8 @@ import java.util.Queue;
 
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 
+import common.math.Vector2i;
+import context.GLContext;
 import context.input.event.FrameResizedInputEvent;
 import context.input.event.GameInputEvent;
 
@@ -20,8 +22,10 @@ import context.input.event.GameInputEvent;
 public class WindowResizeCallback extends GLFWFramebufferSizeCallback {
 
 	private final Queue<GameInputEvent> inputEventBuffer;
+	private GLContext glContext;
 
-	public WindowResizeCallback(Queue<GameInputEvent> inputEventBuffer) {
+	public WindowResizeCallback(GLContext glContext, Queue<GameInputEvent> inputEventBuffer) {
+		this.glContext = glContext;
 		this.inputEventBuffer = inputEventBuffer;
 	}
 
@@ -32,6 +36,7 @@ public class WindowResizeCallback extends GLFWFramebufferSizeCallback {
 	@Override
 	public void invoke(long windowId, int width, int height) {
 		glViewport(0, 0, width, height);
+		glContext.setWindowDim(new Vector2i(width, height));
 		inputEventBuffer.add(new FrameResizedInputEvent(width, height));
 	}
 

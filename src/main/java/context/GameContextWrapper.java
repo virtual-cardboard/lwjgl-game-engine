@@ -49,7 +49,7 @@ public final class GameContextWrapper {
 	private final Queue<PacketModel> networkSendBuffer;
 	private DatagramSocket socket;
 	private GLContext glContext;
-	private ResourcePack resourcePack = new ResourcePack();
+	private ResourcePack resourcePack;
 
 	/**
 	 * A constructor that takes in the context, input buffer, logic timer,
@@ -80,6 +80,7 @@ public final class GameContextWrapper {
 		}
 		logicTimer.setWrapper(this);
 		this.glContext = glContext;
+		this.resourcePack = new ResourcePack(glContext);
 		this.loader = loader;
 	}
 

@@ -80,8 +80,9 @@ public final class GameEngine {
 
 		TimeAccumulator logicAccumulator = createTimeAccumulator();
 		GameLogicTimer logicTimer = createLogicThread(logicAccumulator, contextCountDownLatch);
+		GLContext glContext = new GLContext();
 
-		WindowFrameUpdater frameUpdater = createWindowFrameUpdater(inputBuffer, logicAccumulator, windowCountDownLatch, contextCountDownLatch);
+		WindowFrameUpdater frameUpdater = createWindowFrameUpdater(glContext, inputBuffer, logicAccumulator, windowCountDownLatch, contextCountDownLatch);
 		GameInputHandlerRunnable inputHandler = createInputHandler();
 		createRenderingOrInputThread(frameUpdater, inputHandler);
 
@@ -93,7 +94,6 @@ public final class GameEngine {
 		createUDPReceiverAndSenderThreads(receiver, sender);
 
 		waitForWindowCreation(windowCountDownLatch);
-		GLContext glContext = new GLContext();
 		GameLoader loader = createLoader(frameUpdater, glContext);
 
 		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, inputHandler, glContext, loader, socket,
@@ -244,14 +244,15 @@ public final class GameEngine {
 	 * @param logicAccumulator
 	 * @param windowCountDownLatch
 	 * @param contextCountDownLatch
+	 * @param glContext
 	 * @return
 	 */
-	private WindowFrameUpdater createWindowFrameUpdater(Queue<GameInputEvent> inputBuffer, TimeAccumulator logicAccumulator,
+	private WindowFrameUpdater createWindowFrameUpdater(GLContext glContext, Queue<GameInputEvent> inputBuffer, TimeAccumulator logicAccumulator,
 			CountDownLatch windowCountDownLatch,
 			CountDownLatch contextCountDownLatch) {
 		if (rendering) {
 			print("Creating window.");
-			GameWindow window = new GameWindow(windowTitle, inputBuffer, resizable, width, height);
+			GameWindow window = new GameWindow(windowTitle, glContext, inputBuffer, resizable, width, height);
 			print("Binding dependencies in context wrapper.");
 			return new WindowFrameUpdater(window, logicAccumulator, windowCountDownLatch, contextCountDownLatch);
 		}

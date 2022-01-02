@@ -37,6 +37,12 @@ public final class ResourcePack {
 	private ShaderProgram defaultSP;
 	private ScreenFrameBufferObject screenFBO;
 
+	private GLContext context;
+
+	public ResourcePack(GLContext context) {
+		this.context = context;
+	}
+
 	public void init(RectangleVertexArrayObject rectangleVAO, TransformationVertexShader transformationVS,
 			TexturedTransformationVertexShader texturedTransformationVS, ColourFragmentShader colourFS, ShaderProgram defaultSP,
 			ScreenFrameBufferObject screenFBO) {

@@ -1,5 +1,6 @@
 package context.visuals.renderer;
 
+import context.GLContext;
 import context.visuals.GameVisuals;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.VertexArrayObject;
@@ -14,4 +15,15 @@ import context.visuals.lwjgl.VertexArrayObject;
  *
  */
 public abstract class GameRenderer {
+
+	protected GLContext glContext;
+
+	public GLContext glContext() {
+		return glContext;
+	}
+
+	public void setGLContext(GLContext glContext) {
+		this.glContext = glContext;
+	}
+
 }

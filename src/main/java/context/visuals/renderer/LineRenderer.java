@@ -1,7 +1,6 @@
 package context.visuals.renderer;
 
 import common.math.Matrix4f;
-import common.math.Vector2f;
 import common.math.Vector3f;
 import context.GLContext;
 import context.visuals.builtin.LineShaderProgram;
@@ -39,18 +38,17 @@ public class LineRenderer extends GameRenderer {
 	 * and colour. This needs the screen dimensions in order to convert pixel
 	 * coordinates into normalized device coordinates.
 	 * 
-	 * @param rectangleVao the {@link VertexArrayObject} to use
-	 * @param screenDim    the dimensions of the screen
 	 * @param x1           the x value of the first point of the line, in pixels
 	 * @param y1           the y value of the first point of the line, in pixels
 	 * @param x2           the x value of the second point of the line, in pixels
 	 * @param y2           the y value of the second point of the line, in pixels
 	 * @param width        the width or thickness of the line, in pixels
 	 * @param colour       the colour of the line
+	 * @param rectangleVao the {@link VertexArrayObject} to use
 	 * 
 	 * @see Colour
 	 */
-	public void renderPixelCoords(GLContext glContext, Vector2f screenDim, float x1, float y1, float x2, float y2, float width, int colour) {
+	public void render(GLContext glContext, float x1, float y1, float x2, float y2, float width, int colour) {
 		// Calculations for matrix transformations
 		width = Math.abs(width);
 		float halfWidth = width * 0.5f;
@@ -60,7 +58,7 @@ public class LineRenderer extends GameRenderer {
 
 		// Matrix transformations
 		matrix4f.translate(-1, 1);
-		matrix4f.scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y);
+		matrix4f.scale(2, -2).scale(1 / glContext.width(), 1 / glContext.height());
 		matrix4f.translate(x1, y1);
 		matrix4f.rotate(-theta, Vector3f.Z_AXIS);
 		matrix4f.translate(-halfWidth, -halfWidth);
