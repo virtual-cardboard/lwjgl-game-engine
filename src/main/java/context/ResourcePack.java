@@ -37,10 +37,10 @@ public final class ResourcePack {
 	private ShaderProgram defaultSP;
 	private ScreenFrameBufferObject screenFBO;
 
-	private GLContext context;
+	private GLContext glContext;
 
-	public ResourcePack(GLContext context) {
-		this.context = context;
+	public ResourcePack(GLContext glContext) {
+		this.glContext = glContext;
 	}
 
 	public void init(RectangleVertexArrayObject rectangleVAO, TransformationVertexShader transformationVS,
@@ -87,6 +87,7 @@ public final class ResourcePack {
 	}
 
 	public void putRenderer(String name, GameRenderer renderer) {
+		renderer.setGLContext(glContext);
 		renderers.put(name, renderer);
 	}
 

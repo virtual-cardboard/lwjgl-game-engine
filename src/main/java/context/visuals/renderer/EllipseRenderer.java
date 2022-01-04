@@ -2,7 +2,6 @@ package context.visuals.renderer;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
-import context.GLContext;
 import context.visuals.builtin.EllipseShaderProgram;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.colour.Colour;
@@ -36,43 +35,38 @@ public class EllipseRenderer extends GameRenderer {
 	 * {@link Matrix4f}, then calls {@link #renderWithMatrixOnly(Matrix4f, int)}
 	 * using that matrix.
 	 * 
-	 * @param glContext the {@link GLContext}
-	 * @param rootGui   the {@link RootGui}
-	 * @param x         the x-pos of the center of the ellipse, in pixel coordinates
-	 * @param y         the y-pos of the center of the ellipse, in pixel coordinates
-	 * @param width     the width of the ellipse, in pixel coordinates
-	 * @param height    the height of the ellipse, in pixel coordinates
-	 * @param colour    the colour of the ellipse
+	 * @param x      the x-pos of the center of the ellipse, in pixel coordinates
+	 * @param y      the y-pos of the center of the ellipse, in pixel coordinates
+	 * @param width  the width of the ellipse, in pixel coordinates
+	 * @param height the height of the ellipse, in pixel coordinates
+	 * @param colour the colour of the ellipse
 	 * 
 	 * @see RootGui
 	 * @see Colour
 	 */
-	public void renderPixelCoords(GLContext glContext, RootGui rootGui, float x, float y, float width, float height, int colour) {
+	public void renderPixelCoords(float x, float y, float width, float height, int colour) {
 		Vector2f center = new Vector2f(x, y);
 		Vector2f dimensions = new Vector2f(width, height);
 		shaderProgram.bind(glContext);
-		Vector2f rootGuiDimensions = rootGui.dimensions();
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1);
-		matrix4f.scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
+		matrix4f.scale(2, -2).scale(1 / glContext.width(), 1 / glContext.height());
 		matrix4f.translate(center.sub(dimensions.scale(0.5f)));
 		matrix4f.scale(dimensions);
-		renderWithMatrixOnly(glContext, matrix4f, colour);
+		renderWithMatrixOnly(matrix4f, colour);
 	}
 
 	/**
 	 * Calculates the center position and dimensions of the ellipse, then calls
 	 * {@link #renderNDC(Matrix4f, float, float, float, float, int)} using those
 	 * calculated values.
-	 * 
-	 * @param glContext the {@link GLContext}
 	 * @param matrix4f  the transformation matrix
 	 * @param colour    the colour of the ellipse
 	 * 
 	 * @see Matrix4f
 	 * @see Colour
 	 */
-	public void renderWithMatrixOnly(GLContext glContext, Matrix4f matrix4f, int colour) {
+	public void renderWithMatrixOnly(Matrix4f matrix4f, int colour) {
 		Vector2f transformedCenter = matrix4f.transform(0.5f, 0.5f);
 		Vector2f v00 = matrix4f.transform(0, 0);
 		Vector2f v01 = matrix4f.transform(0, 1);
@@ -81,14 +75,12 @@ public class EllipseRenderer extends GameRenderer {
 		float y = transformedCenter.y;
 		float width = v10.x - v00.x;
 		float height = v01.y - v00.y;
-		renderNDC(glContext, matrix4f, x, y, width, height, colour);
+		renderNDC(matrix4f, x, y, width, height, colour);
 	}
 
 	/**
 	 * Renders an ellipse using the x, y, width, height (all in normalized device
 	 * coordinates), matrix, and colour.
-	 * 
-	 * @param glContext the {@link GLContext}
 	 * @param matrix4f  the transformation matrix
 	 * @param x         the x-pos of the center of the ellipse, in normalized device
 	 *                  coordinates
@@ -101,7 +93,7 @@ public class EllipseRenderer extends GameRenderer {
 	 * @see Matrix4f
 	 * @see Colour
 	 */
-	public void renderNDC(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height, int colour) {
+	public void renderNDC(Matrix4f matrix4f, float x, float y, float width, float height, int colour) {
 		shaderProgram.bind(glContext);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setFloat("x", x);

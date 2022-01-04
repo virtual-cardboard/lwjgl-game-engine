@@ -18,6 +18,13 @@ public abstract class GameRenderer {
 
 	protected GLContext glContext;
 
+	public GameRenderer() {
+	}
+
+	public GameRenderer(GLContext glContext) {
+		this.glContext = glContext;
+	}
+
 	public GLContext glContext() {
 		return glContext;
 	}

@@ -57,7 +57,7 @@ public final class GameEngine {
 	 * @see GameContext
 	 */
 	public GameEngine(String windowTitle, GameContext context) {
-		this(windowTitle, context, true);
+		this(windowTitle, context, false);
 	}
 
 	public GameEngine(String windowTitle, GameContext context, boolean printProgress) {

@@ -1,12 +1,10 @@
 package context.visuals.renderer;
 
 import common.math.Matrix4f;
-import context.GLContext;
 import context.GameContext;
 import context.ResourcePack;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextureShaderProgram;
-import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
@@ -41,14 +39,12 @@ public class TextureRenderer extends GameRenderer {
 
 	/**
 	 * Renders a texture with default proportions in pixel coordinates.
-	 * 
-	 * @param glContext the {@link GLContext}
 	 * @param texture   the {@link Texture} to render
 	 * @param centerX   the x position in pixels of the center of the texture
 	 * @param centerY   the y position in pixels of the center of the texture
 	 * @param scale     the scale of the texture
 	 */
-	public void render(GLContext glContext, Texture texture, float centerX, float centerY, float scale) {
+	public void render(Texture texture, float centerX, float centerY, float scale) {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / glContext.width(), 1 / glContext.height())
 				.translate(centerX, centerY).scale(texture.width() * scale, texture.height() * scale).translate(-0.5f, -0.5f);
@@ -62,15 +58,13 @@ public class TextureRenderer extends GameRenderer {
 
 	/**
 	 * Renders a texture with default proportions in pixel coordinates.
-	 * 
-	 * @param glContext the {@link GLContext}
 	 * @param texture   the {@link Texture} to render
 	 * @param centerX   the x position in pixels of the center of the texture
 	 * @param centerY   the y position in pixels of the center of the texture
 	 * @param depth     the depth of the texture
 	 * @param scale     the scale of the texture
 	 */
-	public void render(GLContext glContext, Texture texture, float centerX, float centerY, float depth, float scale) {
+	public void renderDepth(Texture texture, float centerX, float centerY, float depth, float scale) {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1, depth).scale(2, -2).scale(1 / glContext.width(), 1 / glContext.height())
 				.translate(centerX, centerY).scale(texture.width() * scale, texture.height() * scale).translate(-0.5f, -0.5f);
@@ -84,9 +78,6 @@ public class TextureRenderer extends GameRenderer {
 
 	/**
 	 * Renders a texture in pixel coordinates.
-	 * 
-	 * @param glContext the {@link GLContext}
-	 * @param rootGui   the {@link RootGui}
 	 * @param texture   the {@link Texture} to render
 	 * @param x         the x position in pixels of the top left corner of the
 	 *                  texture
@@ -95,22 +86,20 @@ public class TextureRenderer extends GameRenderer {
 	 * @param w         the width in pixels
 	 * @param h         the height in pixels
 	 */
-	public void render(GLContext glContext, RootGui rootGui, Texture texture, float x, float y, float w, float h) {
+	public void render(Texture texture, float x, float y, float w, float h) {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / glContext.width(), 1 / glContext.height())
 				.translate(x, y).scale(w, h);
-		render(glContext, texture, matrix4f);
+		render(texture, matrix4f);
 	}
 
 	/**
 	 * Renders a texture using a transformation matrix.
-	 * 
-	 * @param glContext the {@link GLContext}
-	 * @param vao       the {@link VertexArrayObject} to use
 	 * @param texture   the texture to render
 	 * @param matrix4f  the transformation matrix
+	 * @param vao       the {@link VertexArrayObject} to use
 	 */
-	public void render(GLContext glContext, Texture texture, Matrix4f matrix4f) {
+	public void render(Texture texture, Matrix4f matrix4f) {
 		shaderProgram.bind(glContext);
 		texture.bind(glContext, 0);
 		shaderProgram.setMat4("matrix4f", matrix4f);

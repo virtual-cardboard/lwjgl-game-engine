@@ -10,7 +10,6 @@ import java.util.List;
 
 import common.Pair;
 import common.math.Matrix4f;
-import context.GLContext;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextShaderProgram;
 import context.visuals.colour.Colour;
@@ -58,8 +57,6 @@ public class TextRenderer extends GameRenderer {
 
 	/**
 	 * Renders text.
-	 * 
-	 * @param glContext the {@link GLContext}
 	 * @param x         the <code>x</code> offset of the text from the left side of
 	 *                  the screen
 	 * @param y         the <code>y</code> offset of the text from the top of the
@@ -71,14 +68,12 @@ public class TextRenderer extends GameRenderer {
 	 * @param fontSize  the size of the text
 	 * @param colour    the colour of the text
 	 */
-	public void render(GLContext glContext, int x, int y, String text, int lineWidth, GameFont font, float fontSize, int colour) {
-		render(glContext, new Matrix4f().translate(x, y), text, lineWidth, font, fontSize, colour);
+	public void render(int x, int y, String text, int lineWidth, GameFont font, float fontSize, int colour) {
+		render(new Matrix4f().translate(x, y), text, lineWidth, font, fontSize, colour);
 	}
 
 	/**
 	 * Renders text.
-	 * 
-	 * @param glContext the {@link GLContext}
 	 * @param transform the transformation matrix to be applied to the text at the
 	 *                  end
 	 * @param text      the text
@@ -88,7 +83,7 @@ public class TextRenderer extends GameRenderer {
 	 * @param fontSize  the font size
 	 * @param colour    the {@link Colour} (int)
 	 */
-	public void render(GLContext glContext, Matrix4f transform, String text, float lineWidth, GameFont font, float fontSize, int colour) {
+	public void render(Matrix4f transform, String text, float lineWidth, GameFont font, float fontSize, int colour) {
 		fbo.bind(glContext);
 		font.texture().bind(glContext);
 		glClearColor(0, 0, 0, 0);
@@ -101,33 +96,33 @@ public class TextRenderer extends GameRenderer {
 		shaderProgram.setColour("fill", colour);
 
 		if (lineWidth == 0) {
-			renderOneLine(glContext, 0, 0, text, font, fontSize);
+			renderOneLine(0, 0, text, font, fontSize);
 		} else {
 			List<Pair<String, Float>> stringPairs = convertToStringPairs(text, font, fontSize, lineWidth);
 			if (align == ALIGN_LEFT) {
 				for (int i = 0; i < stringPairs.size(); i++) {
 					Pair<String, Float> pair = stringPairs.get(i);
-					renderOneLine(glContext, 0, i * fontSize, pair.a, font, fontSize);
+					renderOneLine(0, i * fontSize, pair.a, font, fontSize);
 				}
 			} else if (align == ALIGN_CENTER) {
 				for (int i = 0; i < stringPairs.size(); i++) {
 					Pair<String, Float> pair = stringPairs.get(i);
-					renderOneLine(glContext, (lineWidth - pair.b) * 0.5f, i * fontSize, pair.a, font, fontSize);
+					renderOneLine((lineWidth - pair.b) * 0.5f, i * fontSize, pair.a, font, fontSize);
 				}
 			} else if (align == ALIGN_RIGHT) {
 				for (int i = 0; i < stringPairs.size(); i++) {
 					Pair<String, Float> pair = stringPairs.get(i);
-					renderOneLine(glContext, lineWidth - pair.b, i * fontSize, pair.a, font, fontSize);
+					renderOneLine(lineWidth - pair.b, i * fontSize, pair.a, font, fontSize);
 				}
 			}
 		}
 		FrameBufferObject.unbind(glContext);
 		Texture tex = fbo.texture();
 		Matrix4f m = new Matrix4f().translate(-1, 1).scale(2 / glContext.width(), -2 / glContext.height()).multiply(transform).scale(tex.width(), tex.height());
-		textureRenderer.render(glContext, tex, m);
+		textureRenderer.render(tex, m);
 	}
 
-	private void renderOneLine(GLContext glContext, float xOffset, float yOffset, String text, GameFont font, float fontSize) {
+	private void renderOneLine(float xOffset, float yOffset, String text, GameFont font, float fontSize) {
 		char[] chars = text.toCharArray();
 		Matrix4f transform = new Matrix4f().translate(-1, -1).scale(2, 2).scale(1 / glContext.width(), 1 / glContext.height());
 		float sizeMultiplier = fontSize / font.getFontSize();

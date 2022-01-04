@@ -18,13 +18,12 @@ public final class RootGuiRenderer extends GameRenderer {
 		for (int i = 0; i < children.size(); i++) {
 			Gui child = children.get(i);
 			if (child.isEnabled()) {
-				recursiveRender(glContext, child, root, root.dimensions(), 0, 0, root.width(), root.height());
+				recursiveRender(child, root, root.dimensions(), 0, 0, root.width(), root.height());
 			}
 		}
 	}
 
-	private void recursiveRender(GLContext glContext, Gui gui, RootGui root, Vector2f screenDim, float parentX, float parentY, float parentWidth,
-			float parentHeight) {
+	private void recursiveRender(Gui gui, RootGui root, Vector2f screenDim, float parentX, float parentY, float parentWidth, float parentHeight) {
 		float x = gui.getPosX().calculateValue(parentX, parentX + parentWidth);
 		float y = gui.getPosY().calculateValue(parentY, parentY + parentHeight);
 		float w = gui.getWidth().calculateValue(parentX, parentX + parentWidth);
@@ -35,7 +34,7 @@ public final class RootGuiRenderer extends GameRenderer {
 		for (int i = 0; i < children.size(); i++) {
 			Gui child = children.get(i);
 			if (child.isEnabled()) {
-				recursiveRender(glContext, child, root, screenDim, x, y, w, h);
+				recursiveRender(child, root, screenDim, x, y, w, h);
 			}
 		}
 	}

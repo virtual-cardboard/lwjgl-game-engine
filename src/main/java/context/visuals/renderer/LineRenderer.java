@@ -2,7 +2,6 @@ package context.visuals.renderer;
 
 import common.math.Matrix4f;
 import common.math.Vector3f;
-import context.GLContext;
 import context.visuals.builtin.LineShaderProgram;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.colour.Colour;
@@ -37,7 +36,6 @@ public class LineRenderer extends GameRenderer {
 	 * Renders a line segment from (x1, y1) to (x2, y2) with the given line width
 	 * and colour. This needs the screen dimensions in order to convert pixel
 	 * coordinates into normalized device coordinates.
-	 * 
 	 * @param x1           the x value of the first point of the line, in pixels
 	 * @param y1           the y value of the first point of the line, in pixels
 	 * @param x2           the x value of the second point of the line, in pixels
@@ -48,7 +46,7 @@ public class LineRenderer extends GameRenderer {
 	 * 
 	 * @see Colour
 	 */
-	public void render(GLContext glContext, float x1, float y1, float x2, float y2, float width, int colour) {
+	public void render(float x1, float y1, float x2, float y2, float width, int colour) {
 		// Calculations for matrix transformations
 		width = Math.abs(width);
 		float halfWidth = width * 0.5f;
