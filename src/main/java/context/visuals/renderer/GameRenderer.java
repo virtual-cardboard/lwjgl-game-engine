@@ -33,4 +33,12 @@ public abstract class GameRenderer {
 		this.glContext = glContext;
 	}
 
+	protected float width() {
+		return glContext.width();
+	}
+
+	protected float height() {
+		return glContext.height();
+	}
+
 }
