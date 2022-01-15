@@ -47,6 +47,10 @@ public class Vector2i {
 		return new Vector2i((int) (x * scale), (int) (y * scale));
 	}
 
+	public Vector2i multiply(int x, int y) {
+		return new Vector2i(this.x * x, this.y * y);
+	}
+
 	public Vector2i normalise() {
 		float len = length();
 		if (len != 0f) {

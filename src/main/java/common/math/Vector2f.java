@@ -3,7 +3,11 @@ package common.math;
 import java.util.Objects;
 
 /**
+ * <p>
  * An immutable vector of two floats.
+ * </p>
+ * This is immutable so that a programmer can pass a <code>Vector2f</code> into
+ * a function without needing to worry about being mutated.
  * 
  * @author Jay
  */
