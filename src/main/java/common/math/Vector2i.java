@@ -47,6 +47,10 @@ public class Vector2i {
 		return new Vector2i((int) (x * scale), (int) (y * scale));
 	}
 
+	public Vector2i scale(int scale) {
+		return new Vector2i(x * scale, y * scale);
+	}
+
 	public Vector2i multiply(int x, int y) {
 		return new Vector2i(this.x * x, this.y * y);
 	}
