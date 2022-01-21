@@ -45,15 +45,18 @@ public abstract class GameLogic extends ContextPart {
 	public final void doUpdate() {
 		while (!in.isEmpty()) {
 			GameEvent event = in.poll();
-			List<GameEventHandler> list = handlers.get(event.getClass());
-			if (list == null) {
-				continue;
-			}
-			for (GameEventHandler handler : list) {
-				if (handler.isSatisfiedBy(event)) {
-					handler.accept(event);
-					if (handler.doesConsume()) {
-						break;
+			Class<? extends GameEvent> cls = event.getClass();
+			for (; !cls.getSuperclass().equals(Object.class); cls = (Class<? extends GameEvent>) cls.getSuperclass()) {
+				List<GameEventHandler> list = handlers.get(cls);
+				if (list == null) {
+					continue;
+				}
+				for (GameEventHandler handler : list) {
+					if (handler.isSatisfiedBy(event)) {
+						handler.accept(event);
+						if (handler.doesConsume()) {
+							break;
+						}
 					}
 				}
 			}
