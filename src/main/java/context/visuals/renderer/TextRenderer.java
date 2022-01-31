@@ -57,6 +57,7 @@ public class TextRenderer extends GameRenderer {
 
 	/**
 	 * Renders text.
+	 * 
 	 * @param x         the <code>x</code> offset of the text from the left side of
 	 *                  the screen
 	 * @param y         the <code>y</code> offset of the text from the top of the
@@ -68,12 +69,13 @@ public class TextRenderer extends GameRenderer {
 	 * @param fontSize  the size of the text
 	 * @param colour    the colour of the text
 	 */
-	public void render(int x, int y, String text, int lineWidth, GameFont font, float fontSize, int colour) {
+	public void render(float x, float y, String text, int lineWidth, GameFont font, float fontSize, int colour) {
 		render(new Matrix4f().translate(x, y), text, lineWidth, font, fontSize, colour);
 	}
 
 	/**
 	 * Renders text.
+	 * 
 	 * @param transform the transformation matrix to be applied to the text at the
 	 *                  end
 	 * @param text      the text
