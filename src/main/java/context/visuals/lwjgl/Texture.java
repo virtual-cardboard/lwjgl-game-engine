@@ -56,7 +56,7 @@ public class Texture extends GLRegularObject {
 
 	public void genID() {
 		this.id = glGenTextures();
-		confirmInitialization();
+		initialize();
 	}
 
 	public void resize(GLContext glContext, int width2, int height2) {

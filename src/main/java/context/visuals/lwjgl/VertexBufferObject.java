@@ -61,7 +61,7 @@ public class VertexBufferObject extends GLRegularObject {
 
 	public void genID() {
 		this.id = glGenBuffers();
-		confirmInitialization();
+		initialize();
 	}
 
 	public int getNumColumns() {

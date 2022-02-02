@@ -39,7 +39,7 @@ public class Shader extends GLRegularObject {
 
 	public void genID() {
 		this.id = glCreateShader(shaderType.type);
-		confirmInitialization();
+		initialize();
 	}
 
 	public ShaderType getShaderType() {

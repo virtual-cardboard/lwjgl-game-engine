@@ -13,7 +13,7 @@ public class FrameBufferObject extends GLContainerObject {
 
 	public void genID() {
 		this.id = glGenFramebuffers();
-		confirmInitialization();
+		initialize();
 	}
 
 	public void attachTexture(Texture texture) {

@@ -20,7 +20,7 @@ public class RenderBufferObject extends GLRegularObject {
 
 	public void genID() {
 		this.id = glGenRenderbuffers();
-		confirmInitialization();
+		initialize();
 	}
 
 	public void bind(GLContext glContext) {

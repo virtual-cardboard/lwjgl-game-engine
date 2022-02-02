@@ -43,7 +43,7 @@ public class ElementBufferObject extends GLRegularObject {
 
 	public void genID() {
 		this.id = glGenBuffers();
-		confirmInitialization();
+		initialize();
 	}
 
 	public int size() {

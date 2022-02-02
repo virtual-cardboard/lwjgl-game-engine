@@ -10,7 +10,7 @@ public abstract class GLObject {
 		}
 	}
 
-	protected final void confirmInitialization() {
+	protected final void initialize() {
 		if (initialized) {
 			throw new IllegalStateException("GLObject already initialized.");
 		}

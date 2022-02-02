@@ -23,7 +23,7 @@ public class ShaderProgram extends GLRegularObject {
 
 	public void genId() {
 		id = glCreateProgram();
-		confirmInitialization();
+		initialize();
 	}
 
 	/**

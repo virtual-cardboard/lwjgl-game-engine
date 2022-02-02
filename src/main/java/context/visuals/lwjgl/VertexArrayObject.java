@@ -68,7 +68,7 @@ public class VertexArrayObject extends GLContainerObject {
 
 	public void genID() {
 		this.id = glGenVertexArrays();
-		confirmInitialization();
+		initialize();
 	}
 
 	public void setEbo(ElementBufferObject ebo) {
