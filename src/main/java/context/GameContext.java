@@ -5,6 +5,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import common.event.GameEvent;
 import common.loader.GameLoader;
+import context.audio.GameAudio;
 import context.data.GameData;
 import context.input.GameInput;
 import context.input.event.GameInputEvent;
@@ -27,6 +28,7 @@ public final class GameContext {
 
 	private GameContextWrapper wrapper;
 
+	private GameAudio audio;
 	private final GameData data;
 	private final GameInput input;
 	private final GameLogic logic;
@@ -39,21 +41,28 @@ public final class GameContext {
 	 * Takes in a data, input, logic, and visuals, then sets the context references
 	 * of each of its parts to itself.
 	 * 
+	 * @param audio   GameAudio
 	 * @param data    GameData
 	 * @param input   GameInput
 	 * @param logic   GameLogic
 	 * @param visuals GameVisuals
 	 */
-	public GameContext(GameData data, GameInput input, GameLogic logic, GameVisuals visuals) {
+	public GameContext(GameAudio audio, GameData data, GameInput input, GameLogic logic, GameVisuals visuals) {
+		this.audio = audio;
 		this.data = data;
 		this.input = input;
 		this.logic = logic;
 		this.visuals = visuals;
 
+		this.audio.setContext(this);
 		this.data.setContext(this);
 		this.input.setContext(this);
 		this.logic.setContext(this);
 		this.visuals.setContext(this);
+	}
+
+	public GameAudio audio() {
+		return audio;
 	}
 
 	public GameData data() {
@@ -85,10 +94,12 @@ public final class GameContext {
 	 * @param loader               the {@link GameLoader}
 	 */
 	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLoader loader) {
+		audio.setComponents(loader);
 		data.setComponents(loader);
 		input.setComponents(inputEventBuffer, networkReceiveBuffer, inputToLogicEventQueue);
 		logic.setComponents(inputToLogicEventQueue, logicToVisualsEventQueue, loader);
 		visuals.setComponents(logicToVisualsEventQueue, loader, resourcePack());
+		audio.init();
 		data.init();
 		input.init();
 		logic.init();
@@ -130,6 +141,7 @@ public final class GameContext {
 	 */
 	public void terminate() {
 		visuals.terminate();
+		audio.terminate();
 		logic.terminate();
 		input.terminate();
 		data.terminate();

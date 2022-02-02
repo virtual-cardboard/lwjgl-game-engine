@@ -6,6 +6,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import common.loader.GameLoader;
+import common.timestep.AudioUpdater;
 import common.timestep.GameLogicTimer;
 import common.timestep.WindowFrameUpdater;
 import context.input.GameInputHandlerRunnable;
@@ -45,6 +46,7 @@ public final class GameContextWrapper {
 	private Queue<PacketReceivedInputEvent> networkReceiveBuffer;
 	private final TimeAccumulator accumulator;
 	private final WindowFrameUpdater windowFrameUpdater;
+	private AudioUpdater audioUpdater;
 	private final GameLoader loader;
 	private final Queue<PacketModel> networkSendBuffer;
 	private DatagramSocket socket;
@@ -60,23 +62,28 @@ public final class GameContextWrapper {
 	 * @param accumulator            the logic timer
 	 * @param windowFrameUpdateTimer the {@link WindowFrameUpdater}
 	 * @param logicTimer
+	 * @param audioUpdater
 	 * @param inputHandler
 	 * @param loader                 the {@link GameLoader}
 	 */
 	public GameContextWrapper(Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
-			TimeAccumulator accumulator, WindowFrameUpdater windowFrameUpdateTimer, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler,
-			GLContext glContext, GameLoader loader, DatagramSocket socket) {
+			TimeAccumulator accumulator, WindowFrameUpdater windowFrameUpdateTimer, GameLogicTimer logicTimer, AudioUpdater audioUpdater,
+			GameInputHandlerRunnable inputHandler, GLContext glContext, GameLoader loader, DatagramSocket socket) {
 		this.socket = socket;
 		this.inputBuffer = inputBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
 		this.networkSendBuffer = networkSendBuffer;
 		this.accumulator = accumulator;
 		this.windowFrameUpdater = windowFrameUpdateTimer;
+		this.audioUpdater = audioUpdater;
 		if (windowFrameUpdateTimer != null) {
 			windowFrameUpdateTimer.setWrapper(this);
 		}
 		if (inputHandler != null) {
 			inputHandler.setWrapper(this);
+		}
+		if (audioUpdater != null) {
+			audioUpdater.setWrapper(this);
 		}
 		logicTimer.setWrapper(this);
 		this.glContext = glContext;
@@ -144,6 +151,9 @@ public final class GameContextWrapper {
 		}
 		if (loader != null) {
 			loader.terminate();
+		}
+		if (audioUpdater != null) {
+			audioUpdater.end();
 		}
 		resourcePack.terminate();
 	}

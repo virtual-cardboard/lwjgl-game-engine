@@ -8,6 +8,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
 import common.loader.GameLoader;
+import common.timestep.AudioUpdater;
 import common.timestep.GameLogicTimer;
 import common.timestep.TimestepTimer;
 import common.timestep.WindowFrameUpdater;
@@ -40,6 +41,7 @@ public final class GameEngine {
 
 	private boolean printProgress = false;
 	private boolean rendering = true;
+	private boolean audio = true;
 	private boolean resizable = true;
 	private boolean networking = true;
 	private boolean loading = true;
@@ -86,6 +88,9 @@ public final class GameEngine {
 		GameInputHandlerRunnable inputHandler = createInputHandler();
 		createRenderingOrInputThread(frameUpdater, inputHandler);
 
+		AudioUpdater audioUpdater = createAudioUpdater(contextCountDownLatch);
+		createAudioThread(audioUpdater);
+
 		DatagramSocket socket = createSocket(); // We should not be passing a raw socket to the wrapper
 		Queue<PacketReceivedInputEvent> networkReceiveBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
 		Queue<PacketModel> networkSendBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
@@ -96,7 +101,7 @@ public final class GameEngine {
 		waitForWindowCreation(windowCountDownLatch);
 		GameLoader loader = createLoader(frameUpdater, glContext);
 
-		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, inputHandler, glContext, loader, socket,
+		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, audioUpdater, inputHandler, glContext, loader, socket,
 				networkReceiveBuffer, networkSendBuffer, contextCountDownLatch);
 
 		print("Game engine now running");
@@ -121,11 +126,12 @@ public final class GameEngine {
 	}
 
 	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator,
-			WindowFrameUpdater frameUpdater, GameLogicTimer logicTimer, GameInputHandlerRunnable inputHandler, GLContext glContext, GameLoader loader,
+			WindowFrameUpdater frameUpdater, GameLogicTimer logicTimer, AudioUpdater audioUpdater, GameInputHandlerRunnable inputHandler, GLContext glContext,
+			GameLoader loader,
 			DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
 			CountDownLatch contextCountDownLatch) {
 		GameContextWrapper wrapper = new GameContextWrapper(inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, logicTimer,
-				inputHandler, glContext, loader, socket);
+				audioUpdater, inputHandler, glContext, loader, socket);
 		print("Initializing context parts");
 		wrapper.transition(context);
 		contextCountDownLatch.countDown();
@@ -267,6 +273,23 @@ public final class GameEngine {
 		return null;
 	}
 
+	private AudioUpdater createAudioUpdater(CountDownLatch contextCountDownLatch) {
+		if (audio) {
+			return new AudioUpdater(contextCountDownLatch);
+		}
+		return null;
+	}
+
+	private void createAudioThread(AudioUpdater audioUpdater) {
+		if (audio) {
+			Thread thread = new Thread(audioUpdater);
+			thread.setName("audioUpdaterThread");
+			thread.setDaemon(true);
+			print("Starting audio thread.");
+			thread.start();
+		}
+	}
+
 	private GameLoader createLoader(WindowFrameUpdater frameUpdater, GLContext glContext) {
 		if (loading) {
 			print("Creating loader");
@@ -324,6 +347,16 @@ public final class GameEngine {
 
 	public GameEngine disableLoading() {
 		loading = false;
+		return this;
+	}
+
+	public GameEngine enableAudio() {
+		audio = true;
+		return this;
+	}
+
+	public GameEngine disableAudio() {
+		audio = false;
 		return this;
 	}
 
