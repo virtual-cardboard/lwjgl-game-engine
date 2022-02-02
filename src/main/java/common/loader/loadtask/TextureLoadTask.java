@@ -50,7 +50,7 @@ public class TextureLoadTask extends GLLoadTask<Texture> {
 			IntBuffer comp = stack.mallocInt(1);
 			textureData = stbi_load(path, w, h, comp, 4);
 			if (textureData == null) {
-				System.err.println("Failed to load texture at " + path);
+				System.err.println("Failed to load texture at " + path + ".");
 				throw new RuntimeException(stbi_failure_reason());
 			}
 			texture.setWidth(w.get());

@@ -275,6 +275,7 @@ public final class GameEngine {
 
 	private AudioUpdater createAudioUpdater(CountDownLatch contextCountDownLatch) {
 		if (audio) {
+			print("Creating audio updater.");
 			return new AudioUpdater(contextCountDownLatch);
 		}
 		return null;
@@ -284,7 +285,7 @@ public final class GameEngine {
 		if (audio) {
 			Thread thread = new Thread(audioUpdater);
 			thread.setName("audioUpdaterThread");
-			thread.setDaemon(true);
+			thread.setDaemon(false);
 			print("Starting audio thread.");
 			thread.start();
 		}

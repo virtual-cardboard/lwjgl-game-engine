@@ -51,6 +51,10 @@ public class AudioSource extends ALObject {
 	public void play() {
 		verifyInitialized();
 		alSourcePlay(id);
+		int error;
+		if ((error = alGetError()) != AL_NO_ERROR) {
+			System.err.println("Error: " + alGetString(error));
+		}
 	}
 
 	public void pause() {

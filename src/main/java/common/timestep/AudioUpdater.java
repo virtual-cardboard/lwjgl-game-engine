@@ -1,6 +1,9 @@
 package common.timestep;
 
 import static org.lwjgl.openal.AL.createCapabilities;
+import static org.lwjgl.openal.AL10.AL_NO_ERROR;
+import static org.lwjgl.openal.AL10.alGetError;
+import static org.lwjgl.openal.AL10.alGetString;
 import static org.lwjgl.openal.ALC.createCapabilities;
 import static org.lwjgl.openal.ALC10.*;
 
@@ -56,8 +59,15 @@ public class AudioUpdater extends TimestepTimer {
 
 	@Override
 	protected void endActions() {
+		int error;
+		if ((error = alGetError()) != AL_NO_ERROR) {
+			System.err.println("Error: " + alGetString(error));
+		}
+		System.out.println("Destroying AL context");
 		alcDestroyContext(alContext);
+		System.out.println("Closing device");
 		alcCloseDevice(device);
+		System.out.println("Device closed");
 	}
 
 	public void end() {

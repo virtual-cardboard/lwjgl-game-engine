@@ -146,14 +146,15 @@ public final class GameContextWrapper {
 	}
 
 	public void terminate() {
+		if (audioUpdater != null) {
+			System.out.println("Ending audio updater");
+			audioUpdater.end();
+		}
 		if (context != null) {
 			context.terminate();
 		}
 		if (loader != null) {
 			loader.terminate();
-		}
-		if (audioUpdater != null) {
-			audioUpdater.end();
 		}
 		resourcePack.terminate();
 	}

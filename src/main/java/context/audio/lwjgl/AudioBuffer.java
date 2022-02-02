@@ -5,6 +5,7 @@ import static org.lwjgl.openal.AL10.alDeleteBuffers;
 import static org.lwjgl.openal.AL10.alGenBuffers;
 
 import java.nio.ByteBuffer;
+import java.nio.ShortBuffer;
 
 public class AudioBuffer extends ALObject {
 
@@ -15,9 +16,14 @@ public class AudioBuffer extends ALObject {
 		id = alGenBuffers();
 	}
 
-	public void setData(int channels, ByteBuffer data, int sampleRate) {
+	public void setData(int format, ByteBuffer data, int sampleRate) {
 		verifyInitialized();
-		alBufferData(id, channels, data, sampleRate);
+		alBufferData(id, format, data, sampleRate);
+	}
+
+	public void setData(int format, ShortBuffer data, int sampleRate) {
+		verifyInitialized();
+		alBufferData(id, format, data, sampleRate);
 	}
 
 	int id() {
