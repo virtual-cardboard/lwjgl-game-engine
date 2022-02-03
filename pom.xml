@@ -3,7 +3,7 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>virtual-cardboard</groupId>
-	<artifactId>virtual-cardboard-lwjgl-game-engine</artifactId>
+	<artifactId>lwjgl-game-engine</artifactId>
 	<version>1</version>
 
 	<properties>
