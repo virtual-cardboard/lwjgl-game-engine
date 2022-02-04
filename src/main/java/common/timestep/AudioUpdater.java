@@ -61,13 +61,10 @@ public class AudioUpdater extends TimestepTimer {
 	protected void endActions() {
 		int error;
 		if ((error = alGetError()) != AL_NO_ERROR) {
-			System.err.println("Error: " + alGetString(error));
+			System.err.println("Audio error: " + alGetString(error));
 		}
-		System.out.println("Destroying AL context");
 		alcDestroyContext(alContext);
-		System.out.println("Closing device");
 		alcCloseDevice(device);
-		System.out.println("Device closed");
 	}
 
 	public void end() {
