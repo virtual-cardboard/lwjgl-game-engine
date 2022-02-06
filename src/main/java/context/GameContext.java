@@ -15,7 +15,8 @@ import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 
 /**
- * A grouping of the four context parts needed in a game: <br>
+ * A grouping of the five context parts needed in a game: <br>
+ * - Audio <br>
  * - Data <br>
  * - Input <br>
  * - Logic <br>
@@ -28,7 +29,7 @@ public final class GameContext {
 
 	private GameContextWrapper wrapper;
 
-	private GameAudio audio;
+	private final GameAudio audio;
 	private final GameData data;
 	private final GameInput input;
 	private final GameLogic logic;
@@ -38,8 +39,8 @@ public final class GameContext {
 	private PriorityBlockingQueue<GameEvent> logicToVisualsEventQueue = new PriorityBlockingQueue<>();
 
 	/**
-	 * Takes in a data, input, logic, and visuals, then sets the context references
-	 * of each of its parts to itself.
+	 * Takes in the five context parts, then sets the context references of each of
+	 * its parts to itself.
 	 * 
 	 * @param audio   GameAudio
 	 * @param data    GameData
