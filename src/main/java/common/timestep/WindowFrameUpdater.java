@@ -16,6 +16,7 @@ import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
 import context.logic.TimeAccumulator;
+import context.visuals.GameVisuals;
 import context.visuals.builtin.ColourFragmentShader;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TexturedTransformationVertexShader;
@@ -50,12 +51,13 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		int[] width = new int[1];
 		int[] height = new int[1];
 		glfwGetWindowSize(windowId, width, height);
-		context.visuals().rootGui().setDimensions(width[0], height[0]);
-		if (!context.visuals().initialized()) {
-			context.visuals().doInit(logicTimeAccumulator);
+		GameVisuals visuals = context.visuals();
+		visuals.rootGui().setDimensions(width[0], height[0]);
+		if (!visuals.initialized()) {
+			visuals.doInit(logicTimeAccumulator);
 		}
-		context.visuals().handleEvents();
-		context.visuals().render();
+		visuals.handleEvents();
+		visuals.render();
 		context.input().handleAll();
 		glfwSwapBuffers(windowId);
 	}

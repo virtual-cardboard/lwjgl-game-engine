@@ -88,6 +88,10 @@ public final class GameContext {
 	 * {@link GameContextWrapper#transition(GameContext) transition}ing to this
 	 * context.
 	 * <p>
+	 * The GameContextWrapper initializes the non-visuals context parts before
+	 * swapping the context in. WindowFrameUpdater only initializes the new visuals
+	 * once the new context has been swapped in, so the visuals is always updated
+	 * last.
 	 * 
 	 * @param inputEventBuffer     the input buffer
 	 * @param networkReceiveBuffer the receive buffer
