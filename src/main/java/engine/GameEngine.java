@@ -101,8 +101,8 @@ public final class GameEngine {
 		waitForWindowCreation(windowCountDownLatch);
 		GameLoader loader = createLoader(frameUpdater, glContext);
 
-		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, audioUpdater, inputHandler, glContext, loader, socket,
-				networkReceiveBuffer, networkSendBuffer, contextCountDownLatch);
+		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, audioUpdater, inputHandler, glContext, loader, socket, networkReceiveBuffer,
+				networkSendBuffer, contextCountDownLatch);
 
 		print("Game engine now running");
 	}
@@ -125,9 +125,8 @@ public final class GameEngine {
 		return logicTimer;
 	}
 
-	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator,
-			WindowFrameUpdater frameUpdater, GameLogicTimer logicTimer, AudioUpdater audioUpdater, GameInputHandlerRunnable inputHandler, GLContext glContext,
-			GameLoader loader,
+	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, WindowFrameUpdater frameUpdater,
+			GameLogicTimer logicTimer, AudioUpdater audioUpdater, GameInputHandlerRunnable inputHandler, GLContext glContext, GameLoader loader,
 			DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
 			CountDownLatch contextCountDownLatch) {
 		GameContextWrapper wrapper = new GameContextWrapper(inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, logicTimer,
@@ -254,8 +253,7 @@ public final class GameEngine {
 	 * @return
 	 */
 	private WindowFrameUpdater createWindowFrameUpdater(GLContext glContext, Queue<GameInputEvent> inputBuffer, TimeAccumulator logicAccumulator,
-			CountDownLatch windowCountDownLatch,
-			CountDownLatch contextCountDownLatch) {
+			CountDownLatch windowCountDownLatch, CountDownLatch contextCountDownLatch) {
 		if (rendering) {
 			print("Creating window.");
 			GameWindow window = new GameWindow(windowTitle, glContext, inputBuffer, resizable, width, height);
@@ -285,7 +283,7 @@ public final class GameEngine {
 		if (audio) {
 			Thread thread = new Thread(audioUpdater);
 			thread.setName("audioUpdaterThread");
-			thread.setDaemon(false);
+			thread.setDaemon(true);
 			print("Starting audio thread.");
 			thread.start();
 		}
