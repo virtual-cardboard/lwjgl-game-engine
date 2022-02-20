@@ -30,6 +30,11 @@ public abstract class GameLogic extends ContextPart {
 	private GameLoader loader;
 	protected boolean timeSensitive = true;
 
+	/**
+	 * A counter that is increased every time {@link #update()} is called.
+	 */
+	private int gameTick;
+
 	private Queue<GameEvent> in;
 	@SuppressWarnings("rawtypes")
 	protected Map<Class, List<GameEventHandler>> handlers = new HashMap<>();
@@ -62,6 +67,7 @@ public abstract class GameLogic extends ContextPart {
 			}
 		}
 		update();
+		gameTick++;
 	}
 
 	/**
@@ -107,6 +113,17 @@ public abstract class GameLogic extends ContextPart {
 
 	public boolean timeSensitive() {
 		return timeSensitive;
+	}
+
+	/**
+	 * @return the current game tick
+	 */
+	public int gameTick() {
+		return gameTick;
+	}
+
+	public void setGameTick(int gameTick) {
+		this.gameTick = gameTick;
 	}
 
 }
