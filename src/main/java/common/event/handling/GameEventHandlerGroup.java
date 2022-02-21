@@ -55,15 +55,15 @@ public class GameEventHandlerGroup<T extends GameEvent> {
 		}
 	}
 
-	protected void addHandler(Class<T> clazz, Predicate<T> predicate, Consumer<T> consumer, boolean consumes) {
+	public <R extends T> void addHandler(Class<R> clazz, Predicate<R> predicate, Consumer<R> consumer, boolean consumes) {
 		addHandler(clazz, new GameEventHandler<>(predicate, consumer, consumes));
 	}
 
-	protected void addHandler(Class<T> clazz, Consumer<T> consumer) {
+	public <R extends T> void addHandler(Class<R> clazz, Consumer<R> consumer) {
 		addHandler(clazz, new GameEventHandler<>(consumer));
 	}
 
-	private void addHandler(Class<T> clazz, GameEventHandler<T> handler) {
+	public <R extends T> void addHandler(Class<R> clazz, GameEventHandler<R> handler) {
 		handlers.compute(clazz, (k, v) -> {
 			if (v == null) {
 				List<GameEventHandler> list = new ArrayList<>();
