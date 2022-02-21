@@ -283,7 +283,6 @@ public final class GameEngine {
 		if (audio) {
 			Thread thread = new Thread(audioUpdater);
 			thread.setName("audioUpdaterThread");
-			thread.setDaemon(true);
 			print("Starting audio thread.");
 			thread.start();
 		}
