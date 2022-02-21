@@ -36,7 +36,7 @@ public abstract class GameLogic extends ContextPart {
 	/**
 	 * A counter that is increased every time {@link #update()} is called.
 	 */
-	private int gameTick;
+	private int gameTick = -1;
 
 	private AsyncEventPriorityQueue asyncEventQueue;
 	protected Map<Class, List<GameEventHandler>> asyncEventHandlers = new HashMap<>();
