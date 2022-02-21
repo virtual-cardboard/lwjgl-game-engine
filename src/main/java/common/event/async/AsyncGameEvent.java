@@ -21,21 +21,14 @@ public abstract class AsyncGameEvent extends GameEvent {
 	}
 
 	public boolean shouldExecute(long currentTick) {
-		if (currentTick < scheduledTick) {
-			return false;
-		} else {
-			return true;
-		}
+		return currentTick >= scheduledTick;
 	}
 
 	public boolean shouldExecuteThisTick(long currentTick) {
-		if (currentTick < scheduledTick) {
-			return false;
-		} else if (currentTick == scheduledTick) {
-			return true;
-		} else {
+		if (currentTick > scheduledTick) {
 			throw new RuntimeException("AsyncGameEvent " + this + " missed scheduled execution tick");
 		}
+		return currentTick == scheduledTick;
 	}
 
 }
