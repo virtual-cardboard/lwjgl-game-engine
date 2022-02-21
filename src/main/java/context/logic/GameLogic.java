@@ -1,14 +1,12 @@
 package context.logic;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import common.event.GameEvent;
 import common.event.async.AsyncEventPriorityQueue;
+import common.event.async.AsyncGameEvent;
 import common.event.handling.GameEventHandler;
 import common.event.handling.GameEventHandlerGroup;
 import common.loader.GameLoader;
@@ -27,7 +25,6 @@ import context.input.GameInput;
  * @author Jay
  *
  */
-@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class GameLogic extends ContextPart {
 
 	private GameLoader loader;
@@ -38,8 +35,8 @@ public abstract class GameLogic extends ContextPart {
 	 */
 	private int gameTick = -1;
 
-	private AsyncEventPriorityQueue asyncEventQueue;
-	protected Map<Class, List<GameEventHandler>> asyncEventHandlers = new HashMap<>();
+	private AsyncEventPriorityQueue asyncEventQueue = new AsyncEventPriorityQueue();
+	protected GameEventHandlerGroup<AsyncGameEvent> asyncEventHandlers = new GameEventHandlerGroup<>();
 
 	private Queue<GameEvent> in;
 	protected GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
@@ -54,14 +51,15 @@ public abstract class GameLogic extends ContextPart {
 	public final void doUpdate() {
 		gameTick++;
 		handlers.handleEventQueue(in);
-//		handleAsyncEvents();
+		handleAsyncEvents();
 		update();
 	}
 
 	protected void handleAsyncEvents() {
-//		while (asyncEventQueue.peek().shouldExecute(gameTick)) {
-//
-//		}
+		while (!asyncEventQueue.isEmpty() && asyncEventQueue.peek().shouldExecute(gameTick)) {
+			AsyncGameEvent event = asyncEventQueue.poll();
+			asyncEventHandlers.handleEvent(event);
+		}
 	}
 
 	/**
