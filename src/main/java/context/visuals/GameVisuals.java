@@ -9,16 +9,13 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import common.event.GameEvent;
 import common.event.handling.GameEventHandler;
+import common.event.handling.GameEventHandlerGroup;
 import common.loader.GameLoader;
 import context.ContextPart;
 import context.GLContext;
@@ -48,30 +45,14 @@ public abstract class GameVisuals extends ContextPart {
 	private boolean initialized;
 
 	private Queue<GameEvent> in;
-	@SuppressWarnings("rawtypes")
-	protected Map<Class, List<GameEventHandler>> handlers = new HashMap<>();
+	protected GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
 
 	public RootGui rootGui() {
 		return rootGui;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public final void handleEvents() {
-		while (!in.isEmpty()) {
-			GameEvent event = in.poll();
-			List<GameEventHandler> list = handlers.get(event.getClass());
-			if (list == null) {
-				continue;
-			}
-			for (GameEventHandler handler : list) {
-				if (handler.isSatisfiedBy(event)) {
-					handler.accept(event);
-					if (handler.doesConsume()) {
-						break;
-					}
-				}
-			}
-		}
+		handlers.handleEventQueue(in);
 	}
 
 	protected final void background(int colour) {
@@ -86,24 +67,15 @@ public abstract class GameVisuals extends ContextPart {
 	public abstract void render();
 
 	protected <T extends GameEvent> void addHandler(Class<T> clazz, Predicate<T> predicate, Consumer<T> consumer, boolean consumes) {
-		addHandler(clazz, new GameEventHandler<>(predicate, consumer, consumes));
+		handlers.addHandler(clazz, predicate, consumer, consumes);
 	}
 
 	protected <T extends GameEvent> void addHandler(Class<T> clazz, Consumer<T> consumer) {
-		addHandler(clazz, new GameEventHandler<>(consumer));
+		handlers.addHandler(clazz, consumer);
 	}
 
-	private <T extends GameEvent> void addHandler(Class<T> clazz, GameEventHandler<T> handler) {
-		handlers.compute(clazz, (k, v) -> {
-			if (v == null) {
-				@SuppressWarnings("rawtypes")
-				List<GameEventHandler> list = new ArrayList<>();
-				list.add(handler);
-				return list;
-			}
-			v.add(handler);
-			return v;
-		});
+	protected <T extends GameEvent> void addHandler(Class<T> clazz, GameEventHandler<T> handler) {
+		handlers.addHandler(clazz, handler);
 	}
 
 	public final void setComponents(Queue<GameEvent> in, GameLoader loader, ResourcePack resourcePack) {
