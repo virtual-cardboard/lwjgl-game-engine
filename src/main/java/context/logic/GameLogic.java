@@ -9,6 +9,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import common.event.GameEvent;
+import common.event.async.AsyncEventPriorityQueue;
+import common.event.handling.GameEventHandler;
 import common.loader.GameLoader;
 import common.timestep.GameLogicTimer;
 import context.ContextPart;
@@ -25,6 +27,7 @@ import context.input.GameInput;
  * @author Jay
  *
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class GameLogic extends ContextPart {
 
 	private GameLoader loader;
@@ -35,8 +38,10 @@ public abstract class GameLogic extends ContextPart {
 	 */
 	private int gameTick;
 
+	private AsyncEventPriorityQueue asyncEventQueue;
+	protected Map<Class, List<GameEventHandler>> asyncEventHandlers = new HashMap<>();
+
 	private Queue<GameEvent> in;
-	@SuppressWarnings("rawtypes")
 	protected Map<Class, List<GameEventHandler>> handlers = new HashMap<>();
 	private Queue<GameEvent> out;
 
@@ -46,8 +51,20 @@ public abstract class GameLogic extends ContextPart {
 		this.loader = loader;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public final void doUpdate() {
+		gameTick++;
+		handleInputEvents();
+		handleAsyncEvents();
+		update();
+	}
+
+	protected void handleAsyncEvents() {
+		while (asyncEventQueue.peek().shouldExecute(gameTick)) {
+
+		}
+	}
+
+	private void handleInputEvents() {
 		while (!in.isEmpty()) {
 			GameEvent event = in.poll();
 			Class<? extends GameEvent> cls = event.getClass();
@@ -66,8 +83,6 @@ public abstract class GameLogic extends ContextPart {
 				}
 			}
 		}
-		update();
-		gameTick++;
 	}
 
 	/**
@@ -86,7 +101,6 @@ public abstract class GameLogic extends ContextPart {
 	private <T extends GameEvent> void addHandler(Class<T> clazz, GameEventHandler<T> handler) {
 		handlers.compute(clazz, (k, v) -> {
 			if (v == null) {
-				@SuppressWarnings("rawtypes")
 				List<GameEventHandler> list = new ArrayList<>();
 				list.add(handler);
 				return list;

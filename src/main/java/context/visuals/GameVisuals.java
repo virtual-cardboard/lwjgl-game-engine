@@ -18,12 +18,12 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import common.event.GameEvent;
+import common.event.handling.GameEventHandler;
 import common.loader.GameLoader;
 import context.ContextPart;
 import context.GLContext;
 import context.ResourcePack;
 import context.data.GameData;
-import context.logic.GameEventHandler;
 import context.logic.TimeAccumulator;
 import context.visuals.gui.RootGui;
 import context.visuals.renderer.GameRenderer;
