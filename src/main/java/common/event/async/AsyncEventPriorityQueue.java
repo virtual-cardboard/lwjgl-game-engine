@@ -14,6 +14,9 @@ public class AsyncEventPriorityQueue extends PriorityQueue<AsyncGameEvent> {
 
 	public AsyncGameEvent peek(long tick) {
 		AsyncGameEvent peek = super.peek();
+		if (peek == null) {
+			return null;
+		}
 		if (peek.shouldExecute(tick)) {
 			return peek;
 		}
@@ -22,6 +25,9 @@ public class AsyncEventPriorityQueue extends PriorityQueue<AsyncGameEvent> {
 
 	public AsyncGameEvent peekTimeSensitive(long tick) {
 		AsyncGameEvent peek = super.peek();
+		if (peek == null) {
+			return null;
+		}
 		if (peek.shouldExecuteThisTick(tick)) {
 			return peek;
 		}

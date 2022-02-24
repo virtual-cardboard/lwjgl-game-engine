@@ -12,6 +12,10 @@ public abstract class AsyncGameEvent extends GameEvent {
 		this.callback = callback;
 	}
 
+	public AsyncGameEvent(long scheduledTick) {
+		this(scheduledTick, null);
+	}
+
 	public long scheduledTick() {
 		return scheduledTick;
 	}

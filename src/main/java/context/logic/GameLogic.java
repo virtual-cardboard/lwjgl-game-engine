@@ -56,7 +56,7 @@ public abstract class GameLogic extends ContextPart {
 	}
 
 	protected void handleAsyncEvents() {
-		while (!asyncEventQueue.isEmpty() && asyncEventQueue.peek().shouldExecute(gameTick)) {
+		while (asyncEventQueue.peek(gameTick) != null) {
 			AsyncGameEvent event = asyncEventQueue.poll();
 			asyncEventHandlers.handleEvent(event);
 		}
