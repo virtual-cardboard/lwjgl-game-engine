@@ -40,11 +40,13 @@ public abstract class GameLogic extends ContextPart {
 
 	private Queue<GameEvent> in;
 	protected GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
-	private Queue<GameEvent> out;
+	private Queue<GameEvent> visualOut;
+	private Queue<GameEvent> audioOut;
 
-	public final void setComponents(Queue<GameEvent> in, Queue<GameEvent> out, GameLoader loader) {
+	public final void setComponents(Queue<GameEvent> in, Queue<GameEvent> vOut, Queue<GameEvent> aOut, GameLoader loader) {
 		this.in = in;
-		this.out = out;
+		visualOut = vOut;
+		audioOut = aOut;
 		this.loader = loader;
 	}
 
@@ -84,12 +86,15 @@ public abstract class GameLogic extends ContextPart {
 	}
 
 	public void pushEvent(GameEvent event) {
-		out.add(event);
+		visualOut.add(event);
+		audioOut.add(event);
 	}
 
 	public void pushAll(Queue<GameEvent> events) {
 		while (!events.isEmpty()) {
-			out.add(events.poll());
+			GameEvent e = events.poll();
+			visualOut.add(e);
+			audioOut.add(e);
 		}
 		events.clear();
 	}

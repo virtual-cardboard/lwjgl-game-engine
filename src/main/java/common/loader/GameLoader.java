@@ -14,7 +14,7 @@ public final class GameLoader {
 	public GameLoader(long shareContextWindowHandle, GLContext renderingThreadGLContext) {
 		ioLoader = new IOLoader();
 		glLoader = new GLLoader(shareContextWindowHandle);
-		this.renderingThreadGLContext=renderingThreadGLContext;
+		this.renderingThreadGLContext = renderingThreadGLContext;
 	}
 
 	public <T> Future<T> submit(LoadTask<T> t) {

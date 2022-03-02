@@ -30,7 +30,7 @@ public class AudioUpdater extends TimestepTimer {
 	@Override
 	protected void update() {
 		GameAudio audio = wrapper.context().audio();
-		audio.update();
+		audio.doUpdate();
 	}
 
 	@Override

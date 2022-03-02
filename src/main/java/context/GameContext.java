@@ -37,6 +37,7 @@ public final class GameContext {
 
 	private PriorityBlockingQueue<GameEvent> inputToLogicEventQueue = new PriorityBlockingQueue<>();
 	private PriorityBlockingQueue<GameEvent> logicToVisualsEventQueue = new PriorityBlockingQueue<>();
+	private PriorityBlockingQueue<GameEvent> logicToAudioEventQueue = new PriorityBlockingQueue<>();
 
 	/**
 	 * Takes in the five context parts, then sets the context references of each of
@@ -99,10 +100,10 @@ public final class GameContext {
 	 * @param loader               the {@link GameLoader}
 	 */
 	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLoader loader) {
-		audio.setComponents(loader);
+		audio.setComponents(logicToAudioEventQueue, loader);
 		data.setComponents(loader);
 		input.setComponents(inputEventBuffer, networkReceiveBuffer, inputToLogicEventQueue);
-		logic.setComponents(inputToLogicEventQueue, logicToVisualsEventQueue, loader);
+		logic.setComponents(inputToLogicEventQueue, logicToVisualsEventQueue, logicToAudioEventQueue, loader);
 		visuals.setComponents(logicToVisualsEventQueue, loader, resourcePack());
 		audio.init();
 		data.init();
