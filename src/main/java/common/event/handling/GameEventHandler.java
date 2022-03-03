@@ -24,11 +24,11 @@ public class GameEventHandler<T extends GameEvent> implements Consumer<T> {
 	/**
 	 * The predicate that determines if the consumer will be run.
 	 */
-	private final Predicate<T> predicate;
+	private final Predicate<? super T> predicate;
 	/**
 	 * The consumer that is run on the {@link GameEvent}.
 	 */
-	private final Consumer<T> consumer;
+	private final Consumer<? super T> consumer;
 	/**
 	 * Whether the event handler consumes the {@link GameEvent}.
 	 */
@@ -45,7 +45,7 @@ public class GameEventHandler<T extends GameEvent> implements Consumer<T> {
 	 * @param consumes  whether or not this event handler should consume a handled
 	 *                  <code>GameEvent</code>
 	 */
-	public GameEventHandler(Predicate<T> predicate, Consumer<T> consumer, boolean consumes) {
+	public GameEventHandler(Predicate<? super T> predicate, Consumer<? super T> consumer, boolean consumes) {
 		this.predicate = predicate;
 		this.consumer = consumer;
 		this.consumes = consumes;
@@ -60,7 +60,7 @@ public class GameEventHandler<T extends GameEvent> implements Consumer<T> {
 	 * @param consumes whether or not this event handler should consume a handled
 	 *                 <code>GameEvent</code>
 	 */
-	public GameEventHandler(Consumer<T> consumer, boolean consumes) {
+	public GameEventHandler(Consumer<? super T> consumer, boolean consumes) {
 		this(GameEventHandler::returnTrue, consumer, consumes);
 	}
 
@@ -71,7 +71,7 @@ public class GameEventHandler<T extends GameEvent> implements Consumer<T> {
 	 * 
 	 * @param consumer the function that is applied to a <code>GameEvent</code>
 	 */
-	public GameEventHandler(Consumer<T> consumer) {
+	public GameEventHandler(Consumer<? super T> consumer) {
 		this(GameEventHandler::returnTrue, consumer, false);
 	}
 

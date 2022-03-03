@@ -25,15 +25,15 @@ public abstract class GameAudio extends ContextPart {
 
 	public abstract void update();
 
-	protected <T extends GameEvent> void addHandler(Class<T> clazz, Predicate<T> predicate, Consumer<T> consumer, boolean consumes) {
+	protected <T extends GameEvent> void addHandler(Class<T> clazz, Predicate<? super T> predicate, Consumer<? super T> consumer, boolean consumes) {
 		handlers.addHandler(clazz, predicate, consumer, consumes);
 	}
 
-	protected <T extends GameEvent> void addHandler(Class<T> clazz, Consumer<T> consumer) {
+	protected <T extends GameEvent> void addHandler(Class<T> clazz, Consumer<? super T> consumer) {
 		handlers.addHandler(clazz, consumer);
 	}
 
-	protected <T extends GameEvent> void addHandler(Class<T> clazz, GameEventHandler<T> handler) {
+	protected <T extends GameEvent> void addHandler(Class<T> clazz, GameEventHandler<? super T> handler) {
 		handlers.addHandler(clazz, handler);
 	}
 
