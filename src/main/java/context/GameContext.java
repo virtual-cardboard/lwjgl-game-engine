@@ -100,9 +100,9 @@ public final class GameContext {
 	 * @param loader               the {@link GameLoader}
 	 */
 	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLoader loader) {
-		audio.setComponents(logicToAudioEventQueue, loader);
 		data.setComponents(loader);
 		input.setComponents(inputEventBuffer, networkReceiveBuffer, inputToLogicEventQueue);
+		audio.setComponents(logicToAudioEventQueue, loader);
 		logic.setComponents(inputToLogicEventQueue, logicToVisualsEventQueue, logicToAudioEventQueue, loader);
 		visuals.setComponents(logicToVisualsEventQueue, loader, resourcePack());
 		audio.init();
@@ -143,12 +143,12 @@ public final class GameContext {
 	 * Called when the {@link GameContextWrapper} terminates.
 	 * <p>
 	 * Note: context parts terminate in the reverse order they are
-	 * {@link #init(Queue, Queue) init}ialized in.
+	 * {@link #init(Queue, Queue, GameLoader) initialized} in.
 	 */
 	public void terminate() {
 		visuals.terminate();
-		audio.terminate();
 		logic.terminate();
+		audio.terminate();
 		input.terminate();
 		data.terminate();
 	}
