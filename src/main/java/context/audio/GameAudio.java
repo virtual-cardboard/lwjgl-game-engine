@@ -9,6 +9,7 @@ import common.event.handling.GameEventHandler;
 import common.event.handling.GameEventHandlerGroup;
 import common.loader.GameLoader;
 import context.ContextPart;
+import context.ResourcePack;
 
 public abstract class GameAudio extends ContextPart {
 
@@ -43,6 +44,10 @@ public abstract class GameAudio extends ContextPart {
 
 	public final GameLoader loader() {
 		return loader;
+	}
+
+	public final ResourcePack resourcePack() {
+		return context().resourcePack();
 	}
 
 }

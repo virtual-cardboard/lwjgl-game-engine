@@ -3,6 +3,7 @@ package context;
 import java.util.HashMap;
 import java.util.Map;
 
+import context.audio.lwjgl.AudioClip;
 import context.visuals.builtin.ColourFragmentShader;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TexturedTransformationVertexShader;
@@ -16,20 +17,22 @@ import context.visuals.renderer.GameRenderer;
 import context.visuals.text.GameFont;
 
 /**
- * A nice leather pack of {@link VertexArrayObject VertexArrayObjects} and
- * {@link ShaderProgram ShaderPrograms}.
+ * A nice leather pack of {@link VertexArrayObject VertexArrayObjects},
+ * {@link ShaderProgram ShaderPrograms}, and other objects that are likely to be
+ * used many times in many different contexts.
  * 
  * @author Jay
  *
  */
 public final class ResourcePack {
 
-	private Map<String, VertexArrayObject> vaos = new HashMap<>();
-	private Map<String, FrameBufferObject> fbos = new HashMap<>();
-	private Map<String, ShaderProgram> shaderPrograms = new HashMap<>();
-	private Map<String, GameRenderer> renderers = new HashMap<>();
-	private Map<String, Texture> textures = new HashMap<>();
-	private Map<String, GameFont> fonts = new HashMap<>();
+	private Map<String, VertexArrayObject> vaos = new HashMap<>(5);
+	private Map<String, FrameBufferObject> fbos = new HashMap<>(2);
+	private Map<String, ShaderProgram> shaderPrograms = new HashMap<>(8);
+	private Map<String, GameRenderer> renderers = new HashMap<>(8);
+	private Map<String, Texture> textures = new HashMap<>(16);
+	private Map<String, GameFont> fonts = new HashMap<>(1);
+	private Map<String, AudioClip> audioClips = new HashMap<>(0);
 	private RectangleVertexArrayObject rectangleVAO;
 	private TransformationVertexShader transformationVS;
 	private TexturedTransformationVertexShader texturedTransformationVS;
@@ -107,6 +110,14 @@ public final class ResourcePack {
 		fonts.put(name, font);
 	}
 
+	public AudioClip getAudioClip(String name) {
+		return audioClips.get(name);
+	}
+
+	public void putAudioClip(String name, AudioClip audioClip) {
+		audioClips.put(name, audioClip);
+	}
+
 	public RectangleVertexArrayObject rectangleVAO() {
 		return rectangleVAO;
 	}
@@ -137,6 +148,7 @@ public final class ResourcePack {
 		textures.values().forEach(Texture::delete);
 		fonts.values().forEach(GameFont::delete);
 		fbos.values().forEach(FrameBufferObject::delete);
+		audioClips.values().forEach(AudioClip::delete);
 		rectangleVAO.delete();
 		transformationVS.delete();
 		texturedTransformationVS.delete();

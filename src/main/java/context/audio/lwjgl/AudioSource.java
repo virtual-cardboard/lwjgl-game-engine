@@ -43,7 +43,7 @@ public class AudioSource extends ALObject {
 		alSource3f(id, AL_VELOCITY, x, y, z);
 	}
 
-	public void setAudioBuffer(AudioBuffer audioBuffer) {
+	public void setAudioBuffer(AudioClip audioBuffer) {
 		verifyInitialized();
 		alSourcei(id, AL_BUFFER, audioBuffer.id());
 	}

@@ -14,18 +14,18 @@ import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
 import common.loader.IOLoadTask;
-import context.audio.lwjgl.AudioBuffer;
+import context.audio.lwjgl.AudioClip;
 
-public class AudioBufferLoadTask extends IOLoadTask<AudioBuffer> {
+public class AudioClipLoadTask extends IOLoadTask<AudioClip> {
 
 	private String path;
 
-	public AudioBufferLoadTask(String path) {
+	public AudioClipLoadTask(String path) {
 		this.path = path;
 	}
 
 	@Override
-	protected AudioBuffer load() throws IOException {
+	protected AudioClip load() throws IOException {
 		stackPush();
 		IntBuffer channelsBuffer = stackMallocInt(1);
 		stackPush();
@@ -63,7 +63,7 @@ public class AudioBufferLoadTask extends IOLoadTask<AudioBuffer> {
 			format = AL_FORMAT_STEREO16;
 		}
 
-		AudioBuffer buffer = new AudioBuffer();
+		AudioClip buffer = new AudioClip();
 		buffer.genID();
 		buffer.setData(format, rawAudioBuffer, sampleRate);
 

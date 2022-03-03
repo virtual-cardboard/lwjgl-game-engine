@@ -7,7 +7,7 @@ import static org.lwjgl.openal.AL10.alGenBuffers;
 import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
 
-public class AudioBuffer extends ALObject {
+public class AudioClip extends ALObject {
 
 	private int id;
 
