@@ -8,7 +8,7 @@ public class AudioSource extends ALObject {
 
 	private int id;
 
-	public void genID() {
+	public AudioSource() {
 		initialize();
 		id = alGenSources();
 	}
@@ -43,9 +43,9 @@ public class AudioSource extends ALObject {
 		alSource3f(id, AL_VELOCITY, x, y, z);
 	}
 
-	public void setAudioBuffer(AudioClip audioBuffer) {
+	public void setAudioClip(AudioClip audioClip) {
 		verifyInitialized();
-		alSourcei(id, AL_BUFFER, audioBuffer.id());
+		alSourcei(id, AL_BUFFER, audioClip.id());
 	}
 
 	public void play() {
