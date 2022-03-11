@@ -1,9 +1,8 @@
 package context;
 
 import java.util.Queue;
-import java.util.concurrent.PriorityBlockingQueue;
 
-import common.event.GameEvent;
+import common.QueueGroup;
 import common.loader.GameLoader;
 import context.audio.GameAudio;
 import context.data.GameData;
@@ -34,10 +33,6 @@ public final class GameContext {
 	private final GameInput input;
 	private final GameLogic logic;
 	private final GameVisuals visuals;
-
-	private PriorityBlockingQueue<GameEvent> inputToLogicEventQueue = new PriorityBlockingQueue<>();
-	private PriorityBlockingQueue<GameEvent> logicToVisualsEventQueue = new PriorityBlockingQueue<>();
-	private PriorityBlockingQueue<GameEvent> logicToAudioEventQueue = new PriorityBlockingQueue<>();
 
 	/**
 	 * Takes in the five context parts, then sets the context references of each of
@@ -101,10 +96,11 @@ public final class GameContext {
 	 */
 	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLoader loader) {
 		data.setComponents(loader);
-		input.setComponents(inputEventBuffer, networkReceiveBuffer, inputToLogicEventQueue);
-		audio.setComponents(logicToAudioEventQueue, loader);
-		logic.setComponents(inputToLogicEventQueue, logicToVisualsEventQueue, logicToAudioEventQueue, loader);
-		visuals.setComponents(logicToVisualsEventQueue, loader, resourcePack());
+		QueueGroup queueGroup = new QueueGroup(inputEventBuffer, networkReceiveBuffer);
+		input.setComponents(queueGroup);
+		audio.setComponents(queueGroup, loader);
+		logic.setComponents(queueGroup, loader);
+		visuals.setComponents(queueGroup, loader, resourcePack());
 		audio.init();
 		data.init();
 		input.init();

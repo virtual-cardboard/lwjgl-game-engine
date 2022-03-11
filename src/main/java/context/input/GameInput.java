@@ -1,20 +1,15 @@
 package context.input;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import common.QueueGroup;
 import common.event.GameEvent;
 import context.ContextPart;
-import context.GameWindow;
 import context.input.event.*;
 import context.input.mouse.GameCursor;
-import context.logic.GameLogic;
-import engine.GameEngine;
 
 /**
  * A context part that handles user input. It transforms raw
@@ -25,30 +20,7 @@ import engine.GameEngine;
  */
 public abstract class GameInput extends ContextPart {
 
-	/**
-	 * The input buffer is initialized by the {@link GameEngine} upon
-	 * initialization. The {@link GameWindow} has <code>Callbacks</code> that write
-	 * to this input buffer. {@link GameInput} reads from the input buffer and
-	 * transforms them into other {@link GameEvent}s in the {@link #handleAll()}
-	 * function.
-	 */
-	private Queue<GameInputEvent> inputEventBuffer;
-
-	/**
-	 * The network buffer is initialized by the {@link GameEngine} upon
-	 * initialization if networking is enabled. The {@link UDPReader} writes to this
-	 * network buffer whenever a {@link DatagramPacket} arrives on the
-	 * {@link DatagramSocket} initialized in the {@link GameEngine}.
-	 * {@link GameInput} reads from the network buffer and transforms them into
-	 * other {@link GameEvent}s in the {@link #handleAll()} function.
-	 */
-	private Queue<PacketReceivedInputEvent> networkReceiveBuffer;
-
-	/**
-	 * The queue that {@link GameInput} would put {@link GameEvent}s into. These
-	 * {@link GameEvent}s should then be handled in {@link GameLogic}.
-	 */
-	private Queue<GameEvent> out;
+	private QueueGroup queueGroup;
 
 	/** {@link List} of {@link FrameResizedInputEvent} handlers. */
 	private List<GameInputEventHandler<FrameResizedInputEvent>> frameResizedInputEventHandlers = new ArrayList<>();
@@ -74,10 +46,8 @@ public abstract class GameInput extends ContextPart {
 	 */
 	private GameCursor cursor = new GameCursor();
 
-	public final void setComponents(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<GameEvent> out) {
-		this.inputEventBuffer = inputEventBuffer;
-		this.networkReceiveBuffer = networkReceiveBuffer;
-		this.out = out;
+	public final void setComponents(QueueGroup queueGroup) {
+		this.queueGroup = queueGroup;
 		frameResizedInputEventHandlers.add(new GameInputEventHandler<>(new RootGuiUpdaterFunction(context())));
 		mouseMovedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorMovedUpdaterFunction(cursor)));
 		mousePressedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorPressedUpdaterFunction(cursor)));
@@ -90,11 +60,11 @@ public abstract class GameInput extends ContextPart {
 	 * {@link #inputEventBuffer}.
 	 */
 	public void handleAll() {
-		while (!networkReceiveBuffer.isEmpty()) {
-			handleEvent(packetReceivedInputEventHandlers, networkReceiveBuffer.poll());
+		while (!queueGroup.networkReceiveBuffer.isEmpty()) {
+			handleEvent(packetReceivedInputEventHandlers, queueGroup.networkReceiveBuffer.poll());
 		}
-		while (!inputEventBuffer.isEmpty()) {
-			handleEvent(inputEventBuffer.poll());
+		while (!queueGroup.inputEventBuffer.isEmpty()) {
+			handleEvent(queueGroup.inputEventBuffer.poll());
 		}
 	}
 
@@ -139,7 +109,7 @@ public abstract class GameInput extends ContextPart {
 			if (eventHandler.isSatisfiedBy(inputEvent)) {
 				GameEvent event = eventHandler.apply(inputEvent);
 				if (event != null) {
-					out.add(event);
+					queueGroup.inputToLogic.add(event);
 				}
 				if (eventHandler.doesConsume()) {
 					break;

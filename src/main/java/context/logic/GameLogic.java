@@ -4,6 +4,7 @@ import java.util.Queue;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import common.QueueGroup;
 import common.event.GameEvent;
 import common.event.async.AsyncEventPriorityQueue;
 import common.event.async.AsyncGameEvent;
@@ -38,21 +39,17 @@ public abstract class GameLogic extends ContextPart {
 	private AsyncEventPriorityQueue asyncEventQueue = new AsyncEventPriorityQueue();
 	protected GameEventHandlerGroup<AsyncGameEvent> asyncEventHandlers = new GameEventHandlerGroup<>();
 
-	private Queue<GameEvent> in;
 	protected GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
-	private Queue<GameEvent> visualOut;
-	private Queue<GameEvent> audioOut;
+	private QueueGroup queueGroup;
 
-	public final void setComponents(Queue<GameEvent> in, Queue<GameEvent> vOut, Queue<GameEvent> aOut, GameLoader loader) {
-		this.in = in;
-		visualOut = vOut;
-		audioOut = aOut;
+	public final void setComponents(QueueGroup queueGroup, GameLoader loader) {
+		this.queueGroup = queueGroup;
 		this.loader = loader;
 	}
 
 	public final void doUpdate() {
 		gameTick++;
-		handlers.handleEventQueue(in);
+		handlers.handleEventQueue(queueGroup.inputToLogic);
 		handleAsyncEvents();
 		update();
 	}
@@ -85,16 +82,18 @@ public abstract class GameLogic extends ContextPart {
 		return loader;
 	}
 
-	public void pushEvent(GameEvent event) {
-		visualOut.add(event);
-		audioOut.add(event);
+	public QueueGroup queueGroup() {
+		return queueGroup;
+	}
+
+	public void pushEventToQueueGroup(GameEvent e) {
+		queueGroup.pushEventFromLogic(e);
 	}
 
 	public void pushAll(Queue<GameEvent> events) {
 		while (!events.isEmpty()) {
 			GameEvent e = events.poll();
-			visualOut.add(e);
-			audioOut.add(e);
+			queueGroup.pushEventFromLogic(e);
 		}
 		events.clear();
 	}

@@ -13,6 +13,7 @@ import java.util.Queue;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import common.QueueGroup;
 import common.event.GameEvent;
 import common.event.handling.GameEventHandler;
 import common.event.handling.GameEventHandlerGroup;
@@ -78,8 +79,8 @@ public abstract class GameVisuals extends ContextPart {
 		handlers.addHandler(clazz, handler);
 	}
 
-	public final void setComponents(Queue<GameEvent> in, GameLoader loader, ResourcePack resourcePack) {
-		this.in = in;
+	public final void setComponents(QueueGroup queueGroup, GameLoader loader, ResourcePack resourcePack) {
+		this.in = queueGroup.logicToVisuals;
 		this.loader = loader;
 		this.resourcePack = resourcePack;
 	}
