@@ -29,7 +29,7 @@ public class GameEventHandlerGroup<T extends GameEvent> {
 	 */
 	public void handleEvent(T event) {
 		Class cls = event.getClass();
-		for (; !cls.getSuperclass().equals(Object.class); cls = cls.getSuperclass()) {
+		for (; !cls.equals(Object.class); cls = cls.getSuperclass()) {
 			List<GameEventHandler> list = handlers.get(cls);
 			if (list == null) {
 				continue;
