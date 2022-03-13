@@ -61,6 +61,10 @@ public abstract class GameLogic extends ContextPart {
 		}
 	}
 
+	protected void handleEvent(GameEvent event) {
+		handlers.handleEvent(event);
+	}
+
 	/**
 	 * Updates the game. This is called every tick in {@link GameLogicTimer}.
 	 */
