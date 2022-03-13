@@ -5,11 +5,13 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFWErrorCallback.createPrint;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GLUtil.setupDebugMessageCallback;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.util.Queue;
 
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.system.Callback;
 
 import common.math.Vector2i;
 import context.input.event.GameInputEvent;
@@ -37,6 +39,8 @@ public class GameWindow {
 
 	private GLContext glContext;
 
+	private Callback debugMessageCallback;
+
 	public GameWindow(String windowTitle, GLContext glContext, Queue<GameInputEvent> inputEventBuffer, boolean resizable, int width, int height) {
 		this(windowTitle, glContext, inputEventBuffer, resizable, new Vector2i(width, height));
 	}
@@ -60,6 +64,7 @@ public class GameWindow {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // Use GLFW version 3.3
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor()); // Get the resolution of the primary monitor
 		if (FULLSCREEN)
 			windowDimensions = new Vector2i(vidmode.width(), vidmode.height());
@@ -87,6 +92,7 @@ public class GameWindow {
 	}
 
 	public void attachCallbacks() {
+		debugMessageCallback = setupDebugMessageCallback();
 		glfwSetKeyCallback(windowId, new KeyCallback(inputEventBuffer));
 		glfwSetMouseButtonCallback(windowId, new MouseButtonCallback(inputEventBuffer));
 		glfwSetScrollCallback(windowId, new MouseScrollCallback(inputEventBuffer));
@@ -95,6 +101,7 @@ public class GameWindow {
 	}
 
 	public void destroy() {
+		debugMessageCallback.close();
 		glfwFreeCallbacks(windowId); // Release callbacks
 		glfwDestroyWindow(windowId); // Release window
 		glfwTerminate(); // Terminate GLFW
