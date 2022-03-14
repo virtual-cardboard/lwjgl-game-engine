@@ -5,6 +5,8 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFWErrorCallback.createPrint;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT;
+import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT_SYNCHRONOUS;
 import static org.lwjgl.opengl.GLUtil.setupDebugMessageCallback;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -29,6 +31,11 @@ import context.input.lwjglcallback.WindowResizeCallback;
 public class GameWindow {
 
 	private static final boolean FULLSCREEN = false;
+	/**
+	 * Whether or not to set a debug message callback. Turn this off for better
+	 * performance.
+	 */
+	private static final boolean DEBUG = true;
 
 	private boolean resizable = true;
 	private long windowId = NULL;
@@ -64,7 +71,9 @@ public class GameWindow {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // Use GLFW version 3.3
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+		if (DEBUG) {
+			glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+		}
 		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor()); // Get the resolution of the primary monitor
 		if (FULLSCREEN)
 			windowDimensions = new Vector2i(vidmode.width(), vidmode.height());
@@ -76,6 +85,10 @@ public class GameWindow {
 		glfwMakeContextCurrent(windowId); // Make the OpenGL context current
 		createCapabilities();
 		glEnable(GL_BLEND);
+		if (DEBUG) {
+			glEnable(GL_DEBUG_OUTPUT);
+			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		}
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glfwSwapInterval(1); // Enable v-sync
@@ -92,7 +105,9 @@ public class GameWindow {
 	}
 
 	public void attachCallbacks() {
-		debugMessageCallback = setupDebugMessageCallback();
+		if (DEBUG) {
+			debugMessageCallback = setupDebugMessageCallback();
+		}
 		glfwSetKeyCallback(windowId, new KeyCallback(inputEventBuffer));
 		glfwSetMouseButtonCallback(windowId, new MouseButtonCallback(inputEventBuffer));
 		glfwSetScrollCallback(windowId, new MouseScrollCallback(inputEventBuffer));
@@ -101,7 +116,9 @@ public class GameWindow {
 	}
 
 	public void destroy() {
-		debugMessageCallback.close();
+		if (DEBUG) {
+			debugMessageCallback.close();
+		}
 		glfwFreeCallbacks(windowId); // Release callbacks
 		glfwDestroyWindow(windowId); // Release window
 		glfwTerminate(); // Terminate GLFW
