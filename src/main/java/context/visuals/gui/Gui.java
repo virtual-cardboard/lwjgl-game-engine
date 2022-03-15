@@ -76,7 +76,7 @@ public abstract class Gui {
 
 	// Getters and setters
 
-	public GuiPositionConstraint getPosX() {
+	public GuiPositionConstraint posX() {
 		return posXConstraint;
 	}
 
@@ -84,7 +84,7 @@ public abstract class Gui {
 		this.posXConstraint = posXConstraint;
 	}
 
-	public GuiPositionConstraint getPosY() {
+	public GuiPositionConstraint posY() {
 		return posYConstraint;
 	}
 
@@ -92,7 +92,7 @@ public abstract class Gui {
 		this.posYConstraint = posYConstraint;
 	}
 
-	public GuiDimensionConstraint getWidth() {
+	public GuiDimensionConstraint width() {
 		return widthConstraint;
 	}
 
@@ -100,7 +100,7 @@ public abstract class Gui {
 		this.widthConstraint = widthConstraint;
 	}
 
-	public GuiDimensionConstraint getHeight() {
+	public GuiDimensionConstraint height() {
 		return heightConstraint;
 	}
 

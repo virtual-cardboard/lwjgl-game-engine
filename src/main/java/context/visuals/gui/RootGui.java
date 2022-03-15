@@ -38,16 +38,16 @@ public class RootGui extends InvisibleGui {
 	/**
 	 * @return The width in pixels
 	 */
-	public int width() {
-		PixelDimensionConstraint width = (PixelDimensionConstraint) super.getWidth();
+	public int widthPx() {
+		PixelDimensionConstraint width = (PixelDimensionConstraint) super.width();
 		return (int) width.getPixels();
 	}
 
 	/**
 	 * @return The height in pixels
 	 */
-	public int height() {
-		PixelDimensionConstraint height = (PixelDimensionConstraint) super.getHeight();
+	public int heightPx() {
+		PixelDimensionConstraint height = (PixelDimensionConstraint) super.height();
 		return (int) height.getPixels();
 	}
 
@@ -55,7 +55,7 @@ public class RootGui extends InvisibleGui {
 	 * @return A new {@link Vector2f} representing the dimensions
 	 */
 	public Vector2f dimensions() {
-		return new Vector2f(width(), height());
+		return new Vector2f(widthPx(), heightPx());
 	}
 
 	/**
@@ -65,9 +65,9 @@ public class RootGui extends InvisibleGui {
 	 * @param height the new height in pixels
 	 */
 	public void setDimensions(int width, int height) {
-		PixelDimensionConstraint widthConstraint = (PixelDimensionConstraint) getWidth();
+		PixelDimensionConstraint widthConstraint = (PixelDimensionConstraint) width();
 		widthConstraint.setPixels(width);
-		PixelDimensionConstraint heightConstraint = (PixelDimensionConstraint) getHeight();
+		PixelDimensionConstraint heightConstraint = (PixelDimensionConstraint) height();
 		heightConstraint.setPixels(height);
 	}
 
@@ -76,7 +76,7 @@ public class RootGui extends InvisibleGui {
 	 */
 	@Override
 	public PosDim posdim() {
-		return new PosDim(0, 0, width(), height());
+		return new PosDim(0, 0, widthPx(), heightPx());
 	}
 
 	@Override
