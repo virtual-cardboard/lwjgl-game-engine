@@ -6,6 +6,7 @@ import java.util.List;
 import common.math.Matrix4f;
 import common.math.PosDim;
 import common.math.Vector2f;
+import common.math.Vector2i;
 import context.GLContext;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
@@ -38,10 +39,10 @@ public abstract class Gui {
 	private Gui parent;
 	private List<Gui> children = new ArrayList<>();
 
-	public abstract void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height);
+	public abstract void render(GLContext glContext, float x, float y, float width, float height);
 
-	protected final Matrix4f rectToPixelMatrix4f(Vector2f screenDim) {
-		return new Matrix4f().translate(new Vector2f(-1, 1)).scale(2 / screenDim.x, -2 / screenDim.y);
+	protected final Matrix4f rectToPixelMatrix4f(Vector2i windowDim) {
+		return new Matrix4f().translate(new Vector2f(-1, 1)).scale(2f / windowDim.x, -2f / windowDim.y);
 	}
 
 	public void addChild(Gui child) {

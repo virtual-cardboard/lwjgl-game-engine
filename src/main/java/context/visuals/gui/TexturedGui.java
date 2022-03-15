@@ -1,6 +1,5 @@
 package context.visuals.gui;
 
-import common.math.Vector2f;
 import context.GLContext;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextureRenderer;
@@ -16,8 +15,8 @@ public class TexturedGui extends Gui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
-		textureRenderer.render(texture, rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
+	public void render(GLContext glContext, float x, float y, float width, float height) {
+		textureRenderer.render(texture, rectToPixelMatrix4f(glContext.windowDim()).translate(x, y).scale(width, height));
 	}
 
 	public Texture texture() {

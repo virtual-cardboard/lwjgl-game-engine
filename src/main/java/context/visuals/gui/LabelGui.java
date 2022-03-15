@@ -3,7 +3,6 @@ package context.visuals.gui;
 import static context.visuals.renderer.TextRenderer.ALIGN_LEFT;
 
 import common.math.Matrix4f;
-import common.math.Vector2f;
 import context.GLContext;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.renderer.TextRenderer;
@@ -36,7 +35,7 @@ public class LabelGui extends Gui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
+	public void render(GLContext glContext, float x, float y, float width, float height) {
 		rectangleRenderer.render(x, y, width, height, colour);
 		textRenderer.setAlign(align);
 		textRenderer.render(new Matrix4f().translate(x + paddingLeft, y + paddingTop), text, width - paddingLeft - paddingRight, font,
