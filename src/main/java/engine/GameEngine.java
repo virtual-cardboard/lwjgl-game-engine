@@ -49,6 +49,7 @@ public final class GameEngine {
 
 	private int width = 1920;
 	private int height = 1012;
+	private boolean fullScreen = false;
 
 	/**
 	 * Creates a {@link GameEngine} with a window title and a context.
@@ -256,7 +257,7 @@ public final class GameEngine {
 			CountDownLatch windowCountDownLatch, CountDownLatch contextCountDownLatch) {
 		if (rendering) {
 			print("Creating window.");
-			GameWindow window = new GameWindow(windowTitle, glContext, inputBuffer, resizable, width, height);
+			GameWindow window = new GameWindow(windowTitle, glContext, inputBuffer, resizable, width, height, fullScreen);
 			print("Binding dependencies in context wrapper.");
 			return new WindowFrameUpdater(window, logicAccumulator, windowCountDownLatch, contextCountDownLatch);
 		}
@@ -371,6 +372,16 @@ public final class GameEngine {
 
 	public GameEngine disableNetworking() {
 		networking = false;
+		return this;
+	}
+
+	public GameEngine enableFullScreen() {
+		this.fullScreen = true;
+		return this;
+	}
+
+	public GameEngine disasbleFullScreen() {
+		this.fullScreen = false;
 		return this;
 	}
 

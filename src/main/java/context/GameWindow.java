@@ -30,7 +30,6 @@ import context.input.lwjglcallback.WindowResizeCallback;
  */
 public class GameWindow {
 
-	private static final boolean FULLSCREEN = false;
 	/**
 	 * Whether or not to set a debug message callback. Turn this off for better
 	 * performance.
@@ -47,17 +46,21 @@ public class GameWindow {
 	private GLContext glContext;
 
 	private Callback debugMessageCallback;
+	private boolean fullScreen;
 
-	public GameWindow(String windowTitle, GLContext glContext, Queue<GameInputEvent> inputEventBuffer, boolean resizable, int width, int height) {
-		this(windowTitle, glContext, inputEventBuffer, resizable, new Vector2i(width, height));
+	public GameWindow(String windowTitle, GLContext glContext, Queue<GameInputEvent> inputEventBuffer, boolean resizable, int width, int height,
+			boolean fullScreen) {
+		this(windowTitle, glContext, inputEventBuffer, resizable, new Vector2i(width, height), fullScreen);
 	}
 
-	public GameWindow(String windowTitle, GLContext glContext, Queue<GameInputEvent> inputEventBuffer, boolean resizable, Vector2i windowDimensions) {
+	public GameWindow(String windowTitle, GLContext glContext, Queue<GameInputEvent> inputEventBuffer, boolean resizable, Vector2i windowDimensions,
+			boolean fullScreen) {
 		this.windowTitle = windowTitle;
 		this.glContext = glContext;
 		this.inputEventBuffer = inputEventBuffer;
 		this.resizable = resizable;
 		this.windowDimensions = windowDimensions;
+		this.fullScreen = fullScreen;
 	}
 
 	public void createDisplay() {
@@ -74,10 +77,11 @@ public class GameWindow {
 		if (DEBUG) {
 			glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 		}
-		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor()); // Get the resolution of the primary monitor
-		if (FULLSCREEN)
+		long primaryMonitor = glfwGetPrimaryMonitor();
+		GLFWVidMode vidmode = glfwGetVideoMode(primaryMonitor); // Get the resolution of the primary monitor
+		if (fullScreen)
 			windowDimensions = new Vector2i(vidmode.width(), vidmode.height());
-		windowId = glfwCreateWindow(windowDimensions.x, windowDimensions.y, windowTitle, NULL, NULL); // Create the window
+		windowId = glfwCreateWindow(windowDimensions.x, windowDimensions.y, windowTitle, fullScreen ? primaryMonitor : NULL, NULL); // Create the window
 		glContext.setWindowDim(windowDimensions);
 		if (windowId == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");

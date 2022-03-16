@@ -11,7 +11,7 @@ public class GLContext {
 	public int shaderProgramID = 0;
 	public int[] textureIDs = new int[48];
 
-	private Vector2i windowDim = new Vector2i();
+	private Vector2i windowDim;
 
 	public GLContext() {
 	}
