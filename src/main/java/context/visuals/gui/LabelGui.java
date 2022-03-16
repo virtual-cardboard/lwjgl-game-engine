@@ -4,6 +4,7 @@ import static context.visuals.renderer.TextRenderer.ALIGN_LEFT;
 
 import common.math.Matrix4f;
 import context.GLContext;
+import context.data.GameData;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.text.GameFont;
@@ -35,7 +36,7 @@ public class LabelGui extends Gui {
 	}
 
 	@Override
-	public void render(GLContext glContext, float x, float y, float width, float height) {
+	public void render(GLContext glContext, GameData data, float x, float y, float width, float height) {
 		rectangleRenderer.render(x, y, width, height, colour);
 		textRenderer.setAlign(align);
 		textRenderer.render(new Matrix4f().translate(x + paddingLeft, y + paddingTop), text, width - paddingLeft - paddingRight, font,
