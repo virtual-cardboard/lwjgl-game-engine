@@ -41,13 +41,16 @@ public abstract class TimestepTimer implements Runnable {
 	public final void run() {
 		startActions();
 		currentTime = System.currentTimeMillis();
-		while (!endCondition()) {
-			// Conditional updates if time is up
-			doUpdate();
-			// Yielding thread in case other threads need a chance to shine
-			Thread.yield();
+		try {
+			while (!endCondition()) {
+				// Conditional updates if time is up
+				doUpdate();
+				// Yielding thread in case other threads need a chance to shine
+				Thread.yield();
+			}
+		} finally {
+			endActions();
 		}
-		endActions();
 	}
 
 	/**
@@ -78,9 +81,9 @@ public abstract class TimestepTimer implements Runnable {
 	}
 
 	/**
-	 * Whether or not {@link #update() doUpdate()} should be called.
+	 * Whether or not {@link #update()} should be called.
 	 * 
-	 * @return if <code>doUpdate()</code> should be called
+	 * @return if <code>update()</code> should be called
 	 */
 	protected boolean shouldUpdate() {
 		return accumulator.getAccumulation() >= targetFrameTime;
