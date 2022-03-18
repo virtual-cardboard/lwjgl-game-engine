@@ -39,9 +39,9 @@ public abstract class TimestepTimer implements Runnable {
 
 	@Override
 	public final void run() {
-		startActions();
-		currentTime = System.currentTimeMillis();
 		try {
+			startActions();
+			currentTime = System.currentTimeMillis();
 			while (!endCondition()) {
 				// Conditional updates if time is up
 				doUpdate();

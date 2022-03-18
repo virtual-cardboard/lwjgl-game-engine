@@ -24,6 +24,11 @@ import context.visuals.builtin.TransformationVertexShader;
 import context.visuals.lwjgl.ScreenFrameBufferObject;
 import context.visuals.lwjgl.ShaderProgram;
 
+/**
+ * Calls {@link GameVisuals#render()} each frame.
+ * 
+ * @author Jay
+ */
 public final class WindowFrameUpdater extends TimestepTimer {
 
 	private GameContextWrapper wrapper;
@@ -87,6 +92,15 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		loadBuiltIn();
 	}
 
+	/**
+	 * Destroys the window.
+	 */
+	@Override
+	protected void endActions() {
+		window.destroy();
+		wrapper.terminate();
+	}
+
 	private void loadBuiltIn() {
 		RectangleVertexArrayObject rectangleVAO = createRectangleVAO(wrapper.glContext());
 		TransformationVertexShader tranformationVS = createTransformationVertexShader();
@@ -97,21 +111,8 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		wrapper.resourcePack().init(rectangleVAO, tranformationVS, texturedTransformationVS, colourFS, defaultSP, screenFBO);
 	}
 
-	/**
-	 * Destroys the window.
-	 */
-	@Override
-	protected void endActions() {
-		window.destroy();
-		wrapper.terminate();
-	}
-
 	public void setWrapper(GameContextWrapper wrapper) {
 		this.wrapper = wrapper;
-	}
-
-	public CountDownLatch getWindowCountDownLatch() {
-		return windowCountDownLatch;
 	}
 
 	public GameWindow window() {
