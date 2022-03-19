@@ -1,5 +1,12 @@
 package context.visuals.lwjgl;
 
+import context.ResourcePack;
+
+/**
+ * 
+ * @author Lunkle
+ *
+ */
 public abstract class GLObject {
 
 	private boolean initialized;
@@ -19,6 +26,16 @@ public abstract class GLObject {
 
 	public boolean initialized() {
 		return initialized;
+	}
+
+	protected void addTo(ResourcePack resourcePack) {
+	}
+
+	public void putInto(String name, ResourcePack resourcePack) {
+		throw new RuntimeException("Tried to add " + name + " of type " + this.getClass().getName()
+				+ " into ResourcePack but the GLObject.putInto(String name, ResourcePack resourcePack)"
+				+ " method was not overrided. Override the method to insert the GLObject into the"
+				+ " resource pack.");
 	}
 
 }

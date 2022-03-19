@@ -13,10 +13,10 @@ import context.visuals.lwjgl.GLContainerObject;
  * @author Jay
  *
  */
-public abstract class GLContainerObjectLoadTask<T extends GLContainerObject> extends GLLoadTask<T> {
+public abstract class GLContainerObjectLoadTask<T extends GLContainerObject> implements GLLoadTask<T> {
 
 	@Override
-	protected Future<T> accept(GameLoader loader) {
+	public Future<T> accept(GameLoader loader) {
 		return loader.submitAndReturnImmediately(this);
 	}
 

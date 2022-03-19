@@ -7,7 +7,7 @@ import common.loader.GLLoadTask;
 import context.GLContext;
 import context.visuals.lwjgl.RenderBufferObject;
 
-public class RenderBufferObjectLoadTask extends GLLoadTask<RenderBufferObject> {
+public class RenderBufferObjectLoadTask implements GLLoadTask<RenderBufferObject> {
 
 	private int width;
 	private int height;
@@ -24,7 +24,7 @@ public class RenderBufferObjectLoadTask extends GLLoadTask<RenderBufferObject> {
 	}
 
 	@Override
-	protected RenderBufferObject loadGL(GLContext glContext) {
+	public RenderBufferObject loadGL(GLContext glContext) {
 		rbo.genID();
 		rbo.bind(glContext);
 		glRenderbufferStorage(GL_RENDERBUFFER, rbo.format(), width, height);

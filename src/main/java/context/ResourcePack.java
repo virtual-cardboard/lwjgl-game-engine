@@ -9,6 +9,7 @@ import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TexturedTransformationVertexShader;
 import context.visuals.builtin.TransformationVertexShader;
 import context.visuals.lwjgl.FrameBufferObject;
+import context.visuals.lwjgl.GLObject;
 import context.visuals.lwjgl.ScreenFrameBufferObject;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
@@ -154,6 +155,10 @@ public final class ResourcePack {
 		texturedTransformationVS.delete();
 		colourFS.delete();
 		defaultSP.delete();
+	}
+
+	public void put(String name, GLObject object) {
+		object.putInto(name, this);
 	}
 
 }

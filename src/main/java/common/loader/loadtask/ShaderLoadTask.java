@@ -10,7 +10,7 @@ import context.GLContext;
 import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderType;
 
-public class ShaderLoadTask extends GLLoadTask<Shader> {
+public class ShaderLoadTask implements GLLoadTask<Shader> {
 
 	private Shader shader;
 	private String sourceLocation;

@@ -16,7 +16,7 @@ import java.nio.ShortBuffer;
 import common.loader.IOLoadTask;
 import context.audio.lwjgl.AudioClip;
 
-public class AudioClipLoadTask extends IOLoadTask<AudioClip> {
+public class AudioClipLoadTask implements IOLoadTask<AudioClip> {
 
 	private String path;
 
@@ -25,7 +25,7 @@ public class AudioClipLoadTask extends IOLoadTask<AudioClip> {
 	}
 
 	@Override
-	protected AudioClip load() throws IOException {
+	public AudioClip load() throws IOException {
 		stackPush();
 		IntBuffer channelsBuffer = stackMallocInt(1);
 		stackPush();

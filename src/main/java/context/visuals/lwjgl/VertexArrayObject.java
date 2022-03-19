@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.GLContext;
+import context.ResourcePack;
 
 /**
  * An object that contains data about a group of vertices in OpenGL. Learn more
@@ -73,6 +74,11 @@ public class VertexArrayObject extends GLContainerObject {
 
 	public void setEbo(ElementBufferObject ebo) {
 		this.ebo = ebo;
+	}
+
+	@Override
+	public void putInto(String name, ResourcePack resourcePack) {
+		resourcePack.putVAO(name, this);
 	}
 
 }

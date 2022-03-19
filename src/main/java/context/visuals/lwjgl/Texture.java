@@ -1,6 +1,12 @@
 package context.visuals.lwjgl;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDeleteTextures;
+import static org.lwjgl.opengl.GL11.glGenTextures;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
@@ -9,6 +15,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import common.loader.loadtask.TextureLoadTask;
 import common.math.Vector2f;
 import context.GLContext;
+import context.ResourcePack;
 
 /**
  * An OpenGL object that represents a 2D image. Texture are made using
@@ -89,4 +96,8 @@ public class Texture extends GLRegularObject {
 		return id;
 	}
 
+	@Override
+	public void putInto(String name, ResourcePack resourcePack) {
+		resourcePack.putTexture(name, this);
+	}
 }

@@ -8,7 +8,7 @@ import context.visuals.lwjgl.Texture;
 import context.visuals.text.FontLoader;
 import context.visuals.text.GameFont;
 
-public class FontLoadTask extends IOLoadTask<GameFont> {
+public class FontLoadTask implements IOLoadTask<GameFont> {
 
 	public static final String VC_FONT = "vcfont";
 
@@ -21,7 +21,7 @@ public class FontLoadTask extends IOLoadTask<GameFont> {
 	}
 
 	@Override
-	protected GameFont load() throws IOException {
+	public GameFont load() throws IOException {
 		return new FontLoader().loadFont(fontFile, fontTexture);
 	}
 

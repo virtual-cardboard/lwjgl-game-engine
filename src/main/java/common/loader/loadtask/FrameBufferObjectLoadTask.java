@@ -21,7 +21,7 @@ public class FrameBufferObjectLoadTask extends GLContainerObjectLoadTask<FrameBu
 	}
 
 	@Override
-	protected FrameBufferObject loadGL(GLContext glContext) {
+	public FrameBufferObject loadGL(GLContext glContext) {
 		FrameBufferObject fbo = new FrameBufferObject();
 		fbo.genID();
 		fbo.bind(glContext);

@@ -4,7 +4,7 @@ import common.loader.GLLoadTask;
 import context.GLContext;
 import context.visuals.lwjgl.ElementBufferObject;
 
-public final class ElementBufferObjectLoadTask extends GLLoadTask<ElementBufferObject> {
+public final class ElementBufferObjectLoadTask implements GLLoadTask<ElementBufferObject> {
 
 	private ElementBufferObject ebo;
 
@@ -17,7 +17,7 @@ public final class ElementBufferObjectLoadTask extends GLLoadTask<ElementBufferO
 	}
 
 	@Override
-	protected ElementBufferObject loadGL(GLContext glContext) {
+	public ElementBufferObject loadGL(GLContext glContext) {
 		ebo.genID();
 		ebo.loadData(glContext);
 		return ebo;

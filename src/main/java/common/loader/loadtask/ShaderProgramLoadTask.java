@@ -5,7 +5,7 @@ import context.GLContext;
 import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderProgram;
 
-public final class ShaderProgramLoadTask extends GLLoadTask<ShaderProgram> {
+public final class ShaderProgramLoadTask implements GLLoadTask<ShaderProgram> {
 
 	private ShaderProgram shaderProgram;
 
@@ -21,7 +21,7 @@ public final class ShaderProgramLoadTask extends GLLoadTask<ShaderProgram> {
 	}
 
 	@Override
-	protected ShaderProgram loadGL(GLContext glContext) {
+	public ShaderProgram loadGL(GLContext glContext) {
 		shaderProgram.genId();
 		shaderProgram.attachShaders();
 		shaderProgram.link();

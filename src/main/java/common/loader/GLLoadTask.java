@@ -6,20 +6,19 @@ import java.util.concurrent.Future;
 
 import context.GLContext;
 
-public abstract class GLLoadTask<T> extends LoadTask<T> {
+public interface GLLoadTask<T> extends LoadTask<T> {
 
-	public T doLoadGL(GLContext glContext) {
+	public default T doLoadGL(GLContext glContext) {
 		T t = loadGL(glContext);
-		glFinish();
-		countDownLatch.countDown();
+		glFinish(); // Executes all queued up GL commands
 		return t;
 	}
 
 	@Override
-	protected Future<T> accept(GameLoader loader) {
+	public default Future<T> accept(GameLoader loader) {
 		return loader.submitGLLoadTask(this);
 	}
 
-	protected abstract T loadGL(GLContext glContext);
+	public T loadGL(GLContext glContext);
 
 }
