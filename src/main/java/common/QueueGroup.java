@@ -3,7 +3,7 @@ package common;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.Queue;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
 import context.ContextPart;
@@ -26,9 +26,9 @@ public final class QueueGroup {
 	 * The queue that {@link GameInput} would put {@link GameEvent}s into. These
 	 * {@link GameEvent}s should then be handled in {@link GameLogic}.
 	 */
-	public final Queue<GameEvent> inputToLogic = new PriorityBlockingQueue<>();
-	public final Queue<GameEvent> logicToVisuals = new PriorityBlockingQueue<>();
-	public final Queue<GameEvent> logicToAudio = new PriorityBlockingQueue<>();
+	public final Queue<GameEvent> inputToLogic = new ArrayBlockingQueue<>(50);
+	public final Queue<GameEvent> logicToVisuals = new ArrayBlockingQueue<>(50);
+	public final Queue<GameEvent> logicToAudio = new ArrayBlockingQueue<>(50);
 	/**
 	 * The input buffer is initialized by the {@link GameEngine} upon
 	 * initialization. The {@link GameWindow} has <code>Callbacks</code> that write
