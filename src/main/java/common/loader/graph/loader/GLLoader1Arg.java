@@ -1,5 +1,7 @@
 package common.loader.graph.loader;
 
+import java.io.IOException;
+
 import context.GLContext;
 
 public interface GLLoader1Arg<T, A> extends ArgLoader {
@@ -9,5 +11,5 @@ public interface GLLoader1Arg<T, A> extends ArgLoader {
 		return 1;
 	}
 
-	public T load(GLContext context, A a);
+	public T loadGL(GLContext context, A a) throws IOException;
 }

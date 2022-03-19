@@ -1,7 +1,8 @@
-package common.loader;
+package common.loader.graph.and;
 
 import java.util.function.Consumer;
 
+import common.loader.GLLoadTask;
 import context.GLContext;
 
 public class GLAndLoadTask<T> implements GLLoadTask<T> {
@@ -16,7 +17,7 @@ public class GLAndLoadTask<T> implements GLLoadTask<T> {
 
 	@Override
 	public T loadGL(GLContext glContext) {
-		T result = loadTask.loadGL(glContext);
+		T result = loadTask.call(glContext);
 		extra.accept(result);
 		return result;
 	}

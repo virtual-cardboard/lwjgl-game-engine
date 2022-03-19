@@ -21,7 +21,7 @@ public class FontLoadTask implements IOLoadTask<GameFont> {
 	}
 
 	@Override
-	public GameFont load() throws IOException {
+	public GameFont loadIO() throws IOException {
 		return new FontLoader().loadFont(fontFile, fontTexture);
 	}
 

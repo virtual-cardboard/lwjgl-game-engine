@@ -1,5 +1,7 @@
 package common.loader.graph.loader;
 
+import java.io.IOException;
+
 public interface IOLoader0Arg<T> extends ArgLoader {
 
 	@Override
@@ -7,6 +9,6 @@ public interface IOLoader0Arg<T> extends ArgLoader {
 		return 0;
 	}
 
-	public T load();
+	public T loadIO() throws IOException;
 
 }

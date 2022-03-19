@@ -45,7 +45,7 @@ public final class GLLoader {
 	 * @return the future of the loaded object
 	 */
 	public <T> Future<T> submit(GLLoadTask<T> glLoadTask) {
-		return executor.submit(() -> glLoadTask.doLoadGL(glContext));
+		return executor.submit(() -> glLoadTask.call(glContext));
 	}
 
 	public void terminate() {

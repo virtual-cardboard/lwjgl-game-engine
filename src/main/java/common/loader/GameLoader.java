@@ -31,7 +31,7 @@ public final class GameLoader {
 
 	<T> Future<T> submitAndReturnImmediately(GLLoadTask<T> t) {
 		try {
-			return CompletableFuture.completedFuture(t.doLoadGL(renderingThreadGLContext));
+			return CompletableFuture.completedFuture(t.call(renderingThreadGLContext));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

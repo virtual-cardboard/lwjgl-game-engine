@@ -107,7 +107,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 		TexturedTransformationVertexShader texturedTransformationVS = createTexturedTransformationVertexShader();
 		ColourFragmentShader colourFS = createColourFragmentShader();
 		ScreenFrameBufferObject screenFBO = new ScreenFrameBufferObject();
-		ShaderProgram defaultSP = new ShaderProgramLoadTask(tranformationVS, colourFS).doLoadGL(wrapper.glContext());
+		ShaderProgram defaultSP = new ShaderProgramLoadTask(tranformationVS, colourFS).call(wrapper.glContext());
 		wrapper.resourcePack().init(rectangleVAO, tranformationVS, texturedTransformationVS, colourFS, defaultSP, screenFBO);
 	}
 

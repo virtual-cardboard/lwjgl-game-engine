@@ -1,6 +1,8 @@
-package common.loader;
+package common.loader.graph.and;
 
 import java.util.function.Consumer;
+
+import common.loader.IOLoadTask;
 
 public class IOAndLoadTask<T> implements IOLoadTask<T> {
 
@@ -13,13 +15,8 @@ public class IOAndLoadTask<T> implements IOLoadTask<T> {
 	}
 
 	@Override
-	public T load() {
-		T result = null;
-		try {
-			result = loadTask.call();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public T loadIO() {
+		T result = loadTask.call();
 		extra.accept(result);
 		return result;
 	}

@@ -2,14 +2,22 @@ package common.loader;
 
 import static org.lwjgl.opengl.GL11.glFinish;
 
+import java.io.IOException;
 import java.util.concurrent.Future;
 
+import common.loader.graph.loader.GLLoader0Arg;
 import context.GLContext;
 
-public interface GLLoadTask<T> extends LoadTask<T> {
+@FunctionalInterface
+public interface GLLoadTask<T> extends LoadTask<T>, GLLoader0Arg<T> {
 
-	public default T doLoadGL(GLContext glContext) {
-		T t = loadGL(glContext);
+	public default T call(GLContext glContext) {
+		T t = null;
+		try {
+			t = loadGL(glContext);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		glFinish(); // Executes all queued up GL commands
 		return t;
 	}
@@ -19,6 +27,7 @@ public interface GLLoadTask<T> extends LoadTask<T> {
 		return loader.submitGLLoadTask(this);
 	}
 
-	public T loadGL(GLContext glContext);
+	@Override
+	public T loadGL(GLContext glContext) throws IOException;
 
 }

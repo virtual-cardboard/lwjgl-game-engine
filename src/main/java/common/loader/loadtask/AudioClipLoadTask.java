@@ -25,7 +25,7 @@ public class AudioClipLoadTask implements IOLoadTask<AudioClip> {
 	}
 
 	@Override
-	public AudioClip load() throws IOException {
+	public AudioClip loadIO() throws IOException {
 		stackPush();
 		IntBuffer channelsBuffer = stackMallocInt(1);
 		stackPush();
