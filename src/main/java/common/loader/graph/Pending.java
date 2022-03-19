@@ -18,15 +18,22 @@ public abstract class Pending<T> implements Supplier<T> {
 	protected List<Pending<?>> dependents = new ArrayList<>();
 	private AtomicInteger progressBar;
 
-	public Pending(String resourceName, AtomicInteger progressBar, int numDependencies) {
+	public Pending(String resourceName, AtomicInteger progressBar, Pending<?>[] dependencies) {
 		this.resourceName = resourceName;
 		this.progressBar = progressBar;
-		this.remainingDependencies = numDependencies;
+		this.remainingDependencies = dependencies.length;
+		for (Pending<?> dependency : dependencies) {
+			dependency.dependents.add(this);
+		}
 	}
 
 	@Override
 	public T get() {
 		return data;
+	}
+
+	public int numDependents() {
+		return dependents.size();
 	}
 
 	public boolean readyToLoad() {
