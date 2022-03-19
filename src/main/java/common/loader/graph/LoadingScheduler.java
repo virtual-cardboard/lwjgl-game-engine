@@ -44,11 +44,16 @@ public class LoadingScheduler {
 		}
 	}
 
-	public int getTotalTasks() {
+	@Override
+	public String toString() {
+		return "Loading Scheduler [" + completedTasks() + "/" + totalTasks + "] tasks completed";
+	}
+
+	public int totalTasks() {
 		return totalTasks;
 	}
 
-	public int getCompletedTasks() {
+	public int completedTasks() {
 		return completedTasks.get();
 	}
 
