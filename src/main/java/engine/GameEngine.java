@@ -79,6 +79,7 @@ public final class GameEngine {
 	public void run() {
 		Queue<GameInputEvent> inputBuffer = createInputBuffer();
 		CountDownLatch windowCountDownLatch = createWindowFrameCountdownLatch();
+		CountDownLatch audioCountDownLatch = createAudioCountdownLatch();
 		CountDownLatch contextCountDownLatch = new CountDownLatch(1);
 
 		TimeAccumulator logicAccumulator = createTimeAccumulator();
@@ -89,7 +90,7 @@ public final class GameEngine {
 		GameInputHandlerRunnable inputHandler = createInputHandler();
 		createRenderingOrInputThread(frameUpdater, inputHandler);
 
-		AudioUpdater audioUpdater = createAudioUpdater(contextCountDownLatch);
+		AudioUpdater audioUpdater = createAudioUpdater(audioCountDownLatch, contextCountDownLatch);
 		createAudioThread(audioUpdater);
 
 		DatagramSocket socket = createSocket(); // We should not be passing a raw socket to the wrapper
@@ -100,6 +101,7 @@ public final class GameEngine {
 		createUDPReceiverAndSenderThreads(receiver, sender);
 
 		waitForWindowCreation(windowCountDownLatch);
+		waitForAudioInitialization(audioCountDownLatch);
 		GameLoader loader = createLoader(frameUpdater, glContext);
 
 		createWrapper(inputBuffer, logicAccumulator, frameUpdater, logicTimer, audioUpdater, inputHandler, glContext, loader, socket, networkReceiveBuffer,
@@ -158,6 +160,18 @@ public final class GameEngine {
 				e.printStackTrace();
 			}
 			print("Window initialization finished");
+		}
+	}
+
+	private void waitForAudioInitialization(CountDownLatch audioCountDownLatch) {
+		if (audio) {
+			try {
+				print("Waiting for audio initialization");
+				audioCountDownLatch.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			print("Audio initialization finished");
 		}
 	}
 
@@ -272,10 +286,18 @@ public final class GameEngine {
 		return null;
 	}
 
-	private AudioUpdater createAudioUpdater(CountDownLatch contextCountDownLatch) {
+	private CountDownLatch createAudioCountdownLatch() {
+		if (audio) {
+			print("Creating audio count down latch.");
+			return new CountDownLatch(1);
+		}
+		return null;
+	}
+
+	private AudioUpdater createAudioUpdater(CountDownLatch audioCountDownLatch, CountDownLatch contextCountDownLatch) {
 		if (audio) {
 			print("Creating audio updater.");
-			return new AudioUpdater(contextCountDownLatch);
+			return new AudioUpdater(audioCountDownLatch, contextCountDownLatch);
 		}
 		return null;
 	}
