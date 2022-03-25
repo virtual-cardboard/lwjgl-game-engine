@@ -19,8 +19,8 @@ public class PixelPositionConstraint extends GuiPositionConstraint {
 	}
 
 	@Override
-	public float calculateValue(float start, float end) {
-		return dimensionConstraint == null ? start + pixels : end - pixels - dimensionConstraint.calculateValue(start, end);
+	public float get(float start, float end) {
+		return dimensionConstraint == null ? start + pixels : end - pixels - dimensionConstraint.get(start, end);
 	}
 
 	public float getPixels() {

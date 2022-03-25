@@ -48,12 +48,20 @@ public abstract class Gui {
 
 	public void addChild(Gui child) {
 		child.setParent(this);
-		this.children.add(child);
+		children.add(child);
 	}
 
 	public void addChild(int i, Gui child) {
 		child.setParent(this);
-		this.children.add(i, child);
+		children.add(i, child);
+	}
+
+	public void removeChild(Gui child) {
+		children.remove(child);
+	}
+
+	public Gui removeChild(int i) {
+		return children.remove(i);
 	}
 
 	public void remove() {
@@ -72,8 +80,8 @@ public abstract class Gui {
 	 */
 	public PosDim posdim() {
 		PosDim p = parent.posdim();
-		return new PosDim(posXConstraint.calculateValue(p.x, p.x + p.w), posYConstraint.calculateValue(p.y, p.y + p.h),
-				widthConstraint.calculateValue(p.x, p.x + p.w), heightConstraint.calculateValue(p.y, p.y + p.h));
+		return new PosDim(posXConstraint.get(p.x, p.x + p.w), posYConstraint.get(p.y, p.y + p.h),
+				widthConstraint.get(p.x, p.x + p.w), heightConstraint.get(p.y, p.y + p.h));
 	}
 
 	// Getters and setters

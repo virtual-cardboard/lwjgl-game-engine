@@ -17,7 +17,7 @@ public class PixelDimensionConstraint extends GuiDimensionConstraint {
 	}
 
 	@Override
-	public float calculateValue(float start, float end) {
+	public float get(float start, float end) {
 		return pixels;
 	}
 

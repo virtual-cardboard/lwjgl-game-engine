@@ -30,9 +30,9 @@ public class AspectDimensionConstraint extends GuiDimensionConstraint {
 	}
 
 	@Override
-	public float calculateValue(float start, float end) {
+	public float get(float start, float end) {
 		// TODO
-		return dimensionConstraint.calculateValue(start, end) * factor;
+		return dimensionConstraint.get(start, end) * factor;
 	}
 
 }

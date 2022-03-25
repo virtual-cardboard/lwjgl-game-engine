@@ -11,8 +11,8 @@ public class CenterPositionConstraint extends GuiPositionConstraint {
 	}
 
 	@Override
-	public float calculateValue(float start, float end) {
-		return (start + end - dimensionConstraint.calculateValue(start, end)) * 0.5f;
+	public float get(float start, float end) {
+		return (start + end - dimensionConstraint.get(start, end)) * 0.5f;
 	}
 
 }

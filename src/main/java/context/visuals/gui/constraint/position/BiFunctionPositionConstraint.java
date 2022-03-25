@@ -11,7 +11,7 @@ public class BiFunctionPositionConstraint extends GuiPositionConstraint {
 	}
 
 	@Override
-	public float calculateValue(float start, float end) {
+	public float get(float start, float end) {
 		return biFunction.apply(start, end);
 	}
 

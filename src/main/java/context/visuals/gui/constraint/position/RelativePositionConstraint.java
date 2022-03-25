@@ -23,7 +23,7 @@ public class RelativePositionConstraint extends GuiPositionConstraint {
 	}
 
 	@Override
-	public float calculateValue(float start, float end) {
+	public float get(float start, float end) {
 		return start + (end - start) * factor;
 	}
 

@@ -10,9 +10,6 @@ import context.visuals.renderer.GameRenderer;
 
 public final class RootGuiRenderer extends GameRenderer {
 
-	public RootGuiRenderer() {
-	}
-
 	public void render(GLContext glContext, GameData data, RootGui root) {
 		List<Gui> children = root.getChildren();
 		for (int i = 0; i < children.size(); i++) {
@@ -24,10 +21,10 @@ public final class RootGuiRenderer extends GameRenderer {
 	}
 
 	private void recursiveRender(Gui gui, RootGui root, GameData data, float parentX, float parentY, float parentWidth, float parentHeight) {
-		float x = gui.posX().calculateValue(parentX, parentX + parentWidth);
-		float y = gui.posY().calculateValue(parentY, parentY + parentHeight);
-		float w = gui.width().calculateValue(parentX, parentX + parentWidth);
-		float h = gui.height().calculateValue(parentY, parentY + parentHeight);
+		float x = gui.posX().get(parentX, parentX + parentWidth);
+		float y = gui.posY().get(parentY, parentY + parentHeight);
+		float w = gui.width().get(parentX, parentX + parentWidth);
+		float h = gui.height().get(parentY, parentY + parentHeight);
 		gui.render(glContext, data, x, y, w, h);
 
 		List<Gui> children = gui.getChildren();
