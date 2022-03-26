@@ -1,6 +1,7 @@
 package common.loader;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import context.GLContext;
@@ -19,6 +20,14 @@ public final class GameLoader {
 
 	public <T> Future<T> submit(LoadTask<T> t) {
 		return t.accept(this);
+	}
+
+	public <T> T submitAndGet(LoadTask<T> t) {
+		try {
+			return t.accept(this).get();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	<T> Future<T> submitIOLoadTask(IOLoadTask<T> ioLoadTask) {

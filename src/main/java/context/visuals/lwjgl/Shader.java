@@ -3,6 +3,8 @@ package context.visuals.lwjgl;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 
+import context.ResourcePack;
+
 public class Shader extends GLRegularObject {
 
 	private int id;
@@ -44,6 +46,10 @@ public class Shader extends GLRegularObject {
 
 	public ShaderType getShaderType() {
 		return shaderType;
+	}
+
+	@Override
+	public void putInto(String name, ResourcePack resourcePack) {
 	}
 
 }

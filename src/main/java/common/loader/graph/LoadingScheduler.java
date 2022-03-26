@@ -3,6 +3,7 @@ package common.loader.graph;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import common.loader.GameLoader;
@@ -93,6 +94,10 @@ public class LoadingScheduler {
 		Pending<T> pending = new GLPending<>(resourceName, completedTasks, loader, a, b);
 		totalTasks++;
 		return pending;
+	}
+
+	public boolean done() {
+		return completedTasks.get() == totalTasks;
 	}
 
 }
