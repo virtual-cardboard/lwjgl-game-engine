@@ -77,6 +77,12 @@ public class LoadingScheduler {
 		return pending;
 	}
 
+	public <T, A, B, C> Pending<T> queue(String resourceName, IOLoader3Arg<T, A, B, C> loader, Pending<A> a, Pending<B> b, Pending<C> c) {
+		Pending<T> pending = new IOPending<>(resourceName, completedTasks, loader, a, b, c);
+		totalTasks++;
+		return pending;
+	}
+
 	public <T extends GLObject> Pending<T> queue(String resourceName, GLLoader0Arg<T> loader) {
 		Pending<T> pending = new GLPending<>(resourceName, completedTasks, loader);
 		tasksWithNoDependencies.add(pending);
