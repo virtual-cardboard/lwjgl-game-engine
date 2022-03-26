@@ -1,5 +1,7 @@
 package context;
 
+import java.util.Queue;
+
 public abstract class ContextPart {
 
 	private GameContext context;
@@ -24,6 +26,10 @@ public abstract class ContextPart {
 	 * {@link GameContext#terminate() terminate}.
 	 */
 	protected void terminate() {
+	}
+
+	public final ResourcePack resourcePack() {
+		return context.resourcePack();
 	}
 
 }

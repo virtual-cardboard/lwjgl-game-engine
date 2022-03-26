@@ -42,7 +42,6 @@ public class AudioUpdater extends TimestepTimer {
 	@Override
 	protected void startActions() {
 		String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
-		System.out.println("Default device found: " + defaultDeviceName);
 		device = alcOpenDevice(defaultDeviceName);
 		if (device == NULL) {
 			throw new RuntimeException("No audio driver/device found.");

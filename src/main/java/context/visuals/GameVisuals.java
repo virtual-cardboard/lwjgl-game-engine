@@ -20,7 +20,6 @@ import common.event.handling.GameEventHandlerGroup;
 import common.loader.GameLoader;
 import context.ContextPart;
 import context.GLContext;
-import context.ResourcePack;
 import context.data.GameData;
 import context.logic.TimeAccumulator;
 import context.visuals.gui.RootGui;
@@ -40,7 +39,6 @@ public abstract class GameVisuals extends ContextPart {
 	protected RootGui rootGui = new RootGui(0, 0);
 
 	protected GameLoader loader;
-	protected ResourcePack resourcePack;
 
 	private TimeAccumulator logicAccumulator;
 	private boolean initialized;
@@ -79,10 +77,9 @@ public abstract class GameVisuals extends ContextPart {
 		handlers.addHandler(clazz, handler);
 	}
 
-	public final void setComponents(QueueGroup queueGroup, GameLoader loader, ResourcePack resourcePack) {
+	public final void setComponents(QueueGroup queueGroup, GameLoader loader) {
 		this.in = queueGroup.logicToVisuals;
 		this.loader = loader;
-		this.resourcePack = resourcePack;
 	}
 
 	public final void doInit(TimeAccumulator logicAccumulator) {
@@ -104,10 +101,6 @@ public abstract class GameVisuals extends ContextPart {
 
 	protected final GameLoader loader() {
 		return loader;
-	}
-
-	protected final ResourcePack resourcePack() {
-		return resourcePack;
 	}
 
 	protected GLContext glContext() {

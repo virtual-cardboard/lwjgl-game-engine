@@ -100,7 +100,7 @@ public final class GameContext {
 		input.setComponents(queueGroup);
 		audio.setComponents(queueGroup, loader);
 		logic.setComponents(queueGroup, loader);
-		visuals.setComponents(queueGroup, loader, resourcePack());
+		visuals.setComponents(queueGroup, loader);
 		audio.init();
 		data.init();
 		input.init();
@@ -123,7 +123,7 @@ public final class GameContext {
 		return wrapper.glContext();
 	}
 
-	public ResourcePack resourcePack() {
+	ResourcePack resourcePack() {
 		return wrapper.resourcePack();
 	}
 
