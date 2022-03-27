@@ -1,7 +1,10 @@
 package context.visuals.gui;
 
+import java.util.List;
+
 import common.math.PosDim;
 import common.math.Vector2f;
+import common.math.Vector2i;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
@@ -69,6 +72,28 @@ public class RootGui extends InvisibleGui {
 		widthConstraint.setPixels(width);
 		PixelDimensionConstraint heightConstraint = (PixelDimensionConstraint) height();
 		heightConstraint.setPixels(height);
+	}
+
+	public Gui getHoveredGui(Vector2i coords) {
+		return doGetHoveredGui(this, coords);
+	}
+
+	private Gui doGetHoveredGui(Gui g, Vector2i coords) {
+		List<Gui> children = g.getChildren();
+		for (int i = children.size() - 1; i >= 0; i--) {
+			Gui c = children.get(i);
+			if (c.isEnabled()) {
+				Gui hovered = doGetHoveredGui(c, coords);
+				if (hovered != null) {
+					return hovered;
+				}
+			}
+		}
+		PosDim pd = g.posdim();
+		if (coords.x >= pd.x && coords.y >= pd.y && coords.x <= pd.x + pd.w && coords.y <= pd.y + pd.h) {
+			return g;
+		}
+		return null;
 	}
 
 	/**
