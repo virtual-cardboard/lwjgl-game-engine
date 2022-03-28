@@ -57,11 +57,14 @@ public abstract class Gui {
 	}
 
 	public void removeChild(Gui child) {
+		child.setParent(null);
 		children.remove(child);
 	}
 
 	public Gui removeChild(int i) {
-		return children.remove(i);
+		Gui child = children.remove(i);
+		child.setParent(null);
+		return child;
 	}
 
 	public void remove() {
