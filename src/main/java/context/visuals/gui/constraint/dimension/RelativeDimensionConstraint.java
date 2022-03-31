@@ -17,7 +17,7 @@ public class RelativeDimensionConstraint extends GuiDimensionConstraint {
 	}
 
 	@Override
-	public float get(float start, float end) {
+	public float doGet(float start, float end) {
 		return (end - start) * factor;
 	}
 
