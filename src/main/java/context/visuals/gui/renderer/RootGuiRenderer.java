@@ -15,12 +15,12 @@ public final class RootGuiRenderer extends GameRenderer {
 		for (int i = 0; i < children.size(); i++) {
 			Gui child = children.get(i);
 			if (child.isEnabled()) {
-				recursiveRender(child, root, data, 0, 0, root.widthPx(), root.heightPx());
+				recursiveRender(child, data, 0, 0, root.widthPx(), root.heightPx());
 			}
 		}
 	}
 
-	private void recursiveRender(Gui gui, RootGui root, GameData data, float parentX, float parentY, float parentWidth, float parentHeight) {
+	private void recursiveRender(Gui gui, GameData data, float parentX, float parentY, float parentWidth, float parentHeight) {
 		float x = gui.posX().get(parentX, parentX + parentWidth);
 		float y = gui.posY().get(parentY, parentY + parentHeight);
 		float w = gui.width().get(parentX, parentX + parentWidth);
@@ -31,7 +31,7 @@ public final class RootGuiRenderer extends GameRenderer {
 		for (int i = 0; i < children.size(); i++) {
 			Gui child = children.get(i);
 			if (child.isEnabled()) {
-				recursiveRender(child, root, data, x, y, w, h);
+				recursiveRender(child, data, x, y, w, h);
 			}
 		}
 	}
