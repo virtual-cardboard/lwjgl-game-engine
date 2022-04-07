@@ -1,8 +1,8 @@
 package context.visuals.gui.traits;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import common.math.Vector2i;
+import common.event.GameEvent;
 
 public interface HasReleaseEffect {
 
@@ -10,11 +10,12 @@ public interface HasReleaseEffect {
 
 	public void setPressed(boolean pressed);
 
-	public Consumer<Vector2i> getReleaseEffect();
+	public Supplier<GameEvent> getReleaseEffect();
 
-	public default void doReleaseEffect(Vector2i cursorCoordinates) {
-		getReleaseEffect().accept(cursorCoordinates);
+	public default GameEvent doReleaseEffect() {
 		setPressed(false);
+		Supplier<GameEvent> releaseEffect = getReleaseEffect();
+		return releaseEffect != null ? releaseEffect.get() : null;
 	}
 
 }

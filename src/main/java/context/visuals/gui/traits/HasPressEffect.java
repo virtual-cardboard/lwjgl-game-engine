@@ -1,8 +1,8 @@
 package context.visuals.gui.traits;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import common.math.Vector2i;
+import common.event.GameEvent;
 
 public interface HasPressEffect {
 
@@ -10,11 +10,12 @@ public interface HasPressEffect {
 
 	public void setPressed(boolean pressed);
 
-	public Consumer<Vector2i> getPressEffect();
+	public Supplier<GameEvent> getPressEffect();
 
-	public default void doPressEffect(Vector2i cursorCoordinates) {
-		getPressEffect().accept(cursorCoordinates);
+	public default GameEvent doPressEffect() {
 		setPressed(true);
+		Supplier<GameEvent> pressEffect = getPressEffect();
+		return pressEffect != null ? pressEffect.get() : null;
 	}
 
 }

@@ -1,14 +1,12 @@
 package context.visuals.gui.traits;
 
-import common.math.Vector2i;
+import common.event.GameEvent;
 
 public interface HasClickEffect extends HasPressEffect, HasReleaseEffect {
 
 	@Override
-	default void doReleaseEffect(Vector2i cursorCoordinates) {
-		if (isPressed()) {
-			HasReleaseEffect.super.doReleaseEffect(cursorCoordinates);
-		}
+	default GameEvent doReleaseEffect() {
+		return isPressed() ? HasReleaseEffect.super.doReleaseEffect() : null;
 	}
 
 }

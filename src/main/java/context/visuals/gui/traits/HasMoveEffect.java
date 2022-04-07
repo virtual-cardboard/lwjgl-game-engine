@@ -1,15 +1,16 @@
 package context.visuals.gui.traits;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import common.math.Vector2i;
+import common.event.GameEvent;
 
 public interface HasMoveEffect {
 
-	public Consumer<Vector2i> getMoveEffect();
+	public Supplier<GameEvent> getMoveEffect();
 
-	public default void doMoveEffect(Vector2i cursorCoordinates) {
-		getMoveEffect().accept(cursorCoordinates);
+	public default GameEvent doMoveEffect() {
+		Supplier<GameEvent> moveEffect = getMoveEffect();
+		return moveEffect != null ? moveEffect.get() : null;
 	}
 
 }
