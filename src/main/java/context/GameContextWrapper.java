@@ -43,15 +43,16 @@ public final class GameContextWrapper {
 	private final ReadWriteLock contextLock = new ReentrantReadWriteLock();
 
 	private final Queue<GameInputEvent> inputBuffer;
-	private Queue<PacketReceivedInputEvent> networkReceiveBuffer;
+	private final Queue<PacketReceivedInputEvent> networkReceiveBuffer;
 	private final TimeAccumulator accumulator;
+	private final GameLogicTimer logicTimer;
 	private final WindowFrameUpdater windowFrameUpdater;
-	private AudioUpdater audioUpdater;
+	private final AudioUpdater audioUpdater;
 	private final GameLoader loader;
 	private final Queue<PacketModel> networkSendBuffer;
-	private DatagramSocket socket;
-	private GLContext glContext;
-	private ResourcePack resourcePack;
+	private final DatagramSocket socket;
+	private final GLContext glContext;
+	private final ResourcePack resourcePack;
 
 	/**
 	 * A constructor that takes in the context, input buffer, logic timer,
@@ -75,6 +76,7 @@ public final class GameContextWrapper {
 		this.networkSendBuffer = networkSendBuffer;
 		this.accumulator = accumulator;
 		this.windowFrameUpdater = windowFrameUpdateTimer;
+		this.logicTimer = logicTimer;
 		this.audioUpdater = audioUpdater;
 		if (windowFrameUpdateTimer != null) {
 			windowFrameUpdateTimer.setWrapper(this);
@@ -149,6 +151,7 @@ public final class GameContextWrapper {
 		if (audioUpdater != null) {
 			audioUpdater.end();
 		}
+		logicTimer.end();
 		if (context != null) {
 			context.terminate();
 		}
