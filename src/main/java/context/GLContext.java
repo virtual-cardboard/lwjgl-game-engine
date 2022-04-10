@@ -1,6 +1,6 @@
 package context;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 
 public class GLContext {
 

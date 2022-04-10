@@ -5,15 +5,15 @@ import java.util.Queue;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import common.loader.GameLoader;
-import common.timestep.AudioUpdater;
-import common.timestep.GameLogicTimer;
-import common.timestep.WindowFrameUpdater;
 import context.input.GameInputHandlerRunnable;
 import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
+import engine.common.loader.GameLoader;
+import engine.common.timestep.AudioUpdater;
+import engine.common.timestep.GameLogicTimer;
+import engine.common.timestep.WindowFrameUpdater;
 
 /**
  * A container for a game context to make switching game contexts thread-safe.

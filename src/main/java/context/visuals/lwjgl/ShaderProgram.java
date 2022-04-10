@@ -9,12 +9,12 @@ import static org.lwjgl.opengl.GL20.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
-import common.math.Vector3f;
-import common.math.Vector4f;
 import context.GLContext;
 import context.ResourcePack;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
+import engine.common.math.Vector4f;
 
 public class ShaderProgram extends GLRegularObject {
 

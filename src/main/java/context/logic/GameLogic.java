@@ -4,17 +4,17 @@ import java.util.Queue;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import common.QueueGroup;
-import common.event.GameEvent;
-import common.event.async.AsyncEventPriorityQueue;
-import common.event.async.AsyncGameEvent;
-import common.event.handling.GameEventHandler;
-import common.event.handling.GameEventHandlerGroup;
-import common.loader.GameLoader;
-import common.timestep.GameLogicTimer;
 import context.ContextPart;
 import context.data.GameData;
 import context.input.GameInput;
+import engine.common.QueueGroup;
+import engine.common.event.GameEvent;
+import engine.common.event.async.AsyncEventPriorityQueue;
+import engine.common.event.async.AsyncGameEvent;
+import engine.common.event.handling.GameEventHandler;
+import engine.common.event.handling.GameEventHandlerGroup;
+import engine.common.loader.GameLoader;
+import engine.common.timestep.GameLogicTimer;
 
 /**
  * A context part that updates data and handles {@link GameEvent}s.

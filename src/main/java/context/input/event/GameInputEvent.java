@@ -1,6 +1,6 @@
 package context.input.event;
 
-import common.event.GameEvent;
+import engine.common.event.GameEvent;
 
 public abstract class GameInputEvent extends GameEvent {
 

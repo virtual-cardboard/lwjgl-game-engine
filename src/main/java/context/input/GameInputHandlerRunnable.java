@@ -1,8 +1,8 @@
 package context.input;
 
-import common.timestep.TimestepTimer;
 import context.GameContextWrapper;
 import context.logic.TimeAccumulator;
+import engine.common.timestep.TimestepTimer;
 
 public class GameInputHandlerRunnable extends TimestepTimer {
 

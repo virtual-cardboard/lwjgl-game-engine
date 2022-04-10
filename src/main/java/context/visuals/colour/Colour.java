@@ -1,6 +1,6 @@
 package context.visuals.colour;
 
-import common.math.Vector4f;
+import engine.common.math.Vector4f;
 
 /**
  * In the real world, a colour can be represented using RGBA. Each of these 4

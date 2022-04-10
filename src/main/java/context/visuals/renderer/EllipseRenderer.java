@@ -1,12 +1,12 @@
 package context.visuals.renderer;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
 import context.visuals.builtin.EllipseShaderProgram;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.lwjgl.ShaderProgram;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
 
 /**
  * A {@link GameRenderer} that renders ellipses.

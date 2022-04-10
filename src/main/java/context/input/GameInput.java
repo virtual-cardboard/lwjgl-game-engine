@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import common.QueueGroup;
-import common.event.GameEvent;
 import context.ContextPart;
 import context.input.event.*;
 import context.input.mouse.GameCursor;
+import engine.common.QueueGroup;
+import engine.common.event.GameEvent;
 
 /**
  * A context part that handles user input. It transforms raw

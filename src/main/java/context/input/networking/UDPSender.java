@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.util.Queue;
 
-import common.TerminateableRunnable;
 import context.input.networking.packet.PacketModel;
+import engine.common.TerminateableRunnable;
 
 public class UDPSender extends TerminateableRunnable {
 

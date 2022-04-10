@@ -1,11 +1,11 @@
 package context.visuals.gui;
 
-import common.math.Matrix4f;
 import context.GLContext;
 import context.data.GameData;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.VertexArrayObject;
+import engine.common.math.Matrix4f;
 
 public class ColourGui extends Gui {
 

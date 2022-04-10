@@ -1,8 +1,8 @@
 package context.visuals.builtin;
 
-import common.math.Matrix4f;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.renderer.GameRenderer;
+import engine.common.math.Matrix4f;
 
 public class RectangleRenderer extends GameRenderer {
 

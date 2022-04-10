@@ -2,13 +2,13 @@ package context.visuals.gui;
 
 import java.util.List;
 
-import common.math.PosDim;
-import common.math.Vector2f;
-import common.math.Vector2i;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
+import engine.common.math.PosDim;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 
 /**
  * The main <code>Gui</code> that all other <code>Guis</code> are children of.

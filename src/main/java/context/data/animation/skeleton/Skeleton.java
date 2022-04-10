@@ -1,6 +1,6 @@
 package context.data.animation.skeleton;
 
-import common.IntWrapper;
+import engine.common.IntWrapper;
 
 public class Skeleton {
 

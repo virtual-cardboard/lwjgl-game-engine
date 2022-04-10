@@ -1,6 +1,5 @@
 package context.visuals.renderer;
 
-import common.math.Matrix4f;
 import context.GLContext;
 import context.GameContext;
 import context.ResourcePack;
@@ -9,6 +8,7 @@ import context.visuals.builtin.TextureShaderProgram;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
+import engine.common.math.Matrix4f;
 
 /**
  * A {@link GameRenderer} that renders textures.

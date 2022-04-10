@@ -3,12 +3,12 @@ package context.audio;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import common.QueueGroup;
-import common.event.GameEvent;
-import common.event.handling.GameEventHandler;
-import common.event.handling.GameEventHandlerGroup;
-import common.loader.GameLoader;
 import context.ContextPart;
+import engine.common.QueueGroup;
+import engine.common.event.GameEvent;
+import engine.common.event.handling.GameEventHandler;
+import engine.common.event.handling.GameEventHandlerGroup;
+import engine.common.loader.GameLoader;
 
 public abstract class GameAudio extends ContextPart {
 

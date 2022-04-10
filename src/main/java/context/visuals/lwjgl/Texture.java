@@ -12,10 +12,10 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-import common.loader.loadtask.TextureLoadTask;
-import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
+import engine.common.loader.loadtask.TextureLoadTask;
+import engine.common.math.Vector2f;
 
 /**
  * An OpenGL object that represents a 2D image. Texture are made using

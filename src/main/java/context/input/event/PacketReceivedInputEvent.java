@@ -1,7 +1,7 @@
 package context.input.event;
 
-import common.source.NetworkSource;
 import context.input.networking.packet.PacketModel;
+import engine.common.source.NetworkSource;
 
 public class PacketReceivedInputEvent extends GameInputEvent {
 

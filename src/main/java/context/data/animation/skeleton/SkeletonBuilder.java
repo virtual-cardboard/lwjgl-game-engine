@@ -2,7 +2,7 @@ package context.data.animation.skeleton;
 
 import java.util.List;
 
-import common.IntWrapper;
+import engine.common.IntWrapper;
 
 public class SkeletonBuilder {
 

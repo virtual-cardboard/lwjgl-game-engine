@@ -3,8 +3,8 @@ package context.input;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import common.event.GameEvent;
 import context.input.event.GameInputEvent;
+import engine.common.event.GameEvent;
 
 /**
  * <p>

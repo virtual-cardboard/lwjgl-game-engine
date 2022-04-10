@@ -6,10 +6,10 @@ import java.util.Queue;
 
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 
-import common.math.Vector2i;
 import context.GLContext;
 import context.input.event.FrameResizedInputEvent;
 import context.input.event.GameInputEvent;
+import engine.common.math.Vector2i;
 
 /**
  * 

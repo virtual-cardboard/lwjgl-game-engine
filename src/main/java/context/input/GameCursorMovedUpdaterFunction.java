@@ -2,9 +2,9 @@ package context.input;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
 import context.input.event.MouseMovedInputEvent;
 import context.input.mouse.GameCursor;
+import engine.common.event.GameEvent;
 
 class GameCursorMovedUpdaterFunction implements Function<MouseMovedInputEvent, GameEvent> {
 

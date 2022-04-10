@@ -2,8 +2,6 @@ package context;
 
 import java.util.Queue;
 
-import common.QueueGroup;
-import common.loader.GameLoader;
 import context.audio.GameAudio;
 import context.data.GameData;
 import context.input.GameInput;
@@ -12,6 +10,8 @@ import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.packet.PacketModel;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
+import engine.common.QueueGroup;
+import engine.common.loader.GameLoader;
 
 /**
  * A grouping of the five context parts needed in a game: <br>

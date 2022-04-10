@@ -8,8 +8,6 @@ import static org.lwjgl.opengl.GL11.glClearColor;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.Pair;
-import common.math.Matrix4f;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextShaderProgram;
 import context.visuals.colour.Colour;
@@ -18,6 +16,8 @@ import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.text.CharacterData;
 import context.visuals.text.GameFont;
+import engine.common.Pair;
+import engine.common.math.Matrix4f;
 
 /**
  * A {@link GameRenderer} that renders text.

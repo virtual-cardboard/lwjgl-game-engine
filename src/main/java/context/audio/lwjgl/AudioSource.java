@@ -2,7 +2,7 @@ package context.audio.lwjgl;
 
 import static org.lwjgl.openal.AL10.*;
 
-import common.math.Vector3f;
+import engine.common.math.Vector3f;
 
 public class AudioSource extends ALObject {
 

@@ -2,12 +2,12 @@ package context.visuals.gui;
 
 import static context.visuals.renderer.TextRenderer.ALIGN_LEFT;
 
-import common.math.Matrix4f;
 import context.GLContext;
 import context.data.GameData;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.text.GameFont;
+import engine.common.math.Matrix4f;
 
 public class LabelGui extends Gui {
 

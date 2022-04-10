@@ -1,7 +1,7 @@
 package context.data.animation;
 
-import common.math.Vector2f;
 import context.visuals.lwjgl.Texture;
+import engine.common.math.Vector2f;
 
 public class JointTexture {
 

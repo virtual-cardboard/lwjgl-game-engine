@@ -1,12 +1,12 @@
 package context.visuals.renderer;
 
-import common.math.Matrix4f;
-import common.math.Vector3f;
 import context.visuals.builtin.LineShaderProgram;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.colour.Colour;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.VertexArrayObject;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector3f;
 
 /**
  * A {@link GameRenderer} that renders line segments.

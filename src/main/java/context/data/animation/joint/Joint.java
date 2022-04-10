@@ -1,6 +1,6 @@
 package context.data.animation.joint;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 
 public class Joint {
 

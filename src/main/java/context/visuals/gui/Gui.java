@@ -3,15 +3,15 @@ package context.visuals.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.math.Matrix4f;
-import common.math.PosDim;
-import common.math.Vector2f;
-import common.math.Vector2i;
 import context.GLContext;
 import context.data.GameData;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
+import engine.common.math.Matrix4f;
+import engine.common.math.PosDim;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 
 /**
  * A Graphical User Interface (GUI) with position constraints and dimension

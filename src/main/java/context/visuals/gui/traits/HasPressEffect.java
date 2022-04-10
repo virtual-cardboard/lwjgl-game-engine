@@ -2,7 +2,7 @@ package context.visuals.gui.traits;
 
 import java.util.function.Supplier;
 
-import common.event.GameEvent;
+import engine.common.event.GameEvent;
 
 public interface HasPressEffect {
 

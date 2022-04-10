@@ -2,10 +2,10 @@ package context.input;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
 import context.GameContext;
 import context.input.event.FrameResizedInputEvent;
 import context.visuals.gui.RootGui;
+import engine.common.event.GameEvent;
 
 class RootGuiUpdaterFunction implements Function<FrameResizedInputEvent, GameEvent> {
 

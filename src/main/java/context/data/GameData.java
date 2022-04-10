@@ -1,7 +1,7 @@
 package context.data;
 
-import common.loader.GameLoader;
 import context.ContextPart;
+import engine.common.loader.GameLoader;
 
 /**
  * A context part that stores data about the game. For example, in a single

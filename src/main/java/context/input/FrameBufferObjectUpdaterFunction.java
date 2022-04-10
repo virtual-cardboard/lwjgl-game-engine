@@ -2,11 +2,11 @@ package context.input;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
 import context.GameContext;
 import context.input.event.FrameResizedInputEvent;
 import context.visuals.lwjgl.FrameBufferObject;
 import context.visuals.lwjgl.Texture;
+import engine.common.event.GameEvent;
 
 public class FrameBufferObjectUpdaterFunction implements Function<FrameResizedInputEvent, GameEvent> {
 

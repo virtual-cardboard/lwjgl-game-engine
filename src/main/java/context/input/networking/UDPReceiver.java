@@ -10,10 +10,10 @@ import java.net.InetSocketAddress;
 import java.net.SocketTimeoutException;
 import java.util.Queue;
 
-import common.TerminateableRunnable;
-import common.source.NetworkSource;
 import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.packet.address.PacketAddress;
+import engine.common.TerminateableRunnable;
+import engine.common.source.NetworkSource;
 
 public class UDPReceiver extends TerminateableRunnable {
 

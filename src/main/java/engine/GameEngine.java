@@ -7,11 +7,6 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
-import common.loader.GameLoader;
-import common.timestep.AudioUpdater;
-import common.timestep.GameLogicTimer;
-import common.timestep.TimestepTimer;
-import common.timestep.WindowFrameUpdater;
 import context.GLContext;
 import context.GameContext;
 import context.GameContextWrapper;
@@ -24,6 +19,11 @@ import context.input.networking.UDPReceiver;
 import context.input.networking.UDPSender;
 import context.input.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
+import engine.common.loader.GameLoader;
+import engine.common.timestep.AudioUpdater;
+import engine.common.timestep.GameLogicTimer;
+import engine.common.timestep.TimestepTimer;
+import engine.common.timestep.WindowFrameUpdater;
 
 /**
  * The object that begins a game. Initializes everything required to start a

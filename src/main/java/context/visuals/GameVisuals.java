@@ -13,17 +13,17 @@ import java.util.Queue;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import common.QueueGroup;
-import common.event.GameEvent;
-import common.event.handling.GameEventHandler;
-import common.event.handling.GameEventHandlerGroup;
-import common.loader.GameLoader;
 import context.ContextPart;
 import context.GLContext;
 import context.data.GameData;
 import context.logic.TimeAccumulator;
 import context.visuals.gui.RootGui;
 import context.visuals.renderer.GameRenderer;
+import engine.common.QueueGroup;
+import engine.common.event.GameEvent;
+import engine.common.event.handling.GameEventHandler;
+import engine.common.event.handling.GameEventHandlerGroup;
+import engine.common.loader.GameLoader;
 
 /**
  * A bundle part that displays visuals based on data from {@link GameData}.

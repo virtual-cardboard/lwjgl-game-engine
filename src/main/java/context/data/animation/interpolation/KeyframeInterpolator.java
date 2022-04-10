@@ -6,9 +6,9 @@ import static java.lang.Math.PI;
 
 import java.util.List;
 
-import common.math.Vector2f;
 import context.data.animation.Keyframe;
 import context.data.animation.SkeletonState;
+import engine.common.math.Vector2f;
 
 public class KeyframeInterpolator {
 

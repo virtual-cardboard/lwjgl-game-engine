@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import common.math.Vector2f;
 import context.data.animation.interpolation.InterpolationType;
 import context.data.animation.joint.Joint;
 import context.data.animation.joint.JointController;
 import context.data.animation.skeleton.Skeleton;
 import context.data.animation.skeleton.SkeletonNode;
+import engine.common.math.Vector2f;
 
 public class AnimationJointController extends JointController {
 

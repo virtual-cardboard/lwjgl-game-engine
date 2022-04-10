@@ -15,13 +15,13 @@ import java.util.Queue;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.Callback;
 
-import common.math.Vector2i;
 import context.input.event.GameInputEvent;
 import context.input.lwjglcallback.KeyCallback;
 import context.input.lwjglcallback.MouseButtonCallback;
 import context.input.lwjglcallback.MouseMovementCallback;
 import context.input.lwjglcallback.MouseScrollCallback;
 import context.input.lwjglcallback.WindowResizeCallback;
+import engine.common.math.Vector2i;
 
 /**
  * 

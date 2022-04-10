@@ -3,9 +3,9 @@ package context.data.animation;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.math.Vector2f;
 import context.data.animation.skeleton.Skeleton;
 import context.data.animation.skeleton.SkeletonNode;
+import engine.common.math.Vector2f;
 
 public class SkeletonState {
 

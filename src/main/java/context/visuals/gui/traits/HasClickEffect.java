@@ -1,6 +1,6 @@
 package context.visuals.gui.traits;
 
-import common.event.GameEvent;
+import engine.common.event.GameEvent;
 
 public interface HasClickEffect extends HasPressEffect, HasReleaseEffect {
 
