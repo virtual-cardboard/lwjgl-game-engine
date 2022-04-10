@@ -28,6 +28,9 @@ public abstract class Pending<T> implements Supplier<T> {
 	}
 
 	@Override
+	/**
+	 * May return null if data has not yet been loaded.
+	 */
 	public T get() {
 		return data;
 	}

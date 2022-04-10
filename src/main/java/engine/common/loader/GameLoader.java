@@ -1,6 +1,7 @@
 package engine.common.loader;
 
-import java.util.concurrent.CompletableFuture;
+import static java.util.concurrent.CompletableFuture.completedFuture;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -40,7 +41,7 @@ public final class GameLoader {
 
 	<T> Future<T> submitAndReturnImmediately(GLLoadTask<T> t) {
 		try {
-			return CompletableFuture.completedFuture(t.call(renderingThreadGLContext));
+			return completedFuture(t.call(renderingThreadGLContext));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
