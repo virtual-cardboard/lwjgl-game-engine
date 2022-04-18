@@ -199,4 +199,7 @@ public abstract class GameInput extends ContextPart {
 		return cursor;
 	}
 
+	public QueueGroup queueGroup() {
+		return queueGroup;
+	}
 }
