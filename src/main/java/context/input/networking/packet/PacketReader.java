@@ -1,5 +1,8 @@
 package context.input.networking.packet;
 
+import java.util.InputMismatchException;
+import java.util.Queue;
+
 import static context.input.networking.packet.PacketPrimitive.BYTE;
 import static context.input.networking.packet.PacketPrimitive.BYTE_ARRAY;
 import static context.input.networking.packet.PacketPrimitive.INT;
@@ -16,23 +19,20 @@ import static context.input.networking.packet.PacketPrimitive.STRING;
 import static context.input.networking.packet.PacketPrimitive.STRING_ARRAY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import java.util.InputMismatchException;
-import java.util.Queue;
-
 public class PacketReader {
 
 	private byte[] bytes;
 	private Queue<PacketPrimitive> primitives;
 	private int index = 0;
 
-	public PacketReader(SerializationFormat format, PacketModel model) {
+	public PacketReader(PacketFormat format, PacketModel model) {
 		this.primitives = format.primitives();
 		// TODO
 		// apply encryption inverses
 		this.bytes = model.bytes();
 	}
 
-	public PacketReader(SerializationFormat format, PacketReader reader) {
+	public PacketReader(PacketFormat format, PacketReader reader) {
 		this.primitives = format.primitives();
 		// encryption here too?
 		this.bytes = reader.bytes;
@@ -48,18 +48,14 @@ public class PacketReader {
 
 	public long readLong() {
 		typeValidate(LONG);
-		long val = ((long) bytes[index] << 56) | ((long) (bytes[index + 1] & 0xFF) << 48) |
-				((long) (bytes[index + 2] & 0xFF) << 40) | ((long) (bytes[index + 3] & 0xFF) << 32) |
-				((long) (bytes[index + 4] & 0xFF) << 24) | ((bytes[index + 5] & 0xFF) << 16) |
-				((bytes[index + 6] & 0xFF) << 8) | (bytes[index + 7] & 0xFF);
+		long val = ((long) bytes[index] << 56) | ((long) (bytes[index + 1] & 0xFF) << 48) | ((long) (bytes[index + 2] & 0xFF) << 40) | ((long) (bytes[index + 3] & 0xFF) << 32) | ((long) (bytes[index + 4] & 0xFF) << 24) | ((bytes[index + 5] & 0xFF) << 16) | ((bytes[index + 6] & 0xFF) << 8) | (bytes[index + 7] & 0xFF);
 		index += 8;
 		return val;
 	}
 
 	public int readInt() {
 		typeValidate(INT);
-		int val = ((bytes[index]) << 24) | ((bytes[index + 1] & 0xFF) << 16) |
-				((bytes[index + 2] & 0xFF) << 8) | (bytes[index + 3] & 0xFF);
+		int val = ((bytes[index]) << 24) | ((bytes[index + 1] & 0xFF) << 16) | ((bytes[index + 2] & 0xFF) << 8) | (bytes[index + 3] & 0xFF);
 		index += 4;
 		return val;
 	}
@@ -84,10 +80,7 @@ public class PacketReader {
 		index += 1;
 		long[] val = new long[numElements];
 		for (int i = 0; i < numElements; i++) {
-			long x = (bytes[index] << 56) | ((bytes[index + 1] & 0xFF) << 48) |
-					((bytes[index + 2] & 0xFF) << 40) | ((bytes[index + 3] & 0xFF) << 32) |
-					((bytes[index + 4] & 0xFF) << 24) | ((bytes[index + 5] & 0xFF) << 16) |
-					((bytes[index + 6] & 0xFF) << 8) | (bytes[index + 7] & 0xFF);
+			long x = (bytes[index] << 56) | ((bytes[index + 1] & 0xFF) << 48) | ((bytes[index + 2] & 0xFF) << 40) | ((bytes[index + 3] & 0xFF) << 32) | ((bytes[index + 4] & 0xFF) << 24) | ((bytes[index + 5] & 0xFF) << 16) | ((bytes[index + 6] & 0xFF) << 8) | (bytes[index + 7] & 0xFF);
 			index += 8;
 			val[i] = x;
 		}
@@ -100,8 +93,7 @@ public class PacketReader {
 		index += 1;
 		int[] val = new int[numElements];
 		for (int i = 0; i < numElements; i++) {
-			int x = ((bytes[index]) << 24) | ((bytes[index + 1] & 0xFF) << 16) |
-					((bytes[index + 2] & 0xFF) << 8) | (bytes[index + 3] & 0xFF);
+			int x = ((bytes[index]) << 24) | ((bytes[index + 1] & 0xFF) << 16) | ((bytes[index + 2] & 0xFF) << 8) | (bytes[index + 3] & 0xFF);
 			index += 4;
 			val[i] = x;
 		}
@@ -159,14 +151,14 @@ public class PacketReader {
 
 	public byte[] readIPv4() {
 		typeValidate(IP_V4);
-		byte[] val = new byte[] { bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3] };
+		byte[] val = new byte[]{bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3]};
 		index += 4;
 		return val;
 	}
 
 	public byte[] readIPv6() {
 		typeValidate(IP_V6);
-		byte[] val = new byte[] { bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3], bytes[index + 4], bytes[index + 5] };
+		byte[] val = new byte[]{bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3], bytes[index + 4], bytes[index + 5]};
 		index += 6;
 		return val;
 	}
@@ -177,7 +169,7 @@ public class PacketReader {
 		index += 1;
 		byte[][] ips = new byte[numElements][4];
 		for (int i = 0; i < numElements; i++) {
-			ips[i] = new byte[] { bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3] };
+			ips[i] = new byte[]{bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3]};
 			index += 4;
 		}
 		return ips;
@@ -189,7 +181,7 @@ public class PacketReader {
 		index += 1;
 		byte[][] ips = new byte[numElements][6];
 		for (int i = 0; i < numElements; i++) {
-			ips[i] = new byte[] { bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3], bytes[index + 4], bytes[index + 5] };
+			ips[i] = new byte[]{bytes[index], bytes[index + 1], bytes[index + 2], bytes[index + 3], bytes[index + 4], bytes[index + 5]};
 			index += 6;
 		}
 		return ips;

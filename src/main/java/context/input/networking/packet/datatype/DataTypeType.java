@@ -1,15 +1,15 @@
 package context.input.networking.packet.datatype;
 
-public enum DataTypeCategory {
+public enum DataTypeType {
 
 	LONG,
 	INT,
 	SHORT,
 	BYTE,
 	BOOLEAN,
-	UTF_8_STRING,
+	STRING_UTF8,
 	ONE_OF,
-	MANY_OF,
+	REPEATED,
 	OPTIONAL;
 
 }
