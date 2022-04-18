@@ -2,13 +2,25 @@ package context.input.networking.packet.datatype;
 
 public class SerializationDataType {
 
-	private final DataTypeCategory category;
+    public static final SerializationDataType LONG = new SerializationDataType(DataTypeType.LONG);
+    public static final SerializationDataType INT = new SerializationDataType(DataTypeType.INT);
+    public static final SerializationDataType SHORT = new SerializationDataType(DataTypeType.SHORT);
+    public static final SerializationDataType BYTE = new SerializationDataType(DataTypeType.BYTE);
+    public static final SerializationDataType BOOLEAN = new SerializationDataType(DataTypeType.BOOLEAN);
+    public static final SerializationDataType STRING_UTF8 = new SerializationDataType(DataTypeType.STRING_UTF8);
 
-	protected SerializationDataType(DataTypeCategory category) {
-		this.category = category;
-	}
+    private final DataTypeType type;
 
-	public DataTypeCategory category() {
-		return category;
-	}
+    protected SerializationDataType(DataTypeType type) {
+        this.type = type;
+    }
+
+    public DataTypeType type() {
+        return type;
+    }
+
+    public static RepeatedDataType repeated(SerializationDataType type) {
+        return new RepeatedDataType(type);
+    }
+
 }
