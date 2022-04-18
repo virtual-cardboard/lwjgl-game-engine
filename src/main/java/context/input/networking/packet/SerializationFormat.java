@@ -6,19 +6,19 @@ import java.util.Queue;
 import context.input.networking.packet.address.PacketAddress;
 import context.input.networking.packet.cryption.EncryptionAlgorithmType;
 
-public class PacketFormat {
+public class SerializationFormat {
 
 	private Queue<PacketPrimitive> primitives = new LinkedList<>();
 	private Queue<EncryptionAlgorithmType> encryptions = new LinkedList<>();
 
-	public PacketFormat with(PacketPrimitive... primitives) {
+	public SerializationFormat with(PacketPrimitive... primitives) {
 		for (PacketPrimitive primitive : primitives) {
 			this.primitives.add(primitive);
 		}
 		return this;
 	}
 
-	public PacketFormat with(EncryptionAlgorithmType... algorithms) {
+	public SerializationFormat with(EncryptionAlgorithmType... algorithms) {
 		for (EncryptionAlgorithmType algorithm : algorithms) {
 			this.encryptions.add(algorithm);
 		}

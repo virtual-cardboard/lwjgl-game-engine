@@ -9,8 +9,8 @@ import context.input.networking.packet.address.PacketAddress;
 
 public class PacketModel {
 
-	private PacketAddress dest;
-	private byte[] bytes;
+	private final PacketAddress dest;
+	private final byte[] bytes;
 
 	public PacketModel(byte[] bytes, PacketAddress dest) {
 		this.dest = dest;
@@ -26,8 +26,7 @@ public class PacketModel {
 	}
 
 	public static DatagramPacket toPacket(PacketModel model) {
-		DatagramPacket datagramPacket = new DatagramPacket(model.bytes, model.bytes.length, model.dest.ip(), model.dest.port());
-		return datagramPacket;
+		return new DatagramPacket(model.bytes, model.bytes.length, model.dest.ip(), model.dest.port());
 	}
 
 	public static PacketModel toModel(DatagramPacket packet) {

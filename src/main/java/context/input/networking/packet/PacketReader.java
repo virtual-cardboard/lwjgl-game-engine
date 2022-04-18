@@ -25,14 +25,14 @@ public class PacketReader {
 	private Queue<PacketPrimitive> primitives;
 	private int index = 0;
 
-	public PacketReader(PacketFormat format, PacketModel model) {
+	public PacketReader(SerializationFormat format, PacketModel model) {
 		this.primitives = format.primitives();
 		// TODO
 		// apply encryption inverses
 		this.bytes = model.bytes();
 	}
 
-	public PacketReader(PacketFormat format, PacketReader reader) {
+	public PacketReader(SerializationFormat format, PacketReader reader) {
 		this.primitives = format.primitives();
 		// encryption here too?
 		this.bytes = reader.bytes;

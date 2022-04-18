@@ -33,13 +33,13 @@ public class PacketBuilder {
 	private Queue<Byte> bytes = new ArrayDeque<>();
 	private PacketAddress dest;
 
-	public PacketBuilder(PacketFormat format, PacketAddress dest) {
+	public PacketBuilder(SerializationFormat format, PacketAddress dest) {
 		this.dest = dest;
 		primitives = format.primitives();
 		encryptions = format.encryptions();
 	}
 
-	public PacketBuilder(PacketFormat format, PacketBuilder builder) {
+	public PacketBuilder(SerializationFormat format, PacketBuilder builder) {
 		this.dest = builder.dest;
 		this.bytes = builder.bytes;
 		primitives = format.primitives();
