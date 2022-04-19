@@ -23,11 +23,11 @@ public class SerializationFormat {
 		return this;
 	}
 
-	public Queue<SerializationDataType> getDataTypes() {
+	public Queue<SerializationDataType> dataTypes() {
 		return dataTypes;
 	}
 
-	public Queue<EncryptionAlgorithmType> getEncryptionTypes() {
+	public Queue<EncryptionAlgorithmType> encryptionTypes() {
 		return encryptionTypes;
 	}
 
