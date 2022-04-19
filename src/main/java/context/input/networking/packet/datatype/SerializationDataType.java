@@ -1,5 +1,7 @@
 package context.input.networking.packet.datatype;
 
+import context.input.networking.packet.SerializationFormat;
+
 public class SerializationDataType {
 
     public static final SerializationDataType LONG = new SerializationDataType(DataTypeType.LONG);
@@ -21,6 +23,10 @@ public class SerializationDataType {
 
     public static RepeatedDataType repeated(SerializationDataType type) {
         return new RepeatedDataType(type);
+    }
+
+    public static FormatDataType format(SerializationFormat format) {
+        return new FormatDataType(format);
     }
 
 }

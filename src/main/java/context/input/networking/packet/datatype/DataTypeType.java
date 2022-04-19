@@ -10,6 +10,7 @@ public enum DataTypeType {
 	STRING_UTF8,
 	ONE_OF,
 	REPEATED,
-	OPTIONAL;
+	OPTIONAL,
+	FORMAT;
 
 }
