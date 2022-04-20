@@ -1,4 +1,4 @@
-package context.input.networking.packet;
+package engine.common.loader.serialization;
 
 import static java.util.Arrays.asList;
 
@@ -12,6 +12,10 @@ public class SerializationFormat {
 
 	private final Queue<SerializationDataType> dataTypes = new LinkedList<>();
 	private final Queue<EncryptionAlgorithmType> encryptionTypes = new LinkedList<>();
+
+	public static SerializationFormat format() {
+		return new SerializationFormat();
+	}
 
 	public SerializationFormat with(SerializationDataType... types) {
 		dataTypes.addAll(asList(types));

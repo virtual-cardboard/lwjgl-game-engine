@@ -1,6 +1,6 @@
 package context.input.networking.packet.datatype;
 
-import context.input.networking.packet.SerializationFormat;
+import engine.common.loader.serialization.SerializationFormat;
 
 public class SerializationDataType {
 

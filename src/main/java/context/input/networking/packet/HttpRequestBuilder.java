@@ -14,6 +14,7 @@ import java.util.Queue;
 
 import context.input.networking.packet.cryption.EncryptionAlgorithmType;
 import context.input.networking.packet.datatype.SerializationDataType;
+import engine.common.loader.serialization.SerializationFormat;
 
 public class HttpRequestBuilder {
 

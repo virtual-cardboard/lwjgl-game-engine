@@ -2,7 +2,7 @@ package context.input.networking.packet.datatype;
 
 import static context.input.networking.packet.datatype.DataTypeType.FORMAT;
 
-import context.input.networking.packet.SerializationFormat;
+import engine.common.loader.serialization.SerializationFormat;
 
 public class FormatDataType extends SerializationDataType {
 
