@@ -27,11 +27,11 @@ public class SerializationFormat {
 		return this;
 	}
 
-	public Queue<SerializationDataType> dataTypes() {
+	public ArrayDeque<SerializationDataType> dataTypes() {
 		return new ArrayDeque<>(dataTypes);
 	}
 
-	public Queue<EncryptionAlgorithmType> encryptionTypes() {
+	public ArrayDeque<EncryptionAlgorithmType> encryptionTypes() {
 		return new ArrayDeque<>(encryptionTypes);
 	}
 

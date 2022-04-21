@@ -1,7 +1,5 @@
 package engine.common.loader.serialization;
 
-import static context.input.networking.packet.datatype.DataTypeType.STRING_UTF8;
-
 import java.util.InputMismatchException;
 import java.util.Queue;
 
@@ -61,7 +59,7 @@ public class SerializationClassGenerator {
 		for (String fieldName : fieldNames) {
 			s += "\t\tthis." + fieldName + " = reader.read" + toCamelCase(dataTypes.poll().type.name()) + "();\n";
 		}
-		s += "\t}\n";
+		s += "\t}\n\n";
 		// Getters
 		for (int i = 0; i < fieldNames.length; i++) {
 			s += "\tpublic " + fieldTypes[i] + " " + fieldNames[i] + "() {\n";
@@ -116,14 +114,16 @@ public class SerializationClassGenerator {
 //			case ONE_OF:
 //				// TODO figure out how to concisely express a "one of ..." data type
 //				return "reader.read";
-			case REPEATED:
-				SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
-				if (repeatedDataType.type == STRING_UTF8) {
-					return "new ArrayList<>(Arrays.toList(reader.readStringArray()";
-				}
-				return "new ArrayList<>(Arrays." + convertPrimitiveToWrapper(repeatedDataType) + ">";
-			case OPTIONAL:
-			case FORMAT:
+			// TODO
+//			case REPEATED:
+//				SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
+//				if (repeatedDataType.type == STRING_UTF8) {
+//					return "new ArrayList<>(Arrays.toList(reader.readStringArray()";
+//				}
+//				return "new ArrayList<>(Arrays." + convertPrimitiveToWrapper(repeatedDataType) + ">";
+//			case OPTIONAL:
+//
+//			case FORMAT:
 			default:
 				throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not interpret data type as a field type.");
 		}

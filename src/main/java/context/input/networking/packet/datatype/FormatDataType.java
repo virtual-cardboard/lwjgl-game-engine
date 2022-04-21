@@ -13,7 +13,7 @@ public class FormatDataType extends SerializationDataType {
 		this.format = format;
 	}
 
-	public SerializationFormat getFormat() {
+	public SerializationFormat format() {
 		return format;
 	}
 
