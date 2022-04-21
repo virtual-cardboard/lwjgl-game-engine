@@ -28,10 +28,25 @@ public class SerializationClassGenerator {
 	}
 
 	private static String generatePOJOClass(Class<? extends SerializationFormatCollection> formatsClass, SerializationFormatCollection format) {
+		Enum<?> e = (Enum<?>) format;
 		String s = "";
-		s += formatsClass.getPackage() + ".pojo;\n";
-		s += "\n";
+		s += formatsClass.getPackage() + ".pojo;\n\n";
+		s += "public class " + toCamelCase(e.toString()) + " {\n";
 		Queue<SerializationDataType> dataTypes = format.getFormat().dataTypes();
+		FormatLabels annotation = null;
+		try {
+			annotation = formatsClass.getField(e.name()).getAnnotation(FormatLabels.class);
+		} catch (NoSuchFieldException ex) {
+			throw new RuntimeException("Serialization format definition " + e.name() + " needs field names for the class generator to create a POJO class." +
+					"\nAdd a @FormatLabels annotation to define field names. For example:\n\t@FormatLabels({\"field1\", \"field2\"})");
+		}
+		String[] labels = annotation.value();
+		for (int i = 0; i < labels.length; i++) {
+			SerializationDataType dataType = dataTypes.poll();
+			String label = labels[i];
+			s += "\tprivate " + dataType.type.toString().toLowerCase() + " " + label + ";\n";
+		}
+		s += "}\n";
 		return s;
 	}
 

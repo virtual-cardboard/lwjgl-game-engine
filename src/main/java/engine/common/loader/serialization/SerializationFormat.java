@@ -2,7 +2,7 @@ package engine.common.loader.serialization;
 
 import static java.util.Arrays.asList;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.Queue;
 
 import context.input.networking.packet.cryption.EncryptionAlgorithmType;
@@ -10,8 +10,8 @@ import context.input.networking.packet.datatype.SerializationDataType;
 
 public class SerializationFormat {
 
-	private final Queue<SerializationDataType> dataTypes = new LinkedList<>();
-	private final Queue<EncryptionAlgorithmType> encryptionTypes = new LinkedList<>();
+	private final Queue<SerializationDataType> dataTypes = new ArrayDeque<>();
+	private final Queue<EncryptionAlgorithmType> encryptionTypes = new ArrayDeque<>();
 
 	public static SerializationFormat format() {
 		return new SerializationFormat();
@@ -28,11 +28,11 @@ public class SerializationFormat {
 	}
 
 	public Queue<SerializationDataType> dataTypes() {
-		return dataTypes;
+		return new ArrayDeque<>(dataTypes);
 	}
 
 	public Queue<EncryptionAlgorithmType> encryptionTypes() {
-		return encryptionTypes;
+		return new ArrayDeque<>(encryptionTypes);
 	}
 
 }
