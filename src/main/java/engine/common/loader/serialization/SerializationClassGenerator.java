@@ -1,5 +1,7 @@
 package engine.common.loader.serialization;
 
+import static context.input.networking.packet.datatype.DataTypeType.STRING_UTF8;
+
 import java.util.InputMismatchException;
 import java.util.Queue;
 
@@ -32,8 +34,8 @@ public class SerializationClassGenerator {
 		Enum<?> e = (Enum<?>) format;
 		String s = "";
 		s += formatsClass.getPackage() + ".pojo;\n\n";
-		s += "public class " + toCamelCase(e.toString()) + " {\n\n";
-		Queue<SerializationDataType> dataTypes = format.getFormat().dataTypes();
+		String pojoClassName = toCamelCase(e.name());
+		s += "public class " + pojoClassName + " {\n\n";
 		FormatLabels annotation = null;
 		try {
 			annotation = formatsClass.getField(e.name()).getAnnotation(FormatLabels.class);
@@ -41,39 +43,45 @@ public class SerializationClassGenerator {
 			throw new RuntimeException("Serialization format definition " + e.name() + " needs field names for the class generator to create a POJO class." +
 					"\nAdd a @FormatLabels annotation to define field names. For example:\n\t@FormatLabels({\"field1\", \"field2\"})");
 		}
-		String[] labels = annotation.value();
-		if (labels.length != dataTypes.size()) {
+		String[] fieldNames = annotation.value();
+		String[] fieldTypes = format.getFormat().dataTypes().stream().map(SerializationClassGenerator::toFieldType).toArray(String[]::new);
+		if (fieldNames.length != fieldTypes.length) {
 			throw new InputMismatchException("Serialization format definition " + e.name() + " needs the same number of labels in the @FormatLabels annotation " +
 					"as data types in the format for the class generator to create a POJO class." +
 					"\nFor example:\n\t@FormatLabels({\"field1\", \"field2\"})\n\tFORMAT_1(format().with(INT, INT))");
 		}
-		for (int i = 0; i < labels.length; i++) {
-			SerializationDataType dataType = dataTypes.poll();
-			String label = labels[i];
-			s += "\tprivate " + convertDataTypeToString(dataType) + " " + label + ";\n";
+		// Fields
+		for (int i = 0; i < fieldNames.length; i++) {
+			s += "\tprivate " + fieldTypes[i] + " " + fieldNames[i] + ";\n";
 		}
 		s += "\n";
-		dataTypes = format.getFormat().dataTypes();
-		for (int i = 0; i < labels.length; i++) {
-			SerializationDataType dataType = dataTypes.poll();
-			String label = labels[i];
-			s += "\tpublic " + convertDataTypeToString(dataType) + " " + label + "() {\n";
-			s += "\t\treturn " + label + ";\n";
+		// Constructor
+		Queue<SerializationDataType> dataTypes = format.getFormat().dataTypes();
+		s += "\tpublic " + pojoClassName + "(SerializationReader reader) {\n";
+		for (String fieldName : fieldNames) {
+			s += "\t\tthis." + fieldName + " = reader.read" + toCamelCase(dataTypes.poll().type.name()) + "();\n";
+		}
+		s += "\t}\n";
+		// Getters
+		for (int i = 0; i < fieldNames.length; i++) {
+			s += "\tpublic " + fieldTypes[i] + " " + fieldNames[i] + "() {\n";
+			s += "\t\treturn " + fieldNames[i] + ";\n";
 			s += "\t}\n\n";
 		}
-		dataTypes = format.getFormat().dataTypes();
+		// toPacketModel() function
 		s += "\tpublic PacketModel toPacketModel(PacketBuilder builder) {\n";
 		s += "\t\treturn builder\n";
-		for (int i = 0; i < labels.length; i++) {
-			s += "\t\t\t\t.consume(" + labels[i] + ")\n";
+		for (int i = 0; i < fieldNames.length; i++) {
+			s += "\t\t\t\t.consume(" + fieldNames[i] + ")\n";
 		}
 		s += "\t\t\t\t.build();\n";
 		s += "\t}\n\n";
+		// End bracket
 		s += "}\n";
 		return s;
 	}
 
-	private static String convertDataTypeToString(SerializationDataType dataType) {
+	private static String toFieldType(SerializationDataType dataType) {
 		switch (dataType.type) {
 			case LONG:
 
@@ -96,6 +104,32 @@ public class SerializationClassGenerator {
 		}
 	}
 
+	private static String toReadMethod(SerializationDataType dataType) {
+		switch (dataType.type) {
+			case LONG:
+			case INT:
+			case SHORT:
+			case BYTE:
+			case BOOLEAN:
+			case STRING_UTF8:
+				return "reader.read" + toCamelCase(dataType.type.name().toLowerCase());
+//			case ONE_OF:
+//				// TODO figure out how to concisely express a "one of ..." data type
+//				return "reader.read";
+			case REPEATED:
+				SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
+				if (repeatedDataType.type == STRING_UTF8) {
+					return "new ArrayList<>(Arrays.toList(reader.readStringArray()";
+				}
+				return "new ArrayList<>(Arrays." + convertPrimitiveToWrapper(repeatedDataType) + ">";
+			case OPTIONAL:
+			case FORMAT:
+			default:
+				throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not interpret data type as a field type.");
+		}
+	}
+
+
 	private static String convertPrimitiveToWrapper(SerializationDataType dataType) {
 		switch (dataType.type) {
 			case INT:
@@ -107,7 +141,7 @@ public class SerializationClassGenerator {
 				String n = dataType.type.name();
 				return n.charAt(0) + n.substring(1).toLowerCase();
 			default:
-				return convertDataTypeToString(dataType);
+				return toFieldType(dataType);
 		}
 	}
 
