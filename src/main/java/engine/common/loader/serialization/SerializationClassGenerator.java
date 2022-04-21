@@ -47,13 +47,29 @@ public class SerializationClassGenerator {
 					"as data types in the format for the class generator to create a POJO class." +
 					"\nFor example:\n\t@FormatLabels({\"field1\", \"field2\"})\n\tFORMAT_1(format().with(INT, INT))");
 		}
-
 		for (int i = 0; i < labels.length; i++) {
 			SerializationDataType dataType = dataTypes.poll();
 			String label = labels[i];
 			s += "\tprivate " + convertDataTypeToString(dataType) + " " + label + ";\n";
 		}
-		s += "\n}\n";
+		s += "\n";
+		dataTypes = format.getFormat().dataTypes();
+		for (int i = 0; i < labels.length; i++) {
+			SerializationDataType dataType = dataTypes.poll();
+			String label = labels[i];
+			s += "\tpublic " + convertDataTypeToString(dataType) + " " + label + "() {\n";
+			s += "\t\treturn " + label + ";\n";
+			s += "\t}\n\n";
+		}
+		dataTypes = format.getFormat().dataTypes();
+		s += "\tpublic PacketModel toPacketModel(PacketBuilder builder) {\n";
+		s += "\t\treturn builder\n";
+		for (int i = 0; i < labels.length; i++) {
+			s += "\t\t\t\t.consume(" + labels[i] + ")\n";
+		}
+		s += "\t\t\t\t.build();\n";
+		s += "\t}\n\n";
+		s += "}\n";
 		return s;
 	}
 
