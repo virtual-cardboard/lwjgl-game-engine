@@ -1,5 +1,6 @@
 package engine.common.loader.serialization;
 
+import java.util.InputMismatchException;
 import java.util.Queue;
 
 import context.input.networking.packet.datatype.RepeatedDataType;
@@ -31,7 +32,7 @@ public class SerializationClassGenerator {
 		Enum<?> e = (Enum<?>) format;
 		String s = "";
 		s += formatsClass.getPackage() + ".pojo;\n\n";
-		s += "public class " + toCamelCase(e.toString()) + " {\n";
+		s += "public class " + toCamelCase(e.toString()) + " {\n\n";
 		Queue<SerializationDataType> dataTypes = format.getFormat().dataTypes();
 		FormatLabels annotation = null;
 		try {
@@ -41,13 +42,57 @@ public class SerializationClassGenerator {
 					"\nAdd a @FormatLabels annotation to define field names. For example:\n\t@FormatLabels({\"field1\", \"field2\"})");
 		}
 		String[] labels = annotation.value();
+		if (labels.length != dataTypes.size()) {
+			throw new InputMismatchException("Serialization format definition " + e.name() + " needs the same number of labels in the @FormatLabels annotation " +
+					"as data types in the format for the class generator to create a POJO class." +
+					"\nFor example:\n\t@FormatLabels({\"field1\", \"field2\"})\n\tFORMAT_1(format().with(INT, INT))");
+		}
+
 		for (int i = 0; i < labels.length; i++) {
 			SerializationDataType dataType = dataTypes.poll();
 			String label = labels[i];
-			s += "\tprivate " + dataType.type.toString().toLowerCase() + " " + label + ";\n";
+			s += "\tprivate " + convertDataTypeToString(dataType) + " " + label + ";\n";
 		}
-		s += "}\n";
+		s += "\n}\n";
 		return s;
+	}
+
+	private static String convertDataTypeToString(SerializationDataType dataType) {
+		switch (dataType.type) {
+			case LONG:
+
+			case INT:
+			case SHORT:
+			case BYTE:
+			case BOOLEAN:
+				return dataType.type.name().toLowerCase();
+			case STRING_UTF8:
+				return "String";
+			case ONE_OF:
+				// TODO figure out how to concisely express a "one of ..." data type
+				return "Object";
+			case REPEATED:
+				return "List<" + convertPrimitiveToWrapper(((RepeatedDataType) dataType).repeatedDataType) + ">";
+			case OPTIONAL:
+			case FORMAT:
+			default:
+				throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not interpret data type as a field type.");
+		}
+	}
+
+	private static String convertPrimitiveToWrapper(SerializationDataType dataType) {
+		switch (dataType.type) {
+			case INT:
+				return "Integer";
+			case LONG:
+			case SHORT:
+			case BYTE:
+			case BOOLEAN:
+				String n = dataType.type.name();
+				return n.charAt(0) + n.substring(1).toLowerCase();
+			default:
+				return convertDataTypeToString(dataType);
+		}
 	}
 
 	private static String generateEnumClass(Class<? extends SerializationFormatCollection> formatsClass) {
@@ -111,7 +156,7 @@ public class SerializationClassGenerator {
 		switch (dataType.type) {
 			case REPEATED:
 				RepeatedDataType repeated = (RepeatedDataType) dataType;
-				return "repeated(" + dataTypeToString(repeated.dataType) + ")";
+				return "repeated(" + dataTypeToString(repeated.repeatedDataType) + ")";
 			default:
 				return dataType.type.name();
 		}

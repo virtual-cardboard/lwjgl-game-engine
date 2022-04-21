@@ -4,11 +4,11 @@ import static context.input.networking.packet.datatype.DataTypeType.REPEATED;
 
 public class RepeatedDataType extends SerializationDataType {
 
-	public final SerializationDataType dataType;
+	public final SerializationDataType repeatedDataType;
 
-	protected RepeatedDataType(SerializationDataType dataType) {
+	protected RepeatedDataType(SerializationDataType repeatedDataType) {
 		super(REPEATED);
-		this.dataType = dataType;
+		this.repeatedDataType = repeatedDataType;
 	}
 
 	@Override
@@ -16,7 +16,7 @@ public class RepeatedDataType extends SerializationDataType {
 		if (this == o) return true;
 		if (!(o instanceof RepeatedDataType)) return false;
 		RepeatedDataType that = (RepeatedDataType) o;
-		return dataType == that.dataType;
+		return repeatedDataType == that.repeatedDataType;
 	}
 
 }
