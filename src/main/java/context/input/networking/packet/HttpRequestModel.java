@@ -4,22 +4,22 @@ import static context.input.networking.packet.RequestMethod.GET;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
+import java.util.Arrays;
 
 public class HttpRequestModel {
 
 	private final String urlPath;
 	private final RequestMethod requestMethod;
-	private final String data;
+	private byte[] data;
+	private final byte[] response = new byte[8192];
 
-	public HttpRequestModel(String urlPath, String data) {
-		this(urlPath, GET, data);
+	public HttpRequestModel(byte[] data, String urlPath) {
+		this(data, urlPath, GET);
 	}
 
-	public HttpRequestModel(String urlPath, RequestMethod requestMethod, String data) {
+	public HttpRequestModel(byte[] data, String urlPath, RequestMethod requestMethod) {
 		this.urlPath = urlPath;
 		this.requestMethod = requestMethod;
 		this.data = data;
@@ -32,20 +32,21 @@ public class HttpRequestModel {
 			httpConn.setRequestMethod(requestMethod.toString());
 
 			httpConn.setDoOutput(true);
-			OutputStreamWriter writer = new OutputStreamWriter(httpConn.getOutputStream());
-			writer.write(data);
-			writer.close();
+			httpConn.getOutputStream().write(data);
 			httpConn.getOutputStream().close();
 
 			InputStream responseStream = httpConn.getResponseCode() / 100 == 2
 					? httpConn.getInputStream()
 					: httpConn.getErrorStream();
-			responseStream.read(null);
-			Scanner scanner = new Scanner(responseStream).useDelimiter("\\A");
-			return scanner.hasNext() ? scanner.next().getBytes() : null;
+			int numRead = responseStream.read(response);
+			return Arrays.copyOf(response, numRead);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
 	}
 
 }

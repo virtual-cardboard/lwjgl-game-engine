@@ -1,4 +1,4 @@
-package context.input.networking.packet;
+package engine.common.loader.serialization;
 
 import static context.input.networking.packet.datatype.SerializationDataType.BYTE;
 import static context.input.networking.packet.datatype.SerializationDataType.INT;
@@ -12,22 +12,21 @@ import java.util.ArrayDeque;
 import java.util.InputMismatchException;
 import java.util.Queue;
 
+import context.input.networking.packet.HttpRequestModel;
+import context.input.networking.packet.PacketModel;
+import context.input.networking.packet.address.PacketAddress;
 import context.input.networking.packet.cryption.EncryptionAlgorithmType;
 import context.input.networking.packet.datatype.SerializationDataType;
-import engine.common.loader.serialization.SerializationFormat;
 
-public class HttpRequestBuilder {
-
+public class SerializationBuilder {
 
 	private final Queue<SerializationDataType> dataTypes;
 	private final Queue<EncryptionAlgorithmType> encryptions;
 	private final Queue<Byte> bytes = new ArrayDeque<>();
-	private final String url;
 
-	public HttpRequestBuilder(SerializationFormat format, String url) {
+	public SerializationBuilder(SerializationFormat format) {
 		this.dataTypes = format.dataTypes();
 		this.encryptions = format.encryptionTypes();
-		this.url = url;
 	}
 
 	private void typeValidate(SerializationDataType actual) {
@@ -37,7 +36,7 @@ public class HttpRequestBuilder {
 		}
 	}
 
-	public HttpRequestBuilder consume(long val) {
+	public SerializationBuilder consume(long val) {
 		typeValidate(LONG);
 		bytes.add((byte) ((val >> 56) & 0xFF));
 		bytes.add((byte) ((val >> 48) & 0xFF));
@@ -50,7 +49,7 @@ public class HttpRequestBuilder {
 		return this;
 	}
 
-	public HttpRequestBuilder consume(int val) {
+	public SerializationBuilder consume(int val) {
 		typeValidate(INT);
 		bytes.add((byte) ((val >> 24) & 0xFF));
 		bytes.add((byte) ((val >> 16) & 0xFF));
@@ -59,20 +58,20 @@ public class HttpRequestBuilder {
 		return this;
 	}
 
-	public HttpRequestBuilder consume(short val) {
+	public SerializationBuilder consume(short val) {
 		typeValidate(SHORT);
 		bytes.add((byte) ((val >> 8) & 0xFF));
 		bytes.add((byte) (val & 0xFF));
 		return this;
 	}
 
-	public HttpRequestBuilder consume(byte val) {
+	public SerializationBuilder consume(byte val) {
 		typeValidate(BYTE);
 		bytes.add(val);
 		return this;
 	}
 
-	public HttpRequestBuilder consume(String val) {
+	public SerializationBuilder consume(String val) {
 		typeValidate(STRING_UTF8);
 		byte[] b = val.getBytes(UTF_8);
 		short numBytes = (short) b.length;
@@ -85,7 +84,7 @@ public class HttpRequestBuilder {
 	}
 
 
-	public HttpRequestBuilder consume(byte[] vals) {
+	public SerializationBuilder consume(byte[] vals) {
 		typeValidate(repeated(BYTE));
 		bytes.add((byte) vals.length);
 		for (byte x : vals) {
@@ -94,7 +93,7 @@ public class HttpRequestBuilder {
 		return this;
 	}
 
-	public HttpRequestModel build() {
+	public HttpRequestModel buildHttpRequestModel(String urlPath) {
 		if (!dataTypes.isEmpty()) {
 			throw new RuntimeException("Did not complete packet format");
 		}
@@ -105,7 +104,21 @@ public class HttpRequestBuilder {
 			i++;
 		}
 		// TODO: apply encryption
-		return new HttpRequestModel(url, new String(buffer, UTF_8));
+		return new HttpRequestModel(buffer, urlPath);
+	}
+
+	public PacketModel buildPacketModel(PacketAddress address) {
+		if (!dataTypes.isEmpty()) {
+			throw new RuntimeException("Did not complete packet format");
+		}
+		byte[] buffer = new byte[bytes.size()];
+		int i = 0;
+		while (!bytes.isEmpty()) {
+			buffer[i] = bytes.poll();
+			i++;
+		}
+		// TODO: apply encryption
+		return new PacketModel(buffer, address);
 	}
 
 }
