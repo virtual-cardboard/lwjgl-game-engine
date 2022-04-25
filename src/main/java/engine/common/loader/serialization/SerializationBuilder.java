@@ -1,11 +1,11 @@
 package engine.common.loader.serialization;
 
-import static context.input.networking.packet.datatype.SerializationDataType.BYTE;
-import static context.input.networking.packet.datatype.SerializationDataType.INT;
-import static context.input.networking.packet.datatype.SerializationDataType.LONG;
-import static context.input.networking.packet.datatype.SerializationDataType.SHORT;
-import static context.input.networking.packet.datatype.SerializationDataType.STRING_UTF8;
-import static context.input.networking.packet.datatype.SerializationDataType.repeated;
+import static engine.common.loader.serialization.datatype.SerializationDataType.BYTE;
+import static engine.common.loader.serialization.datatype.SerializationDataType.INT;
+import static engine.common.loader.serialization.datatype.SerializationDataType.LONG;
+import static engine.common.loader.serialization.datatype.SerializationDataType.SHORT;
+import static engine.common.loader.serialization.datatype.SerializationDataType.STRING_UTF8;
+import static engine.common.loader.serialization.datatype.SerializationDataType.repeated;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.util.ArrayDeque;
@@ -15,18 +15,16 @@ import java.util.Queue;
 import context.input.networking.packet.HttpRequestModel;
 import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.address.PacketAddress;
-import context.input.networking.packet.cryption.EncryptionAlgorithmType;
-import context.input.networking.packet.datatype.SerializationDataType;
+import engine.common.loader.serialization.datatype.SerializationDataType;
+import engine.common.loader.serialization.format.SerializationFormat;
 
 public class SerializationBuilder {
 
 	private final Queue<SerializationDataType> dataTypes;
-	private final Queue<EncryptionAlgorithmType> encryptions;
 	private final Queue<Byte> bytes = new ArrayDeque<>();
 
 	public SerializationBuilder(SerializationFormat format) {
 		this.dataTypes = format.dataTypes();
-		this.encryptions = format.encryptionTypes();
 	}
 
 	private void typeValidate(SerializationDataType actual) {
@@ -82,7 +80,6 @@ public class SerializationBuilder {
 		}
 		return this;
 	}
-
 
 	public SerializationBuilder consume(byte[] vals) {
 		typeValidate(repeated(BYTE));

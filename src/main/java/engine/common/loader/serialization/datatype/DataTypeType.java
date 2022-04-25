@@ -1,4 +1,4 @@
-package context.input.networking.packet.datatype;
+package engine.common.loader.serialization.datatype;
 
 public enum DataTypeType {
 

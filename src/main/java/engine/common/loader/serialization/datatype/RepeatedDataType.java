@@ -1,6 +1,6 @@
-package context.input.networking.packet.datatype;
+package engine.common.loader.serialization.datatype;
 
-import static context.input.networking.packet.datatype.DataTypeType.REPEATED;
+import static engine.common.loader.serialization.datatype.DataTypeType.REPEATED;
 
 public class RepeatedDataType extends SerializationDataType {
 

@@ -1,8 +1,8 @@
-package context.input.networking.packet.datatype;
+package engine.common.loader.serialization.datatype;
 
-import static context.input.networking.packet.datatype.DataTypeType.FORMAT;
+import static engine.common.loader.serialization.datatype.DataTypeType.FORMAT;
 
-import engine.common.loader.serialization.SerializationFormat;
+import engine.common.loader.serialization.format.SerializationFormat;
 
 public class FormatDataType extends SerializationDataType {
 

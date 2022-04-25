@@ -1,88 +1,151 @@
 package engine.common.loader.serialization;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Queue;
 
-import context.input.networking.packet.datatype.RepeatedDataType;
-import context.input.networking.packet.datatype.SerializationDataType;
+import engine.common.loader.serialization.datatype.RepeatedDataType;
+import engine.common.loader.serialization.datatype.SerializationDataType;
+import engine.common.loader.serialization.format.FormatLabels;
+import engine.common.loader.serialization.format.SerializationFormat;
+import engine.common.loader.serialization.format.SerializationFormatEnum;
+import engine.common.loader.serialization.format.SerializationPojo;
 
 public class SerializationClassGenerator {
 
-	private static final String SERIALIZATION_DATA_TYPE_CANONICAL_NAME = SerializationDataType.class.getCanonicalName();
-	private static final String SERIALIZATION_FORMAT_SIMPLE_NAME = SerializationFormat.class.getSimpleName();
-	private static final String SERIALIZATION_FORMAT_CANONICAL_NAME = SerializationFormat.class.getCanonicalName();
-	private static final String SERIALIZATION_FORMAT_COLLECTION_CANONICAL_NAME = SerializationFormatCollection.class.getCanonicalName();
-	private static final String SERIALIZATION_FORMAT_COLLECTION_SIMPLE_NAME = SerializationFormatCollection.class.getSimpleName();
-
-	public static void generate(Class<? extends SerializationFormatCollection> formatsClass) {
+	public static <T extends SerializationPojo> void generate(Class<? extends SerializationFormatEnum<T>> formatsClass, Class<T> pojoBaseClass) {
 		System.out.println(separator("Enum class"));
-		System.out.println(generateEnumClass(formatsClass));
+		System.out.println(generateEnumClass(formatsClass, pojoBaseClass));
 		System.out.println(separator());
 		System.out.println();
-		for (SerializationFormatCollection format : formatsClass.getEnumConstants()) {
+		for (SerializationFormatEnum<T> format : formatsClass.getEnumConstants()) {
 			Enum<?> e = (Enum<?>) format;
-			String camelCase = toCamelCase(e.name());
-			System.out.println(separator(camelCase));
-			System.out.println(generatePOJOClass(formatsClass, format));
+			verifyEnumLabels(format);
+			System.out.println(separator(toCamelCase(e.name())));
+			System.out.println(generatePOJOClass(format, pojoBaseClass));
 			System.out.println(separator());
 		}
 	}
 
-	private static String generatePOJOClass(Class<? extends SerializationFormatCollection> formatsClass, SerializationFormatCollection format) {
-		Enum<?> e = (Enum<?>) format;
+	private static <T extends SerializationPojo> String generateEnumClass(Class<? extends SerializationFormatEnum<T>> formatsClass, Class<T> pojoBaseClass) {
 		String s = "";
-		s += formatsClass.getPackage() + ".pojo;\n\n";
-		String pojoClassName = toCamelCase(e.name());
-		s += "public class " + pojoClassName + " {\n\n";
-		FormatLabels annotation = null;
-		try {
-			annotation = formatsClass.getField(e.name()).getAnnotation(FormatLabels.class);
-		} catch (NoSuchFieldException ex) {
-			throw new RuntimeException("Serialization format definition " + e.name() + " needs field names for the class generator to create a POJO class." +
-					"\nAdd a @FormatLabels annotation to define field names. For example:\n\t@FormatLabels({\"field1\", \"field2\"})");
-		}
-		String[] fieldNames = annotation.value();
-		String[] fieldTypes = format.getFormat().dataTypes().stream().map(SerializationClassGenerator::toFieldType).toArray(String[]::new);
-		if (fieldNames.length != fieldTypes.length) {
-			throw new InputMismatchException("Serialization format definition " + e.name() + " needs the same number of labels in the @FormatLabels annotation " +
-					"as data types in the format for the class generator to create a POJO class." +
-					"\nFor example:\n\t@FormatLabels({\"field1\", \"field2\"})\n\tFORMAT_1(format().with(INT, INT))");
-		}
-		// Fields
-		for (int i = 0; i < fieldNames.length; i++) {
-			s += "\tprivate " + fieldTypes[i] + " " + fieldNames[i] + ";\n";
+		s += formatsClass.getPackage() + ";\n";
+		s += "\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".LONG;\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".INT;\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".SHORT;\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".BYTE;\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".BOOLEAN;\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".STRING_UTF8;\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".repeated;\n";
+		s += "import static " + SerializationClassGenerator.class.getCanonicalName() + ".generate;\n";
+		s += "import static " + SerializationFormat.class.getCanonicalName() + ".types;\n";
+		s += "import static " + SerializationPojo.class.getCanonicalName() + ".createPojo;\n";
+		s += "\n";
+		s += "import " + SerializationFormatEnum.class.getCanonicalName() + ";\n";
+		s += "import " + SerializationFormat.class.getCanonicalName() + ";\n";
+		s += "import " + FormatLabels.class.getCanonicalName() + ";\n";
+		s += "import " + SerializationPojo.class.getCanonicalName() + ";\n";
+		for (SerializationFormatEnum<T> format : formatsClass.getEnumConstants()) {
+			Enum<?> e = (Enum<?>) format;
+			s += "import " + formatsClass.getPackage().getName() + ".pojo." + toCamelCase(e.name()) + ";\n";
 		}
 		s += "\n";
-		// Constructor
-		Queue<SerializationDataType> dataTypes = format.getFormat().dataTypes();
-		s += "\tpublic " + pojoClassName + "(SerializationReader reader) {\n";
-		for (String fieldName : fieldNames) {
-			s += "\t\tthis." + fieldName + " = reader.read" + toCamelCase(dataTypes.poll().type.name()) + "();\n";
+		s += "public enum " + formatsClass.getSimpleName() + " implements " + SerializationFormatEnum.class.getSimpleName() + "<" + pojoBaseClass.getSimpleName() + "> {\n";
+		s += "\n";
+		for (SerializationFormatEnum<T> format : formatsClass.getEnumConstants()) {
+			Enum<?> e = (Enum<?>) format;
+			Queue<SerializationDataType> dataTypes = format.format().dataTypes();
+			s += "	@" + FormatLabels.class.getSimpleName() + "({ " + commaify(quotify(getFieldNames(format))) + " })\n";
+			s += "	" + e.name() + "(" + toCamelCase(e.name()) + ".class, types(" + commaify(dataTypes) + ")),\n";
 		}
-		s += "\t}\n\n";
-		// Getters
-		for (int i = 0; i < fieldNames.length; i++) {
-			s += "\tpublic " + fieldTypes[i] + " " + fieldNames[i] + "() {\n";
-			s += "\t\treturn " + fieldNames[i] + ";\n";
-			s += "\t}\n\n";
-		}
-		// toPacketModel() function
-		s += "\tpublic PacketModel toPacketModel(PacketBuilder builder) {\n";
-		s += "\t\treturn builder\n";
-		for (int i = 0; i < fieldNames.length; i++) {
-			s += "\t\t\t\t.consume(" + fieldNames[i] + ")\n";
-		}
-		s += "\t\t\t\t.build();\n";
-		s += "\t}\n\n";
-		// End bracket
+		s += "	;\n";
+		s += "\n";
+		s += "	// Do not edit auto-generated code below this line.\n";
+		s += "\n";
+		s += "	private " + pojoBaseClass.getSimpleName() + " pojo;\n";
+		s += "	private " + SerializationFormat.class.getSimpleName() + " format;\n";
+		s += "\n";
+		s += "	private " + formatsClass.getSimpleName() + "(" + SerializationFormat.class.getSimpleName() + " format) {\n";
+		s += "		this.format = format;\n";
+		s += "	}\n";
+		s += "\n";
+		s += "	private " + formatsClass.getSimpleName() + "(Class<? extends " + pojoBaseClass.getSimpleName() + "> pojoClass, " + SerializationFormat.class.getSimpleName() + " format) {\n";
+		s += "		this.pojo = createPojo(pojoClass);\n";
+		s += "		this.format = format;\n";
+		s += "	}\n";
+		s += "\n";
+		s += "	@Override\n";
+		s += "	public " + SerializationFormat.class.getSimpleName() + " format() {\n";
+		s += "		return format;\n";
+		s += "	}\n";
+		s += "\n";
+		s += "	public static void main(String[] args) {\n";
+		s += "		generate(" + formatsClass.getSimpleName() + ".class, " + pojoBaseClass.getSimpleName() + ".class);\n";
+		s += "	}\n";
+		s += "\n";
 		s += "}\n";
 		return s;
+	}
+
+	private static <T extends SerializationPojo> String generatePOJOClass(SerializationFormatEnum<T> format, Class<T> pojoBaseClass) {
+		Enum<?> e = (Enum<?>) format;
+		String s = "";
+		s += format.getClass().getPackage() + ".pojo;\n";
+		s += "\n";
+		s += "import java.util.List;\n";
+		s += "\n";
+		s += "public class " + toCamelCase(e.name()) + " extends " + pojoBaseClass.getSimpleName() + " {\n";
+		s += "\n";
+		String[] fieldNames = getFieldNames(format);
+		String[] fieldTypes = format.format().dataTypes().stream().map(SerializationClassGenerator::toFieldType).toArray(String[]::new);
+		for (int i = 0; i < fieldNames.length; i++) {
+			s += "	private " + fieldTypes[i] + " " + fieldNames[i] + ";\n";
+		}
+		s += "\n";
+		Queue<SerializationDataType> dataTypes = format.format().dataTypes();
+		s += "	public " + toCamelCase(e.name()) + "() {\n";
+		s += "	}\n";
+		s += "\n";
+		s += "	public read(" + SerializationReader.class.getSimpleName() + " reader) {\n";
+		for (String fieldName : fieldNames) {
+			s += "		this." + fieldName + " = reader.read" + toCamelCase(dataTypes.poll().type.name()) + "();\n";
+		}
+		s += "	}\n";
+		s += "\n";
+		for (int i = 0; i < fieldNames.length; i++) {
+			s += "	public " + fieldTypes[i] + " " + fieldNames[i] + "() {\n";
+			s += "		return " + fieldNames[i] + ";\n";
+			s += "	}\n";
+			s += "\n";
+		}
+		s += "	public PacketModel toPacketModel(PacketBuilder builder) {\n";
+		s += "		return builder\n";
+		for (int i = 0; i < fieldNames.length; i++) {
+			s += "				.consume(" + fieldNames[i] + ")\n";
+		}
+		s += "				.build();\n";
+		s += "	}\n";
+		s += "\n";
+		s += "}\n";
+		return s;
+	}
+
+	private static <T extends SerializationPojo> void verifyEnumLabels(SerializationFormatEnum<T> format) {
+		if (getFieldNames(format).length != format.format().dataTypes().size()) {
+			Enum<?> e = (Enum<?>) format;
+			throw new InputMismatchException("Serialization format definition " + e.name() + " needs the same number of labels in the @FormatLabels annotation " +
+					"as data types in the format for the class generator to create a POJO class." +
+					"\nFor example:\n	@FormatLabels({\"field1\", \"field2\"})\n	FORMAT_1(format().with(INT, INT))");
+		}
 	}
 
 	private static String toFieldType(SerializationDataType dataType) {
 		switch (dataType.type) {
 			case LONG:
-
 			case INT:
 			case SHORT:
 			case BYTE:
@@ -129,7 +192,6 @@ public class SerializationClassGenerator {
 		}
 	}
 
-
 	private static String convertPrimitiveToWrapper(SerializationDataType dataType) {
 		switch (dataType.type) {
 			case INT:
@@ -145,61 +207,18 @@ public class SerializationClassGenerator {
 		}
 	}
 
-	private static String generateEnumClass(Class<? extends SerializationFormatCollection> formatsClass) {
-		String s = "";
-		s += formatsClass.getPackage() + ";\n";
-		s += "\n";
-		s += "import static " + SerializationClassGenerator.class.getCanonicalName() + ".generate;\n";
-		s += "import static " + SERIALIZATION_FORMAT_CANONICAL_NAME + ".format;\n";
-		s += "import static " + SERIALIZATION_DATA_TYPE_CANONICAL_NAME + ".LONG;\n";
-		s += "import static " + SERIALIZATION_DATA_TYPE_CANONICAL_NAME + ".INT;\n";
-		s += "import static " + SERIALIZATION_DATA_TYPE_CANONICAL_NAME + ".SHORT;\n";
-		s += "import static " + SERIALIZATION_DATA_TYPE_CANONICAL_NAME + ".BYTE;\n";
-		s += "import static " + SERIALIZATION_DATA_TYPE_CANONICAL_NAME + ".BOOLEAN;\n";
-		s += "import static " + SERIALIZATION_DATA_TYPE_CANONICAL_NAME + ".STRING_UTF8;\n";
-		s += "import static " + SERIALIZATION_DATA_TYPE_CANONICAL_NAME + ".repeated;\n";
-		s += "\n";
-		s += "import " + SERIALIZATION_FORMAT_COLLECTION_CANONICAL_NAME + ";\n";
-		s += "import " + SERIALIZATION_FORMAT_CANONICAL_NAME + ";\n";
-		s += "\n";
-		s += "public enum " + formatsClass.getSimpleName() + " implements " + SERIALIZATION_FORMAT_COLLECTION_SIMPLE_NAME + " {\n";
-		s += "\n";
-		for (SerializationFormatCollection format : formatsClass.getEnumConstants()) {
-			Enum<?> e = (Enum<?>) format;
-			Queue<SerializationDataType> dataTypes = format.getFormat().dataTypes();
-			s += "	" + e.name() + "(format()" + dataTypesToString(dataTypes) + "),\n";
+	private static <T extends SerializationPojo> String[] getFieldNames(SerializationFormatEnum<T> format) {
+		Enum<?> formatEnum = (Enum<?>) format;
+		try {
+			FormatLabels annotation = format.getClass().getField(formatEnum.name()).getAnnotation(FormatLabels.class);
+			return annotation.value();
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException("Serialization format definition " + formatEnum.name() + " needs field names for the class generator to create a POJO class." +
+					"\nAdd a @FormatLabels annotation to define field names. For example:\n	@FormatLabels({\"field1\", \"field2\"})");
+		} catch (SecurityException e) {
+			e.printStackTrace();
 		}
-		s += "	;\n";
-		s += "\n";
-		s += "	private " + SERIALIZATION_FORMAT_SIMPLE_NAME + " format;\n";
-		s += "\n";
-		s += "	private " + formatsClass.getSimpleName() + "(" + SERIALIZATION_FORMAT_SIMPLE_NAME + " format) {\n";
-		s += "		this.format = format;\n";
-		s += "	}\n";
-		s += "\n";
-		s += "	@Override\n";
-		s += "	public " + SERIALIZATION_FORMAT_SIMPLE_NAME + " getFormat() {\n";
-		s += "		return format;\n";
-		s += "	}\n";
-		s += "\n";
-		s += "	public static void main(String[] args) {\n";
-		s += "		generate(" + formatsClass.getSimpleName() + ".class);\n";
-		s += "	}\n";
-		s += "\n";
-		s += "}\n";
-		return s;
-	}
-
-	private static String dataTypesToString(Queue<SerializationDataType> dataTypes) {
-		if (dataTypes.isEmpty()) {
-			return "";
-		}
-		String s = ".with(";
-		while (!dataTypes.isEmpty()) {
-			SerializationDataType dataType = dataTypes.poll();
-			s += dataTypeToString(dataType) + ", ";
-		}
-		return s.substring(0, s.length() - 2) + ")";
+		return null;
 	}
 
 	private static String dataTypeToString(SerializationDataType dataType) {
@@ -210,6 +229,31 @@ public class SerializationClassGenerator {
 			default:
 				return dataType.type.name();
 		}
+	}
+
+	private static String[] quotify(String[] strings) {
+		for (int i = 0; i < strings.length; i++) {
+			strings[i] = "\"" + strings[i] + "\"";
+		}
+		return strings;
+	}
+
+	private static String commaify(String[] strings) {
+		return commaify(asList(strings));
+	}
+
+	private static String commaify(Queue<SerializationDataType> dataTypes) {
+		List<String> strings = dataTypes.stream().map(SerializationClassGenerator::dataTypeToString).collect(toList());
+		return commaify(strings);
+	}
+
+	private static String commaify(Iterable<String> strings) {
+		String s = "";
+		for (String string : strings) {
+			s += string + ", ";
+		}
+		return s.substring(0, s.length() - 2);
+
 	}
 
 	private static String toCamelCase(String s) {
