@@ -7,6 +7,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Queue;
 
+import engine.common.loader.serialization.datatype.OptionalDataType;
 import engine.common.loader.serialization.datatype.RepeatedDataType;
 import engine.common.loader.serialization.datatype.SerializationDataType;
 import engine.common.loader.serialization.format.FormatLabels;
@@ -112,16 +113,35 @@ public class SerializationClassGenerator {
 		s += "\n";
 		s += "	public read(" + SerializationReader.class.getSimpleName() + " reader) {\n";
 		for (String fieldName : fieldNames) {
-			s += "		this." + fieldName + " = reader.read" + toCamelCase(dataTypes.poll().type.name()) + "();\n";
+			SerializationDataType dataType = dataTypes.poll();
+			switch (dataType.type) {
+				case LONG:
+				case INT:
+				case SHORT:
+				case BYTE:
+				case BOOLEAN:
+				case STRING_UTF8:
+					s += "		this." + fieldName + " = reader.read" + toCamelCase(dataType.type.name()) + "();\n";
+					break;
+				case REPEATED:
+					s += "      this." + fieldName + " = new ArrayList<>();\n";
+					s += "      int numElements = reader.readByte();\n";
+					s += "      for (int i = 0; i < numElements; i++) {\n";
+					s += "          " + fieldName + ".add(reader.read???());\n";
+					s += "      }\n";
+					break;
+				case OPTIONAL:
+					s += "      this." + fieldName + " = reader.readBoolean() " +
+							"? reader.read" + toCamelCase(((OptionalDataType) dataType).optionalDataType.type.name()) + "() " +
+							": null;\n";
+					break;
+				default:
+					throw new RuntimeException("Could not generate read code for Serialization data type type " + dataType.type);
+			}
+			s += "		this." + fieldName + " = reader.read" + toCamelCase(dataType.type.name()) + "();\n";
 		}
 		s += "	}\n";
 		s += "\n";
-		for (int i = 0; i < fieldNames.length; i++) {
-			s += "	public " + fieldTypes[i] + " " + fieldNames[i] + "() {\n";
-			s += "		return " + fieldNames[i] + ";\n";
-			s += "	}\n";
-			s += "\n";
-		}
 		s += "	public PacketModel toPacketModel(PacketBuilder builder) {\n";
 		s += "		return builder\n";
 		for (int i = 0; i < fieldNames.length; i++) {
@@ -130,6 +150,12 @@ public class SerializationClassGenerator {
 		s += "				.build();\n";
 		s += "	}\n";
 		s += "\n";
+		for (int i = 0; i < fieldNames.length; i++) {
+			s += "	public " + fieldTypes[i] + " " + fieldNames[i] + "() {\n";
+			s += "		return " + fieldNames[i] + ";\n";
+			s += "	}\n";
+			s += "\n";
+		}
 		s += "}\n";
 		return s;
 	}

@@ -53,6 +53,12 @@ public class SerializationReader {
 		return val;
 	}
 
+	public boolean readBoolean() {
+		byte val = bytes[index];
+		index += 1;
+		return (val & 1) == 1;
+	}
+
 	public String readStringUtf8() {
 		int numBytes = (short) (((bytes[index] & 0xFF) << 8) // TODO make this an unsigned short
 				| (0xFF & bytes[index + 1] & 0xFF));

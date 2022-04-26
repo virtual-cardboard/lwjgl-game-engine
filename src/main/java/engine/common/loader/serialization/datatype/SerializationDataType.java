@@ -21,6 +21,10 @@ public class SerializationDataType {
 		return new RepeatedDataType(type);
 	}
 
+	public static OptionalDataType optional(SerializationDataType type) {
+		return new OptionalDataType(type);
+	}
+
 	public static FormatDataType format(SerializationFormat format) {
 		return new FormatDataType(format);
 	}
