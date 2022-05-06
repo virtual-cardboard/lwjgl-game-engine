@@ -1,7 +1,6 @@
 package engine.common.loader.serialization.format;
 
 import engine.common.loader.serialization.SerializationReader;
-import engine.common.loader.serialization.SerializationWriter;
 
 public interface SerializationPojo {
 
@@ -17,6 +16,6 @@ public interface SerializationPojo {
 	public abstract void read(SerializationReader reader);
 
 
-	public abstract byte[] toByteArray(SerializationWriter writer);
+	public abstract byte[] serialize();
 
 }

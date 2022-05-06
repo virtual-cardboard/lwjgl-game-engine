@@ -97,6 +97,8 @@ public class SerializationClassGenerator {
 		String s = "";
 		s += format.getClass().getPackage() + ".pojo;\n";
 		s += "\n";
+		s += "import java.util.List;\n";
+		s += "\n";
 		s += "public class " + toCamelCase(e.name()) + " extends " + pojoBaseClass.getSimpleName() + " {\n";
 		s += "\n";
 		String[] fieldNames = getFieldNames(format);
@@ -120,7 +122,8 @@ public class SerializationClassGenerator {
 		s += "	}\n";
 		s += "\n";
 		s += "	@Override\n";
-		s += "	public byte[] toByteArray(SerializationWriter writer) {\n";
+		s += "	public byte[] serialize() {\n";
+		s += "		SerializationWriter writer = new SerializationWriter();\n";
 		for (int i = 0; i < fieldNames.length; i++) {
 			s += toWriteMethod(fieldNames[i], dataTypes[i]);
 		}
