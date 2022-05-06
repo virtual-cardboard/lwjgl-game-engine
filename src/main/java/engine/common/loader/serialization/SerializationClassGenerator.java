@@ -107,23 +107,24 @@ public class SerializationClassGenerator {
 			s += "	private " + fieldTypes[i] + " " + fieldNames[i] + ";\n";
 		}
 		s += "\n";
-		Queue<SerializationDataType> dataTypes = format.format().dataTypes();
+		SerializationDataType[] dataTypes = format.format().dataTypes().stream().toArray(SerializationDataType[]::new);
 		s += "	public " + toCamelCase(e.name()) + "() {\n";
 		s += "	}\n";
 		s += "\n";
 		s += "	public void read(" + SerializationReader.class.getSimpleName() + " reader) {\n";
+		for (int i = 0; i < fieldNames.length; i++) {
+			SerializationDataType dataType = dataTypes[i];
+			s += toReadMethod(fieldNames[i], dataType);
+		}
 		for (String fieldName : fieldNames) {
-			SerializationDataType dataType = dataTypes.poll();
-			s += toReadMethod(fieldName, dataType);
 		}
 		s += "	}\n";
 		s += "\n";
-		s += "	public PacketModel toPacketModel(PacketBuilder builder) {\n";
-		s += "		return builder\n";
+		s += "	public byte[] toByteArray(SerializationWriter writer) {\n";
 		for (int i = 0; i < fieldNames.length; i++) {
-			s += "				.consume(" + fieldNames[i] + ")\n";
+			s += toWriteMethod(fieldNames[i], dataTypes[i]);
 		}
-		s += "				.build();\n";
+		s += "		return writer.toByteArray();\n";
 		s += "	}\n";
 		s += "\n";
 		for (int i = 0; i < fieldNames.length; i++) {
@@ -141,9 +142,9 @@ public class SerializationClassGenerator {
 	}
 
 	private static String toReadMethod(String variableName, SerializationDataType dataType, int nestedForLoopLevel, String listName) {
-		String indents = "      ";
+		String indents = "\t\t";
 		for (int i = 0; i < nestedForLoopLevel; i++) {
-			indents += "  ";
+			indents += "\t";
 		}
 		if (listName == null) {
 			// Set a field
@@ -203,7 +204,7 @@ public class SerializationClassGenerator {
 					return indents + "if (reader.readBoolean()) {\n" +
 							toReadMethod(variableName, optionalDataType, nestedForLoopLevel, listName) +
 							indents + "} else {\n" +
-							indents + " " + listName + ".add(null);\n" +
+							indents + "\t" + listName + ".add(null);\n" +
 							indents + "}\n";
 //			    case FORMAT:
 				default:
@@ -212,10 +213,14 @@ public class SerializationClassGenerator {
 		}
 	}
 
+	private static String toWriteMethod(String variableName, SerializationDataType dataType) {
+		return toWriteMethod(variableName, dataType, 0);
+	}
+
 	private static String toWriteMethod(String variableName, SerializationDataType dataType, int nestedForLoopLevel) {
-		String indents = "      ";
+		String indents = "\t\t";
 		for (int i = 0; i < nestedForLoopLevel; i++) {
-			indents += "  ";
+			indents += "\t";
 		}
 		// Set a field
 		switch (dataType.type) {
@@ -231,7 +236,7 @@ public class SerializationClassGenerator {
 				String iterVariable = "i" + nestedForLoopLevel;
 				String s = indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + variableName + ".size(); " + iterVariable + "++) {\n";
 				nestedForLoopLevel++;
-				s += toWriteMethod(null, repeatedDataType, nestedForLoopLevel);
+				s += toWriteMethod(variableName + ".get(" + iterVariable + ")", repeatedDataType, nestedForLoopLevel);
 				s += indents + "}\n";
 				return s;
 //			    case ONE_OF:
@@ -241,7 +246,7 @@ public class SerializationClassGenerator {
 						indents + " writer.consume(false);\n" +
 						indents + "} else {\n" +
 						indents + " writer.consume(true);\n" +
-						toWriteMethod(variableName, optionalDataType, nestedForLoopLevel, null) +
+						toWriteMethod(variableName, optionalDataType, nestedForLoopLevel) +
 						indents + "};\n";
 			//			case FORMAT:
 			default:
