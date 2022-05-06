@@ -111,34 +111,10 @@ public class SerializationClassGenerator {
 		s += "	public " + toCamelCase(e.name()) + "() {\n";
 		s += "	}\n";
 		s += "\n";
-		s += "	public read(" + SerializationReader.class.getSimpleName() + " reader) {\n";
+		s += "	public void read(" + SerializationReader.class.getSimpleName() + " reader) {\n";
 		for (String fieldName : fieldNames) {
 			SerializationDataType dataType = dataTypes.poll();
-			switch (dataType.type) {
-				case LONG:
-				case INT:
-				case SHORT:
-				case BYTE:
-				case BOOLEAN:
-				case STRING_UTF8:
-					s += "		this." + fieldName + " = reader.read" + toCamelCase(dataType.type.name()) + "();\n";
-					break;
-				case REPEATED:
-					s += "      this." + fieldName + " = new ArrayList<>();\n";
-					s += "      int numElements = reader.readByte();\n";
-					s += "      for (int i = 0; i < numElements; i++) {\n";
-					s += "          " + fieldName + ".add(reader.read???());\n";
-					s += "      }\n";
-					break;
-				case OPTIONAL:
-					s += "      this." + fieldName + " = reader.readBoolean() " +
-							"? reader.read" + toCamelCase(((OptionalDataType) dataType).optionalDataType.type.name()) + "() " +
-							": null;\n";
-					break;
-				default:
-					throw new RuntimeException("Could not generate read code for Serialization data type type " + dataType.type);
-			}
-			s += "		this." + fieldName + " = reader.read" + toCamelCase(dataType.type.name()) + "();\n";
+			s += toReadMethod(fieldName, dataType);
 		}
 		s += "	}\n";
 		s += "\n";
@@ -160,12 +136,123 @@ public class SerializationClassGenerator {
 		return s;
 	}
 
+	private static String toReadMethod(String fieldName, SerializationDataType dataType) {
+		return toReadMethod(fieldName, dataType, 0, null);
+	}
+
+	private static String toReadMethod(String variableName, SerializationDataType dataType, int nestedForLoopLevel, String listName) {
+		String indents = "      ";
+		for (int i = 0; i < nestedForLoopLevel; i++) {
+			indents += "  ";
+		}
+		if (listName == null) {
+			// Set a field
+			switch (dataType.type) {
+				case LONG:
+				case INT:
+				case SHORT:
+				case BYTE:
+				case BOOLEAN:
+				case STRING_UTF8:
+					return indents + "this." + variableName + " = reader.read" + toCamelCase(dataType.type.name().toLowerCase()) + "();\n";
+				case REPEATED:
+					SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
+					String iterVariable = "i" + nestedForLoopLevel;
+					String numVariable = "numElements" + nestedForLoopLevel;
+					String s = indents + "this." + variableName + " = new ArrayList<>();\n";
+					s += indents + "byte " + numVariable + " = reader.readByte();\n";
+					s += indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + numVariable + "; " + iterVariable + "++) {\n";
+					nestedForLoopLevel++;
+					s += toReadMethod(null, repeatedDataType, nestedForLoopLevel, variableName);
+					s += indents + "}\n";
+					return s;
+//			    case ONE_OF:
+				case OPTIONAL:
+					SerializationDataType optionalDataType = ((OptionalDataType) dataType).optionalDataType;
+					return indents + "if (reader.readBoolean()) {\n" +
+							toReadMethod(variableName, optionalDataType, nestedForLoopLevel, null) +
+							indents + "};\n";
+				//			case FORMAT:
+				default:
+					throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not interpret data type as a field type.");
+			}
+		} else {
+			// Add something to a list
+			switch (dataType.type) {
+				case LONG:
+				case INT:
+				case SHORT:
+				case BYTE:
+				case BOOLEAN:
+				case STRING_UTF8:
+					return indents + listName + ".add(reader.read" + toCamelCase(dataType.type.name().toLowerCase()) + "();\n";
+				case REPEATED:
+					SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
+					String iterVariable = "i" + nestedForLoopLevel;
+					String numVariable = "numElements" + nestedForLoopLevel;
+					String newListName = "list" + nestedForLoopLevel;
+					return indents + "List<" + convertPrimitiveToWrapper(repeatedDataType) + "> " + newListName + " = new ArrayList<>();\n" +
+							indents + "byte " + numVariable + " = reader.readByte();\n" +
+							indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + numVariable + "; " + iterVariable + "++) {\n" +
+							toReadMethod(null, repeatedDataType, ++nestedForLoopLevel, variableName) +
+							indents + "}\n" +
+							indents + "this." + variableName + ".add(" + newListName + ");\n";
+//			    case ONE_OF:
+				case OPTIONAL:
+					SerializationDataType optionalDataType = ((OptionalDataType) dataType).optionalDataType;
+					return indents + "if (reader.readBoolean()) {\n" +
+							toReadMethod(variableName, optionalDataType, nestedForLoopLevel, listName) +
+							indents + "} else {\n" +
+							indents + " " + listName + ".add(null);\n" +
+							indents + "}\n";
+//			    case FORMAT:
+				default:
+					throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not add data type to " + listName);
+			}
+		}
+	}
+
+	private static String toWriteMethod(String variableName, SerializationDataType dataType, int nestedForLoopLevel) {
+		String indents = "      ";
+		for (int i = 0; i < nestedForLoopLevel; i++) {
+			indents += "  ";
+		}
+		// Set a field
+		switch (dataType.type) {
+			case LONG:
+			case INT:
+			case SHORT:
+			case BYTE:
+			case BOOLEAN:
+			case STRING_UTF8:
+				return indents + "writer.consume(variableName);\n";
+			case REPEATED:
+				SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
+				String iterVariable = "i" + nestedForLoopLevel;
+				String s = indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + variableName + ".size(); " + iterVariable + "++) {\n";
+				nestedForLoopLevel++;
+				s += toWriteMethod(null, repeatedDataType, nestedForLoopLevel);
+				s += indents + "}\n";
+				return s;
+//			    case ONE_OF:
+			case OPTIONAL:
+				SerializationDataType optionalDataType = ((OptionalDataType) dataType).optionalDataType;
+				return indents + "if (variable == null) {\n" +
+						indents + " writer.consume(false);\n" +
+						indents + "} else {\n" +
+						indents + " writer.consume(true);\n" +
+						toWriteMethod(variableName, optionalDataType, nestedForLoopLevel, null) +
+						indents + "};\n";
+			//			case FORMAT:
+			default:
+				throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not interpret data type as a field type.");
+		}
+	}
+
 	private static <T extends SerializationPojo> void verifyEnumLabels(SerializationFormatEnum<T> format) {
 		if (getFieldNames(format).length != format.format().dataTypes().size()) {
 			Enum<?> e = (Enum<?>) format;
-			throw new InputMismatchException("Serialization format definition " + e.name() + " needs the same number of labels in the @FormatLabels annotation " +
-					"as data types in the format for the class generator to create a POJO class." +
-					"\nFor example:\n	@FormatLabels({\"field1\", \"field2\"})\n	FORMAT_1(format().with(INT, INT))");
+			throw new InputMismatchException("Serialization format definition " + e.name() + " needs the same number of labels in the @FormatLabels annotation " + "as data types in the format for the class generator to create a POJO class." + "\nFor example:\n	@FormatLabels({\"field1\", \"field2\"})\n	FORMAT_1(format().with(INT, INT))");
 		}
 	}
 
@@ -186,33 +273,6 @@ public class SerializationClassGenerator {
 				return "List<" + convertPrimitiveToWrapper(((RepeatedDataType) dataType).repeatedDataType) + ">";
 			case OPTIONAL:
 			case FORMAT:
-			default:
-				throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not interpret data type as a field type.");
-		}
-	}
-
-	private static String toReadMethod(SerializationDataType dataType) {
-		switch (dataType.type) {
-			case LONG:
-			case INT:
-			case SHORT:
-			case BYTE:
-			case BOOLEAN:
-			case STRING_UTF8:
-				return "reader.read" + toCamelCase(dataType.type.name().toLowerCase());
-//			case ONE_OF:
-//				// TODO figure out how to concisely express a "one of ..." data type
-//				return "reader.read";
-			// TODO
-//			case REPEATED:
-//				SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
-//				if (repeatedDataType.type == STRING_UTF8) {
-//					return "new ArrayList<>(Arrays.toList(reader.readStringArray()";
-//				}
-//				return "new ArrayList<>(Arrays." + convertPrimitiveToWrapper(repeatedDataType) + ">";
-//			case OPTIONAL:
-//
-//			case FORMAT:
 			default:
 				throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not interpret data type as a field type.");
 		}
@@ -239,8 +299,7 @@ public class SerializationClassGenerator {
 			FormatLabels annotation = format.getClass().getField(formatEnum.name()).getAnnotation(FormatLabels.class);
 			return annotation.value();
 		} catch (NoSuchFieldException e) {
-			throw new RuntimeException("Serialization format definition " + formatEnum.name() + " needs field names for the class generator to create a POJO class." +
-					"\nAdd a @FormatLabels annotation to define field names. For example:\n	@FormatLabels({\"field1\", \"field2\"})");
+			throw new RuntimeException("Serialization format definition " + formatEnum.name() + " needs field names for the class generator to create a POJO class." + "\nAdd a @FormatLabels annotation to define field names. For example:\n	@FormatLabels({\"field1\", \"field2\"})");
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		}
@@ -295,8 +354,7 @@ public class SerializationClassGenerator {
 		if (s.isEmpty()) {
 			return s;
 		}
-		return s.substring(0, 1).toUpperCase() +
-				s.substring(1).toLowerCase();
+		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
 	}
 
 	private static String separator() {

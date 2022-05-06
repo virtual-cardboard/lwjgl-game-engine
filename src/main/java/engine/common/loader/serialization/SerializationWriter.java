@@ -40,6 +40,11 @@ public class SerializationWriter {
 		return this;
 	}
 
+	public SerializationWriter consume(boolean val) {
+		bytes.add((byte) (val ? 1 : 0));
+		return this;
+	}
+
 	public SerializationWriter consume(String val) {
 		byte[] b = val.getBytes(UTF_8);
 		short numBytes = (short) b.length;
@@ -51,4 +56,16 @@ public class SerializationWriter {
 		return this;
 	}
 
+	public Queue<Byte> getBytes() {
+		return bytes;
+	}
+
+	public byte[] toByteArray() {
+		byte[] arr = new byte[bytes.size()];
+		int i = 0;
+		for (Byte b : bytes) {
+			arr[i++] = b;
+		}
+		return arr;
+	}
 }
