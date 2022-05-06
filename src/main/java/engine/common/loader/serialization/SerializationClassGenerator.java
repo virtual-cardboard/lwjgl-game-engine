@@ -97,8 +97,6 @@ public class SerializationClassGenerator {
 		String s = "";
 		s += format.getClass().getPackage() + ".pojo;\n";
 		s += "\n";
-		s += "import java.util.List;\n";
-		s += "\n";
 		s += "public class " + toCamelCase(e.name()) + " extends " + pojoBaseClass.getSimpleName() + " {\n";
 		s += "\n";
 		String[] fieldNames = getFieldNames(format);
@@ -111,6 +109,7 @@ public class SerializationClassGenerator {
 		s += "	public " + toCamelCase(e.name()) + "() {\n";
 		s += "	}\n";
 		s += "\n";
+		s += "	@Override\n";
 		s += "	public void read(" + SerializationReader.class.getSimpleName() + " reader) {\n";
 		for (int i = 0; i < fieldNames.length; i++) {
 			SerializationDataType dataType = dataTypes[i];
@@ -120,6 +119,7 @@ public class SerializationClassGenerator {
 		}
 		s += "	}\n";
 		s += "\n";
+		s += "	@Override\n";
 		s += "	public byte[] toByteArray(SerializationWriter writer) {\n";
 		for (int i = 0; i < fieldNames.length; i++) {
 			s += toWriteMethod(fieldNames[i], dataTypes[i]);
@@ -186,7 +186,7 @@ public class SerializationClassGenerator {
 				case BYTE:
 				case BOOLEAN:
 				case STRING_UTF8:
-					return indents + listName + ".add(reader.read" + toCamelCase(dataType.type.name().toLowerCase()) + "();\n";
+					return indents + listName + ".add(reader.read" + toCamelCase(dataType.type.name().toLowerCase()) + "());\n";
 				case REPEATED:
 					SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
 					String iterVariable = "i" + nestedForLoopLevel;
@@ -230,7 +230,7 @@ public class SerializationClassGenerator {
 			case BYTE:
 			case BOOLEAN:
 			case STRING_UTF8:
-				return indents + "writer.consume(variableName);\n";
+				return indents + "writer.consume(" + variableName + ");\n";
 			case REPEATED:
 				SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
 				String iterVariable = "i" + nestedForLoopLevel;
