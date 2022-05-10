@@ -7,7 +7,7 @@ public class SelfAddress extends PacketAddress {
 	public static final SelfAddress SELF_ADDRESS = new SelfAddress();
 
 	private static InetAddress ip;
-	private static int port;
+	private static short port;
 
 	@Override
 	public InetAddress ip() {
@@ -15,7 +15,7 @@ public class SelfAddress extends PacketAddress {
 	}
 
 	@Override
-	public int port() {
+	public short port() {
 		return port;
 	}
 

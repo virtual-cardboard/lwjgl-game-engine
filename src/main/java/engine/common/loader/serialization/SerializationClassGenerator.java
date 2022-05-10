@@ -173,8 +173,7 @@ public class SerializationClassGenerator {
 					String iterVariable = "i" + variablesCount;
 					String numVariable = "numElements" + variablesCount;
 					String s = indents + "this." + variableName + " = new ArrayList<>();\n";
-					s += indents + "byte " + numVariable + " = reader.readByte();\n";
-					s += indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + numVariable + "; " + iterVariable + "++) {\n";
+					s += indents + "for (byte " + iterVariable + " = 0, " + numVariable + " = reader.readByte(); " + iterVariable + " < " + numVariable + "; " + iterVariable + "++) {\n";
 					numIndents++;
 					variablesCount++;
 					s += toReadMethod(null, repeatedDataType, numIndents, variablesCount, variableName);
@@ -211,8 +210,7 @@ public class SerializationClassGenerator {
 					String numVariable = "numElements" + variablesCount;
 					String newListName = "list" + variablesCount;
 					return indents + "List<" + convertPrimitiveToWrapper(repeatedDataType) + "> " + newListName + " = new ArrayList<>();\n" +
-							indents + "byte " + numVariable + " = reader.readByte();\n" +
-							indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + numVariable + "; " + iterVariable + "++) {\n" +
+							indents + "for (byte " + iterVariable + " = 0, " + numVariable + " = reader.readByte(); " + iterVariable + " < " + numVariable + "; " + iterVariable + "++) {\n" +
 							toReadMethod(null, repeatedDataType, ++numIndents, ++variablesCount, variableName) +
 							indents + "}\n" +
 							indents + "this." + variableName + ".add(" + newListName + ");\n";
@@ -260,7 +258,8 @@ public class SerializationClassGenerator {
 			case REPEATED:
 				SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
 				String iterVariable = "i" + variablesCount;
-				String s = indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + variableName + ".size(); " + iterVariable + "++) {\n";
+				String s = indents + "writer.consume((byte) " + variableName + ".size());\n" +
+						indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + variableName + ".size(); " + iterVariable + "++) {\n";
 				s += toWriteMethod(variableName + ".get(" + iterVariable + ")", repeatedDataType, ++numIndents, ++variablesCount);
 				s += indents + "}\n";
 				return s;
