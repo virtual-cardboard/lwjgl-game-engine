@@ -4,4 +4,6 @@ public interface SerializationFormatEnum<T extends SerializationPojo> {
 
 	public SerializationFormat format();
 
+	public Class<? extends T> superClass();
+
 }

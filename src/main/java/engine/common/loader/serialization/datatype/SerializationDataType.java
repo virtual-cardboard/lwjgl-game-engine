@@ -1,6 +1,6 @@
 package engine.common.loader.serialization.datatype;
 
-import engine.common.loader.serialization.format.SerializationFormat;
+import engine.common.loader.serialization.format.SerializationPojo;
 
 public class SerializationDataType {
 
@@ -25,16 +25,15 @@ public class SerializationDataType {
 		return new OptionalDataType(type);
 	}
 
-	public static FormatDataType format(SerializationFormat format) {
-		return new FormatDataType(format);
+	public static PojoDataType pojo(Class<? extends SerializationPojo> pojoClass) {
+		return new PojoDataType(pojoClass);
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof SerializationDataType)) return false;
-		SerializationDataType that = (SerializationDataType) o;
-		return type == that.type;
+		return type == ((SerializationDataType) o).type;
 	}
 
 }

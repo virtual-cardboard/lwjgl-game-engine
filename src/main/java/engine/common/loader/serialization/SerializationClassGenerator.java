@@ -3,11 +3,13 @@ package engine.common.loader.serialization;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
+import java.lang.reflect.Field;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Queue;
 
 import engine.common.loader.serialization.datatype.OptionalDataType;
+import engine.common.loader.serialization.datatype.PojoDataType;
 import engine.common.loader.serialization.datatype.RepeatedDataType;
 import engine.common.loader.serialization.datatype.SerializationDataType;
 import engine.common.loader.serialization.format.FormatLabels;
@@ -35,16 +37,17 @@ public class SerializationClassGenerator {
 		String s = "";
 		s += formatsClass.getPackage() + ";\n";
 		s += "\n";
+		s += "import static " + SerializationClassGenerator.class.getCanonicalName() + ".generate;\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".BOOLEAN;\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".BYTE;\n";
 		s += "import static " + SerializationDataType.class.getCanonicalName() + ".LONG;\n";
 		s += "import static " + SerializationDataType.class.getCanonicalName() + ".INT;\n";
 		s += "import static " + SerializationDataType.class.getCanonicalName() + ".SHORT;\n";
-		s += "import static " + SerializationDataType.class.getCanonicalName() + ".BYTE;\n";
-		s += "import static " + SerializationDataType.class.getCanonicalName() + ".BOOLEAN;\n";
 		s += "import static " + SerializationDataType.class.getCanonicalName() + ".STRING_UTF8;\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".optional;\n";
+		s += "import static " + SerializationDataType.class.getCanonicalName() + ".pojo;\n";
 		s += "import static " + SerializationDataType.class.getCanonicalName() + ".repeated;\n";
-		s += "import static " + SerializationClassGenerator.class.getCanonicalName() + ".generate;\n";
 		s += "import static " + SerializationFormat.class.getCanonicalName() + ".types;\n";
-		s += "import static " + SerializationPojo.class.getCanonicalName() + ".createPojo;\n";
 		s += "\n";
 		s += "import " + SerializationFormatEnum.class.getCanonicalName() + ";\n";
 		s += "import " + SerializationFormat.class.getCanonicalName() + ";\n";
@@ -61,27 +64,36 @@ public class SerializationClassGenerator {
 			Enum<?> e = (Enum<?>) format;
 			Queue<SerializationDataType> dataTypes = format.format().dataTypes();
 			s += "	@" + FormatLabels.class.getSimpleName() + "({ " + commaify(quotify(getFieldNames(format))) + " })\n";
-			s += "	" + e.name() + "(" + toCamelCase(e.name()) + ".class, types(" + commaify(dataTypes) + ")),\n";
+			if (format.superClass().equals(pojoBaseClass)) {
+				s += "	" + e.name() + "(types(" + commaify(dataTypes) + ")),\n";
+			} else {
+				s += "	" + e.name() + "(types(" + commaify(dataTypes) + "), " + format.superClass().getSimpleName() + ".class),\n";
+			}
 		}
 		s += "	;\n";
 		s += "\n";
 		s += "	// Do not edit auto-generated code below this line.\n";
 		s += "\n";
-		s += "	private " + pojoBaseClass.getSimpleName() + " pojo;\n";
-		s += "	private " + SerializationFormat.class.getSimpleName() + " format;\n";
+		s += "	private final " + SerializationFormat.class.getSimpleName() + " format;\n";
+		s += "	private final Class<? extends " + pojoBaseClass.getSimpleName() + "> superClass;\n";
 		s += "\n";
 		s += "	private " + formatsClass.getSimpleName() + "(" + SerializationFormat.class.getSimpleName() + " format) {\n";
-		s += "		this.format = format;\n";
+		s += "		this(format, " + pojoBaseClass.getSimpleName() + ".class);\n";
 		s += "	}\n";
 		s += "\n";
-		s += "	private " + formatsClass.getSimpleName() + "(Class<? extends " + pojoBaseClass.getSimpleName() + "> pojoClass, " + SerializationFormat.class.getSimpleName() + " format) {\n";
-		s += "		this.pojo = createPojo(pojoClass);\n";
+		s += "	private " + formatsClass.getSimpleName() + "(" + SerializationFormat.class.getSimpleName() + " format, Class<? extends " + pojoBaseClass.getSimpleName() + "> superClass) {\n";
 		s += "		this.format = format;\n";
+		s += "		this.superClass = superClass;\n";
 		s += "	}\n";
 		s += "\n";
 		s += "	@Override\n";
 		s += "	public " + SerializationFormat.class.getSimpleName() + " format() {\n";
 		s += "		return format;\n";
+		s += "	}\n";
+		s += "\n";
+		s += "	@Override\n";
+		s += "	public Class<? extends " + pojoBaseClass.getSimpleName() + "> superClass() {\n";
+		s += "		return superClass;\n";
 		s += "	}\n";
 		s += "\n";
 		s += "	public static void main(String[] args) {\n";
@@ -93,13 +105,14 @@ public class SerializationClassGenerator {
 	}
 
 	private static <T extends SerializationPojo> String generatePOJOClass(SerializationFormatEnum<T> format, Class<T> pojoBaseClass) {
+		String implementsOrExtends = pojoBaseClass.isInterface() ? "implements" : "extends";
 		Enum<?> e = (Enum<?>) format;
 		String s = "";
 		s += format.getClass().getPackage() + ".pojo;\n";
 		s += "\n";
 		s += "import java.util.List;\n";
 		s += "\n";
-		s += "public class " + toCamelCase(e.name()) + " extends " + pojoBaseClass.getSimpleName() + " {\n";
+		s += "public class " + toCamelCase(e.name()) + " " + implementsOrExtends + " " + pojoBaseClass.getSimpleName() + " {\n";
 		s += "\n";
 		String[] fieldNames = getFieldNames(format);
 		String[] fieldTypes = format.format().dataTypes().stream().map(SerializationClassGenerator::toFieldType).toArray(String[]::new);
@@ -117,17 +130,13 @@ public class SerializationClassGenerator {
 			SerializationDataType dataType = dataTypes[i];
 			s += toReadMethod(fieldNames[i], dataType);
 		}
-		for (String fieldName : fieldNames) {
-		}
 		s += "	}\n";
 		s += "\n";
 		s += "	@Override\n";
-		s += "	public byte[] serialize() {\n";
-		s += "		SerializationWriter writer = new SerializationWriter();\n";
+		s += "	public void write(SerializationWriter writer) {\n";
 		for (int i = 0; i < fieldNames.length; i++) {
 			s += toWriteMethod(fieldNames[i], dataTypes[i]);
 		}
-		s += "		return writer.toByteArray();\n";
 		s += "	}\n";
 		s += "\n";
 		for (int i = 0; i < fieldNames.length; i++) {
@@ -141,12 +150,12 @@ public class SerializationClassGenerator {
 	}
 
 	private static String toReadMethod(String fieldName, SerializationDataType dataType) {
-		return toReadMethod(fieldName, dataType, 0, null);
+		return toReadMethod(fieldName, dataType, 0, 0, null);
 	}
 
-	private static String toReadMethod(String variableName, SerializationDataType dataType, int nestedForLoopLevel, String listName) {
+	private static String toReadMethod(String variableName, SerializationDataType dataType, int numIndents, int variablesCount, String listName) {
 		String indents = "\t\t";
-		for (int i = 0; i < nestedForLoopLevel; i++) {
+		for (int i = 0; i < numIndents; i++) {
 			indents += "\t";
 		}
 		if (listName == null) {
@@ -159,24 +168,30 @@ public class SerializationClassGenerator {
 				case BOOLEAN:
 				case STRING_UTF8:
 					return indents + "this." + variableName + " = reader.read" + toCamelCase(dataType.type.name().toLowerCase()) + "();\n";
-				case REPEATED:
+				case REPEATED: {
 					SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
-					String iterVariable = "i" + nestedForLoopLevel;
-					String numVariable = "numElements" + nestedForLoopLevel;
+					String iterVariable = "i" + variablesCount;
+					String numVariable = "numElements" + variablesCount;
 					String s = indents + "this." + variableName + " = new ArrayList<>();\n";
 					s += indents + "byte " + numVariable + " = reader.readByte();\n";
 					s += indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + numVariable + "; " + iterVariable + "++) {\n";
-					nestedForLoopLevel++;
-					s += toReadMethod(null, repeatedDataType, nestedForLoopLevel, variableName);
+					numIndents++;
+					variablesCount++;
+					s += toReadMethod(null, repeatedDataType, numIndents, variablesCount, variableName);
 					s += indents + "}\n";
 					return s;
-//			    case ONE_OF:
+				}
 				case OPTIONAL:
 					SerializationDataType optionalDataType = ((OptionalDataType) dataType).optionalDataType;
 					return indents + "if (reader.readBoolean()) {\n" +
-							toReadMethod(variableName, optionalDataType, nestedForLoopLevel, null) +
+							toReadMethod(variableName, optionalDataType, numIndents, variablesCount, null) +
 							indents + "};\n";
-				//			case FORMAT:
+				case POJO: {
+					Class<? extends SerializationPojo> pojoClass = ((PojoDataType) dataType).pojoClass();
+					String pojoVariableType = pojoClass.getSimpleName();
+					return indents + "this." + variableName + " = new " + pojoVariableType + "();\n" +
+							indents + "this." + variableName + ".read(reader);\n";
+				}
 				default:
 					throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not interpret data type as a field type.");
 			}
@@ -192,24 +207,32 @@ public class SerializationClassGenerator {
 					return indents + listName + ".add(reader.read" + toCamelCase(dataType.type.name().toLowerCase()) + "());\n";
 				case REPEATED:
 					SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
-					String iterVariable = "i" + nestedForLoopLevel;
-					String numVariable = "numElements" + nestedForLoopLevel;
-					String newListName = "list" + nestedForLoopLevel;
+					String iterVariable = "i" + variablesCount;
+					String numVariable = "numElements" + variablesCount;
+					String newListName = "list" + variablesCount;
 					return indents + "List<" + convertPrimitiveToWrapper(repeatedDataType) + "> " + newListName + " = new ArrayList<>();\n" +
 							indents + "byte " + numVariable + " = reader.readByte();\n" +
 							indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + numVariable + "; " + iterVariable + "++) {\n" +
-							toReadMethod(null, repeatedDataType, ++nestedForLoopLevel, variableName) +
+							toReadMethod(null, repeatedDataType, ++numIndents, ++variablesCount, variableName) +
 							indents + "}\n" +
 							indents + "this." + variableName + ".add(" + newListName + ");\n";
 //			    case ONE_OF:
 				case OPTIONAL:
 					SerializationDataType optionalDataType = ((OptionalDataType) dataType).optionalDataType;
 					return indents + "if (reader.readBoolean()) {\n" +
-							toReadMethod(variableName, optionalDataType, nestedForLoopLevel, listName) +
+							toReadMethod(variableName, optionalDataType, numIndents, variablesCount, listName) +
 							indents + "} else {\n" +
 							indents + "\t" + listName + ".add(null);\n" +
 							indents + "}\n";
-//			    case FORMAT:
+				case POJO: {
+					Class<? extends SerializationPojo> pojoClass = ((PojoDataType) dataType).pojoClass();
+					String pojoVariableType = pojoClass.getSimpleName();
+					String pojoVariableName = "pojo" + variablesCount;
+					return indents + pojoVariableType + " " + pojoVariableName + " = new " + pojoVariableType + "();\n" +
+							indents + pojoVariableName + ".read(reader);\n" +
+							indents + listName + ".add(" + pojoVariableName + ");\n";
+				}
+
 				default:
 					throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not add data type to " + listName);
 			}
@@ -217,12 +240,12 @@ public class SerializationClassGenerator {
 	}
 
 	private static String toWriteMethod(String variableName, SerializationDataType dataType) {
-		return toWriteMethod(variableName, dataType, 0);
+		return toWriteMethod(variableName, dataType, 0, 0);
 	}
 
-	private static String toWriteMethod(String variableName, SerializationDataType dataType, int nestedForLoopLevel) {
+	private static String toWriteMethod(String variableName, SerializationDataType dataType, int numIndents, int variablesCount) {
 		String indents = "\t\t";
-		for (int i = 0; i < nestedForLoopLevel; i++) {
+		for (int i = 0; i < numIndents; i++) {
 			indents += "\t";
 		}
 		// Set a field
@@ -236,22 +259,21 @@ public class SerializationClassGenerator {
 				return indents + "writer.consume(" + variableName + ");\n";
 			case REPEATED:
 				SerializationDataType repeatedDataType = ((RepeatedDataType) dataType).repeatedDataType;
-				String iterVariable = "i" + nestedForLoopLevel;
+				String iterVariable = "i" + variablesCount;
 				String s = indents + "for (int " + iterVariable + " = 0; " + iterVariable + " < " + variableName + ".size(); " + iterVariable + "++) {\n";
-				nestedForLoopLevel++;
-				s += toWriteMethod(variableName + ".get(" + iterVariable + ")", repeatedDataType, nestedForLoopLevel);
+				s += toWriteMethod(variableName + ".get(" + iterVariable + ")", repeatedDataType, ++numIndents, ++variablesCount);
 				s += indents + "}\n";
 				return s;
-//			    case ONE_OF:
 			case OPTIONAL:
 				SerializationDataType optionalDataType = ((OptionalDataType) dataType).optionalDataType;
 				return indents + "if (variable == null) {\n" +
 						indents + " writer.consume(false);\n" +
 						indents + "} else {\n" +
 						indents + " writer.consume(true);\n" +
-						toWriteMethod(variableName, optionalDataType, nestedForLoopLevel) +
+						toWriteMethod(variableName, optionalDataType, numIndents, variablesCount) +
 						indents + "};\n";
-			//			case FORMAT:
+			case POJO:
+				return indents + variableName + ".write(writer);\n";
 			default:
 				throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not interpret data type as a field type.");
 		}
@@ -279,8 +301,9 @@ public class SerializationClassGenerator {
 				return "Object";
 			case REPEATED:
 				return "List<" + convertPrimitiveToWrapper(((RepeatedDataType) dataType).repeatedDataType) + ">";
+			case POJO:
+				return ((PojoDataType) dataType).pojoClass().getSimpleName();
 			case OPTIONAL:
-			case FORMAT:
 			default:
 				throw new RuntimeException("Unhandled SerializationDataType: " + dataType.type + "\nCould not interpret data type as a field type.");
 		}
@@ -304,21 +327,29 @@ public class SerializationClassGenerator {
 	private static <T extends SerializationPojo> String[] getFieldNames(SerializationFormatEnum<T> format) {
 		Enum<?> formatEnum = (Enum<?>) format;
 		try {
-			FormatLabels annotation = format.getClass().getField(formatEnum.name()).getAnnotation(FormatLabels.class);
-			return annotation.value();
+			Field field = format.getClass().getField(formatEnum.name());
+			if (!field.isAnnotationPresent(FormatLabels.class)) {
+				throw new RuntimeException("Serialization format definition " + formatEnum.name() + " is missing an @FormatLabels annotation.");
+			}
+			return field.getAnnotation(FormatLabels.class).value();
 		} catch (NoSuchFieldException e) {
 			throw new RuntimeException("Serialization format definition " + formatEnum.name() + " needs field names for the class generator to create a POJO class." + "\nAdd a @FormatLabels annotation to define field names. For example:\n	@FormatLabels({\"field1\", \"field2\"})");
 		} catch (SecurityException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 
 	private static String dataTypeToString(SerializationDataType dataType) {
 		switch (dataType.type) {
+			case OPTIONAL:
+				OptionalDataType optionalDataType = (OptionalDataType) dataType;
+				return "optional(" + dataTypeToString(optionalDataType.optionalDataType) + ")";
+			case POJO:
+				PojoDataType pojoDataType = (PojoDataType) dataType;
+				return "pojo(" + pojoDataType.pojoClass().getSimpleName() + ".class)";
 			case REPEATED:
-				RepeatedDataType repeated = (RepeatedDataType) dataType;
-				return "repeated(" + dataTypeToString(repeated.repeatedDataType) + ")";
+				RepeatedDataType repeatedDataType = (RepeatedDataType) dataType;
+				return "repeated(" + dataTypeToString(repeatedDataType.repeatedDataType) + ")";
 			default:
 				return dataType.type.name();
 		}
@@ -344,6 +375,9 @@ public class SerializationClassGenerator {
 		String s = "";
 		for (String string : strings) {
 			s += string + ", ";
+		}
+		if (s.length() == 0) {
+			return "";
 		}
 		return s.substring(0, s.length() - 2);
 

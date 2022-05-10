@@ -11,6 +11,6 @@ public enum DataTypeType {
 	ONE_OF,
 	REPEATED,
 	OPTIONAL,
-	FORMAT;
+	POJO;
 
 }
