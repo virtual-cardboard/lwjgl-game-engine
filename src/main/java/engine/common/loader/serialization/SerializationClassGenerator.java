@@ -120,12 +120,27 @@ public class SerializationClassGenerator {
 			s += "	private " + fieldTypes[i] + " " + fieldNames[i] + ";\n";
 		}
 		s += "\n";
-		SerializationDataType[] dataTypes = format.format().dataTypes().stream().toArray(SerializationDataType[]::new);
+		// No-arg constructor
 		s += "	public " + toCamelCase(e.name()) + "() {\n";
 		s += "	}\n";
 		s += "\n";
+		// Constructor
+		if (fieldNames.length > 0) {
+			s += "	public " + toCamelCase(e.name()) + "(";
+			for (int i = 0; i < fieldNames.length - 1; i++) {
+				s += fieldTypes[i] + " " + fieldNames[i] + ", ";
+			}
+			s += fieldTypes[fieldTypes.length - 1] + " " + fieldNames[fieldNames.length - 1];
+			s += ") {\n";
+			for (int i = 0; i < fieldNames.length; i++) {
+				s += "		this." + fieldNames[i] + " = " + fieldNames[i] + ";\n";
+			}
+			s += "	}\n";
+		}
+		s += "\n";
 		s += "	@Override\n";
 		s += "	public void read(" + SerializationReader.class.getSimpleName() + " reader) {\n";
+		SerializationDataType[] dataTypes = format.format().dataTypes().stream().toArray(SerializationDataType[]::new);
 		for (int i = 0; i < fieldNames.length; i++) {
 			SerializationDataType dataType = dataTypes[i];
 			s += toReadMethod(fieldNames[i], dataType);
