@@ -65,9 +65,9 @@ public class SerializationClassGenerator {
 			Queue<SerializationDataType> dataTypes = format.format().dataTypes();
 			s += "	@" + FormatLabels.class.getSimpleName() + "({ " + commaify(quotify(getFieldNames(format))) + " })\n";
 			if (format.superClass().equals(pojoBaseClass)) {
-				s += "	" + e.name() + "(types(" + commaify(dataTypes) + ")),\n";
+				s += "	" + e.name() + "(types(" + commaify(dataTypes) + "), " + toCamelCase(e.name()) + ".class),\n";
 			} else {
-				s += "	" + e.name() + "(types(" + commaify(dataTypes) + "), " + format.superClass().getSimpleName() + ".class),\n";
+				s += "	" + e.name() + "(types(" + commaify(dataTypes) + "), " + toCamelCase(e.name()) + ".class, " + format.superClass().getSimpleName() + ".class),\n";
 			}
 		}
 		s += "	;\n";
@@ -75,20 +75,27 @@ public class SerializationClassGenerator {
 		s += "	// Do not edit auto-generated code below this line.\n";
 		s += "\n";
 		s += "	private final " + SerializationFormat.class.getSimpleName() + " format;\n";
+		s += "	private final Class<? extends " + pojoBaseClass.getSimpleName() + "> pojoClass;\n";
 		s += "	private final Class<? extends " + pojoBaseClass.getSimpleName() + "> superClass;\n";
 		s += "\n";
-		s += "	private " + formatsClass.getSimpleName() + "(" + SerializationFormat.class.getSimpleName() + " format) {\n";
-		s += "		this(format, " + pojoBaseClass.getSimpleName() + ".class);\n";
+		s += "	private " + formatsClass.getSimpleName() + "(" + SerializationFormat.class.getSimpleName() + " format, Class<? extends " + pojoBaseClass.getSimpleName() + "> pojoClass) {\n";
+		s += "		this(format, pojoClass, " + pojoBaseClass.getSimpleName() + ".class);\n";
 		s += "	}\n";
 		s += "\n";
-		s += "	private " + formatsClass.getSimpleName() + "(" + SerializationFormat.class.getSimpleName() + " format, Class<? extends " + pojoBaseClass.getSimpleName() + "> superClass) {\n";
+		s += "	private " + formatsClass.getSimpleName() + "(" + SerializationFormat.class.getSimpleName() + " format, Class<? extends " + pojoBaseClass.getSimpleName() + "> pojoClass, Class<? extends " + pojoBaseClass.getSimpleName() + "> superClass) {\n";
 		s += "		this.format = format;\n";
+		s += "		this.pojoClass = pojoClass;\n";
 		s += "		this.superClass = superClass;\n";
 		s += "	}\n";
 		s += "\n";
 		s += "	@Override\n";
 		s += "	public " + SerializationFormat.class.getSimpleName() + " format() {\n";
 		s += "		return format;\n";
+		s += "	}\n";
+		s += "\n";
+		s += "	@Override\n";
+		s += "	public Class<? extends " + pojoBaseClass.getSimpleName() + "> pojoClass() {\n";
+		s += "		return pojoClass;\n";
 		s += "	}\n";
 		s += "\n";
 		s += "	@Override\n";

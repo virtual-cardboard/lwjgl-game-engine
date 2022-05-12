@@ -4,7 +4,7 @@ import static java.lang.System.currentTimeMillis;
 
 public abstract class GameEvent implements Comparable<GameEvent> {
 
-	private long time;
+	protected long time;
 
 	public GameEvent(long time) {
 		this.time = time;
