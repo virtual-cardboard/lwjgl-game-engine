@@ -7,7 +7,7 @@ import context.data.GameData;
 import context.input.GameInput;
 import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
-import context.input.networking.packet.PacketModel;
+import engine.common.networking.packet.PacketModel;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 import engine.common.QueueGroup;
@@ -20,9 +20,8 @@ import engine.common.loader.GameLoader;
  * - Input <br>
  * - Logic <br>
  * - Visuals
- * 
- * @author Jay
  *
+ * @author Jay
  */
 public final class GameContext {
 
@@ -37,7 +36,7 @@ public final class GameContext {
 	/**
 	 * Takes in the five context parts, then sets the context references of each of
 	 * its parts to itself.
-	 * 
+	 *
 	 * @param audio   GameAudio
 	 * @param data    GameData
 	 * @param input   GameInput
@@ -89,7 +88,7 @@ public final class GameContext {
 	 * swapping the context in. WindowFrameUpdater only initializes the new visuals
 	 * once the new context has been swapped in, so the visuals is always updated
 	 * last.
-	 * 
+	 *
 	 * @param inputEventBuffer     the input buffer
 	 * @param networkReceiveBuffer the receive buffer
 	 * @param loader               the {@link GameLoader}

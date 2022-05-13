@@ -1,6 +1,4 @@
-package context.input.networking.packet;
-
-import static context.input.networking.packet.RequestMethod.GET;
+package engine.common.networking.packet;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +14,7 @@ public class HttpRequestModel {
 	private final byte[] response = new byte[8192];
 
 	public HttpRequestModel(byte[] data, String urlPath) {
-		this(data, urlPath, GET);
+		this(data, urlPath, RequestMethod.GET);
 	}
 
 	public HttpRequestModel(byte[] data, String urlPath, RequestMethod requestMethod) {

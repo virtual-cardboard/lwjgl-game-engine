@@ -1,4 +1,4 @@
-package context.input.networking.packet;
+package engine.common.networking.packet;
 
 public enum RequestMethod {
 

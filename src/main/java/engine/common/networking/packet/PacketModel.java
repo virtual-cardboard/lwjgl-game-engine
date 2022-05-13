@@ -1,11 +1,11 @@
-package context.input.networking.packet;
+package engine.common.networking.packet;
 
-import static context.input.networking.packet.address.SelfAddress.SELF_ADDRESS;
 import static java.util.Arrays.copyOf;
 
 import java.net.DatagramPacket;
 
-import context.input.networking.packet.address.PacketAddress;
+import engine.common.networking.packet.address.PacketAddress;
+import engine.common.networking.packet.address.SelfAddress;
 
 public class PacketModel {
 
@@ -30,7 +30,7 @@ public class PacketModel {
 	}
 
 	public static PacketModel toModel(DatagramPacket packet) {
-		return new PacketModel(copyOf(packet.getData(), packet.getLength()), SELF_ADDRESS);
+		return new PacketModel(copyOf(packet.getData(), packet.getLength()), SelfAddress.SELF_ADDRESS);
 	}
 
 }
