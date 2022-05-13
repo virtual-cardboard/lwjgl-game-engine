@@ -4,9 +4,9 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
-import engine.common.loader.serialization.SerializationReader;
-import engine.common.loader.serialization.SerializationWriter;
-import engine.common.loader.serialization.format.SerializationPojo;
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
 
 public class PacketAddress implements SerializationPojo {
 
