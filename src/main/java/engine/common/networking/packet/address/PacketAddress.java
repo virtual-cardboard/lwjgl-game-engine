@@ -1,5 +1,7 @@
 package engine.common.networking.packet.address;
 
+import static engine.common.networking.packet.NetworkingSerializationFormats.PACKET_ADDRESS;
+
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
@@ -7,8 +9,9 @@ import java.net.UnknownHostException;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import derealizer.format.SerializationPojo;
+import engine.common.networking.packet.NetworkingSerializationFormats;
 
-public class PacketAddress implements SerializationPojo {
+public class PacketAddress implements SerializationPojo<NetworkingSerializationFormats> {
 
 	private InetAddress ip;
 	private short port;
@@ -23,6 +26,15 @@ public class PacketAddress implements SerializationPojo {
 
 	public PacketAddress(InetSocketAddress address) {
 		this(address.getAddress(), (short) address.getPort());
+	}
+
+	public PacketAddress(byte[] bytes) {
+		read(new SerializationReader(bytes));
+	}
+
+	@Override
+	public NetworkingSerializationFormats formatEnum() {
+		return PACKET_ADDRESS;
 	}
 
 	@Override

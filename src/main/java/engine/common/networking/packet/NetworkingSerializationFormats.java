@@ -10,7 +10,7 @@ import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 import derealizer.format.SerializationPojo;
 
-public enum NetworkingSerializationFormats implements SerializationFormatEnum<SerializationPojo> {
+public enum NetworkingSerializationFormats implements SerializationFormatEnum {
 
 	@FieldNames({ "b0", "b1", "b2", "b3", "port" })
 	PACKET_ADDRESS(types(BYTE, BYTE, BYTE, BYTE, SHORT), null),
@@ -19,17 +19,11 @@ public enum NetworkingSerializationFormats implements SerializationFormatEnum<Se
 	// Do not edit auto-generated code below this line.
 
 	private final SerializationFormat format;
-	private final Class<? extends SerializationPojo> pojoClass;
-	private final Class<? extends SerializationPojo> superClass;
+	private final Class<? extends SerializationPojo<?>> pojoClass;
 
-	private NetworkingSerializationFormats(SerializationFormat format, Class<? extends SerializationPojo> pojoClass) {
-		this(format, pojoClass, SerializationPojo.class);
-	}
-
-	private NetworkingSerializationFormats(SerializationFormat format, Class<? extends SerializationPojo> pojoClass, Class<? extends SerializationPojo> superClass) {
+	private NetworkingSerializationFormats(SerializationFormat format, Class<? extends SerializationPojo<?>> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
-		this.superClass = superClass;
 	}
 
 	@Override
@@ -38,13 +32,8 @@ public enum NetworkingSerializationFormats implements SerializationFormatEnum<Se
 	}
 
 	@Override
-	public Class<? extends SerializationPojo> pojoClass() {
+	public Class<? extends SerializationPojo<?>> pojoClass() {
 		return pojoClass;
-	}
-
-	@Override
-	public Class<? extends SerializationPojo> superClass() {
-		return superClass;
 	}
 
 	public static void main(String[] args) {
