@@ -33,13 +33,15 @@ public class HttpRequestModel {
 			httpConn.getOutputStream().write(data);
 			httpConn.getOutputStream().close();
 
-			InputStream responseStream = httpConn.getResponseCode() / 100 == 2
+			InputStream responseStream = ((httpConn.getResponseCode() / 100) == 2)
 					? httpConn.getInputStream()
 					: httpConn.getErrorStream();
 			int numRead = responseStream.read(response);
 			return Arrays.copyOf(response, numRead);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+			throw new RuntimeException("Could not execute HTTP Request Model.\n" +
+					"UrlPath: " + urlPath + " Request method: " + requestMethod);
 		}
 	}
 
