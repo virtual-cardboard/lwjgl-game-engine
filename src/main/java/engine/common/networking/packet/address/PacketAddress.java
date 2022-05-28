@@ -59,8 +59,8 @@ public class PacketAddress implements SerializationPojo<NetworkingSerializationF
 		return ip;
 	}
 
-	public short port() {
-		return port;
+	public int port() {
+		return port & 0xFFFF;
 	}
 
 	@Override

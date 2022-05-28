@@ -5,7 +5,6 @@ import static java.util.Arrays.copyOf;
 import java.net.DatagramPacket;
 
 import engine.common.networking.packet.address.PacketAddress;
-import engine.common.networking.packet.address.SelfAddress;
 
 public class PacketModel {
 
@@ -30,7 +29,7 @@ public class PacketModel {
 	}
 
 	public static PacketModel toModel(DatagramPacket packet) {
-		return new PacketModel(copyOf(packet.getData(), packet.getLength()), SelfAddress.SELF_ADDRESS);
+		return new PacketModel(copyOf(packet.getData(), packet.getLength()), null);
 	}
 
 }
