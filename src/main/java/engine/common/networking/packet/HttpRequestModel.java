@@ -37,7 +37,7 @@ public class HttpRequestModel {
 					? httpConn.getInputStream()
 					: httpConn.getErrorStream();
 			int numRead = responseStream.read(response);
-			return Arrays.copyOf(response, numRead);
+			return numRead == -1 ? new byte[0] : Arrays.copyOf(response, numRead);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Could not execute HTTP Request Model.\n" +
