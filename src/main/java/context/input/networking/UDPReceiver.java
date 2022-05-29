@@ -1,6 +1,6 @@
 package context.input.networking;
 
-import static context.input.networking.packet.PacketModel.toModel;
+import static engine.common.networking.packet.PacketModel.toModel;
 import static java.lang.System.currentTimeMillis;
 
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.net.SocketTimeoutException;
 import java.util.Queue;
 
 import context.input.event.PacketReceivedInputEvent;
-import context.input.networking.packet.address.PacketAddress;
+import engine.common.networking.packet.address.PacketAddress;
 import engine.common.TerminateableRunnable;
 import engine.common.source.NetworkSource;
 

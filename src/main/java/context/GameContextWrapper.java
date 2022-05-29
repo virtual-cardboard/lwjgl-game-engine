@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import context.input.GameInputHandlerRunnable;
 import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
-import context.input.networking.packet.PacketModel;
+import engine.common.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
 import engine.common.loader.GameLoader;
 import engine.common.timestep.AudioUpdater;
@@ -17,17 +17,16 @@ import engine.common.timestep.WindowFrameUpdater;
 
 /**
  * A container for a game context to make switching game contexts thread-safe.
- * 
+ * <p>
  * Without a wrapper, swapping contexts requires updating every reference to the
  * context. Aside from being cumbersome, synchronization errors can occur
  * because swapping is not instantaneous.
- * 
+ * <p>
  * With the context wrapper, swapping contexts becomes thread-safe. Every
  * reference to the context is replaced with a reference to the wrapper, so
  * swapping contexts is instantaneous with one reference update.
- * 
- * @author Jay, Lunkle
  *
+ * @author Jay, Lunkle
  */
 public final class GameContextWrapper {
 
@@ -57,7 +56,7 @@ public final class GameContextWrapper {
 	/**
 	 * A constructor that takes in the context, input buffer, logic timer,
 	 * windowFrameUpdateTimer, and loader.
-	 * 
+	 *
 	 * @param inputBuffer            {@link Queue} of {@link GameInputEvent}s
 	 * @param networkSendBuffer
 	 * @param accumulator            the logic timer
@@ -68,8 +67,8 @@ public final class GameContextWrapper {
 	 * @param loader                 the {@link GameLoader}
 	 */
 	public GameContextWrapper(Queue<GameInputEvent> inputBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
-			TimeAccumulator accumulator, WindowFrameUpdater windowFrameUpdateTimer, GameLogicTimer logicTimer, AudioUpdater audioUpdater,
-			GameInputHandlerRunnable inputHandler, GLContext glContext, GameLoader loader, DatagramSocket socket) {
+	                          TimeAccumulator accumulator, WindowFrameUpdater windowFrameUpdateTimer, GameLogicTimer logicTimer, AudioUpdater audioUpdater,
+	                          GameInputHandlerRunnable inputHandler, GLContext glContext, GameLoader loader, DatagramSocket socket) {
 		this.socket = socket;
 		this.inputBuffer = inputBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
@@ -96,7 +95,7 @@ public final class GameContextWrapper {
 	/**
 	 * Swaps current context for the provided context. Puts a write lock on the
 	 * reference.
-	 * 
+	 *
 	 * @param context the context to transition to
 	 */
 	public void transition(GameContext context) {
@@ -111,7 +110,7 @@ public final class GameContextWrapper {
 	 * The read lock is on the context reference, not the context itself. The
 	 * context is still mutable and the caller is allowed to mutate the context. The
 	 * read lock is to prevent
-	 * 
+	 *
 	 * @return game context
 	 */
 	public GameContext context() {

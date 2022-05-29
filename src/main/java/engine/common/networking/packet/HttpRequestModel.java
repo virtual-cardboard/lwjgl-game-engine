@@ -1,6 +1,4 @@
-package context.input.networking.packet;
-
-import static context.input.networking.packet.RequestMethod.GET;
+package engine.common.networking.packet;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +14,7 @@ public class HttpRequestModel {
 	private final byte[] response = new byte[8192];
 
 	public HttpRequestModel(byte[] data, String urlPath) {
-		this(data, urlPath, GET);
+		this(data, urlPath, RequestMethod.GET);
 	}
 
 	public HttpRequestModel(byte[] data, String urlPath, RequestMethod requestMethod) {
@@ -35,13 +33,15 @@ public class HttpRequestModel {
 			httpConn.getOutputStream().write(data);
 			httpConn.getOutputStream().close();
 
-			InputStream responseStream = httpConn.getResponseCode() / 100 == 2
+			InputStream responseStream = ((httpConn.getResponseCode() / 100) == 2)
 					? httpConn.getInputStream()
 					: httpConn.getErrorStream();
 			int numRead = responseStream.read(response);
 			return Arrays.copyOf(response, numRead);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+			throw new RuntimeException("Could not execute HTTP Request Model.\n" +
+					"UrlPath: " + urlPath + " Request method: " + requestMethod);
 		}
 	}
 

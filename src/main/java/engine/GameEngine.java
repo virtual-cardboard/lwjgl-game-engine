@@ -17,7 +17,7 @@ import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.SocketFinder;
 import context.input.networking.UDPReceiver;
 import context.input.networking.UDPSender;
-import context.input.networking.packet.PacketModel;
+import engine.common.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
 import engine.common.loader.GameLoader;
 import engine.common.timestep.AudioUpdater;
@@ -28,11 +28,10 @@ import engine.common.timestep.WindowFrameUpdater;
 /**
  * The object that begins a game. Initializes everything required to start a
  * game, and puts everything in motion.
- * 
+ * <p>
  * The {@link #run()} function should be called to do this.
- * 
- * @author Lunkle, Jay
  *
+ * @author Lunkle, Jay
  */
 public final class GameEngine {
 
@@ -53,10 +52,9 @@ public final class GameEngine {
 
 	/**
 	 * Creates a {@link GameEngine} with a window title and a context.
-	 * 
+	 *
 	 * @param windowTitle the title of the window
 	 * @param context     the initial context to be used
-	 * 
 	 * @see GameContext
 	 */
 	public GameEngine(String windowTitle, GameContext context) {
@@ -72,7 +70,7 @@ public final class GameEngine {
 	/**
 	 * Initializes everything required to start a game, and puts everything in
 	 * motion.
-	 * 
+	 *
 	 * <p>
 	 * Lunkle [Sep 30, 2021]: some of these methods need better documentation
 	 */
@@ -129,9 +127,9 @@ public final class GameEngine {
 	}
 
 	private GameContextWrapper createWrapper(Queue<GameInputEvent> inputBuffer, TimeAccumulator accumulator, WindowFrameUpdater frameUpdater,
-			GameLogicTimer logicTimer, AudioUpdater audioUpdater, GameInputHandlerRunnable inputHandler, GLContext glContext, GameLoader loader,
-			DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
-			CountDownLatch contextCountDownLatch) {
+	                                         GameLogicTimer logicTimer, AudioUpdater audioUpdater, GameInputHandlerRunnable inputHandler, GLContext glContext, GameLoader loader,
+	                                         DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer, Queue<PacketModel> networkSendBuffer,
+	                                         CountDownLatch contextCountDownLatch) {
 		GameContextWrapper wrapper = new GameContextWrapper(inputBuffer, networkReceiveBuffer, networkSendBuffer, accumulator, frameUpdater, logicTimer,
 				audioUpdater, inputHandler, glContext, loader, socket);
 		print("Initializing context parts");
@@ -148,7 +146,7 @@ public final class GameEngine {
 	 * {@link WindowFrameUpdater#startActions() startActions} creates the window and
 	 * counts down the {@link CountDownLatch} when complete. This method
 	 * {@link CountDownLatch#await() awaits} the completion of the window.
-	 * 
+	 *
 	 * @param windowCountDownLatch
 	 */
 	private void waitForWindowCreation(CountDownLatch windowCountDownLatch) {
@@ -181,7 +179,7 @@ public final class GameEngine {
 	 * disabled we have to create a specific input handling thread.
 	 * <p>
 	 * One of the two parameters must be {@code null}
-	 * 
+	 *
 	 * @param frameUpdater
 	 * @param inputHandler
 	 */
@@ -257,9 +255,8 @@ public final class GameEngine {
 	}
 
 	/**
-	 * 
 	 * Create the {@link TimestepTimer} that updates the window.
-	 * 
+	 *
 	 * @param inputBuffer
 	 * @param logicAccumulator
 	 * @param windowCountDownLatch
@@ -268,7 +265,7 @@ public final class GameEngine {
 	 * @return
 	 */
 	private WindowFrameUpdater createWindowFrameUpdater(GLContext glContext, Queue<GameInputEvent> inputBuffer, TimeAccumulator logicAccumulator,
-			CountDownLatch windowCountDownLatch, CountDownLatch contextCountDownLatch) {
+	                                                    CountDownLatch windowCountDownLatch, CountDownLatch contextCountDownLatch) {
 		if (rendering) {
 			print("Creating window.");
 			GameWindow window = new GameWindow(windowTitle, glContext, inputBuffer, resizable, width, height, fullScreen);
