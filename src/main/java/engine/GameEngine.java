@@ -11,23 +11,23 @@ import context.GLContext;
 import context.GameContext;
 import context.GameContextWrapper;
 import context.GameWindow;
+import context.input.GameInput;
 import context.input.GameInputHandlerRunnable;
 import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
 import context.input.networking.SocketFinder;
 import context.input.networking.UDPReceiver;
 import context.input.networking.UDPSender;
-import engine.common.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
 import engine.common.loader.GameLoader;
+import engine.common.networking.packet.PacketModel;
 import engine.common.timestep.AudioUpdater;
 import engine.common.timestep.GameLogicTimer;
 import engine.common.timestep.TimestepTimer;
 import engine.common.timestep.WindowFrameUpdater;
 
 /**
- * The object that begins a game. Initializes everything required to start a
- * game, and puts everything in motion.
+ * The object that begins a game. Initializes everything required to start a game, and puts everything in motion.
  * <p>
  * The {@link #run()} function should be called to do this.
  *
@@ -55,6 +55,7 @@ public final class GameEngine {
 	 *
 	 * @param windowTitle the title of the window
 	 * @param context     the initial context to be used
+	 *
 	 * @see GameContext
 	 */
 	public GameEngine(String windowTitle, GameContext context) {
@@ -68,8 +69,7 @@ public final class GameEngine {
 	}
 
 	/**
-	 * Initializes everything required to start a game, and puts everything in
-	 * motion.
+	 * Initializes everything required to start a game, and puts everything in motion.
 	 *
 	 * <p>
 	 * Lunkle [Sep 30, 2021]: some of these methods need better documentation
@@ -139,13 +139,11 @@ public final class GameEngine {
 	}
 
 	/**
-	 * The windowCountDownLatch was previously passed into the
-	 * {@link WindowFrameUpdater} in
-	 * {@link #createWindowFrameUpdater(Queue, CountDownLatch)
-	 * createWindowFrameUpdater}. In the WindowFrameUpdater,
-	 * {@link WindowFrameUpdater#startActions() startActions} creates the window and
-	 * counts down the {@link CountDownLatch} when complete. This method
-	 * {@link CountDownLatch#await() awaits} the completion of the window.
+	 * The windowCountDownLatch was previously passed into the {@link WindowFrameUpdater} in {@link
+	 * #createWindowFrameUpdater(GLContext, Queue, TimeAccumulator, CountDownLatch, CountDownLatch)}
+	 * createWindowFrameUpdater}. In the WindowFrameUpdater, {@link WindowFrameUpdater#startActions() startActions}
+	 * creates the window and counts down the {@link CountDownLatch} when complete. This method {@link
+	 * CountDownLatch#await() awaits} the completion of the window.
 	 *
 	 * @param windowCountDownLatch
 	 */
@@ -174,9 +172,8 @@ public final class GameEngine {
 	}
 
 	/**
-	 * The rendering thread handles both rendering and input updating, so if
-	 * rendering is enabled we create just the rendering thread. If rendering is
-	 * disabled we have to create a specific input handling thread.
+	 * The rendering thread handles both rendering and input updating, so if rendering is enabled we create just the
+	 * rendering thread. If rendering is disabled we have to create a specific input handling thread.
 	 * <p>
 	 * One of the two parameters must be {@code null}
 	 *
@@ -242,6 +239,17 @@ public final class GameEngine {
 		return socket;
 	}
 
+	/**
+	 * Creates a non thread-safe buffer for GameInputEvents. The input buffer is only updated in the {@link
+	 * WindowFrameUpdater} thread.
+	 * <p>
+	 * Events are added to the inputBuffer through callbacks, which are called in the <code>WindowFrameUpdater</code>.
+	 * <p>
+	 * Events are polled from the inputBuffer by {@link GameInput#handleAll()}, which is also called in the
+	 * <code>WindowFrameUpdater</code>.
+	 *
+	 * @return the input buffer
+	 */
 	private Queue<GameInputEvent> createInputBuffer() {
 		print("Creating input buffer.");
 		Queue<GameInputEvent> inputBuffer = new PriorityQueue<>();
@@ -262,6 +270,7 @@ public final class GameEngine {
 	 * @param windowCountDownLatch
 	 * @param contextCountDownLatch
 	 * @param glContext
+	 *
 	 * @return
 	 */
 	private WindowFrameUpdater createWindowFrameUpdater(GLContext glContext, Queue<GameInputEvent> inputBuffer, TimeAccumulator logicAccumulator,
