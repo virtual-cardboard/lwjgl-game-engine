@@ -10,6 +10,7 @@ import engine.common.loader.graph.and.GLAndLoadTask;
 import engine.common.loader.graph.loader.GLLoader0Arg;
 import engine.common.loader.graph.loader.GLLoader1Arg;
 import engine.common.loader.graph.loader.GLLoader2Arg;
+import engine.common.loader.graph.loader.GLLoader3Arg;
 
 public class GLPending<T extends GLObject> extends Pending<T> {
 
@@ -30,6 +31,10 @@ public class GLPending<T extends GLObject> extends Pending<T> {
 
 	public <A, B> GLPending(String resourceName, AtomicInteger progressBar, GLLoader2Arg<T, A, B> loader, Pending<A> a, Pending<B> b) {
 		this(resourceName, progressBar, glContext -> loader.loadGL(glContext, a.get(), b.get()), a, b);
+	}
+
+	public <A, B, C> GLPending(String resourceName, AtomicInteger progressBar, GLLoader3Arg<T, A, B, C> loader, Pending<A> a, Pending<B> b, Pending<C> c) {
+		this(resourceName, progressBar, glContext -> loader.loadGL(glContext, a.get(), b.get(), c.get()), a, b, c);
 	}
 
 	@Override

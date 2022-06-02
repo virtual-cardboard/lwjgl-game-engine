@@ -4,8 +4,9 @@ import context.GLContext;
 import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderProgram;
 import engine.common.loader.GLLoadTask;
+import engine.common.loader.graph.loader.GLLoader0Arg;
 
-public final class ShaderProgramLoadTask implements GLLoadTask<ShaderProgram> {
+public final class ShaderProgramLoadTask implements GLLoadTask<ShaderProgram>, GLLoader0Arg<ShaderProgram> {
 
 	private ShaderProgram shaderProgram;
 

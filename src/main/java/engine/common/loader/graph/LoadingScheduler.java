@@ -9,15 +9,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 import context.ResourcePack;
 import context.visuals.lwjgl.GLObject;
 import engine.common.loader.GameLoader;
-import engine.common.loader.graph.loader.*;
+import engine.common.loader.graph.loader.GLLoader0Arg;
+import engine.common.loader.graph.loader.GLLoader1Arg;
+import engine.common.loader.graph.loader.GLLoader2Arg;
+import engine.common.loader.graph.loader.GLLoader3Arg;
+import engine.common.loader.graph.loader.IOLoader0Arg;
+import engine.common.loader.graph.loader.IOLoader1Arg;
+import engine.common.loader.graph.loader.IOLoader2Arg;
+import engine.common.loader.graph.loader.IOLoader3Arg;
 
 /**
  * Smart dependency loading scheduler. Internally creates a dependency graph
  * such that loading can be achieved with maximum parallelism. Inspired by
  * {@link Future}s and Promises.
- * 
- * @author Lunkle
  *
+ * @author Lunkle
  */
 public class LoadingScheduler {
 
@@ -98,6 +104,12 @@ public class LoadingScheduler {
 
 	public <T extends GLObject, A, B> Pending<T> queue(String resourceName, GLLoader2Arg<T, A, B> loader, Pending<A> a, Pending<B> b) {
 		Pending<T> pending = new GLPending<>(resourceName, completedTasks, loader, a, b);
+		totalTasks++;
+		return pending;
+	}
+
+	public <T extends GLObject, A, B, C> Pending<T> queue(String resourceName, GLLoader3Arg<T, A, B, C> loader, Pending<A> a, Pending<B> b, Pending<C> c) {
+		Pending<T> pending = new GLPending<>(resourceName, completedTasks, loader, a, b, c);
 		totalTasks++;
 		return pending;
 	}

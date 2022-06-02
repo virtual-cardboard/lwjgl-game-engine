@@ -27,6 +27,10 @@ public abstract class Pending<T> implements Supplier<T> {
 		}
 	}
 
+	protected Pending(T data) {
+		this.data = data;
+	}
+
 	@Override
 	/**
 	 * May return null if data has not yet been loaded.
@@ -59,6 +63,10 @@ public abstract class Pending<T> implements Supplier<T> {
 				}
 			}
 		}
+	}
+
+	public static <T> Pending<T> immediate(T data) {
+		return new ImmediatePending<>(data);
 	}
 
 }
