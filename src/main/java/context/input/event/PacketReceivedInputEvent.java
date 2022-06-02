@@ -8,7 +8,7 @@ public class PacketReceivedInputEvent extends GameInputEvent {
 	private NetworkSource source;
 	private PacketModel model;
 
-	public PacketReceivedInputEvent(long time, NetworkSource source, PacketModel model) {
+	public PacketReceivedInputEvent(NetworkSource source, PacketModel model) {
 		this.source = source;
 		this.model = model;
 	}

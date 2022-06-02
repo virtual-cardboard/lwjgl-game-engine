@@ -1,7 +1,6 @@
 package context.input.networking;
 
 import static engine.common.networking.packet.PacketModel.toModel;
-import static java.lang.System.currentTimeMillis;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -11,8 +10,8 @@ import java.net.SocketTimeoutException;
 import java.util.Queue;
 
 import context.input.event.PacketReceivedInputEvent;
-import engine.common.networking.packet.address.PacketAddress;
 import engine.common.TerminateableRunnable;
+import engine.common.networking.packet.address.PacketAddress;
 import engine.common.source.NetworkSource;
 
 public class UDPReceiver extends TerminateableRunnable {
@@ -32,7 +31,7 @@ public class UDPReceiver extends TerminateableRunnable {
 		try {
 			socket.receive(packet);
 			NetworkSource source = new NetworkSource(new PacketAddress((InetSocketAddress) packet.getSocketAddress()));
-			PacketReceivedInputEvent event = new PacketReceivedInputEvent(currentTimeMillis(), source, toModel(packet));
+			PacketReceivedInputEvent event = new PacketReceivedInputEvent(source, toModel(packet));
 			networkReceiveBuffer.add(event);
 		} catch (SocketTimeoutException e) {
 		} catch (IOException e) {
