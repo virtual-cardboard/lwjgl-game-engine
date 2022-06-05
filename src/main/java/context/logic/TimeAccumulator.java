@@ -1,5 +1,7 @@
 package context.logic;
 
+import static java.lang.Math.max;
+
 public class TimeAccumulator {
 
 	private float accumulation;
@@ -19,7 +21,7 @@ public class TimeAccumulator {
 	}
 
 	public TimeAccumulator sub(float amount) {
-		accumulation -= amount;
+		accumulation = max(accumulation - amount, 0);
 		return this;
 	}
 

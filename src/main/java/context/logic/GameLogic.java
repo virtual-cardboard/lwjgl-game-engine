@@ -18,16 +18,15 @@ import engine.common.timestep.GameLogicTimer;
 
 /**
  * A context part that updates data and handles {@link GameEvent}s.
- * 
+ *
+ * @author Jay
  * @see ContextPart
  * @see GameData
  * @see GameInput
- * 
- * @author Jay
- *
  */
 public abstract class GameLogic extends ContextPart {
 
+	private GameLogicTimer timer;
 	private GameLoader loader;
 	protected boolean timeSensitive = true;
 
@@ -42,7 +41,8 @@ public abstract class GameLogic extends ContextPart {
 	protected GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
 	private QueueGroup queueGroup;
 
-	public final void setComponents(QueueGroup queueGroup, GameLoader loader) {
+	public final void setComponents(GameLogicTimer timer, QueueGroup queueGroup, GameLoader loader) {
+		this.timer = timer;
 		this.queueGroup = queueGroup;
 		this.loader = loader;
 	}
@@ -115,6 +115,10 @@ public abstract class GameLogic extends ContextPart {
 
 	public void setGameTick(int gameTick) {
 		this.gameTick = gameTick;
+	}
+
+	public void setFrameRate(float frameRate) {
+		timer.setFrameRate(frameRate);
 	}
 
 }

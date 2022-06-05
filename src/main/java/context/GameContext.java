@@ -7,11 +7,12 @@ import context.data.GameData;
 import context.input.GameInput;
 import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
-import engine.common.networking.packet.PacketModel;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 import engine.common.QueueGroup;
 import engine.common.loader.GameLoader;
+import engine.common.networking.packet.PacketModel;
+import engine.common.timestep.GameLogicTimer;
 
 /**
  * A grouping of the five context parts needed in a game: <br>
@@ -93,12 +94,12 @@ public final class GameContext {
 	 * @param networkReceiveBuffer the receive buffer
 	 * @param loader               the {@link GameLoader}
 	 */
-	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLoader loader) {
+	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLogicTimer timer, GameLoader loader) {
 		data.setComponents(loader);
 		QueueGroup queueGroup = new QueueGroup(inputEventBuffer, networkReceiveBuffer);
 		input.setComponents(queueGroup);
 		audio.setComponents(queueGroup, loader);
-		logic.setComponents(queueGroup, loader);
+		logic.setComponents(timer, queueGroup, loader);
 		visuals.setComponents(queueGroup, loader);
 		audio.init();
 		data.init();

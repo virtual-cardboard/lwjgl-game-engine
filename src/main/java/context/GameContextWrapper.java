@@ -8,9 +8,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import context.input.GameInputHandlerRunnable;
 import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
-import engine.common.networking.packet.PacketModel;
 import context.logic.TimeAccumulator;
 import engine.common.loader.GameLoader;
+import engine.common.networking.packet.PacketModel;
 import engine.common.timestep.AudioUpdater;
 import engine.common.timestep.GameLogicTimer;
 import engine.common.timestep.WindowFrameUpdater;
@@ -101,7 +101,7 @@ public final class GameContextWrapper {
 	public void transition(GameContext context) {
 		synchronized (contextLock.writeLock()) {
 			context.setWrapper(this);
-			context.init(inputBuffer, networkReceiveBuffer, loader);
+			context.init(inputBuffer, networkReceiveBuffer, logicTimer, loader);
 			this.context = context;
 		}
 	}
