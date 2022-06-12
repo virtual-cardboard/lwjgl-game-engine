@@ -35,9 +35,9 @@ public abstract class GameLogic extends ContextPart {
 	 */
 	private int gameTick = -1;
 
-	private AsyncEventPriorityQueue asyncEventQueue = new AsyncEventPriorityQueue();
+	private final AsyncEventPriorityQueue asyncEventQueue = new AsyncEventPriorityQueue();
 
-	protected GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
+	private final GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
 	private QueueGroup queueGroup;
 
 	public final void setComponents(GameLogicTimer timer, QueueGroup queueGroup, GameLoader loader) {
@@ -127,6 +127,10 @@ public abstract class GameLogic extends ContextPart {
 
 	public void setFrameRate(float frameRate) {
 		timer.setFrameRate(frameRate);
+	}
+
+	public AsyncEventPriorityQueue asyncEventQueue() {
+		return asyncEventQueue;
 	}
 
 }
