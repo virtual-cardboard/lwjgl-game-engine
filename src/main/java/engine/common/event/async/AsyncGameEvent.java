@@ -5,30 +5,20 @@ import engine.common.event.GameEvent;
 public abstract class AsyncGameEvent extends GameEvent {
 
 	private long scheduledTick = 0;
-	private AsyncEventCallback callback;
-
-	public AsyncGameEvent(long scheduledTick, AsyncEventCallback callback) {
-		this.scheduledTick = scheduledTick;
-		this.callback = callback;
-	}
 
 	public AsyncGameEvent(long scheduledTick) {
-		this(scheduledTick, null);
+		this.scheduledTick = scheduledTick;
 	}
 
 	public long scheduledTick() {
 		return scheduledTick;
 	}
 
-	public AsyncEventCallback callback() {
-		return callback;
-	}
-
-	public boolean shouldExecute(long currentTick) {
+	public boolean shouldHandle(long currentTick) {
 		return currentTick >= scheduledTick;
 	}
 
-	public boolean shouldExecuteThisTick(long currentTick) {
+	public boolean shouldHandleThisTick(long currentTick) {
 		if (currentTick > scheduledTick) {
 			throw new RuntimeException("AsyncGameEvent " + this + " missed scheduled execution tick");
 		}
