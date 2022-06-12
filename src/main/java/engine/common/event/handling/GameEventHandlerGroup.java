@@ -12,10 +12,9 @@ import engine.common.event.GameEvent;
 
 /**
  * A group of {@link GameEventHandler GameEventHandlers} that can handle events.
- * 
- * @author Lunkle
  *
  * @param <T> the specific type of {@link GameEvent} to handle
+ * @author Lunkle
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class GameEventHandlerGroup<T extends GameEvent> {
@@ -24,7 +23,7 @@ public class GameEventHandlerGroup<T extends GameEvent> {
 
 	/**
 	 * Handle one event
-	 * 
+	 *
 	 * @param event
 	 */
 	public void handleEvent(T event) {
@@ -56,11 +55,11 @@ public class GameEventHandlerGroup<T extends GameEvent> {
 	}
 
 	public <R extends T> void addHandler(Class<R> clazz, Predicate<? super R> predicate, Consumer<? super R> consumer, boolean consumes) {
-		addHandler(clazz, new GameEventHandler<>(predicate, consumer, consumes));
+		addHandler(clazz, new GameEventHandler<R>(predicate, consumer, consumes));
 	}
 
 	public <R extends T> void addHandler(Class<R> clazz, Consumer<? super R> consumer) {
-		addHandler(clazz, new GameEventHandler<>(consumer));
+		addHandler(clazz, new GameEventHandler<R>(consumer));
 	}
 
 	public <R extends T> void addHandler(Class<R> clazz, GameEventHandler<? super R> handler) {
