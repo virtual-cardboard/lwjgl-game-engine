@@ -38,7 +38,7 @@ public class LabelGui extends Gui {
 	@Override
 	public void render(GLContext glContext, GameData data, float x, float y, float width, float height) {
 		rectangleRenderer.render(x, y, width, height, colour);
-		textRenderer.setAlign(align);
+		textRenderer.setHorizontalAlign(align);
 		textRenderer.render(new Matrix4f().translate(x + paddingLeft, y + paddingTop), text, width - paddingLeft - paddingRight, font,
 				size, textColour);
 	}

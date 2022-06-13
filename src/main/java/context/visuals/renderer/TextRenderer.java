@@ -21,15 +21,16 @@ import engine.common.math.Matrix4f;
 
 /**
  * A {@link GameRenderer} that renders text.
- * 
- * @author Jay
  *
+ * @author Jay
  */
 public class TextRenderer extends GameRenderer {
 
 	public static final int ALIGN_LEFT = 0;
-	public static final int ALIGN_CENTER = 1;
-	public static final int ALIGN_RIGHT = 2;
+	public static final int ALIGN_RIGHT = 1;
+	public static final int ALIGN_TOP = 2;
+	public static final int ALIGN_BOTTOM = 3;
+	public static final int ALIGN_CENTER = 4;
 
 	private final TextureRenderer textureRenderer;
 	/**
@@ -39,11 +40,12 @@ public class TextRenderer extends GameRenderer {
 	private final RectangleVertexArrayObject vao;
 	private final FrameBufferObject fbo;
 
-	private int align = ALIGN_LEFT;
+	private int hAlign = ALIGN_LEFT;
+	private int vAlign = ALIGN_TOP;
 
 	/**
 	 * Creates a TextRenderer using a {@link TextShaderProgram}.
-	 * 
+	 *
 	 * @param shaderProgram the <code>TextShaderProgram</code>
 	 * @param vao           the <code>RectangleVertexArrayObject</code>
 	 * @param fbo           the <code>FrameBufferObject</code>
@@ -57,35 +59,34 @@ public class TextRenderer extends GameRenderer {
 
 	/**
 	 * Renders text.
-	 * 
-	 * @param x         the <code>x</code> offset of the text from the left side of
-	 *                  the screen
-	 * @param y         the <code>y</code> offset of the text from the top of the
-	 *                  screen
+	 *
+	 * @param x         the <code>x</code> offset of the text from the left side of the screen
+	 * @param y         the <code>y</code> offset of the text from the top of the screen
 	 * @param text      the {@link String} to display
-	 * @param lineWidth the max width of a line of text in pixels, or -1 to indicate
-	 *                  no wrapping of text
+	 * @param lineWidth the max width of each line of text in pixels, or 0 to indicate no wrapping
 	 * @param font      the {@link GameFont} of the text
 	 * @param fontSize  the size of the text
 	 * @param colour    the colour of the text
+	 *
+	 * @return the number of lines of text rendered
 	 */
-	public void render(float x, float y, String text, int lineWidth, GameFont font, float fontSize, int colour) {
-		render(new Matrix4f().translate(x, y), text, lineWidth, font, fontSize, colour);
+	public int render(float x, float y, String text, float lineWidth, GameFont font, float fontSize, int colour) {
+		return render(new Matrix4f().translate(x, y), text, lineWidth, font, fontSize, colour);
 	}
 
 	/**
 	 * Renders text.
-	 * 
-	 * @param transform the transformation matrix to be applied to the text at the
-	 *                  end
+	 *
+	 * @param transform the transformation matrix to be applied to the text at the end
 	 * @param text      the text
-	 * @param lineWidth the max width of the line of text in pixels, or 0 to
-	 *                  indicate no wrapping
+	 * @param lineWidth the max width of each line of text in pixels, or 0 to indicate no wrapping
 	 * @param font      the <code>GameFont</code> of the text
 	 * @param fontSize  the font size
 	 * @param colour    the {@link Colour} (int)
+	 *
+	 * @return the number of lines of text rendered
 	 */
-	public void render(Matrix4f transform, String text, float lineWidth, GameFont font, float fontSize, int colour) {
+	public int render(Matrix4f transform, String text, float lineWidth, GameFont font, float fontSize, int colour) {
 		fbo.bind(glContext);
 		font.texture().bind(glContext);
 		glClearColor(0, 0, 0, 0);
@@ -97,21 +98,24 @@ public class TextRenderer extends GameRenderer {
 		shaderProgram.setFloat("texHeight", font.texture().height());
 		shaderProgram.setColour("fill", colour);
 
+		int numLines;
 		if (lineWidth == 0) {
 			renderOneLine(0, 0, text, font, fontSize);
+			numLines = 1;
 		} else {
 			List<Pair<String, Float>> stringPairs = convertToStringPairs(text, font, fontSize, lineWidth);
-			if (align == ALIGN_LEFT) {
+			numLines = stringPairs.size();
+			if (hAlign == ALIGN_LEFT) {
 				for (int i = 0; i < stringPairs.size(); i++) {
 					Pair<String, Float> pair = stringPairs.get(i);
 					renderOneLine(0, i * fontSize, pair.a, font, fontSize);
 				}
-			} else if (align == ALIGN_CENTER) {
+			} else if (hAlign == ALIGN_CENTER) {
 				for (int i = 0; i < stringPairs.size(); i++) {
 					Pair<String, Float> pair = stringPairs.get(i);
 					renderOneLine((lineWidth - pair.b) * 0.5f, i * fontSize, pair.a, font, fontSize);
 				}
-			} else if (align == ALIGN_RIGHT) {
+			} else if (hAlign == ALIGN_RIGHT) {
 				for (int i = 0; i < stringPairs.size(); i++) {
 					Pair<String, Float> pair = stringPairs.get(i);
 					renderOneLine(lineWidth - pair.b, i * fontSize, pair.a, font, fontSize);
@@ -120,8 +124,17 @@ public class TextRenderer extends GameRenderer {
 		}
 		FrameBufferObject.unbind(glContext);
 		Texture tex = fbo.texture();
-		Matrix4f m = new Matrix4f().translate(-1, 1).scale(2 / glContext.width(), -2 / glContext.height()).multiply(transform).scale(tex.width(), tex.height());
+		Matrix4f m = new Matrix4f()
+				.translate(-1, 1).scale(2 / glContext.width(), -2 / glContext.height())
+				.multiply(transform);
+		if (vAlign == ALIGN_CENTER) {
+			m = m.translate(0, -numLines * fontSize / 2);
+		} else if (vAlign == ALIGN_BOTTOM) {
+			m = m.translate(0, -numLines * fontSize);
+		}
+		m = m.scale(tex.width(), tex.height());
 		textureRenderer.render(tex, m);
+		return numLines;
 	}
 
 	private void renderOneLine(float xOffset, float yOffset, String text, GameFont font, float fontSize) {
@@ -130,10 +143,11 @@ public class TextRenderer extends GameRenderer {
 		float sizeMultiplier = fontSize / font.getFontSize();
 		fbo.bind(glContext);
 
-		for (int i = 0; i < chars.length; i++) {
-			CharacterData c = font.getCharacterDatas()[chars[i]];
+		CharacterData[] characterDataArray = font.getCharacterDatas();
+		for (char ch : chars) {
+			CharacterData c = characterDataArray[ch];
 			short xAdvance = c.xAdvance();
-			if (chars[i] == ' ') {
+			if (ch == ' ') {
 				xOffset += xAdvance * sizeMultiplier;
 				continue;
 			}
@@ -160,8 +174,7 @@ public class TextRenderer extends GameRenderer {
 
 		float currentStringWidth = 0;
 		String currentString = "";
-		for (int i = 0; i < words.length; i++) {
-			String word = words[i];
+		for (String word : words) {
 			float wordWidth = 0;
 			for (int j = 0; j < word.length(); j++) {
 				wordWidth += characterDatas[word.charAt(j)].xAdvance() * sizeMultiplier;
@@ -185,23 +198,51 @@ public class TextRenderer extends GameRenderer {
 	}
 
 	public void alignLeft() {
-		align = ALIGN_LEFT;
+		hAlign = ALIGN_LEFT;
 	}
 
-	public void alignCenter() {
-		align = ALIGN_CENTER;
+	public void alignCenterHorizontal() {
+		hAlign = ALIGN_CENTER;
 	}
 
 	public void alignRight() {
-		align = ALIGN_RIGHT;
+		hAlign = ALIGN_RIGHT;
 	}
 
-	public int align() {
-		return align;
+	public void alignTop() {
+		vAlign = ALIGN_TOP;
 	}
 
-	public void setAlign(int align) {
-		this.align = align;
+	public void alignCenterVertical() {
+		vAlign = ALIGN_CENTER;
+	}
+
+	public void alignBottom() {
+		vAlign = ALIGN_BOTTOM;
+	}
+
+	public int hAlign() {
+		return hAlign;
+	}
+
+	public int vAlign() {
+		return vAlign;
+	}
+
+	public void setHorizontalAlign(int hAlign) {
+		this.hAlign = hAlign;
+		if (hAlign != ALIGN_LEFT && hAlign != ALIGN_CENTER && hAlign != ALIGN_RIGHT) {
+			throw new IllegalArgumentException("Invalid horizontal alignment: " + hAlign + ".\n" +
+					"Expected ALIGN_LEFT (" + ALIGN_LEFT + "), ALIGN_CENTER (" + ALIGN_CENTER + "), or ALIGN_RIGHT (" + ALIGN_RIGHT + ")");
+		}
+	}
+
+	public void setVerticalAlign(int vAlign) {
+		this.vAlign = vAlign;
+		if (vAlign != ALIGN_TOP && vAlign != ALIGN_CENTER && vAlign != ALIGN_BOTTOM) {
+			throw new IllegalArgumentException("Invalid vertical alignment: " + vAlign + ".\n" +
+					"Expected ALIGN_TOP (" + ALIGN_TOP + "), ALIGN_CENTER (" + ALIGN_CENTER + "), or ALIGN_BOTTOM (" + ALIGN_BOTTOM + ")");
+		}
 	}
 
 }
