@@ -17,7 +17,7 @@ public class AsyncEventPriorityQueue extends PriorityQueue<AsyncGameEvent> {
 		if (peek == null) {
 			return null;
 		}
-		if (peek.shouldExecute(tick)) {
+		if (peek.shouldHandle(tick)) {
 			return peek;
 		}
 		return null;
@@ -28,7 +28,7 @@ public class AsyncEventPriorityQueue extends PriorityQueue<AsyncGameEvent> {
 		if (peek == null) {
 			return null;
 		}
-		if (peek.shouldExecuteThisTick(tick)) {
+		if (peek.shouldHandleThisTick(tick)) {
 			return peek;
 		}
 		return null;

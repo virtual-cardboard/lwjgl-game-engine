@@ -35,10 +35,9 @@ public abstract class GameLogic extends ContextPart {
 	 */
 	private int gameTick = -1;
 
-	private AsyncEventPriorityQueue asyncEventQueue = new AsyncEventPriorityQueue();
-	protected GameEventHandlerGroup<AsyncGameEvent> asyncEventHandlers = new GameEventHandlerGroup<>();
+	private final AsyncEventPriorityQueue asyncEventQueue = new AsyncEventPriorityQueue();
 
-	protected GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
+	private final GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
 	private QueueGroup queueGroup;
 
 	public final void setComponents(GameLogicTimer timer, QueueGroup queueGroup, GameLoader loader) {
@@ -54,15 +53,25 @@ public abstract class GameLogic extends ContextPart {
 		update();
 	}
 
-	protected void handleAsyncEvents() {
+	private void handleAsyncEvents() {
 		while (asyncEventQueue.peek(gameTick) != null) {
-			AsyncGameEvent event = asyncEventQueue.poll();
-			asyncEventHandlers.handleEvent(event);
+			handlers.handleEvent(asyncEventQueue.poll());
 		}
 	}
 
 	protected void handleEvent(GameEvent event) {
-		handlers.handleEvent(event);
+		if (!(event instanceof AsyncGameEvent)) {
+			// Handle immediately
+			handlers.handleEvent(event);
+		} else {
+			// Handle later
+			AsyncGameEvent asyncEvent = (AsyncGameEvent) event;
+			if (asyncEvent.shouldHandle(gameTick)) {
+				handlers.handleEvent(asyncEvent);
+			} else {
+				asyncEventQueue.add(asyncEvent);
+			}
+		}
 	}
 
 	/**
@@ -99,7 +108,6 @@ public abstract class GameLogic extends ContextPart {
 			GameEvent e = events.poll();
 			queueGroup.pushEventFromLogic(e);
 		}
-		events.clear();
 	}
 
 	public boolean timeSensitive() {
@@ -119,6 +127,10 @@ public abstract class GameLogic extends ContextPart {
 
 	public void setFrameRate(float frameRate) {
 		timer.setFrameRate(frameRate);
+	}
+
+	public AsyncEventPriorityQueue asyncEventQueue() {
+		return asyncEventQueue;
 	}
 
 }
