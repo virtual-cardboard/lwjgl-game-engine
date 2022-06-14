@@ -18,33 +18,32 @@ import context.GLContext;
 import context.data.GameData;
 import context.logic.TimeAccumulator;
 import context.visuals.gui.RootGui;
-import context.visuals.renderer.GameRenderer;
 import engine.common.QueueGroup;
 import engine.common.event.GameEvent;
 import engine.common.event.handling.GameEventHandler;
 import engine.common.event.handling.GameEventHandlerGroup;
 import engine.common.loader.GameLoader;
+import engine.common.timestep.WindowFrameUpdater;
 
 /**
  * A bundle part that displays visuals based on data from {@link GameData}.
- * 
- * @author Jay
  *
+ * @author Jay
  */
 public abstract class GameVisuals extends ContextPart {
 
 	/**
 	 * The {@link RootGui} to which all GUIs will be children of.
 	 */
-	protected RootGui rootGui = new RootGui(0, 0);
+	private final RootGui rootGui = new RootGui(0, 0);
 
-	protected GameLoader loader;
+	private GameLoader loader;
 
 	private TimeAccumulator logicAccumulator;
 	private boolean initialized;
 
 	private Queue<GameEvent> in;
-	protected GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
+	private final GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
 
 	public RootGui rootGui() {
 		return rootGui;
@@ -60,8 +59,7 @@ public abstract class GameVisuals extends ContextPart {
 	}
 
 	/**
-	 * Uses {@link GameRenderer}s to render the game. This is automatically called
-	 * every frame.
+	 * Renders the current frame. This is automatically called every frame by the {@link WindowFrameUpdater}.
 	 */
 	public abstract void render();
 
@@ -89,7 +87,10 @@ public abstract class GameVisuals extends ContextPart {
 	}
 
 	/**
-	 * Initializes the {@link GameVisuals}. This is called by the rendering thread.
+	 * Initializes the {@link GameVisuals}. This is called by the {@link WindowFrameUpdater} only once, right after the
+	 * context is transitioned and before the calls to {@link #render()}.
+	 * <p>
+	 * IMPORTANT: By default, this function does nothing. Override its behaviour as needed.
 	 */
 	@Override
 	public void init() {
