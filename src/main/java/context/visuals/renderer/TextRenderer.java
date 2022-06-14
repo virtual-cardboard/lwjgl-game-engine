@@ -103,7 +103,11 @@ public class TextRenderer extends GameRenderer {
 			renderOneLine(0, 0, text, font, fontSize);
 			numLines = 1;
 		} else {
-			List<Pair<String, Float>> stringPairs = convertToStringPairs(text, font, fontSize, lineWidth);
+			String[] splitByNewLines = text.split("\\n");
+			List<Pair<String, Float>> stringPairs = new ArrayList<>();
+			for (String line : splitByNewLines) {
+				stringPairs.addAll(convertToStringPairs(line.trim(), font, fontSize, lineWidth));
+			}
 			numLines = stringPairs.size();
 			if (hAlign == ALIGN_LEFT) {
 				for (int i = 0; i < stringPairs.size(); i++) {
