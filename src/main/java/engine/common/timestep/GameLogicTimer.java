@@ -10,10 +10,10 @@ public class GameLogicTimer extends TimestepTimer {
 
 	private GameContextWrapper wrapper;
 	private boolean isDone = false;
-	private CountDownLatch contextCountDownLatch;
+	private final CountDownLatch contextCountDownLatch;
 
-	public GameLogicTimer(TimeAccumulator accumulator, CountDownLatch contextCountDownLatch) {
-		super(10, accumulator);
+	public GameLogicTimer(float tickRate, TimeAccumulator accumulator, CountDownLatch contextCountDownLatch) {
+		super(tickRate, accumulator);
 		this.setWrapper(wrapper);
 		this.contextCountDownLatch = contextCountDownLatch;
 	}

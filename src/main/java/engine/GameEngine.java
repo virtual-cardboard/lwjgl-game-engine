@@ -48,6 +48,7 @@ public final class GameEngine {
 
 	private int width = 1920;
 	private int height = 1012;
+	private float tickRate = 10;
 	private boolean fullScreen = false;
 
 	/**
@@ -117,7 +118,7 @@ public final class GameEngine {
 
 	private GameLogicTimer createLogicThread(TimeAccumulator accumulator, CountDownLatch contextCountDownLatch) {
 		print("Creating logic timer.");
-		GameLogicTimer logicTimer = new GameLogicTimer(accumulator, contextCountDownLatch);
+		GameLogicTimer logicTimer = new GameLogicTimer(tickRate, accumulator, contextCountDownLatch);
 		Thread logicThread = new Thread(logicTimer);
 		logicThread.setName("gameLogicThread");
 		logicThread.setDaemon(true);
@@ -141,9 +142,9 @@ public final class GameEngine {
 	/**
 	 * The windowCountDownLatch was previously passed into the {@link WindowFrameUpdater} in {@link
 	 * #createWindowFrameUpdater(GLContext, Queue, TimeAccumulator, CountDownLatch, CountDownLatch)}
-	 * createWindowFrameUpdater}. In the WindowFrameUpdater, {@link WindowFrameUpdater#startActions() startActions}
-	 * creates the window and counts down the {@link CountDownLatch} when complete. This method {@link
-	 * CountDownLatch#await() awaits} the completion of the window.
+	 * createWindowFrameUpdater}. In the WindowFrameUpdater's start actions, it creates the window and counts down the
+	 * {@link CountDownLatch} when complete. This method {@link CountDownLatch#await() awaits} the completion of the
+	 * window.
 	 *
 	 * @param windowCountDownLatch
 	 */
@@ -403,12 +404,26 @@ public final class GameEngine {
 		return this;
 	}
 
+	/**
+	 * Sets the {@link GameLogicTimer}'s number of ticks per second.
+	 * <p>
+	 * The default rate is 10.
+	 *
+	 * @param tickRate The new tick rate
+	 *
+	 * @return The GameEngine object
+	 */
+	public GameEngine setTickRate(float tickRate) {
+		this.tickRate = tickRate;
+		return this;
+	}
+
 	public GameEngine enableFullScreen() {
 		this.fullScreen = true;
 		return this;
 	}
 
-	public GameEngine disasbleFullScreen() {
+	public GameEngine disableFullScreen() {
 		this.fullScreen = false;
 		return this;
 	}
