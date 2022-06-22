@@ -139,7 +139,7 @@ public final class GameContext {
 	 * Called when the {@link GameContextWrapper} terminates.
 	 * <p>
 	 * Note: context parts terminate in the reverse order they are
-	 * {@link #init(Queue, Queue, GameLoader) initialized} in.
+	 * {@link #init(Queue, Queue, GameLogicTimer, GameLoader)}  initialized} in.
 	 */
 	public void terminate() {
 		visuals.terminate();

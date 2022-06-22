@@ -7,7 +7,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketTimeoutException;
-import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import context.input.event.PacketReceivedInputEvent;
 import engine.common.TerminateableRunnable;
@@ -17,11 +17,11 @@ import engine.common.source.NetworkSource;
 public class UDPReceiver extends TerminateableRunnable {
 
 	private DatagramSocket socket;
-	private Queue<PacketReceivedInputEvent> networkReceiveBuffer;
+	private ArrayBlockingQueue<PacketReceivedInputEvent> networkReceiveBuffer;
 	private byte[] buffer = new byte[65536];
 	private DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
-	public UDPReceiver(DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer) {
+	public UDPReceiver(DatagramSocket socket, ArrayBlockingQueue<PacketReceivedInputEvent> networkReceiveBuffer) {
 		this.socket = socket;
 		this.networkReceiveBuffer = networkReceiveBuffer;
 	}
@@ -32,9 +32,9 @@ public class UDPReceiver extends TerminateableRunnable {
 			socket.receive(packet);
 			NetworkSource source = new NetworkSource(new PacketAddress((InetSocketAddress) packet.getSocketAddress()));
 			PacketReceivedInputEvent event = new PacketReceivedInputEvent(source, toModel(packet));
-			networkReceiveBuffer.add(event);
+			networkReceiveBuffer.put(event);
 		} catch (SocketTimeoutException e) {
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

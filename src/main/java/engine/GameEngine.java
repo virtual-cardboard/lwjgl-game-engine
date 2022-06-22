@@ -56,7 +56,6 @@ public final class GameEngine {
 	 *
 	 * @param windowTitle the title of the window
 	 * @param context     the initial context to be used
-	 *
 	 * @see GameContext
 	 */
 	public GameEngine(String windowTitle, GameContext context) {
@@ -93,8 +92,8 @@ public final class GameEngine {
 		createAudioThread(audioUpdater);
 
 		DatagramSocket socket = createSocket(); // We should not be passing a raw socket to the wrapper
-		Queue<PacketReceivedInputEvent> networkReceiveBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
-		Queue<PacketModel> networkSendBuffer = new ArrayBlockingQueue<>(10); // Please confirm if thread safety is needed
+		ArrayBlockingQueue<PacketReceivedInputEvent> networkReceiveBuffer = new ArrayBlockingQueue<>(30); // Please confirm if thread safety is needed
+		Queue<PacketModel> networkSendBuffer = new ArrayBlockingQueue<>(30); // Please confirm if thread safety is needed
 		UDPReceiver receiver = createUDPReceiver(socket, networkReceiveBuffer);
 		UDPSender sender = createUDPSender(socket, networkSendBuffer);
 		createUDPReceiverAndSenderThreads(receiver, sender);
@@ -219,7 +218,7 @@ public final class GameEngine {
 		return sender;
 	}
 
-	private UDPReceiver createUDPReceiver(DatagramSocket socket, Queue<PacketReceivedInputEvent> networkReceiveBuffer) {
+	private UDPReceiver createUDPReceiver(DatagramSocket socket, ArrayBlockingQueue<PacketReceivedInputEvent> networkReceiveBuffer) {
 		UDPReceiver receiver = null;
 		if (networking) {
 			receiver = new UDPReceiver(socket, networkReceiveBuffer);
@@ -271,7 +270,6 @@ public final class GameEngine {
 	 * @param windowCountDownLatch
 	 * @param contextCountDownLatch
 	 * @param glContext
-	 *
 	 * @return
 	 */
 	private WindowFrameUpdater createWindowFrameUpdater(GLContext glContext, Queue<GameInputEvent> inputBuffer, TimeAccumulator logicAccumulator,
@@ -410,7 +408,6 @@ public final class GameEngine {
 	 * The default rate is 10.
 	 *
 	 * @param tickRate The new tick rate
-	 *
 	 * @return The GameEngine object
 	 */
 	public GameEngine setTickRate(float tickRate) {
