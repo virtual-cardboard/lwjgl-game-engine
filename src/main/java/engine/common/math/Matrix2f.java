@@ -13,20 +13,21 @@
  */
 package engine.common.math;
 
-import java.io.Serializable;
+import static engine.common.math.MathSerializationFormats.MATRIX_2F;
+
 import java.nio.FloatBuffer;
 
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
+
 /**
- *
  * Holds a 2x2 matrix
  *
- * @author cix_foo <cix_foo@users.sourceforge.net>
- * @version $Revision$ $Id$
+ * @author Jay
  */
 
-public class Matrix2f implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class Matrix2f implements SerializationPojo<MathSerializationFormats> {
 
 	public float m00, m01, m10, m11;
 
@@ -44,9 +45,13 @@ public class Matrix2f implements Serializable {
 		load(src);
 	}
 
+	public Matrix2f(byte[] bytes) {
+		read(new SerializationReader(bytes));
+	}
+
 	/**
 	 * Load from another matrix
-	 * 
+	 *
 	 * @param src The source matrix
 	 * @return this
 	 */
@@ -56,7 +61,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Copy the source matrix to the destination matrix.
-	 * 
+	 *
 	 * @param src  The source matrix
 	 * @param dest The destination matrix, or null if a new one should be created.
 	 * @return The copied matrix
@@ -104,7 +109,7 @@ public class Matrix2f implements Serializable {
 	/**
 	 * Store this matrix in a float buffer. The matrix is stored in column major
 	 * (openGL) order.
-	 * 
+	 *
 	 * @param buf The buffer to store this matrix in
 	 */
 	public Matrix2f store(FloatBuffer buf) {
@@ -118,7 +123,7 @@ public class Matrix2f implements Serializable {
 	/**
 	 * Store this matrix in a float buffer. The matrix is stored in row major
 	 * (maths) order.
-	 * 
+	 *
 	 * @param buf The buffer to store this matrix in
 	 */
 	public Matrix2f storeTranspose(FloatBuffer buf) {
@@ -131,7 +136,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Add two matrices together and place the result in a third matrix.
-	 * 
+	 *
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
 	 * @param dest  The destination matrix, or null if a new one is to be created
@@ -152,7 +157,7 @@ public class Matrix2f implements Serializable {
 	/**
 	 * Subtract the right matrix from the left and place the result in a third
 	 * matrix.
-	 * 
+	 *
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
 	 * @param dest  The destination matrix, or null if a new one is to be created
@@ -172,7 +177,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Multiply the right matrix by the left and place the result in a third matrix.
-	 * 
+	 *
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
 	 * @param dest  The destination matrix, or null if a new one is to be created
@@ -197,7 +202,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Transform a Vector by a matrix and return the result in a destination vector.
-	 * 
+	 *
 	 * @param left  The left matrix
 	 * @param right The right vector
 	 * @param dest  The destination vector, or null if a new one is to be created
@@ -207,12 +212,12 @@ public class Matrix2f implements Serializable {
 		if (dest == null)
 			dest = new Vector2f();
 
-		return new Vector2f(left.m00 * right.x + left.m10 * right.y, left.m01 * right.x + left.m11 * right.y);
+		return new Vector2f(left.m00 * right.x() + left.m10 * right.y(), left.m01 * right.x() + left.m11 * right.y());
 	}
 
 	/**
 	 * Transpose this matrix and place the result in another matrix.
-	 * 
+	 *
 	 * @param dest The destination matrix or null if a new matrix is to be created
 	 * @return the transposed matrix
 	 */
@@ -222,7 +227,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Transpose the source matrix and place the result in the destination matrix.
-	 * 
+	 *
 	 * @param src  The source matrix or null if a new matrix is to be created
 	 * @param dest The destination matrix or null if a new matrix is to be created
 	 * @return the transposed matrix
@@ -242,7 +247,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Invert this matrix
-	 * 
+	 *
 	 * @return this if successful, null otherwise
 	 */
 	public Matrix2f invert() {
@@ -251,7 +256,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Invert the source matrix and place the result in the destination matrix.
-	 * 
+	 *
 	 * @param src  The source matrix to be inverted
 	 * @param dest The destination matrix or null if a new matrix is to be created
 	 * @return The inverted matrix, or null if source can't be reverted.
@@ -293,7 +298,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Negate this matrix
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix2f negate() {
@@ -302,7 +307,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Negate this matrix and stash the result in another matrix.
-	 * 
+	 *
 	 * @param dest The destination matrix, or null if a new matrix is to be created
 	 * @return the negated matrix
 	 */
@@ -312,7 +317,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Negate the source matrix and stash the result in the destination matrix.
-	 * 
+	 *
 	 * @param src  The source matrix to be negated
 	 * @param dest The destination matrix, or null if a new matrix is to be created
 	 * @return the negated matrix
@@ -331,7 +336,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Set this matrix to be the identity matrix.
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix2f setIdentity() {
@@ -344,7 +349,7 @@ public class Matrix2f implements Serializable {
 
 	/**
 	 * Set this matrix to 0.
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix2f setZero() {
@@ -357,10 +362,31 @@ public class Matrix2f implements Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 */
 	public float determinant() {
 		return m00 * m11 - m01 * m10;
+	}
+
+	@Override
+	public MathSerializationFormats formatEnum() {
+		return MATRIX_2F;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		this.m00 = reader.readFloat();
+		this.m01 = reader.readFloat();
+		this.m10 = reader.readFloat();
+		this.m11 = reader.readFloat();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		writer.consume(m00);
+		writer.consume(m01);
+		writer.consume(m10);
+		writer.consume(m11);
 	}
 
 }

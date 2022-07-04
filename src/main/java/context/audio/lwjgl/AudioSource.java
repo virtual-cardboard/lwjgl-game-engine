@@ -1,6 +1,20 @@
 package context.audio.lwjgl;
 
-import static org.lwjgl.openal.AL10.*;
+import static org.lwjgl.openal.AL10.AL_BUFFER;
+import static org.lwjgl.openal.AL10.AL_GAIN;
+import static org.lwjgl.openal.AL10.AL_NO_ERROR;
+import static org.lwjgl.openal.AL10.AL_PITCH;
+import static org.lwjgl.openal.AL10.AL_POSITION;
+import static org.lwjgl.openal.AL10.AL_VELOCITY;
+import static org.lwjgl.openal.AL10.alDeleteSources;
+import static org.lwjgl.openal.AL10.alGenSources;
+import static org.lwjgl.openal.AL10.alGetError;
+import static org.lwjgl.openal.AL10.alGetString;
+import static org.lwjgl.openal.AL10.alSource3f;
+import static org.lwjgl.openal.AL10.alSourcePause;
+import static org.lwjgl.openal.AL10.alSourcePlay;
+import static org.lwjgl.openal.AL10.alSourcef;
+import static org.lwjgl.openal.AL10.alSourcei;
 
 import engine.common.math.Vector3f;
 
@@ -25,7 +39,7 @@ public class AudioSource extends ALObject {
 
 	public void setPosition(Vector3f pos) {
 		verifyInitialized();
-		alSource3f(id, AL_POSITION, pos.x, pos.y, pos.z);
+		alSource3f(id, AL_POSITION, pos.x(), pos.y(), pos.z());
 	}
 
 	public void setPosition(float x, float y, float z) {
@@ -35,7 +49,7 @@ public class AudioSource extends ALObject {
 
 	public void setVelocity(Vector3f pos) {
 		verifyInitialized();
-		alSource3f(id, AL_VELOCITY, pos.x, pos.y, pos.z);
+		alSource3f(id, AL_VELOCITY, pos.x(), pos.y(), pos.z());
 	}
 
 	public void setVelocity(float x, float y, float z) {

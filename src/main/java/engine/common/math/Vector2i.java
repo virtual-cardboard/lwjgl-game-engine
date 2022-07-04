@@ -1,16 +1,23 @@
 package engine.common.math;
 
+import static engine.common.math.MathSerializationFormats.VECTOR_2I;
+
 import java.util.Objects;
+
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
 
 /**
  * An immutable vector of two ints.
- * 
+ *
  * @author Jay
  */
-public class Vector2i {
 
-	public final int x;
-	public final int y;
+public class Vector2i implements SerializationPojo<MathSerializationFormats> {
+
+	int x;
+	int y;
 
 	public Vector2i() {
 		this.x = 0;
@@ -25,6 +32,10 @@ public class Vector2i {
 	public Vector2i(Vector2i src) {
 		this.x = src.x;
 		this.y = src.y;
+	}
+
+	public Vector2i(byte[] bytes) {
+		read(new SerializationReader(bytes));
 	}
 
 	public Vector2i negate() {
@@ -83,6 +94,14 @@ public class Vector2i {
 		return new Vector2f(x, y);
 	}
 
+	public int x() {
+		return x;
+	}
+
+	public int y() {
+		return y;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(x, y);
@@ -101,6 +120,23 @@ public class Vector2i {
 			return false;
 		Vector2i other = (Vector2i) obj;
 		return x == other.x && y == other.y;
+	}
+
+	@Override
+	public MathSerializationFormats formatEnum() {
+		return VECTOR_2I;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		this.x = reader.readInt();
+		this.y = reader.readInt();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		writer.consume(x);
+		writer.consume(y);
 	}
 
 }

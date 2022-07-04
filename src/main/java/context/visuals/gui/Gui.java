@@ -19,14 +19,12 @@ import engine.common.math.Vector2i;
  * <p>
  * A <code>Gui</code> can have any number of children <code>Guis</code>.
  * </p>
- * 
+ *
  * @author Jay
- * 
  * @see GuiPositionConstraint
  * @see GuiDimensionConstraint
  * @see GameVisuals
  * @see RootGui
- *
  */
 public abstract class Gui {
 
@@ -43,7 +41,7 @@ public abstract class Gui {
 	public abstract void render(GLContext glContext, GameData data, float x, float y, float width, float height);
 
 	protected final Matrix4f rectToPixelMatrix4f(Vector2i windowDim) {
-		return new Matrix4f().translate(new Vector2f(-1, 1)).scale(2f / windowDim.x, -2f / windowDim.y);
+		return new Matrix4f().translate(new Vector2f(-1, 1)).scale(2f / windowDim.x(), -2f / windowDim.y());
 	}
 
 	public void addChild(Gui child) {
@@ -78,7 +76,7 @@ public abstract class Gui {
 
 	/**
 	 * Gets the absolute position and dimensions.
-	 * 
+	 *
 	 * @return a {@link PosDim} containing the position and dimensions
 	 */
 	public PosDim posdim() {

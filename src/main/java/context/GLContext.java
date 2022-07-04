@@ -17,11 +17,11 @@ public class GLContext {
 	}
 
 	public float width() {
-		return windowDim.x;
+		return windowDim.x();
 	}
 
 	public float height() {
-		return windowDim.y;
+		return windowDim.y();
 	}
 
 	public Vector2i windowDim() {

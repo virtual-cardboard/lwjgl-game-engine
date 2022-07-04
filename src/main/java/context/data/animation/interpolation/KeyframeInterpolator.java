@@ -80,7 +80,7 @@ public class KeyframeInterpolator {
 	private static float[] extractXs(List<Keyframe> keyframes, int start, int end) {
 		float[] xs = new float[end - start];
 		for (int i = 0; i < xs.length; i++) {
-			xs[i] = keyframes.get(i + start).getSkeletonState().getRootPosition().x;
+			xs[i] = keyframes.get(i + start).getSkeletonState().getRootPosition().x();
 		}
 		return xs;
 	}
@@ -88,7 +88,7 @@ public class KeyframeInterpolator {
 	private static float[] extractYs(List<Keyframe> keyframes, int start, int end) {
 		float[] ys = new float[end - start];
 		for (int i = 0; i < ys.length; i++) {
-			ys[i] = keyframes.get(i + start).getSkeletonState().getRootPosition().y;
+			ys[i] = keyframes.get(i + start).getSkeletonState().getRootPosition().y();
 		}
 		return ys;
 	}

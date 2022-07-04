@@ -21,7 +21,7 @@ public class GameCursor {
 	}
 
 	public void setPos(Vector2i pos) {
-		setPos(pos.x, pos.y);
+		setPos(pos.x(), pos.y());
 	}
 
 	public void setPos(int x, int y) {
@@ -44,4 +44,5 @@ public class GameCursor {
 	public boolean[] getPressedButtons() {
 		return pressedButtons;
 	}
+
 }

@@ -1,18 +1,24 @@
 package engine.common.math;
 
+import static engine.common.math.MathSerializationFormats.VECTOR_4F;
+
 import java.util.Objects;
+
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
 
 /**
  * An immutable vector of four floats.
- * 
+ *
  * @author Jay
  */
-public class Vector4f {
+public class Vector4f implements SerializationPojo<MathSerializationFormats> {
 
-	public final float x;
-	public final float y;
-	public final float z;
-	public final float w;
+	float x;
+	float y;
+	float z;
+	float w;
 
 	public Vector4f() {
 		this.x = 0;
@@ -33,6 +39,10 @@ public class Vector4f {
 		this.y = src.y;
 		this.z = src.z;
 		this.w = src.w;
+	}
+
+	public Vector4f(byte[] bytes) {
+		read(new SerializationReader(bytes));
 	}
 
 	public Vector4f negate() {
@@ -80,6 +90,22 @@ public class Vector4f {
 		return (float) Math.toDegrees(Math.acos(dls));
 	}
 
+	public float x() {
+		return x;
+	}
+
+	public float y() {
+		return y;
+	}
+
+	public float z() {
+		return z;
+	}
+
+	public float w() {
+		return w;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(x, y);
@@ -98,6 +124,27 @@ public class Vector4f {
 			return false;
 		Vector4f other = (Vector4f) obj;
 		return x == other.x && y == other.y && z == other.z && w == other.w;
+	}
+
+	@Override
+	public MathSerializationFormats formatEnum() {
+		return VECTOR_4F;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		this.x = reader.readFloat();
+		this.y = reader.readFloat();
+		this.z = reader.readFloat();
+		this.w = reader.readFloat();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		writer.consume(x);
+		writer.consume(y);
+		writer.consume(z);
+		writer.consume(w);
 	}
 
 }

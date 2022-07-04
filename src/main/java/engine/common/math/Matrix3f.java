@@ -13,20 +13,20 @@
  */
 package engine.common.math;
 
-import java.io.Serializable;
+import static engine.common.math.MathSerializationFormats.MATRIX_3F;
+
 import java.nio.FloatBuffer;
 
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
+
 /**
- *
  * Holds a 3x3 matrix.
  *
- * @author cix_foo <cix_foo@users.sourceforge.net>
- * @version $Revision$ $Id$
+ * @author Jay
  */
-
-public class Matrix3f implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class Matrix3f implements SerializationPojo<MathSerializationFormats> {
 
 	public float m00, m01, m02, m10, m11, m12, m20, m21, m22;
 
@@ -40,7 +40,7 @@ public class Matrix3f implements Serializable {
 
 	/**
 	 * Load from another matrix
-	 * 
+	 *
 	 * @param src The source matrix
 	 * @return this
 	 */
@@ -48,9 +48,13 @@ public class Matrix3f implements Serializable {
 		return load(src, this);
 	}
 
+	public Matrix3f(byte[] bytes) {
+		read(new SerializationReader(bytes));
+	}
+
 	/**
 	 * Copy source matrix to destination matrix
-	 * 
+	 *
 	 * @param src  The source matrix
 	 * @param dest The destination matrix, or null of a new matrix is to be created
 	 * @return The copied matrix
@@ -113,7 +117,7 @@ public class Matrix3f implements Serializable {
 	/**
 	 * Store this matrix in a float buffer. The matrix is stored in column major
 	 * (openGL) order.
-	 * 
+	 *
 	 * @param buf The buffer to store this matrix in
 	 */
 	public Matrix3f store(FloatBuffer buf) {
@@ -132,7 +136,7 @@ public class Matrix3f implements Serializable {
 	/**
 	 * Store this matrix in a float buffer. The matrix is stored in row major
 	 * (maths) order.
-	 * 
+	 *
 	 * @param buf The buffer to store this matrix in
 	 */
 	public Matrix3f storeTranspose(FloatBuffer buf) {
@@ -150,7 +154,7 @@ public class Matrix3f implements Serializable {
 
 	/**
 	 * Add two matrices together and place the result in a third matrix.
-	 * 
+	 *
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
 	 * @param dest  The destination matrix, or null if a new one is to be created
@@ -176,7 +180,7 @@ public class Matrix3f implements Serializable {
 	/**
 	 * Subtract the right matrix from the left and place the result in a third
 	 * matrix.
-	 * 
+	 *
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
 	 * @param dest  The destination matrix, or null if a new one is to be created
@@ -201,7 +205,7 @@ public class Matrix3f implements Serializable {
 
 	/**
 	 * Multiply the right matrix by the left and place the result in a third matrix.
-	 * 
+	 *
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
 	 * @param dest  The destination matrix, or null if a new one is to be created
@@ -256,7 +260,7 @@ public class Matrix3f implements Serializable {
 
 	/**
 	 * Invert this matrix
-	 * 
+	 *
 	 * @return this if successful, null otherwise
 	 */
 	public Matrix3f invert() {
@@ -265,7 +269,7 @@ public class Matrix3f implements Serializable {
 
 	/**
 	 * Invert the source matrix and put the result into the destination matrix
-	 * 
+	 *
 	 * @param src  The source matrix to be inverted
 	 * @param dest The destination matrix, or null if a new one is to be created
 	 * @return The inverted matrix if successful, null otherwise
@@ -312,7 +316,7 @@ public class Matrix3f implements Serializable {
 
 	/**
 	 * Negate this matrix
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix3f negate() {
@@ -321,7 +325,7 @@ public class Matrix3f implements Serializable {
 
 	/**
 	 * Negate this matrix and place the result in a destination matrix.
-	 * 
+	 *
 	 * @param dest The destination matrix, or null if a new matrix is to be created
 	 * @return the negated matrix
 	 */
@@ -331,7 +335,7 @@ public class Matrix3f implements Serializable {
 
 	/**
 	 * Negate the source matrix and place the result in the destination matrix.
-	 * 
+	 *
 	 * @param src  The source matrix
 	 * @param dest The destination matrix, or null if a new matrix is to be created
 	 * @return the negated matrix
@@ -354,7 +358,7 @@ public class Matrix3f implements Serializable {
 
 	/**
 	 * Set this matrix to be the identity matrix.
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix3f setIdentity() {
@@ -372,7 +376,7 @@ public class Matrix3f implements Serializable {
 
 	/**
 	 * Set this matrix to 0.
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix3f setZero() {
@@ -386,6 +390,37 @@ public class Matrix3f implements Serializable {
 		m21 = 0.0f;
 		m22 = 0.0f;
 		return this;
+	}
+
+	@Override
+	public MathSerializationFormats formatEnum() {
+		return MATRIX_3F;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		this.m00 = reader.readFloat();
+		this.m01 = reader.readFloat();
+		this.m02 = reader.readFloat();
+		this.m10 = reader.readFloat();
+		this.m11 = reader.readFloat();
+		this.m12 = reader.readFloat();
+		this.m20 = reader.readFloat();
+		this.m21 = reader.readFloat();
+		this.m22 = reader.readFloat();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		writer.consume(m00);
+		writer.consume(m01);
+		writer.consume(m02);
+		writer.consume(m10);
+		writer.consume(m11);
+		writer.consume(m12);
+		writer.consume(m20);
+		writer.consume(m21);
+		writer.consume(m22);
 	}
 
 }

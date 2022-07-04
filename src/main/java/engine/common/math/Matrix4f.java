@@ -13,15 +13,18 @@
  */
 package engine.common.math;
 
-import java.io.Serializable;
+import static engine.common.math.MathSerializationFormats.MATRIX_4F;
+
 import java.nio.FloatBuffer;
+
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
 
 /**
  * Holds a 4x4 float matrix.
- *
  */
-public class Matrix4f implements Serializable, Cloneable {
-	private static final long serialVersionUID = 1L;
+public class Matrix4f implements SerializationPojo<MathSerializationFormats> {
 
 	public float m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33;
 
@@ -29,13 +32,15 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * Construct a new matrix, initialized to the identity.
 	 */
 	public Matrix4f() {
-		super();
 		setIdentity();
 	}
 
 	public Matrix4f(final Matrix4f src) {
-		super();
 		load(src);
+	}
+
+	public Matrix4f(byte[] bytes) {
+		read(new SerializationReader(bytes));
 	}
 
 	/**
@@ -53,7 +58,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Set this matrix to be the identity matrix.
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix4f setIdentity() {
@@ -78,7 +83,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Set this matrix to 0.
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix4f setZero() {
@@ -103,7 +108,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Load from another matrix4f
-	 * 
+	 *
 	 * @param src The source matrix
 	 * @return this
 	 */
@@ -113,7 +118,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Copy the source matrix to the destination matrix
-	 * 
+	 *
 	 * @param src  The source matrix
 	 * @param dest The destination matrix, or null of a new one is to be created
 	 * @return The copied matrix
@@ -198,7 +203,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Store this matrix in a float buffer. The matrix is stored in column major
 	 * (openGL) order.
-	 * 
+	 *
 	 * @param buf The buffer to store this matrix in
 	 */
 	public Matrix4f store(FloatBuffer buf) {
@@ -244,7 +249,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Store this matrix in a float buffer. The matrix is stored in row major
 	 * (maths) order.
-	 * 
+	 *
 	 * @param buf The buffer to store this matrix in
 	 */
 	public Matrix4f storeTranspose(FloatBuffer buf) {
@@ -270,7 +275,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Store the rotation portion of this matrix in a float buffer. The matrix is
 	 * stored in column major (openGL) order.
-	 * 
+	 *
 	 * @param buf The buffer to store this matrix in
 	 */
 	public Matrix4f store3f(FloatBuffer buf) {
@@ -288,7 +293,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Add two matrices together and place the result in a third matrix.
-	 * 
+	 *
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
 	 * @param dest  The destination matrix, or null if a new one is to be created
@@ -321,7 +326,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Subtract the right matrix from the left and place the result in a third
 	 * matrix.
-	 * 
+	 *
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
 	 * @param dest  The destination matrix, or null if a new one is to be created
@@ -357,7 +362,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Multiply the right matrix by the left and return the result.
-	 * 
+	 *
 	 * @param left  the left source matrix
 	 * @param right the right source matrix
 	 * @return the resulting matrix
@@ -416,7 +421,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Transpose this matrix
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix4f transpose() {
@@ -425,12 +430,12 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Translate this matrix
-	 * 
+	 *
 	 * @param vec The vector to translate by
 	 * @return this
 	 */
 	public Matrix4f translate(Vector2f vec) {
-		return translate(vec.x, vec.y);
+		return translate(vec.x(), vec.y());
 	}
 
 	public Matrix4f translate(float x, float y) {
@@ -451,7 +456,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Translate this matrix
-	 * 
+	 *
 	 * @param vec The vector to translate by
 	 * @return this
 	 */
@@ -460,7 +465,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	}
 
 	public Matrix4f scale(Vector2f vector2f) {
-		return scale(vector2f.x, vector2f.y);
+		return scale(vector2f.x(), vector2f.y());
 	}
 
 	public Matrix4f scale(float x, float y) {
@@ -477,7 +482,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Scales this matrix
-	 * 
+	 *
 	 * @param vec The vector to scale by
 	 * @return this
 	 */
@@ -487,7 +492,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Scales the source matrix and put the result in the destination matrix
-	 * 
+	 *
 	 * @param vec  The vector to scale by
 	 * @param src  The source matrix
 	 * @param dest The destination matrix, or null if a new matrix is to be created
@@ -513,7 +518,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Rotates the matrix around the given axis the specified angle
-	 * 
+	 *
 	 * @param angle the angle, in radians.
 	 * @param axis  The vector representing the rotation axis. Must be normalized.
 	 * @return this
@@ -524,7 +529,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Rotates the matrix around the given axis the specified angle
-	 * 
+	 *
 	 * @param angle the angle, in radians.
 	 * @param axis  The vector representing the rotation axis. Must be normalized.
 	 * @param dest  The matrix to put the result, or null if a new matrix is to be
@@ -538,7 +543,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Rotates the source matrix around the given axis the specified angle and put
 	 * the result in the destination matrix.
-	 * 
+	 *
 	 * @param angle the angle, in radians.
 	 * @param axis  The vector representing the rotation axis. Must be normalized.
 	 * @param src   The matrix to rotate
@@ -596,7 +601,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Translate this matrix and stash the result in another matrix
-	 * 
+	 *
 	 * @param vec  The vector to translate by
 	 * @param dest The destination matrix or null if a new matrix is to be created
 	 * @return the translated matrix
@@ -607,7 +612,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Translate the source matrix and stash the result in the destination matrix
-	 * 
+	 *
 	 * @param vec  The vector to translate by
 	 * @param src  The source matrix
 	 * @param dest The destination matrix or null if a new matrix is to be created
@@ -627,7 +632,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Translate this matrix and stash the result in another matrix
-	 * 
+	 *
 	 * @param vec  The vector to translate by
 	 * @param dest The destination matrix or null if a new matrix is to be created
 	 * @return the translated matrix
@@ -638,7 +643,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Translate the source matrix and stash the result in the destination matrix
-	 * 
+	 *
 	 * @param vec  The vector to translate by
 	 * @param src  The source matrix
 	 * @param dest The destination matrix or null if a new matrix is to be created
@@ -648,17 +653,17 @@ public class Matrix4f implements Serializable, Cloneable {
 		if (dest == null)
 			dest = new Matrix4f();
 
-		dest.m30 += src.m00 * vec.x + src.m10 * vec.y;
-		dest.m31 += src.m01 * vec.x + src.m11 * vec.y;
-		dest.m32 += src.m02 * vec.x + src.m12 * vec.y;
-		dest.m33 += src.m03 * vec.x + src.m13 * vec.y;
+		dest.m30 += src.m00 * vec.x() + src.m10 * vec.y();
+		dest.m31 += src.m01 * vec.x() + src.m11 * vec.y();
+		dest.m32 += src.m02 * vec.x() + src.m12 * vec.y();
+		dest.m33 += src.m03 * vec.x() + src.m13 * vec.y();
 
 		return dest;
 	}
 
 	/**
 	 * Transpose this matrix and place the result in another matrix
-	 * 
+	 *
 	 * @param dest The destination matrix or null if a new matrix is to be created
 	 * @return the transposed matrix
 	 */
@@ -668,7 +673,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Transpose the source matrix and place the result in the destination matrix
-	 * 
+	 *
 	 * @param src  The source matrix
 	 * @param dest The destination matrix or null if a new matrix is to be created
 	 * @return the transposed matrix
@@ -726,7 +731,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Calculate the determinant of a 3x3 matrix
-	 * 
+	 *
 	 * @return result
 	 */
 
@@ -736,7 +741,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Invert this matrix
-	 * 
+	 *
 	 * @return this if successful, null otherwise
 	 */
 	public Matrix4f invert() {
@@ -745,7 +750,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Invert the source matrix and return the result
-	 * 
+	 *
 	 * @param src The source matrix
 	 * @return The inverted matrix if successful, null otherwise
 	 */
@@ -804,7 +809,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Negate this matrix
-	 * 
+	 *
 	 * @return this
 	 */
 	public Matrix4f negate() {
@@ -813,7 +818,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Negate this matrix and place the result in a destination matrix.
-	 * 
+	 *
 	 * @param dest The destination matrix, or null if a new matrix is to be created
 	 * @return the negated matrix
 	 */
@@ -823,7 +828,7 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	/**
 	 * Negate this matrix and place the result in a destination matrix.
-	 * 
+	 *
 	 * @param src  The source matrix
 	 * @param dest The destination matrix, or null if a new matrix is to be created
 	 * @return The negated matrix
@@ -854,6 +859,51 @@ public class Matrix4f implements Serializable, Cloneable {
 
 	public Matrix4f copy() {
 		return new Matrix4f(this);
+	}
+
+	@Override
+	public MathSerializationFormats formatEnum() {
+		return MATRIX_4F;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		this.m00 = reader.readFloat();
+		this.m01 = reader.readFloat();
+		this.m02 = reader.readFloat();
+		this.m03 = reader.readFloat();
+		this.m10 = reader.readFloat();
+		this.m11 = reader.readFloat();
+		this.m12 = reader.readFloat();
+		this.m13 = reader.readFloat();
+		this.m20 = reader.readFloat();
+		this.m21 = reader.readFloat();
+		this.m22 = reader.readFloat();
+		this.m23 = reader.readFloat();
+		this.m30 = reader.readFloat();
+		this.m31 = reader.readFloat();
+		this.m32 = reader.readFloat();
+		this.m33 = reader.readFloat();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		writer.consume(m00);
+		writer.consume(m01);
+		writer.consume(m02);
+		writer.consume(m03);
+		writer.consume(m10);
+		writer.consume(m11);
+		writer.consume(m12);
+		writer.consume(m13);
+		writer.consume(m20);
+		writer.consume(m21);
+		writer.consume(m22);
+		writer.consume(m23);
+		writer.consume(m30);
+		writer.consume(m31);
+		writer.consume(m32);
+		writer.consume(m33);
 	}
 
 }

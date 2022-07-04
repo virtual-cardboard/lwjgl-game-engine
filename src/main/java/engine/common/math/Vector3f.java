@@ -1,21 +1,27 @@
 package engine.common.math;
 
+import static engine.common.math.MathSerializationFormats.VECTOR_3F;
+
 import java.util.Objects;
+
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
 
 /**
  * An immutable vector of three floats.
- * 
+ *
  * @author Jay
  */
-public class Vector3f {
+public class Vector3f implements SerializationPojo<MathSerializationFormats> {
 
 	public static final Vector3f X_AXIS = new Vector3f(1, 0, 0);
 	public static final Vector3f Y_AXIS = new Vector3f(0, 1, 0);
 	public static final Vector3f Z_AXIS = new Vector3f(0, 0, 1);
 
-	public final float x;
-	public final float y;
-	public final float z;
+	float x;
+	float y;
+	float z;
 
 	public Vector3f() {
 		this.x = 0;
@@ -33,6 +39,10 @@ public class Vector3f {
 		this.x = src.x;
 		this.y = src.y;
 		this.z = src.z;
+	}
+
+	public Vector3f(byte[] bytes) {
+		read(new SerializationReader(bytes));
 	}
 
 	public Vector3f negate() {
@@ -92,6 +102,18 @@ public class Vector3f {
 		return projectOnto(vector).scale(2).sub(this);
 	}
 
+	public float x() {
+		return x;
+	}
+
+	public float y() {
+		return y;
+	}
+
+	public float z() {
+		return z;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(x, y);
@@ -110,6 +132,25 @@ public class Vector3f {
 			return false;
 		Vector3f other = (Vector3f) obj;
 		return x == other.x && y == other.y && z == other.z;
+	}
+
+	@Override
+	public MathSerializationFormats formatEnum() {
+		return VECTOR_3F;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		this.x = reader.readFloat();
+		this.y = reader.readFloat();
+		this.z = reader.readFloat();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		writer.consume(x);
+		writer.consume(y);
+		writer.consume(z);
 	}
 
 }

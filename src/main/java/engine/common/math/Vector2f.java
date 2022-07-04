@@ -1,6 +1,12 @@
 package engine.common.math;
 
+import static engine.common.math.MathSerializationFormats.VECTOR_2F;
+
 import java.util.Objects;
+
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
 
 /**
  * <p>
@@ -8,15 +14,15 @@ import java.util.Objects;
  * </p>
  * This is immutable so that a programmer can pass a <code>Vector2f</code> into
  * a function without needing to worry about being mutated.
- * 
+ *
  * @author Jay
  */
-public class Vector2f {
+public class Vector2f implements SerializationPojo<MathSerializationFormats> {
 
 	public static final Vector2f ORIGIN = new Vector2f(0, 0);
 
-	public final float x;
-	public final float y;
+	float x;
+	float y;
 
 	public static Vector2f fromAngleLength(float angle, float length) {
 		return new Vector2f((float) (length * Math.cos(angle)), (float) (length * Math.sin(angle)));
@@ -33,48 +39,52 @@ public class Vector2f {
 	}
 
 	public Vector2f(Vector2f src) {
-		this.x = src.x;
-		this.y = src.y;
+		this.x = src.x();
+		this.y = src.y();
+	}
+
+	public Vector2f(byte[] bytes) {
+		read(new SerializationReader(bytes));
 	}
 
 	public Vector2f negate() {
-		return new Vector2f(-x, -y);
+		return new Vector2f(-x(), -y());
 	}
 
 	public Vector2f add(Vector2i vector) {
-		return new Vector2f(x + vector.x, y + vector.y);
+		return new Vector2f(x() + vector.x, y() + vector.y);
 	}
 
 	public Vector2f add(float x, float y) {
-		return new Vector2f(this.x + x, this.y + y);
+		return new Vector2f(this.x() + x, this.y() + y);
 	}
 
 	public Vector2f add(Vector2f vector) {
-		return new Vector2f(x + vector.x, y + vector.y);
+		return new Vector2f(x() + vector.x(), y() + vector.y());
 	}
 
 	public Vector2f sub(Vector2i vector) {
-		return new Vector2f(x - vector.x, y - vector.y);
+		return new Vector2f(x() - vector.x, y() - vector.y);
 	}
 
 	public Vector2f sub(float x, float y) {
-		return new Vector2f(this.x - x, this.y - y);
+		return new Vector2f(this.x() - x, this.y() - y);
 	}
 
 	public Vector2f sub(Vector2f vector) {
-		return new Vector2f(x - vector.x, y - vector.y);
+		return new Vector2f(x() - vector.x(), y() - vector.y());
 	}
 
 	public Vector2f multiply(float x, float y) {
-		return new Vector2f(this.x * x, this.y * y);
+		return new Vector2f(this.x() * x, this.y() * y);
 	}
 
 	public Vector2f multiply(Vector2f vector) {
-		return new Vector2f(x * vector.x, y * vector.y);
+		return new Vector2f(x() * vector.x(), y() * vector.y());
 	}
 
 	public Vector2f scale(float scale) {
-		return new Vector2f(x * scale, y * scale);
+		return new Vector2f(x() * scale, y() * scale);
 	}
 
 	public Vector2f normalise() {
@@ -86,19 +96,19 @@ public class Vector2f {
 	}
 
 	public float lengthSquared() {
-		return x * x + y * y;
+		return x() * x() + y() * y();
 	}
 
 	public float length() {
-		return (float) Math.sqrt(x * x + y * y);
+		return (float) Math.sqrt(x() * x() + y() * y());
 	}
 
 	public float dot(Vector2f vector) {
-		return x * vector.x + y * vector.y;
+		return x() * vector.x() + y() * vector.y();
 	}
 
 	public float angle() {
-		return (float) ((Math.atan2(y, x) + 2 * Math.PI) % (2 * Math.PI));
+		return (float) ((Math.atan2(y(), x()) + 2 * Math.PI) % (2 * Math.PI));
 	}
 
 	public Vector2f projectOnto(Vector2f vector) {
@@ -111,24 +121,32 @@ public class Vector2f {
 
 	/**
 	 * Rotates the vector around the origin, counterclockwise.
-	 * 
+	 *
 	 * @param radians the angle to rotate the vector by, in radians.
 	 * @return the rotated vector
 	 */
 	public Vector2f rotate(float radians) {
 		double sin = Math.sin(radians);
 		double cos = Math.cos(radians);
-		return new Vector2f((float) (x * cos - y * sin), (float) (x * sin + y * cos));
+		return new Vector2f((float) (x() * cos - y() * sin), (float) (x() * sin + y() * cos));
+	}
+
+	public float x() {
+		return x;
+	}
+
+	public float y() {
+		return y;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(x, y);
+		return Objects.hash(x(), y());
 	}
 
 	@Override
 	public String toString() {
-		return "Vector2f[" + x + ", " + y + "]";
+		return "Vector2f[" + x() + ", " + y() + "]";
 	}
 
 	@Override
@@ -138,7 +156,24 @@ public class Vector2f {
 		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Vector2f other = (Vector2f) obj;
-		return x == other.x && y == other.y;
+		return x() == other.x() && y() == other.y();
+	}
+
+	@Override
+	public MathSerializationFormats formatEnum() {
+		return VECTOR_2F;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		this.x = reader.readFloat();
+		this.y = reader.readFloat();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		writer.consume(x());
+		writer.consume(y());
 	}
 
 }

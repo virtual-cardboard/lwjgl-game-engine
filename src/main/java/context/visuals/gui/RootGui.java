@@ -14,9 +14,8 @@ import engine.common.math.Vector2i;
  * The main <code>Gui</code> that all other <code>Guis</code> are children of.
  * The {@link GameVisuals} always has one <code>RootGui</code>. Users generally
  * shouldn't ever create another <code>RootGui</code>.
- * 
- * @author Jay
  *
+ * @author Jay
  */
 public class RootGui extends InvisibleGui {
 
@@ -63,7 +62,7 @@ public class RootGui extends InvisibleGui {
 
 	/**
 	 * Sets the dimensions.
-	 * 
+	 *
 	 * @param width  the new width in pixels
 	 * @param height the new height in pixels
 	 */
@@ -90,7 +89,7 @@ public class RootGui extends InvisibleGui {
 			}
 		}
 		PosDim pd = g.posdim();
-		if (coords.x >= pd.x && coords.y >= pd.y && coords.x <= pd.x + pd.w && coords.y <= pd.y + pd.h) {
+		if (coords.x() >= pd.x && coords.y() >= pd.y && coords.x() <= pd.x + pd.w && coords.y() <= pd.y + pd.h) {
 			return g;
 		}
 		return null;

@@ -4,7 +4,20 @@ import static context.visuals.colour.Colour.normalizedA;
 import static context.visuals.colour.Colour.normalizedB;
 import static context.visuals.colour.Colour.normalizedG;
 import static context.visuals.colour.Colour.normalizedR;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.glAttachShader;
+import static org.lwjgl.opengl.GL20.glCreateProgram;
+import static org.lwjgl.opengl.GL20.glDeleteProgram;
+import static org.lwjgl.opengl.GL20.glDeleteShader;
+import static org.lwjgl.opengl.GL20.glDetachShader;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform1i;
+import static org.lwjgl.opengl.GL20.glUniform2f;
+import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform4f;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +43,7 @@ public class ShaderProgram extends GLRegularObject {
 	/**
 	 * Adds a shader that will be attached in the next
 	 * {@link ShaderProgram#attachShaders() attachShaders()} call. C
-	 * 
+	 *
 	 * @param shader
 	 */
 	public void addShader(Shader shader) {
@@ -62,7 +75,7 @@ public class ShaderProgram extends GLRegularObject {
 	 * Uses the current shader program to handle any glDrawArrays() or
 	 * glDrawElements() calls. This is likely to be called multiple times. You must
 	 * call {@link #link() link()} before using bind().
-	 * 
+	 *
 	 * @param glContext the <code>GLContext</code>
 	 */
 	public void bind(GLContext glContext) {
@@ -109,17 +122,17 @@ public class ShaderProgram extends GLRegularObject {
 
 	public void setVec2(String uniform, Vector2f vec2) {
 		verifyInitialized();
-		glUniform2f(glGetUniformLocation(id, uniform), vec2.x, vec2.y);
+		glUniform2f(glGetUniformLocation(id, uniform), vec2.x(), vec2.y());
 	}
 
 	public void setVec3(String uniform, Vector3f vec3) {
 		verifyInitialized();
-		glUniform3f(glGetUniformLocation(id, uniform), vec3.x, vec3.y, vec3.z);
+		glUniform3f(glGetUniformLocation(id, uniform), vec3.x(), vec3.y(), vec3.z());
 	}
 
 	public void setVec4(String uniform, Vector4f vec4) {
 		verifyInitialized();
-		glUniform4f(glGetUniformLocation(id, uniform), vec4.x, vec4.y, vec4.z, vec4.w);
+		glUniform4f(glGetUniformLocation(id, uniform), vec4.x(), vec4.y(), vec4.z(), vec4.w());
 	}
 
 	public void setColour(String uniform, int colour) {

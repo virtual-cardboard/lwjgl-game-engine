@@ -10,9 +10,8 @@ import engine.common.math.Vector2f;
 
 /**
  * A {@link GameRenderer} that renders ellipses.
- * 
- * @author Jay
  *
+ * @author Jay
  */
 public class EllipseRenderer extends GameRenderer {
 
@@ -22,7 +21,7 @@ public class EllipseRenderer extends GameRenderer {
 
 	/**
 	 * Creates a <code>EllipseRenderer</code> using an {@link EllipseShaderProgram}.
-	 * 
+	 *
 	 * @param ellipseShaderProgram the <code>EllipseShaderProgram</code>
 	 */
 	public EllipseRenderer(EllipseShaderProgram shaderProgram, RectangleVertexArrayObject vao) {
@@ -34,13 +33,12 @@ public class EllipseRenderer extends GameRenderer {
 	 * Uses the position and dimensions of the ellipse to construct a
 	 * {@link Matrix4f}, then calls {@link #renderWithMatrixOnly(Matrix4f, int)}
 	 * using that matrix.
-	 * 
+	 *
 	 * @param x      the x-pos of the center of the ellipse, in pixel coordinates
 	 * @param y      the y-pos of the center of the ellipse, in pixel coordinates
 	 * @param width  the width of the ellipse, in pixel coordinates
 	 * @param height the height of the ellipse, in pixel coordinates
 	 * @param colour the colour of the ellipse
-	 * 
 	 * @see RootGui
 	 * @see Colour
 	 */
@@ -60,9 +58,9 @@ public class EllipseRenderer extends GameRenderer {
 	 * Calculates the center position and dimensions of the ellipse, then calls
 	 * {@link #renderNDC(Matrix4f, float, float, float, float, int)} using those
 	 * calculated values.
-	 * @param matrix4f  the transformation matrix
-	 * @param colour    the colour of the ellipse
-	 * 
+	 *
+	 * @param matrix4f the transformation matrix
+	 * @param colour   the colour of the ellipse
 	 * @see Matrix4f
 	 * @see Colour
 	 */
@@ -71,25 +69,25 @@ public class EllipseRenderer extends GameRenderer {
 		Vector2f v00 = matrix4f.transform(0, 0);
 		Vector2f v01 = matrix4f.transform(0, 1);
 		Vector2f v10 = matrix4f.transform(1, 0);
-		float x = transformedCenter.x;
-		float y = transformedCenter.y;
-		float width = v10.x - v00.x;
-		float height = v01.y - v00.y;
+		float x = transformedCenter.x();
+		float y = transformedCenter.y();
+		float width = v10.x() - v00.x();
+		float height = v01.y() - v00.y();
 		renderNDC(matrix4f, x, y, width, height, colour);
 	}
 
 	/**
 	 * Renders an ellipse using the x, y, width, height (all in normalized device
 	 * coordinates), matrix, and colour.
-	 * @param matrix4f  the transformation matrix
-	 * @param x         the x-pos of the center of the ellipse, in normalized device
-	 *                  coordinates
-	 * @param y         the y-pos of the center of the ellipse, in normalized device
-	 *                  coordinates
-	 * @param width     the width of the ellipse, in normalized device coordinates
-	 * @param height    the height of the ellipse, in normalized device coordinates
-	 * @param colour    the colour of the ellipse
-	 * 
+	 *
+	 * @param matrix4f the transformation matrix
+	 * @param x        the x-pos of the center of the ellipse, in normalized device
+	 *                 coordinates
+	 * @param y        the y-pos of the center of the ellipse, in normalized device
+	 *                 coordinates
+	 * @param width    the width of the ellipse, in normalized device coordinates
+	 * @param height   the height of the ellipse, in normalized device coordinates
+	 * @param colour   the colour of the ellipse
 	 * @see Matrix4f
 	 * @see Colour
 	 */
