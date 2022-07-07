@@ -8,10 +8,10 @@ import java.net.UnknownHostException;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 import engine.common.networking.packet.NetworkingSerializationFormats;
 
-public class PacketAddress implements SerializationPojo<NetworkingSerializationFormats> {
+public class PacketAddress implements Serializable {
 
 	private InetAddress ip;
 	private short port;

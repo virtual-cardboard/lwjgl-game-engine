@@ -19,7 +19,7 @@ import java.nio.FloatBuffer;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 
 /**
  * Holds a 2x2 matrix
@@ -27,7 +27,7 @@ import derealizer.format.SerializationPojo;
  * @author Jay
  */
 
-public class Matrix2f implements SerializationPojo<MathSerializationFormats> {
+public class Matrix2f implements Serializable {
 
 	public float m00, m01, m10, m11;
 

@@ -6,14 +6,14 @@ import java.util.Objects;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 
 /**
  * An immutable vector of two longs.
  *
  * @author Jay
  */
-public class Vector2l implements SerializationPojo<MathSerializationFormats> {
+public class Vector2l implements Serializable {
 
 	long x;
 	long y;

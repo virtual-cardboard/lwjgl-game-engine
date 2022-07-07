@@ -6,9 +6,9 @@ import java.util.Objects;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 
-public class Vector3l implements SerializationPojo<MathSerializationFormats> {
+public class Vector3l implements Serializable {
 
 	long x;
 	long y;

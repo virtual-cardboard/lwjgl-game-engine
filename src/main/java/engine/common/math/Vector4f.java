@@ -6,14 +6,14 @@ import java.util.Objects;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 
 /**
  * An immutable vector of four floats.
  *
  * @author Jay
  */
-public class Vector4f implements SerializationPojo<MathSerializationFormats> {
+public class Vector4f implements Serializable {
 
 	float x;
 	float y;

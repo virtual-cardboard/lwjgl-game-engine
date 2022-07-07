@@ -6,9 +6,9 @@ import static derealizer.datatype.SerializationDataType.SHORT;
 import static derealizer.format.SerializationFormat.types;
 
 import derealizer.format.FieldNames;
+import derealizer.format.Serializable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
-import derealizer.format.SerializationPojo;
 
 public enum NetworkingSerializationFormats implements SerializationFormatEnum {
 
@@ -19,9 +19,9 @@ public enum NetworkingSerializationFormats implements SerializationFormatEnum {
 	// Do not edit auto-generated code below this line.
 
 	private final SerializationFormat format;
-	private final Class<? extends SerializationPojo<?>> pojoClass;
+	private final Class<? extends Serializable> pojoClass;
 
-	private NetworkingSerializationFormats(SerializationFormat format, Class<? extends SerializationPojo<?>> pojoClass) {
+	private NetworkingSerializationFormats(SerializationFormat format, Class<? extends Serializable> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
 	}
@@ -32,12 +32,12 @@ public enum NetworkingSerializationFormats implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends SerializationPojo<?>> pojoClass() {
+	public Class<? extends Serializable> pojoClass() {
 		return pojoClass;
 	}
 
 	public static void main(String[] args) {
-		generate(NetworkingSerializationFormats.class, SerializationPojo.class);
+		generate(NetworkingSerializationFormats.class, Serializable.class);
 	}
 
 }

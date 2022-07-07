@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 
 /**
  * <p>
@@ -17,7 +17,7 @@ import derealizer.format.SerializationPojo;
  *
  * @author Jay
  */
-public class Vector2f implements SerializationPojo<MathSerializationFormats> {
+public class Vector2f implements Serializable {
 
 	public static final Vector2f ORIGIN = new Vector2f(0, 0);
 
