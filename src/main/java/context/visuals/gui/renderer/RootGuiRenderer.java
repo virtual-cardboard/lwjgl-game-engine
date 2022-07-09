@@ -2,7 +2,6 @@ package context.visuals.gui.renderer;
 
 import java.util.List;
 
-import context.GLContext;
 import context.data.GameData;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
@@ -10,7 +9,7 @@ import context.visuals.renderer.GameRenderer;
 
 public final class RootGuiRenderer extends GameRenderer {
 
-	public void render(GLContext glContext, GameData data, RootGui root) {
+	public void render(GameData data, RootGui root) {
 		List<Gui> children = root.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			Gui child = children.get(i);
