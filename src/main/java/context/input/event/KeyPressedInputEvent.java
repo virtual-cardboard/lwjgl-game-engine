@@ -1,6 +1,6 @@
 package context.input.event;
 
-import java.awt.event.KeyEvent;
+import org.lwjgl.glfw.GLFW;
 
 public final class KeyPressedInputEvent extends GameInputEvent {
 
@@ -11,17 +11,15 @@ public final class KeyPressedInputEvent extends GameInputEvent {
 	}
 
 	/**
-	 * Getter for the key code of the key pressed. To use this, have an if/else
-	 * statement and check if the key code is equal to a vk key code. Example:
+	 * Getter for the key code of the key pressed.
 	 * <p>
-	 * <code>
-	 * if (getKeyCode == {@link KeyEvent}.VK_W) {<p>
-	 *     character.moveUp();<p>
-	 * }
-	 * </code>
-	 * 
+	 * When comparing the key code to a <code>char</code>, always compare it with an uppercase character.
+	 * E.g. 'W' instead of 'w'.
+	 * <p>
+	 * When checking for a non-letter character, consider comparing the key code with a GLFW constant.
+	 * E.g. {@link GLFW#GLFW_KEY_LEFT_CONTROL}.
+	 *
 	 * @return the key code
-	 * 
 	 */
 	public int code() {
 		return code;
