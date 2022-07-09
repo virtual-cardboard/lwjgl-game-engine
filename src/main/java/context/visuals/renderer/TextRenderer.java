@@ -67,7 +67,6 @@ public class TextRenderer extends GameRenderer {
 	 * @param font      the {@link GameFont} of the text
 	 * @param fontSize  the size of the text
 	 * @param colour    the colour of the text
-	 *
 	 * @return the number of lines of text rendered
 	 */
 	public int render(float x, float y, String text, float lineWidth, GameFont font, float fontSize, int colour) {
@@ -83,7 +82,6 @@ public class TextRenderer extends GameRenderer {
 	 * @param font      the <code>GameFont</code> of the text
 	 * @param fontSize  the font size
 	 * @param colour    the {@link Colour} (int)
-	 *
 	 * @return the number of lines of text rendered
 	 */
 	public int render(Matrix4f transform, String text, float lineWidth, GameFont font, float fontSize, int colour) {
@@ -103,11 +101,7 @@ public class TextRenderer extends GameRenderer {
 			renderOneLine(0, 0, text, font, fontSize);
 			numLines = 1;
 		} else {
-			String[] splitByNewLines = text.split("\\n");
-			List<Pair<String, Float>> stringPairs = new ArrayList<>();
-			for (String line : splitByNewLines) {
-				stringPairs.addAll(convertToStringPairs(line.trim(), font, fontSize, lineWidth));
-			}
+			List<Pair<String, Float>> stringPairs = convertToStringPairs(text, font, fontSize, lineWidth);
 			numLines = stringPairs.size();
 			if (hAlign == ALIGN_LEFT) {
 				for (int i = 0; i < stringPairs.size(); i++) {
@@ -168,7 +162,20 @@ public class TextRenderer extends GameRenderer {
 		}
 	}
 
+	public int calculateNumLines(String text, GameFont font, float fontSize, float lineWidth) {
+		return convertToStringPairs(text, font, fontSize, lineWidth).size();
+	}
+
 	private List<Pair<String, Float>> convertToStringPairs(String text, GameFont font, float fontSize, float lineWidth) {
+		String[] splitByNewLines = text.split("\\n");
+		List<Pair<String, Float>> stringPairs = new ArrayList<>();
+		for (String line : splitByNewLines) {
+			stringPairs.addAll(convertParagraphToStringPairs(line.trim(), font, fontSize, lineWidth));
+		}
+		return stringPairs;
+	}
+
+	private List<Pair<String, Float>> convertParagraphToStringPairs(String text, GameFont font, float fontSize, float lineWidth) {
 		CharacterData[] characterDatas = font.getCharacterDatas();
 
 		List<Pair<String, Float>> pairs = new ArrayList<>();
