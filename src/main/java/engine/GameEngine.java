@@ -232,6 +232,7 @@ public final class GameEngine {
 			try {
 				print("Locating free network socket");
 				socket = SocketFinder.findSocket(port);
+				print("Started UDP socket at " + socket.getLocalSocketAddress());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -326,7 +327,7 @@ public final class GameEngine {
 
 	private void print(String s) {
 		if (printProgress) {
-			System.out.println(s);
+			System.out.println("[Game Engine]: " + s);
 		}
 	}
 

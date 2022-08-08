@@ -108,8 +108,11 @@ public abstract class GameVisuals extends ContextPart {
 		return context().glContext();
 	}
 
-	public final float alpha() {
-		return logicAccumulator.alpha();
+	/**
+	 * @return the time since the last update tick, in milliseconds
+	 */
+	public final float deltaTime() {
+		return context().logic().timeSinceLastUpdateTime();
 	}
 
 }

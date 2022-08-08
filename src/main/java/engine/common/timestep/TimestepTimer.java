@@ -18,7 +18,7 @@ public abstract class TimestepTimer implements Runnable {
 	/**
 	 * Instantiates a <code>TimestepTimer</code> with the given
 	 * <code>frameRate</code> and {@link TimeAccumulator}.
-	 * 
+	 *
 	 * @param frameRate   the target number of frames per second
 	 * @param accumulator the <code>TimeAccumulator</code>
 	 */
@@ -30,7 +30,7 @@ public abstract class TimestepTimer implements Runnable {
 	/**
 	 * Instantiates a <code>TimestepTimer</code> with the given
 	 * <code>frameRate</code> and the default {@link TimeAccumulator}.
-	 * 
+	 *
 	 * @param frameRate the target number of frames per second
 	 */
 	public TimestepTimer(float frameRate) {
@@ -62,6 +62,7 @@ public abstract class TimestepTimer implements Runnable {
 		long frameTime = newTime - currentTime;
 
 		// The following if check is to make sure we don't fall into the spiral of death
+		// TODO: Figure out if this is easy to hack
 		if (frameTime >= 1000) {
 			frameTime = 1000;
 		}
@@ -82,7 +83,7 @@ public abstract class TimestepTimer implements Runnable {
 
 	/**
 	 * Whether or not {@link #update()} should be called.
-	 * 
+	 *
 	 * @return if <code>update()</code> should be called
 	 */
 	protected boolean shouldUpdate() {

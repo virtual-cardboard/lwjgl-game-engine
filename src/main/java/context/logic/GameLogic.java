@@ -1,5 +1,7 @@
 package context.logic;
 
+import static java.lang.System.currentTimeMillis;
+
 import java.util.Queue;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -34,6 +36,7 @@ public abstract class GameLogic extends ContextPart {
 	 * A counter that is increased every time {@link #update()} is called.
 	 */
 	private int gameTick = -1;
+	private long lastUpdateTime = -1;
 
 	private final AsyncEventPriorityQueue asyncEventQueue = new AsyncEventPriorityQueue();
 
@@ -51,6 +54,7 @@ public abstract class GameLogic extends ContextPart {
 		handlers.handleEventQueue(queueGroup.inputToLogic);
 		handleAsyncEvents();
 		update();
+		lastUpdateTime = currentTimeMillis();
 	}
 
 	private void handleAsyncEvents() {
@@ -131,6 +135,10 @@ public abstract class GameLogic extends ContextPart {
 
 	public AsyncEventPriorityQueue asyncEventQueue() {
 		return asyncEventQueue;
+	}
+
+	public long timeSinceLastUpdateTime() {
+		return currentTimeMillis() - lastUpdateTime;
 	}
 
 }
