@@ -139,4 +139,8 @@ public abstract class Gui {
 		this.enabled = enabled;
 	}
 
+	public void toggleEnabled() {
+		enabled = !enabled;
+	}
+
 }
