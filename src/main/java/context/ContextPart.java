@@ -2,6 +2,9 @@ package context;
 
 import java.util.Queue;
 
+import engine.common.loader.GameLoader;
+import engine.common.timestep.GameLogicTimer;
+
 public abstract class ContextPart {
 
 	private GameContext context;
@@ -16,7 +19,7 @@ public abstract class ContextPart {
 
 	/**
 	 * Initializes the context part. This is called by
-	 * {@link GameContext#init(Queue, Queue) init}.
+	 * {@link GameContext#init(Queue, Queue, GameLogicTimer, GameLoader)}.
 	 */
 	protected void init() {
 	}

@@ -9,14 +9,18 @@ import context.GLContext;
 
 public final class GameLoader {
 
-	private IOLoader ioLoader;
-	private GLLoader glLoader;
-	private GLContext renderingThreadGLContext;
+	private final IOLoader ioLoader = new IOLoader();
+	private final GLLoader glLoader;
+	private final GLContext renderingThreadGLContext;
 
 	public GameLoader(long shareContextWindowHandle, GLContext renderingThreadGLContext) {
-		ioLoader = new IOLoader();
 		glLoader = new GLLoader(shareContextWindowHandle);
 		this.renderingThreadGLContext = renderingThreadGLContext;
+	}
+
+	public GameLoader() {
+		glLoader = null;
+		renderingThreadGLContext = null;
 	}
 
 	public <T> Future<T> submit(LoadTask<T> t) {
@@ -49,7 +53,9 @@ public final class GameLoader {
 
 	public void terminate() {
 		ioLoader.terminate();
-		glLoader.terminate();
+		if (glLoader != null) {
+			glLoader.terminate();
+		}
 	}
 
 }

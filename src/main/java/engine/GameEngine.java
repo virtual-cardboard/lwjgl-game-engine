@@ -320,7 +320,10 @@ public final class GameEngine {
 	private GameLoader createLoader(WindowFrameUpdater frameUpdater, GLContext glContext) {
 		if (loading) {
 			print("Creating loader");
-			return new GameLoader(frameUpdater.window().getSharedContextWindowHandle(), glContext);
+			if (rendering) {
+				return new GameLoader(frameUpdater.window().getSharedContextWindowHandle(), glContext);
+			}
+			return new GameLoader();
 		}
 		return null;
 	}
