@@ -6,14 +6,14 @@ import java.util.Objects;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 
 /**
  * An immutable vector of three ints.
  *
  * @author Jay
  */
-public class Vector3i implements Serializable {
+public class Vector3i implements Derealizable {
 
 	int x;
 	int y;

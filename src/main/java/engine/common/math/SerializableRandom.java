@@ -6,9 +6,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 
-public class SerializableRandom implements Serializable {
+public class SerializableRandom implements Derealizable {
 
 	private AtomicLong seed;
 

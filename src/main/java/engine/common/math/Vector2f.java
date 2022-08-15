@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 
 /**
  * <p>
@@ -17,7 +17,7 @@ import derealizer.format.Serializable;
  *
  * @author Jay
  */
-public class Vector2f implements Serializable {
+public class Vector2f implements Derealizable {
 
 	public static final Vector2f ORIGIN = new Vector2f(0, 0);
 

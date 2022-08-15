@@ -19,14 +19,14 @@ import java.nio.FloatBuffer;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 
 /**
  * Holds a 3x3 matrix.
  *
  * @author Jay
  */
-public class Matrix3f implements Serializable {
+public class Matrix3f implements Derealizable {
 
 	public float m00, m01, m02, m10, m11, m12, m20, m21, m22;
 

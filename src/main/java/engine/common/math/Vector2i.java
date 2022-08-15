@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 
 /**
  * An immutable vector of two ints.
@@ -14,7 +14,7 @@ import derealizer.format.Serializable;
  * @author Jay
  */
 
-public class Vector2i implements Serializable {
+public class Vector2i implements Derealizable {
 
 	int x;
 	int y;

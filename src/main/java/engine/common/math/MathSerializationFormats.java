@@ -7,7 +7,7 @@ import static derealizer.datatype.SerializationDataType.LONG;
 import static derealizer.format.SerializationFormat.types;
 
 import derealizer.format.FieldNames;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 
@@ -39,9 +39,9 @@ public enum MathSerializationFormats implements SerializationFormatEnum {
 	;
 
 	private final SerializationFormat format;
-	private final Class<? extends Serializable> pojoClass;
+	private final Class<? extends Derealizable> pojoClass;
 
-	MathSerializationFormats(SerializationFormat format, Class<? extends Serializable> pojoClass) {
+	MathSerializationFormats(SerializationFormat format, Class<? extends Derealizable> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
 	}
@@ -52,12 +52,12 @@ public enum MathSerializationFormats implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends Serializable> pojoClass() {
+	public Class<? extends Derealizable> pojoClass() {
 		return pojoClass;
 	}
 
 	public static void main(String[] args) {
-		generate(MathSerializationFormats.class, Serializable.class);
+		generate(MathSerializationFormats.class, Derealizable.class);
 	}
 
 }
