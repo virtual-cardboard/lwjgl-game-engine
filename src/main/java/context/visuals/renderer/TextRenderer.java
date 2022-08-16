@@ -60,10 +60,13 @@ public class TextRenderer extends GameRenderer {
 	/**
 	 * Renders text.
 	 *
-	 * @param x         the <code>x</code> offset of the text from the left side of the screen
-	 * @param y         the <code>y</code> offset of the text from the top of the screen
+	 * @param x         the <code>x</code> offset of the text from the left side of
+	 *                  the screen
+	 * @param y         the <code>y</code> offset of the text from the top of the
+	 *                  screen
 	 * @param text      the {@link String} to display
-	 * @param lineWidth the max width of each line of text in pixels, or 0 to indicate no wrapping
+	 * @param lineWidth the max width of each line of text in pixels, or 0 to
+	 *                  indicate no wrapping
 	 * @param font      the {@link GameFont} of the text
 	 * @param fontSize  the size of the text
 	 * @param colour    the colour of the text
@@ -76,9 +79,11 @@ public class TextRenderer extends GameRenderer {
 	/**
 	 * Renders text.
 	 *
-	 * @param transform the transformation matrix to be applied to the text at the end
+	 * @param transform the transformation matrix to be applied to the text at the
+	 *                  end
 	 * @param text      the text
-	 * @param lineWidth the max width of each line of text in pixels, or 0 to indicate no wrapping
+	 * @param lineWidth the max width of each line of text in pixels, or 0 to
+	 *                  indicate no wrapping
 	 * @param font      the <code>GameFont</code> of the text
 	 * @param fontSize  the font size
 	 * @param colour    the {@link Colour} (int)
@@ -145,7 +150,7 @@ public class TextRenderer extends GameRenderer {
 		for (char ch : chars) {
 			CharacterData c = characterDataArray[ch];
 			short xAdvance = c.xAdvance();
-			if (ch == ' ') {
+			if (ch == ' ' || ch == '\t') {
 				xOffset += xAdvance * sizeMultiplier;
 				continue;
 			}
@@ -170,7 +175,7 @@ public class TextRenderer extends GameRenderer {
 		String[] splitByNewLines = text.split("\\n");
 		List<Pair<String, Float>> stringPairs = new ArrayList<>();
 		for (String line : splitByNewLines) {
-			stringPairs.addAll(convertParagraphToStringPairs(line.trim(), font, fontSize, lineWidth));
+			stringPairs.addAll(convertParagraphToStringPairs(line, font, fontSize, lineWidth));
 		}
 		return stringPairs;
 	}
@@ -199,12 +204,12 @@ public class TextRenderer extends GameRenderer {
 				currentStringWidth += wordWidth;
 				currentString += word;
 			} else {
-				pairs.add(new Pair<>(currentString.trim(), currentStringWidth));
+				pairs.add(new Pair<>(currentString, currentStringWidth));
 				currentStringWidth = wordWidth;
 				currentString = word;
 			}
 		}
-		pairs.add(new Pair<>(currentString.trim(), currentStringWidth));
+		pairs.add(new Pair<>(currentString, currentStringWidth));
 		return pairs;
 	}
 

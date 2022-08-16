@@ -49,10 +49,14 @@ public final class FontLoader {
 			short yOffset = readShort(fis);
 			short xAdvance = readShort(fis);
 			short page = (short) fis.read();
-			CharacterData charData = new CharacterData((char) c, x, y, width, height, xOffset, yOffset, xAdvance, page);
+			CharacterData charData = new CharacterData(x, y, width, height, xOffset, yOffset, xAdvance, page);
 //			System.out.println(c + " " + x + " " + y + " " + width + " " + height + " " + xOffset + " " + yOffset + " " + xAdvance + " " + page);
 			characters[c] = charData;
 		}
+
+		// Tab character data
+		CharacterData space = characters[' '];
+		characters['\t'] = new CharacterData(space.x(), space.y(), space.width(), space.height(), space.xOffset(), space.yOffset(), (short) (space.xAdvance() * 4), space.getPage());
 	}
 
 	private short readShort(FileInputStream fis) throws IOException {
