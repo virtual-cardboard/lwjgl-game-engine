@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 import context.ContextPart;
 import context.data.GameData;
 import context.input.GameInput;
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import engine.common.event.GameEvent;
 import engine.common.event.async.AsyncEventPriorityQueue;
 import engine.common.event.async.AsyncGameEvent;
@@ -41,17 +41,17 @@ public abstract class GameLogic extends ContextPart {
 	private final AsyncEventPriorityQueue asyncEventQueue = new AsyncEventPriorityQueue();
 
 	private final GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
-	private QueueGroup queueGroup;
+	private ContextQueues contextQueues;
 
-	public final void setComponents(GameLogicTimer timer, QueueGroup queueGroup, GameLoader loader) {
+	public final void setComponents(GameLogicTimer timer, ContextQueues contextQueues, GameLoader loader) {
 		this.timer = timer;
-		this.queueGroup = queueGroup;
+		this.contextQueues = contextQueues;
 		this.loader = loader;
 	}
 
 	public final void doUpdate() {
 		gameTick++;
-		handlers.handleEventQueue(queueGroup.inputToLogic);
+		handlers.handleEventQueue(contextQueues.inputToLogic);
 		handleAsyncEvents();
 		update();
 		lastUpdateTime = currentTimeMillis();
@@ -99,18 +99,18 @@ public abstract class GameLogic extends ContextPart {
 		return loader;
 	}
 
-	public QueueGroup queueGroup() {
-		return queueGroup;
+	public ContextQueues contextQueues() {
+		return contextQueues;
 	}
 
 	public void pushEventToQueueGroup(GameEvent e) {
-		queueGroup.pushEventFromLogic(e);
+		contextQueues.pushEventFromLogic(e);
 	}
 
 	public void pushAll(Queue<GameEvent> events) {
 		while (!events.isEmpty()) {
 			GameEvent e = events.poll();
-			queueGroup.pushEventFromLogic(e);
+			contextQueues.pushEventFromLogic(e);
 		}
 	}
 

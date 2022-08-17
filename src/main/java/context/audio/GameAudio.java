@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import context.ContextPart;
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import engine.common.event.GameEvent;
 import engine.common.event.handling.GameEventHandler;
 import engine.common.event.handling.GameEventHandlerGroup;
@@ -14,11 +14,11 @@ public abstract class GameAudio extends ContextPart {
 
 	private GameLoader loader;
 
-	private QueueGroup queueGroup;
+	private ContextQueues contextQueues;
 	protected GameEventHandlerGroup<GameEvent> handlers = new GameEventHandlerGroup<>();
 
 	public final void doUpdate() {
-		handlers.handleEventQueue(queueGroup.logicToAudio);
+		handlers.handleEventQueue(contextQueues.logicToAudio);
 		update();
 	}
 
@@ -36,8 +36,8 @@ public abstract class GameAudio extends ContextPart {
 		handlers.addHandler(clazz, handler);
 	}
 
-	public final void setComponents(QueueGroup queueGroup, GameLoader loader) {
-		this.queueGroup = queueGroup;
+	public final void setComponents(ContextQueues contextQueues, GameLoader loader) {
+		this.contextQueues = contextQueues;
 		this.loader = loader;
 	}
 

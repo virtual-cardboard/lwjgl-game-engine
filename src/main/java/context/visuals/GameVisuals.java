@@ -18,7 +18,7 @@ import context.GLContext;
 import context.data.GameData;
 import context.logic.TimeAccumulator;
 import context.visuals.gui.RootGui;
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import engine.common.event.GameEvent;
 import engine.common.event.handling.GameEventHandler;
 import engine.common.event.handling.GameEventHandlerGroup;
@@ -75,8 +75,8 @@ public abstract class GameVisuals extends ContextPart {
 		handlers.addHandler(clazz, handler);
 	}
 
-	public final void setComponents(QueueGroup queueGroup, GameLoader loader) {
-		this.in = queueGroup.logicToVisuals;
+	public final void setComponents(ContextQueues contextQueues, GameLoader loader) {
+		this.in = contextQueues.logicToVisuals;
 		this.loader = loader;
 	}
 

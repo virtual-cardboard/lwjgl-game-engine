@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 import context.ContextPart;
 import context.input.event.*;
 import context.input.mouse.GameCursor;
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import engine.common.event.GameEvent;
 
 /**
@@ -20,7 +20,7 @@ import engine.common.event.GameEvent;
  */
 public abstract class GameInput extends ContextPart {
 
-	private QueueGroup queueGroup;
+	private ContextQueues contextQueues;
 
 	/** {@link List} of {@link FrameResizedInputEvent} handlers. */
 	private List<GameInputEventHandler<FrameResizedInputEvent>> frameResizedInputEventHandlers = new ArrayList<>();
@@ -46,8 +46,8 @@ public abstract class GameInput extends ContextPart {
 	 */
 	private GameCursor cursor = new GameCursor();
 
-	public final void setComponents(QueueGroup queueGroup) {
-		this.queueGroup = queueGroup;
+	public final void setComponents(ContextQueues contextQueues) {
+		this.contextQueues = contextQueues;
 		frameResizedInputEventHandlers.add(new GameInputEventHandler<>(new RootGuiUpdaterFunction(context())));
 		mouseMovedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorMovedUpdaterFunction(cursor)));
 		mousePressedInputEventHandlers.add(new GameInputEventHandler<>(new GameCursorPressedUpdaterFunction(cursor)));
@@ -60,11 +60,11 @@ public abstract class GameInput extends ContextPart {
 	 * {@link #inputEventBuffer}.
 	 */
 	public void handleAll() {
-		while (!queueGroup.networkReceiveBuffer.isEmpty()) {
-			handleEvent(packetReceivedInputEventHandlers, queueGroup.networkReceiveBuffer.poll());
+		while (!contextQueues.networkReceiveBuffer.isEmpty()) {
+			handleEvent(packetReceivedInputEventHandlers, contextQueues.networkReceiveBuffer.poll());
 		}
-		while (!queueGroup.inputEventBuffer.isEmpty()) {
-			handleEvent(queueGroup.inputEventBuffer.poll());
+		while (!contextQueues.inputEventBuffer.isEmpty()) {
+			handleEvent(contextQueues.inputEventBuffer.poll());
 		}
 	}
 
@@ -109,7 +109,7 @@ public abstract class GameInput extends ContextPart {
 			if (eventHandler.isSatisfiedBy(inputEvent)) {
 				GameEvent event = eventHandler.apply(inputEvent);
 				if (event != null) {
-					queueGroup.inputToLogic.add(event);
+					contextQueues.inputToLogic.add(event);
 				}
 				if (eventHandler.doesConsume()) {
 					break;
@@ -199,7 +199,7 @@ public abstract class GameInput extends ContextPart {
 		return cursor;
 	}
 
-	public QueueGroup queueGroup() {
-		return queueGroup;
+	public ContextQueues contextQueues() {
+		return contextQueues;
 	}
 }

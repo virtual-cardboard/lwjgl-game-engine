@@ -9,7 +9,7 @@ import context.input.event.GameInputEvent;
 import context.input.event.PacketReceivedInputEvent;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import engine.common.loader.GameLoader;
 import engine.common.networking.packet.PacketModel;
 import engine.common.timestep.GameLogicTimer;
@@ -96,11 +96,11 @@ public final class GameContext {
 	 */
 	public void init(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer, GameLogicTimer timer, GameLoader loader) {
 		data.setComponents(loader);
-		QueueGroup queueGroup = new QueueGroup(inputEventBuffer, networkReceiveBuffer);
-		input.setComponents(queueGroup);
-		audio.setComponents(queueGroup, loader);
-		logic.setComponents(timer, queueGroup, loader);
-		visuals.setComponents(queueGroup, loader);
+		ContextQueues contextQueues = new ContextQueues(inputEventBuffer, networkReceiveBuffer);
+		input.setComponents(contextQueues);
+		audio.setComponents(contextQueues, loader);
+		logic.setComponents(timer, contextQueues, loader);
+		visuals.setComponents(contextQueues, loader);
 		audio.init();
 		data.init();
 		input.init();

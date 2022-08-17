@@ -20,7 +20,7 @@ import engine.common.event.GameEvent;
  * 
  * @author Jay
  */
-public final class QueueGroup {
+public final class ContextQueues {
 
 	/**
 	 * The queue that {@link GameInput} would put {@link GameEvent}s into. These
@@ -47,7 +47,7 @@ public final class QueueGroup {
 	 */
 	public final Queue<PacketReceivedInputEvent> networkReceiveBuffer;
 
-	public QueueGroup(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer) {
+	public ContextQueues(Queue<GameInputEvent> inputEventBuffer, Queue<PacketReceivedInputEvent> networkReceiveBuffer) {
 		this.inputEventBuffer = inputEventBuffer;
 		this.networkReceiveBuffer = networkReceiveBuffer;
 	}
