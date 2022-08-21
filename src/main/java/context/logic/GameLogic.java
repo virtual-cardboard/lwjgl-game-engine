@@ -12,7 +12,6 @@ import context.input.GameInput;
 import engine.common.ContextQueues;
 import engine.common.event.GameEvent;
 import engine.common.event.async.AsyncEventPriorityQueue;
-import engine.common.event.async.AsyncGameEvent;
 import engine.common.event.handling.GameEventHandler;
 import engine.common.event.handling.GameEventHandlerGroup;
 import engine.common.loader.GameLoader;
@@ -64,18 +63,7 @@ public abstract class GameLogic extends ContextPart {
 	}
 
 	protected void handleEvent(GameEvent event) {
-		if (!(event instanceof AsyncGameEvent)) {
-			// Handle immediately
-			handlers.handleEvent(event);
-		} else {
-			// Handle later
-			AsyncGameEvent asyncEvent = (AsyncGameEvent) event;
-			if (asyncEvent.shouldHandle(gameTick)) {
-				handlers.handleEvent(asyncEvent);
-			} else {
-				asyncEventQueue.add(asyncEvent);
-			}
-		}
+		handlers.handleEvent(event);
 	}
 
 	/**
