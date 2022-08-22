@@ -2,7 +2,6 @@ package context.logic;
 
 import static java.lang.System.currentTimeMillis;
 
-import java.util.Queue;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -49,11 +48,13 @@ public abstract class GameLogic extends ContextPart {
 	}
 
 	public final void doUpdate() {
-		gameTick++;
-		handlers.handleEventQueue(contextQueues.inputToLogic);
-		handleAsyncEvents();
-		update();
-		lastUpdateTime = currentTimeMillis();
+		if (!context().data().paused()) {
+			gameTick++;
+			handlers.handleEventQueue(contextQueues.inputToLogic);
+			handleAsyncEvents();
+			update();
+			lastUpdateTime = currentTimeMillis();
+		}
 	}
 
 	private void handleAsyncEvents() {
@@ -89,17 +90,6 @@ public abstract class GameLogic extends ContextPart {
 
 	public ContextQueues contextQueues() {
 		return contextQueues;
-	}
-
-	public void pushEventToQueueGroup(GameEvent e) {
-		contextQueues.pushEventFromLogic(e);
-	}
-
-	public void pushAll(Queue<GameEvent> events) {
-		while (!events.isEmpty()) {
-			GameEvent e = events.poll();
-			contextQueues.pushEventFromLogic(e);
-		}
 	}
 
 	public boolean timeSensitive() {
