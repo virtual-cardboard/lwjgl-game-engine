@@ -25,19 +25,19 @@ public class RenderBufferObject extends GLRegularObject {
 
 	public void bind(GLContext glContext) {
 		verifyInitialized();
-		if (glContext.renderbufferID == id) {
+		if (glContext.renderBufferID == id) {
 			return;
 		}
 		glBindRenderbuffer(GL_RENDERBUFFER, id);
-		glContext.renderbufferID = id;
+		glContext.renderBufferID = id;
 	}
 
 	public static void unbind(GLContext glContext) {
-		if (glContext.renderbufferID == 0) {
+		if (glContext.renderBufferID == 0) {
 			return;
 		}
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
-		glContext.renderbufferID = 0;
+		glContext.renderBufferID = 0;
 	}
 
 	public void delete() {
