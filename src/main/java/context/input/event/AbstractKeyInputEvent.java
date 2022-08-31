@@ -18,6 +18,8 @@ public abstract class AbstractKeyInputEvent extends GameInputEvent {
 	 * <p>
 	 * When checking for a non-letter character, consider comparing the key code with a GLFW constant. E.g.
 	 * {@link GLFW#GLFW_KEY_LEFT_CONTROL}.
+	 * <p>
+	 * IMPORTANT: Do NOT use java's {@link java.awt.event.KeyEvent} constants. Some of them are not compatible.
 	 *
 	 * @return the key code
 	 */

@@ -6,7 +6,7 @@ public class GameCursor {
 
 	private Vector2i previousPos = new Vector2i();
 	private Vector2i pos = new Vector2i();
-	private boolean[] pressedButtons = new boolean[8];
+	private final boolean[] pressedButtons = new boolean[8];
 
 	public Vector2i previousPos() {
 		return previousPos;
@@ -20,10 +20,14 @@ public class GameCursor {
 		return pos.sub(previousPos);
 	}
 
-	public void setPos(Vector2i pos) {
-		setPos(pos.x(), pos.y());
-	}
-
+	/**
+	 * Used internally by GameCursorMovedUpdaterFunction.
+	 * <p>
+	 * DO NOT call this method outside GameCursorMovedUpdaterFunction.
+	 *
+	 * @param x the new mouse x
+	 * @param y the new mouse y
+	 */
 	public void setPos(int x, int y) {
 		previousPos = pos;
 		pos = new Vector2i(x, y);
