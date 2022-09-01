@@ -14,8 +14,7 @@ import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 
 /**
- * A Graphical User Interface (GUI) with position constraints and dimension
- * constraints.
+ * A Graphical User Interface (GUI) with position constraints and dimension constraints.
  * <p>
  * A <code>Gui</code> can have any number of children <code>Guis</code>.
  * </p>
@@ -83,6 +82,11 @@ public abstract class Gui {
 		PosDim p = parent.posdim();
 		return new PosDim(posXConstraint.get(p.x, p.x + p.w), posYConstraint.get(p.y, p.y + p.h),
 				widthConstraint.get(p.x, p.x + p.w), heightConstraint.get(p.y, p.y + p.h));
+	}
+
+	public boolean containsPoint(Vector2i point) {
+		PosDim p = posdim();
+		return point.x() >= p.x && point.x() <= p.x + p.w && point.y() >= p.y && point.y() <= p.y + p.h;
 	}
 
 	// Getters and setters

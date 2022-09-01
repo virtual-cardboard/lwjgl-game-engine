@@ -8,6 +8,7 @@ import context.visuals.gui.RootGui;
 import context.visuals.gui.effects.HasMoveEffect;
 import context.visuals.gui.effects.HasPressEffect;
 import context.visuals.gui.effects.HasReleaseEffect;
+import engine.common.event.GameEvent;
 import engine.common.math.Vector2i;
 
 /**
@@ -24,12 +25,20 @@ public abstract class GuiInput extends GameInput {
 		GameVisuals visuals = context().visuals();
 		addMousePressedFunction(event -> {
 			HasPressEffect gui = (HasPressEffect) getGui(HasPressEffect.class, cursor().pos(), visuals.rootGui());
-			return gui != null ? gui.doPressEffect(cursor()) : null;
+			if (gui != null) {
+				gui.setPressed(true);
+				return gui.doPressEffect(cursor());
+			}
+			return null;
 		});
 		addMouseReleasedFunction(event -> {
-			releaseAllGuis(cursor().pos(), visuals.rootGui());
 			HasReleaseEffect gui = (HasReleaseEffect) getGui(HasReleaseEffect.class, cursor().pos(), visuals.rootGui());
-			return gui != null ? gui.doReleaseEffect(cursor()) : null;
+			GameEvent e = null;
+			if (gui != null) {
+				e = gui.doReleaseEffect(cursor());
+			}
+			releaseAllGuis(cursor().pos(), visuals.rootGui());
+			return e;
 		});
 		addMouseMovedFunction(event -> {
 			HasMoveEffect gui = (HasMoveEffect) getGui(HasMoveEffect.class, cursor().pos(), visuals.rootGui());

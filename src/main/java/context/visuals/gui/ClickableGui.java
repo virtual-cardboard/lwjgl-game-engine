@@ -10,7 +10,7 @@ import engine.common.event.GameEvent;
  * <p>
  * A "click" is a press on the gui followed by a release on the same gui.
  */
-public abstract class ClickableGui implements HasPressEffect, HasReleaseEffect {
+public abstract class ClickableGui extends Gui implements HasPressEffect, HasReleaseEffect {
 
 	/** Whether the gui is currently pressed. */
 	private boolean pressed = false;
