@@ -1,7 +1,6 @@
 package engine.common.loader.loadtask;
 
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
-import static org.lwjgl.opengl.GL11.GL_LINEAR_MIPMAP_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
@@ -32,7 +31,7 @@ public class EmptyTextureLoadTask implements GLLoadTask<Texture> {
 	public EmptyTextureLoadTask(int width, int height) {
 		setTextureParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		setTextureParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		setTextureParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+		setTextureParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		setTextureParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		this.width = width;
 		this.height = height;
