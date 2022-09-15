@@ -26,7 +26,7 @@ import engine.common.loader.loadtask.ShaderProgramLoadTask;
 
 /**
  * Calls {@link GameVisuals#render()} each frame.
- * 
+ *
  * @author Jay
  */
 public final class WindowFrameUpdater extends TimestepTimer {
@@ -40,7 +40,7 @@ public final class WindowFrameUpdater extends TimestepTimer {
 	private CountDownLatch contextCountDownLatch;
 
 	public WindowFrameUpdater(GameWindow window, TimeAccumulator logicTimeAccumulator, CountDownLatch windowCountDownLatch,
-			CountDownLatch contextCountDownLatch) {
+	                          CountDownLatch contextCountDownLatch) {
 		super(60);
 		this.window = window;
 		this.logicTimeAccumulator = logicTimeAccumulator;
@@ -103,12 +103,12 @@ public final class WindowFrameUpdater extends TimestepTimer {
 
 	private void loadBuiltIn() {
 		RectangleVertexArrayObject rectangleVAO = createRectangleVAO(wrapper.glContext());
-		TransformationVertexShader tranformationVS = createTransformationVertexShader();
+		TransformationVertexShader transformationVS = createTransformationVertexShader();
 		TexturedTransformationVertexShader texturedTransformationVS = createTexturedTransformationVertexShader();
 		ColourFragmentShader colourFS = createColourFragmentShader();
 		ScreenFrameBufferObject screenFBO = new ScreenFrameBufferObject();
-		ShaderProgram defaultSP = new ShaderProgramLoadTask(tranformationVS, colourFS).call(wrapper.glContext());
-		wrapper.resourcePack().init(rectangleVAO, tranformationVS, texturedTransformationVS, colourFS, defaultSP, screenFBO);
+		ShaderProgram defaultSP = new ShaderProgramLoadTask(transformationVS, colourFS).call(wrapper.glContext());
+		wrapper.resourcePack().init(rectangleVAO, transformationVS, texturedTransformationVS, colourFS, defaultSP, screenFBO);
 	}
 
 	public void setWrapper(GameContextWrapper wrapper) {
