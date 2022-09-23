@@ -35,7 +35,7 @@ public abstract class Gui {
 	private boolean enabled = true;
 
 	private Gui parent;
-	private List<Gui> children = new ArrayList<>();
+	private final List<Gui> children = new ArrayList<>();
 
 	public abstract void render(GLContext glContext, GameData data, float x, float y, float width, float height);
 
@@ -64,7 +64,7 @@ public abstract class Gui {
 		return child;
 	}
 
-	public void remove() {
+	public void destroy() {
 		parent.getChildren().remove(this);
 		parent = null;
 	}

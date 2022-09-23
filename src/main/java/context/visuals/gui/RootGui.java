@@ -136,8 +136,8 @@ public class RootGui extends InvisibleGui {
 	}
 
 	@Override
-	public void remove() {
-		System.err.println("Cannot remove rootGui");
+	public void destroy() {
+		System.err.println("Cannot destroy rootGui");
 	}
 
 }
