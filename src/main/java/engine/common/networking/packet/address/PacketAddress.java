@@ -1,15 +1,12 @@
 package engine.common.networking.packet.address;
 
-import static engine.common.networking.packet.NetworkingSerializationFormats.PACKET_ADDRESS;
-
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
-import engine.common.networking.packet.NetworkingSerializationFormats;
 
 public class PacketAddress implements Derealizable {
 
@@ -30,11 +27,6 @@ public class PacketAddress implements Derealizable {
 
 	public PacketAddress(byte[] bytes) {
 		read(new SerializationReader(bytes));
-	}
-
-	@Override
-	public NetworkingSerializationFormats formatEnum() {
-		return PACKET_ADDRESS;
 	}
 
 	@Override

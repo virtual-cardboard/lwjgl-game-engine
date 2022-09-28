@@ -1,12 +1,10 @@
 package engine.common.math;
 
-import static engine.common.math.MathSerializationFormats.VECTOR_3F;
-
 import java.util.Objects;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 
 /**
  * An immutable vector of three floats.
@@ -132,11 +130,6 @@ public class Vector3f implements Derealizable {
 			return false;
 		Vector3f other = (Vector3f) obj;
 		return x == other.x && y == other.y && z == other.z;
-	}
-
-	@Override
-	public MathSerializationFormats formatEnum() {
-		return VECTOR_3F;
 	}
 
 	@Override

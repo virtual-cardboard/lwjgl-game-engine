@@ -1,12 +1,10 @@
 package engine.common.math;
 
-import static engine.common.math.MathSerializationFormats.VECTOR_3I;
-
 import java.util.Objects;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 
 /**
  * An immutable vector of three ints.
@@ -114,11 +112,6 @@ public class Vector3i implements Derealizable {
 
 	public int z() {
 		return z;
-	}
-
-	@Override
-	public MathSerializationFormats formatEnum() {
-		return VECTOR_3I;
 	}
 
 	@Override

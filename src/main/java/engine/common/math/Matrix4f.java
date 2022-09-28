@@ -13,13 +13,11 @@
  */
 package engine.common.math;
 
-import static engine.common.math.MathSerializationFormats.MATRIX_4F;
-
 import java.nio.FloatBuffer;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 
 /**
  * Holds a 4x4 float matrix.
@@ -147,8 +145,7 @@ public class Matrix4f implements Derealizable {
 	}
 
 	/**
-	 * Load from a float buffer. The buffer stores the matrix in column major
-	 * (OpenGL) order.
+	 * Load from a float buffer. The buffer stores the matrix in column major (OpenGL) order.
 	 *
 	 * @param buf A float buffer to read from
 	 * @return this
@@ -174,8 +171,7 @@ public class Matrix4f implements Derealizable {
 	}
 
 	/**
-	 * Load from a float buffer. The buffer stores the matrix in row major (maths)
-	 * order.
+	 * Load from a float buffer. The buffer stores the matrix in row major (maths) order.
 	 *
 	 * @param buf A float buffer to read from
 	 * @return this
@@ -201,8 +197,7 @@ public class Matrix4f implements Derealizable {
 	}
 
 	/**
-	 * Store this matrix in a float buffer. The matrix is stored in column major
-	 * (openGL) order.
+	 * Store this matrix in a float buffer. The matrix is stored in column major (openGL) order.
 	 *
 	 * @param buf The buffer to store this matrix in
 	 */
@@ -247,8 +242,7 @@ public class Matrix4f implements Derealizable {
 	}
 
 	/**
-	 * Store this matrix in a float buffer. The matrix is stored in row major
-	 * (maths) order.
+	 * Store this matrix in a float buffer. The matrix is stored in row major (maths) order.
 	 *
 	 * @param buf The buffer to store this matrix in
 	 */
@@ -273,8 +267,8 @@ public class Matrix4f implements Derealizable {
 	}
 
 	/**
-	 * Store the rotation portion of this matrix in a float buffer. The matrix is
-	 * stored in column major (openGL) order.
+	 * Store the rotation portion of this matrix in a float buffer. The matrix is stored in column major (openGL)
+	 * order.
 	 *
 	 * @param buf The buffer to store this matrix in
 	 */
@@ -324,8 +318,7 @@ public class Matrix4f implements Derealizable {
 	}
 
 	/**
-	 * Subtract the right matrix from the left and place the result in a third
-	 * matrix.
+	 * Subtract the right matrix from the left and place the result in a third matrix.
 	 *
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
@@ -532,8 +525,7 @@ public class Matrix4f implements Derealizable {
 	 *
 	 * @param angle the angle, in radians.
 	 * @param axis  The vector representing the rotation axis. Must be normalized.
-	 * @param dest  The matrix to put the result, or null if a new matrix is to be
-	 *              created
+	 * @param dest  The matrix to put the result, or null if a new matrix is to be created
 	 * @return The rotated matrix
 	 */
 	public Matrix4f rotate(float angle, Vector3f axis, Matrix4f dest) {
@@ -541,14 +533,13 @@ public class Matrix4f implements Derealizable {
 	}
 
 	/**
-	 * Rotates the source matrix around the given axis the specified angle and put
-	 * the result in the destination matrix.
+	 * Rotates the source matrix around the given axis the specified angle and put the result in the destination
+	 * matrix.
 	 *
 	 * @param angle the angle, in radians.
 	 * @param axis  The vector representing the rotation axis. Must be normalized.
 	 * @param src   The matrix to rotate
-	 * @param dest  The matrix to put the result, or null if a new matrix is to be
-	 *              created
+	 * @param dest  The matrix to put the result, or null if a new matrix is to be created
 	 * @return The rotated matrix
 	 */
 	public static Matrix4f rotate(float angle, Vector3f axis, Matrix4f src, Matrix4f dest) {
@@ -859,11 +850,6 @@ public class Matrix4f implements Derealizable {
 
 	public Matrix4f copy() {
 		return new Matrix4f(this);
-	}
-
-	@Override
-	public MathSerializationFormats formatEnum() {
-		return MATRIX_4F;
 	}
 
 	@Override

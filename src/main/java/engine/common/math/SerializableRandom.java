@@ -1,12 +1,10 @@
 package engine.common.math;
 
-import static engine.common.math.MathSerializationFormats.SERIALIZABLE_RANDOM;
-
 import java.util.concurrent.atomic.AtomicLong;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 
 public class SerializableRandom implements Derealizable {
 
@@ -61,11 +59,6 @@ public class SerializableRandom implements Derealizable {
 	public long nextLong() {
 		// it's okay that the bottom word remains signed.
 		return ((long) (next(32)) << 32) + next(32);
-	}
-
-	@Override
-	public MathSerializationFormats formatEnum() {
-		return SERIALIZABLE_RANDOM;
 	}
 
 	@Override

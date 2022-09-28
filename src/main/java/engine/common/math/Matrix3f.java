@@ -13,13 +13,11 @@
  */
 package engine.common.math;
 
-import static engine.common.math.MathSerializationFormats.MATRIX_3F;
-
 import java.nio.FloatBuffer;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 
 /**
  * Holds a 3x3 matrix.
@@ -75,8 +73,7 @@ public class Matrix3f implements Derealizable {
 	}
 
 	/**
-	 * Load from a float buffer. The buffer stores the matrix in column major
-	 * (OpenGL) order.
+	 * Load from a float buffer. The buffer stores the matrix in column major (OpenGL) order.
 	 *
 	 * @param buf A float buffer to read from
 	 * @return this
@@ -95,8 +92,7 @@ public class Matrix3f implements Derealizable {
 	}
 
 	/**
-	 * Load from a float buffer. The buffer stores the matrix in row major (maths)
-	 * order.
+	 * Load from a float buffer. The buffer stores the matrix in row major (maths) order.
 	 *
 	 * @param buf A float buffer to read from
 	 * @return this
@@ -115,8 +111,7 @@ public class Matrix3f implements Derealizable {
 	}
 
 	/**
-	 * Store this matrix in a float buffer. The matrix is stored in column major
-	 * (openGL) order.
+	 * Store this matrix in a float buffer. The matrix is stored in column major (openGL) order.
 	 *
 	 * @param buf The buffer to store this matrix in
 	 */
@@ -134,8 +129,7 @@ public class Matrix3f implements Derealizable {
 	}
 
 	/**
-	 * Store this matrix in a float buffer. The matrix is stored in row major
-	 * (maths) order.
+	 * Store this matrix in a float buffer. The matrix is stored in row major (maths) order.
 	 *
 	 * @param buf The buffer to store this matrix in
 	 */
@@ -178,8 +172,7 @@ public class Matrix3f implements Derealizable {
 	}
 
 	/**
-	 * Subtract the right matrix from the left and place the result in a third
-	 * matrix.
+	 * Subtract the right matrix from the left and place the result in a third matrix.
 	 *
 	 * @param left  The left source matrix
 	 * @param right The right source matrix
@@ -390,11 +383,6 @@ public class Matrix3f implements Derealizable {
 		m21 = 0.0f;
 		m22 = 0.0f;
 		return this;
-	}
-
-	@Override
-	public MathSerializationFormats formatEnum() {
-		return MATRIX_3F;
 	}
 
 	@Override

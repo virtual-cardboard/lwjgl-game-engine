@@ -1,12 +1,10 @@
 package engine.common.math;
 
-import static engine.common.math.MathSerializationFormats.VECTOR_2L;
-
 import java.util.Objects;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 
 /**
  * An immutable vector of two longs.
@@ -103,11 +101,6 @@ public class Vector2l implements Derealizable {
 			return false;
 		Vector2l other = (Vector2l) obj;
 		return x == other.x && y == other.y;
-	}
-
-	@Override
-	public MathSerializationFormats formatEnum() {
-		return VECTOR_2L;
 	}
 
 	@Override

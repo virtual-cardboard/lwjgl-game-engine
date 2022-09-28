@@ -1,19 +1,17 @@
 package engine.common.math;
 
-import static engine.common.math.MathSerializationFormats.VECTOR_2F;
-
 import java.util.Objects;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 
 /**
  * <p>
  * An immutable vector of two floats.
  * </p>
- * This is immutable so that a programmer can pass a <code>Vector2f</code> into
- * a function without needing to worry about being mutated.
+ * This is immutable so that a programmer can pass a <code>Vector2f</code> into a function without needing to worry
+ * about being mutated.
  *
  * @author Jay
  */
@@ -157,11 +155,6 @@ public class Vector2f implements Derealizable {
 			return false;
 		Vector2f other = (Vector2f) obj;
 		return x() == other.x() && y() == other.y();
-	}
-
-	@Override
-	public MathSerializationFormats formatEnum() {
-		return VECTOR_2F;
 	}
 
 	@Override

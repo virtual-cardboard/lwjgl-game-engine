@@ -1,12 +1,10 @@
 package engine.common.math;
 
-import static engine.common.math.MathSerializationFormats.VECTOR_3L;
-
 import java.util.Objects;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 
 public class Vector3l implements Derealizable {
 
@@ -100,11 +98,6 @@ public class Vector3l implements Derealizable {
 			return false;
 		Vector3l other = (Vector3l) obj;
 		return x == other.x && y == other.y && z == other.z;
-	}
-
-	@Override
-	public MathSerializationFormats formatEnum() {
-		return VECTOR_3L;
 	}
 
 	@Override
