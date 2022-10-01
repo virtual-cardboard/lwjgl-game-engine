@@ -1,5 +1,7 @@
 package engine.common.loader.loadtask;
 
+import static org.lwjgl.assimp.Assimp.aiGetMaterialTexture;
+import static org.lwjgl.assimp.Assimp.aiReturn_SUCCESS;
 import static org.lwjgl.assimp.Assimp.aiTextureType_DIFFUSE;
 
 import java.io.IOException;
@@ -8,10 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.GLContext;
+import context.ResourcePack;
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.Material;
 import context.visuals.lwjgl.Mesh;
 import context.visuals.lwjgl.Model;
+import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.lwjgl.VertexBufferObject;
 import engine.common.loader.GLLoadTask;
@@ -22,12 +26,17 @@ import org.lwjgl.assimp.AIString;
 import org.lwjgl.assimp.AIVector3D;
 import org.lwjgl.assimp.Assimp;
 
+/**
+ * Loads a {@link Model}.
+ */
 public class ModelLoadTask implements GLLoadTask<Model> {
 
 	private final String path;
+	private final ResourcePack modelTextureResourcePack;
 
-	public ModelLoadTask(String path) {
+	public ModelLoadTask(String path, ResourcePack modelTextureResourcePack) {
 		this.path = path;
+		this.modelTextureResourcePack = modelTextureResourcePack;
 	}
 
 	@Override
@@ -44,14 +53,26 @@ public class ModelLoadTask implements GLLoadTask<Model> {
 		List<Material> materials = new ArrayList<>();
 
 		for (int i = 0; i < scene.mNumMaterials(); i++) {
-			AIMaterial material = AIMaterial.create(scene.mMaterials().get(i));
+			AIMaterial mat = AIMaterial.create(scene.mMaterials().get(i));
 			AIString path = AIString.calloc();
-			Assimp.aiGetMaterialTexture(material, aiTextureType_DIFFUSE, 0, path, (IntBuffer) null, null, null, null, null, null);
-			String texturePath = path.dataString();
-			// TODO: Load/get textures and create materials
-			System.out.println("LOL imagine having textures in your 3D models: " + texturePath);
+			if (aiReturn_SUCCESS != aiGetMaterialTexture(mat, aiTextureType_DIFFUSE, 0, path, (IntBuffer) null, null, null, null, null, null)) {
+				materials.add(null);
+				continue;
+			}
+			String diffuseTexPath = path.dataString();
+			// TODO use a proper shader program
+			Material material = new Material(null);
+
+			Texture diffuseTex = modelTextureResourcePack.getTexture(diffuseTexPath);
+			if (diffuseTex != null) {
+				material.diffuse = diffuseTex;
+			} else {
+				System.out.println("LOADING MATERIAL TEXTURES NOT YET IMPLEMENTED");
+				continue;
+			}
+			materials.add(material);
 			path.free();
-			material.free();
+			mat.free();
 		}
 		scene.close();
 
@@ -64,7 +85,7 @@ public class ModelLoadTask implements GLLoadTask<Model> {
 			}
 		}
 
-		return new Model(meshes, materials);
+		return new Model(meshes);
 	}
 
 	private Mesh createMesh(GLContext glContext, AIMesh mesh, List<Material> materials) {

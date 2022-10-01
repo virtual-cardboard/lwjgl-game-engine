@@ -2,6 +2,9 @@ package context.visuals.lwjgl;
 
 import context.GLContext;
 
+/**
+ * Contains a {@link VertexArrayObject} and a {@link Material}.
+ */
 public class Mesh {
 
 	private final VertexArrayObject vao;
@@ -21,7 +24,8 @@ public class Mesh {
 	}
 
 	public void render(GLContext glContext) {
-		// TODO: Use the material
+		material.shaderProgram().bind(glContext);
+		// TODO set uniforms for diffuse texture, etc.
 		vao.draw(glContext);
 	}
 

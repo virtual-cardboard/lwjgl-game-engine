@@ -2,22 +2,25 @@ package context.visuals.lwjgl;
 
 import java.util.List;
 
+import context.GLContext;
+
+/**
+ * A 3D model consisting of one or more meshes.
+ */
 public class Model {
 
 	private final List<Mesh> meshes;
-	private final List<Material> materials;
 
-	public Model(List<Mesh> meshes, List<Material> materials) {
+	public Model(List<Mesh> meshes) {
 		this.meshes = meshes;
-		this.materials = materials;
+	}
+
+	public void draw(GLContext glContext) {
+
 	}
 
 	public List<Mesh> meshes() {
 		return meshes;
-	}
-
-	public List<Material> materials() {
-		return materials;
 	}
 
 }
