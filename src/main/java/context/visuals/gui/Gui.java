@@ -144,7 +144,7 @@ public abstract class Gui {
 	}
 
 	public void toggleEnabled() {
-		enabled = !enabled;
+		setEnabled(!enabled);
 	}
 
 }
